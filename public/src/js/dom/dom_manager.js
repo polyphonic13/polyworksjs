@@ -2,7 +2,7 @@ Polyworks.DOMManager = (function() {
 	var _bodyEl = document.getElementsByTagName('body')[0];
 	var _headEl = document.getElementsByTagName('head')[0];
 	
-	var dom_manager = {
+	var module = {
 		addElements: function(elements, parentEl) {
 			var pops = parentEl || _bodyEl;
 			Polyworks.Utils.each(
@@ -108,5 +108,7 @@ Polyworks.DOMManager = (function() {
 		}
 	};
 	
-	return dom_manager;
+	module.ImageLoader = ImageLoader; 
+	
+	return module;
 }());

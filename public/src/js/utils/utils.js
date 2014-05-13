@@ -1,7 +1,7 @@
 Polyworks.Utils = (function() {
-	var utils = {};
+	var module = {};
 
-	utils.each = function(list, callback, context) {
+	module.each = function(list, callback, context) {
 		if(Array.isArray(list)) {
 			var length = list.length;
 			for(var i = 0; i < length; i++) {
@@ -14,7 +14,7 @@ Polyworks.Utils = (function() {
 		}
 	};
 	
-	utils.clone = function(obj) {
+	module.clone = function(obj) {
 	    // Handle the 3 simple types, and null or undefined
 	    if (null == obj || "object" != typeof obj) return obj;
 
@@ -46,7 +46,7 @@ Polyworks.Utils = (function() {
 	    throw new Error("Unable to copy obj! Its type isn't supported.");	
 	};
 
-	utils.extend = function(a, b) {
+	module.extend = function(a, b) {
 		for(var key in b) {
 			if(b.hasOwnProperty(key)) {
 				a[key] = b[key];
@@ -55,17 +55,17 @@ Polyworks.Utils = (function() {
 		return a;
 	};
 
-	utils.extract = function(obj, prop) {
+	module.extract = function(obj, prop) {
 		var a = obj[prop];
 		if(obj !== window) { delete obj[prop]; }
 		return a;
 	};
 
-	utils.has = function(obj, prop) {
+	module.has = function(obj, prop) {
 		return Object.prototype.hasOwnProperty.call(obj, prop);
 	};
 	
-	utils.objLength = function(obj) {
+	module.objLength = function(obj) {
 		var length = 0;
 		for(var key in obj) {
 			// if(obj.hasOwnProperty(key)) { length++; }
@@ -74,22 +74,22 @@ Polyworks.Utils = (function() {
 		return length;
 	};
 
-	utils.mixin = function(c, p) {
+	module.mixin = function(c, p) {
 	    for(var k in p) if(p[k]) c[k] = p[k];
 	};
 
-	utils.bind = function(o, f) {
+	module.bind = function(o, f) {
 	    return function() { return f.apply(o, arguments); };
 	};
 
-	utils.inherits = function(c, p) {
+	module.inherits = function(c, p) {
 	    this.mixin(c, p);
 	    function f() { this.constructor = c; };
 	    f.prototype = c._super = p.prototype;
 	    c.prototype = new f();
 	};
 
-	utils.isInView = function(pos) {
+	module.isInView = function(pos) {
 		if(pos.x > 0 && pos.x < stageConfig.width && pos.y > 0 && pos.y < stageConfig.height) {
 			return true;
 		} else {
@@ -97,7 +97,7 @@ Polyworks.Utils = (function() {
 		}
 	};
 	
-	utils.parseMarkup = function(str, reference, encodeMarkup) {
+	module.parseMarkup = function(str, reference, encodeMarkup) {
 		var parsedString = str;
 		// trace('Utils/parseMarkup, str = ' + str + ', reference = ', reference);
 
@@ -131,7 +131,7 @@ Polyworks.Utils = (function() {
 		return parsedString;
 	};
 	
-	utils.loadScript = function(url, evt) {
+	module.loadScript = function(url, evt) {
         var scriptTag = document.createElement('script');
         scriptTag.setAttribute('type', 'text/javascript');
 
@@ -152,5 +152,5 @@ Polyworks.Utils = (function() {
         document.getElementsByTagName('head')[0].appendChild(scriptTag);
 	};
 
-	return utils;
+	return module;
 }());
