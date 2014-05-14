@@ -1,0 +1,3 @@
+Polyworks.Sprite = (function() {
+	
+})
