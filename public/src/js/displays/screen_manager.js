@@ -81,7 +81,7 @@ Polyworks.ScreenManager = (function() {
 	module.init = function(config) {
 		this.config = config;
 		this.screens = {};
-		this.currentScreen = '';
+		this.currentId = '';
 
 		Polyworks.Utils.each(
 			config.screens,
@@ -92,9 +92,11 @@ Polyworks.ScreenManager = (function() {
 		);
 	};
 	
-	module.change = function(id) {
-		if(this.currentScreen !== id) {
+	module.activate = function(id) {
+		if(this.currentId !== id) {
 			if(this.screens.hasOwnProperty(id)) {
+				this.screens[this.currentId].deactivate();
+				this.currentId = id;
 				this.screens[id].activate();
 			}
 		}
@@ -103,8 +105,8 @@ Polyworks.ScreenManager = (function() {
 	module.deactivate = function(id) {
 		if(this.screens.hasOwnProperty(id)) {
 			this.screens[id].deactivate();
-			if(this.currentScreen === id) {
-				this.currentScreen = id;
+			if(this.currentId === id) {
+				this.currentId = '';
 			}
 		}
 	};
@@ -117,6 +119,7 @@ Polyworks.ScreenManager = (function() {
 			},
 			this
 		);
+		this.currentId = '';
 	};
 	
 	module.destroy = function() {
