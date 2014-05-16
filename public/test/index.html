@@ -2,7 +2,10 @@
 <html>
 	<head>
 		<title>polyworks js module tester</title>
+		<link rel="stylesheet" type="text/css" href="css/test.css" />
 <!--		<script type="text/javascript" src="../build/js/polyworks.js"></script> -->
+		<script type="text/javascript" src="../lib/phaser/phaser.js"></script>
+
 		<script type="text/javascript" src="../src/js/namespace.js"></script>
 		<script type="text/javascript" src="../src/js/utils/logger.js"></script>
 		<script type="text/javascript" src="../src/js/utils/stage.js"></script>
@@ -22,6 +25,8 @@
 		<div id='game_container'></div>
 		<script type="text/javascript">
 		var config = {
+			gameType: 'phaser',
+			aspectRatio: [16, 9],
 			screens: [
 			{
 				id: 'start',
@@ -45,20 +50,53 @@
 			}],
 			defaultScreen: 'start'
 		};
-		var Game = (function() {
+		var TestGame = (function() {
 			var screens = Polyworks.ScreenManager;
-
-			function Game(config) {
-				trace('Game/constructor, config = ', config, screens);
-				Polyworks.ScreenManager.init(config.screens);
-				Polyworks.ScreenManager.activate(config.defaultScreen);
-				
+			
+			function TestGame(config) {
+				this.stage = Polyworks.Stage;
+				this.stage.init(config.aspectRatio, false, this.onStageInitialized, this);
 			}
 			
-			return Game;
+			TestGame.prototype.onStageInitialized = function() {
+				trace('Game/onStageInitialized, config = ', config, screens);
+
+				this.phaser = new Phaser.Game(
+					this.stage.gameW, 
+					this.stage.gameH, 
+					Phaser.AUTO, 
+					'game_container',
+					{ 
+						preload: this.preload, 
+						create: this.create, 
+						update: this.update, 
+						render: this.render 
+					}
+				);
+				
+				Polyworks.ScreenManager.init(config.screens);
+				Polyworks.ScreenManager.activate(config.defaultScreen);
+			};
+			
+			TestGame.prototype.preload = function() {
+				trace('Game/preload');
+			};
+			
+			TestGame.prototype.create = function() {
+				trace('Game/create');
+			};
+			
+			TestGame.prototype.update = function() {
+			};
+			
+			TestGame.prototype.render = function() {
+				// trace('Game/render');
+			};
+			
+			return TestGame;
 		}());
-		
-		var game = new Game(config);
+
+		var game = new TestGame(config);
 		</script>
 	</body>
 </html>
