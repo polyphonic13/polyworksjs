@@ -32,29 +32,17 @@ module.exports = function(grunt) {
 
 			options: {
 
-				// default banner inserted at top of the output file (overridden for some files below)
 				banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("isoDateTime") %> */\n',
 
-				// separator between each file
-				// separator: '\n;\n',
 				separator: '\n\n',
-
-				// remove block comments at the head of input files
 				stripBanners: true,
-
 				process: true,
-
-				// error on missing files
 				nonull: true
-
 			},
 
-			project: {
-				options: {
-					banner: "(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- <%= project %> created: <%= grunt.template.today(\"isoDateTime\") %>')})();\n"
-				},
-				src: '<%= projectJavascripts %>',
-				dest: '<%= buildDir %>/js/<%= project %>.js'
+			polyworks: {
+				src: '<%= srcDir %>/js/**/*.js',
+				dest: '<%= buildDir %>/js/polyworks.js'
 			}
 
 		},
@@ -72,9 +60,9 @@ module.exports = function(grunt) {
 				report: 'min'
 			},
 
-			project: {
-				src: [ '<%= buildDir %>/js/<%= project %>.js' ],
-				dest: '<%= buildDir %>/js/<%= project %>.min.js'
+			polyworks: {
+				src: [ '<%= buildDir %>/js/polyworks.js' ],
+				dest: '<%= buildDir %>/js/polyworks.min.js'
 			}
 		},
 /////// COPYING
@@ -85,13 +73,13 @@ module.exports = function(grunt) {
 				files: [
 				{
 					expand: true,
-					cwd: '<%= projectSrcDir %>/images/',
+					cwd: '<%= srcDir %>/images/',
 					src: [ '**/*' ],
 					dest: '<%= buildDir %>/images/'
 				},
 				{
 					expand: true, 
-					cwd: '<%= projectSrcDir %>/css/',
+					cwd: '<%= srcDir %>/css/',
 					src: [ '**/*' ],
 					dest: '<%= buildDir %>/css/'
 				}
@@ -126,5 +114,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-connect');
 	grunt.loadTasks('grunt/tasks');
 	
-	grunt.registerTask('default', ['projectDeploySetup', 'concat:project', 'stripTraceStatements', 'uglify', 'copy:project', 'cssmin', 'createProjectHtml']);
+	grunt.registerTask('default', ['concat', 'uglify', 'copy', 'cssmin']);
 };

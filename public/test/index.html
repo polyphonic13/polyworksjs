@@ -2,7 +2,63 @@
 <html>
 	<head>
 		<title>polyworks js module tester</title>
+<!--		<script type="text/javascript" src="../build/js/polyworks.js"></script> -->
+		<script type="text/javascript" src="../src/js/namespace.js"></script>
+		<script type="text/javascript" src="../src/js/utils/logger.js"></script>
+		<script type="text/javascript" src="../src/js/utils/stage.js"></script>
+		<script type="text/javascript" src="../src/js/utils/utils.js"></script>
+		<script type="text/javascript" src="../src/js/events/events.js"></script>
+		<script type="text/javascript" src="../src/js/events/event_center.js"></script>
+		<script type="text/javascript" src="../src/js/third_party/phaser/phaser_animation.js"></script>
+		<script type="text/javascript" src="../src/js/third_party/phaser/phaser_physics.js"></script>
+		<script type="text/javascript" src="../src/js/third_party/phaser/phaser_sprite.js"></script>
+		<script type="text/javascript" src="../src/js/third_party/phaser/phaser_text.js"></script>
+		<script type="text/javascript" src="../src/js/displays/display_factory.js"></script>
+		<script type="text/javascript" src="../src/js/displays/screen_manager.js"></script>
+		<script type="text/javascript" src="../src/js/dom/dom_manager.js"></script>
+		<script type="text/javascript" src="../src/js/social/social_manager.js"></script>
 	</head>
 	<body>
+		<div id='game_container'></div>
+		<script type="text/javascript">
+		var config = {
+			screens: [
+			{
+				id: 'start',
+				views: [{
+					type: 'PhaserSprite'
+				}]
+			},
+			{
+				id: 'play',
+				views: [
+				{
+					type: 'PhaserSprite'
+				}]
+			},
+			{
+				id: 'gameOver',
+				views: [
+				{
+					type: 'PhaserSprite'
+				}]
+			}],
+			defaultScreen: 'start'
+		};
+		var Game = (function() {
+			var screens = Polyworks.ScreenManager;
+
+			function Game(config) {
+				trace('Game/constructor, config = ', config, screens);
+				Polyworks.ScreenManager.init(config.screens);
+				Polyworks.ScreenManager.activate(config.defaultScreen);
+				
+			}
+			
+			return Game;
+		}());
+		
+		var game = new Game(config);
+		</script>
 	</body>
 </html>

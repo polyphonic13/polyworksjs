@@ -1,0 +1,3 @@
+Polyworks.PhaserText = (function() {
+	
+}());
