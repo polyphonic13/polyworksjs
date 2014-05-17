@@ -20,83 +20,16 @@
 		<script type="text/javascript" src="../src/js/displays/screen_manager.js"></script>
 		<script type="text/javascript" src="../src/js/dom/dom_manager.js"></script>
 		<script type="text/javascript" src="../src/js/social/social_manager.js"></script>
+
+		<script type="text/javascript" src="js/config.js"></script>
+
+		<script type="text/javascript" src="js/test_game.js"></script>
 	</head>
 	<body>
 		<div id='game_container'></div>
 		<script type="text/javascript">
-		var config = {
-			gameType: 'phaser',
-			aspectRatio: [16, 9],
-			screens: [
-			{
-				id: 'start',
-				views: [{
-					type: 'PhaserSprite'
-				}]
-			},
-			{
-				id: 'play',
-				views: [
-				{
-					type: 'PhaserSprite'
-				}]
-			},
-			{
-				id: 'gameOver',
-				views: [
-				{
-					type: 'PhaserSprite'
-				}]
-			}],
-			defaultScreen: 'start'
-		};
-		var TestGame = (function() {
-			var screens = Polyworks.ScreenManager;
-			
-			function TestGame(config) {
-				this.stage = Polyworks.Stage;
-				this.stage.init(config.aspectRatio, false, this.onStageInitialized, this);
-			}
-			
-			TestGame.prototype.onStageInitialized = function() {
-				trace('Game/onStageInitialized, config = ', config, screens);
-
-				this.phaser = new Phaser.Game(
-					this.stage.gameW, 
-					this.stage.gameH, 
-					Phaser.AUTO, 
-					'game_container',
-					{ 
-						preload: this.preload, 
-						create: this.create, 
-						update: this.update, 
-						render: this.render 
-					}
-				);
-				
-				Polyworks.ScreenManager.init(config.screens);
-				Polyworks.ScreenManager.activate(config.defaultScreen);
-			};
-			
-			TestGame.prototype.preload = function() {
-				trace('Game/preload');
-			};
-			
-			TestGame.prototype.create = function() {
-				trace('Game/create');
-			};
-			
-			TestGame.prototype.update = function() {
-			};
-			
-			TestGame.prototype.render = function() {
-				// trace('Game/render');
-			};
-			
-			return TestGame;
-		}());
-
-		var game = new TestGame(config);
+		var aspectRatio = [9, 16];
+		TestGame.init(aspectRatio);
 		</script>
 	</body>
 </html>
