@@ -35,28 +35,37 @@ var GameConfig = (function() {
 				},
 				views: [
 				{
-					type: 'PhaserSprite',
-					id: 'start-background',
-					img: 'startBg',
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH,
-					x: 0,
-					y: 0,
-				},
-				{
-					type: 'PhaserSprite',
-					id: 'play-button',
-					img: 'playButton',
-					width: Polyworks.Stage.gameW,
-					height: ((Polyworks.Stage.gameW)/5),
-					x: 0,
-					y: (Polyworks.Stage.gameH * 0.6),
-					input: {
-						inputUp: function() {
-							trace('start background input up function');
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+					type: 'PhaserGroup',
+					id: 'start-state-group',
+					views: [
+					{
+						type: 'PhaserSprite',
+						id: 'start-background',
+						img: 'startBg',
+						width: Polyworks.Stage.gameW,
+						height: Polyworks.Stage.gameH,
+						x: 0,
+						y: 0,
+					},
+					{
+						type: 'PhaserSprite',
+						id: 'play-button',
+						img: 'playButton',
+						width: Polyworks.Stage.gameW,
+						height: ((Polyworks.Stage.gameW)/5),
+						x: 0,
+						y: (Polyworks.Stage.gameH * 0.6),
+						input: {
+							attrs: {
+								enableHandCursor: true
+							},
+							// enableDrag: [ false, true ],
+							inputUp: function() {
+								trace('start background input up function');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+							}
 						}
-					}
+					}]
 				}]
 			},
 			{

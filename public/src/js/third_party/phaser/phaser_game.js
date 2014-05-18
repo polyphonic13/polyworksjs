@@ -4,29 +4,29 @@ var PhaserGame = (function() {
 	var module = {};
 
 	module.init = function(aspectRatio) {
-		this.loaded = {
+		module.loaded = {
 			images: {},
 			sprites: {}
 		};
 		
-		this.stage = Polyworks.Stage;
-		this.stage.init(aspectRatio, false, _onStageInitialized, this);
+		module.stage = Polyworks.Stage;
+		module.stage.init(aspectRatio, false, _onStageInitialized, module);
 	};
 	
 	function _onStageInitialized() {
 		trace('PhaserGame/onStageInitialized');
-		GameConfig.init(_onConfigInitialized, this);
+		GameConfig.init(_onConfigInitialized, module);
 	}
 	
 	function _onConfigInitialized(config) {
 		PhaserGame.config = config;
-		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', PhaserGame.config, this);
+		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', PhaserGame.config, module);
 		
 		_addEventListeners();
 		
-		this.phaser = new Phaser.Game(
-			this.stage.gameW, 
-			this.stage.gameH, 
+		module.phaser = new Phaser.Game(
+			module.stage.gameW, 
+			module.stage.gameH, 
 			Phaser.AUTO, 
 			'game_container',
 			{ 
@@ -39,11 +39,11 @@ var PhaserGame = (function() {
 	}
 	
 	function _addEventListeners() {
-		Polyworks.EventCenter.bind(Polyworks.Events.CHANGE_STATE, _onChangeState, this);
+		Polyworks.EventCenter.bind(Polyworks.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _removeEventListeners() {
-		Polyworks.EventCenter.unbind(Polyworks.Events.CHANGE_STATE, _onChangeState, this);
+		Polyworks.EventCenter.unbind(Polyworks.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _onChangeState(event) {

@@ -3,12 +3,12 @@ Polyworks.DisplayFactory = (function() {
 	
 	module.createViews = function(views) {
 		trace('DisplayFactory/createViews, views = ', views);
-		var collection = [];
+		var collection = {};
 		
 		Polyworks.Utils.each(views,
 			function(view) {
 				trace('\tview.type = ' + view.type);
-				collection.push(new Polyworks[view.type](view));
+				collection[view.id] = new Polyworks[view.type].Controller(view);
 			},
 			this
 		);

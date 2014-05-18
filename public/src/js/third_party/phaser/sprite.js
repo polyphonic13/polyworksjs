@@ -1,25 +1,29 @@
 Polyworks.PhaserSprite = (function() {
 
-	function PhaserSprite(config) {
-		trace('PhaserSprite/constructor, config = ', config);
+	var module = {};
+
+	function Controller(config) {
+		trace('SpriteController/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
-		this.sprite = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
-		this.sprite.width = config.width;
-		this.sprite.height = config.height;
+		this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
+		this.view.width = config.width;
+		this.view.height = config.height;
 		
 		if(config.input) {
-			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.sprite, this.id);
+			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.view, this.id);
 		}
 	}
 
-	PhaserSprite.prototype.show = function() {
-		trace('PhaserSprite['+this.id+']/show')
+	Controller.prototype.show = function() {
+		trace('Controller['+this.id+']/show')
 	};
 	
-	PhaserSprite.prototype.hide = function() {
+	Controller.prototype.hide = function() {
 		
 	};
 	
-	return PhaserSprite
+	module.Controller = Controller;
+	
+	return module;
 }());

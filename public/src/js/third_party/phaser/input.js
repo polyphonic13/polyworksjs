@@ -8,10 +8,17 @@ Polyworks.PhaserInput = (function() {
 		this.id = id;
 		
 		sprite.inputEnabled = true;
-		// sprite.input.start;
-		// sprite.input.enableDrag(true, true);
-		sprite.input.enableHandCursor = true;
 
+		Polyworks.Utils.each(
+			this.config.attrs,
+			function(attr, key) {
+				sprite.input[key] = attr;
+			},
+			this
+		);
+
+		// sprite.input.enableDrag(true, true);
+		if(this.config.enableDrag) sprite.input.enableDrag(this.config.enableDrag);
 		if(this.config.inputDown) sprite.events.onInputDown.add(this.inputDown, this);
 		if(this.config.inputUp) sprite.events.onInputUp.add(this.inputUp, this);
 		

@@ -54,7 +54,7 @@ Polyworks.StateManager = (function() {
 	};
 
 	StateController.prototype.preload = function() {
-		trace('StageController['+this.id+']/preload, preloaded = ' + this.preloaded);
+		trace('StateController['+this.id+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
 			Polyworks.PhaserLoader.load(this.config.assets);
 			this.preloaded = true;
@@ -62,8 +62,16 @@ Polyworks.StateManager = (function() {
 	};
 	
 	StateController.prototype.create = function() {
-		trace('StageController['+this.id+']/create');
+		trace('StateController['+this.id+']/create');
 		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
+	};
+	
+	StateController.prototype.getView = function(id) {
+		trace('StateController['+this.id+']/getView, id = ' + id);
+		if(!this.views.hasOwnProperty(id)) {
+			return;
+		}
+		return this.views[id];
 	}
 	
 /*	
@@ -135,6 +143,11 @@ Polyworks.StateManager = (function() {
 		}
 	};
 
+	module.getView = function(id) {
+		trace('StateManager/getView, id = ' + id);
+		return this.state[this.currentId].getView();
+	};
+	
 	module.destroy = function() {
 		
 	};
