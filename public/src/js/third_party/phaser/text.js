@@ -5,7 +5,13 @@ Polyworks.PhaserText = (function() {
 		trace('TextController['+config.id+']/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
-		this.view = PhaserGame.phaser.add.text(config.x, config.y, config.text, config.style);
+		
+		var phaser = PhaserGame.phaser;
+		
+		var x = (config.centerX) ? phaser.world.centerX : config.x;
+		var y = (config.centerY) ? phaser.world.centerY : config.y;
+		trace('\t\t\tx is = ' + x);
+		this.view = phaser.add.text(x, y, config.text, config.style);
 	}
 
 	Controller.prototype.setText = function(text) {
@@ -13,7 +19,7 @@ Polyworks.PhaserText = (function() {
 	};
 	
 	Controller.prototype.destroy = function() {
-		trace('SpriteController['+this.id+']/destroy');
+		trace('TextController['+this.id+']/destroy');
 		this.view.destroy();
 	};
 	

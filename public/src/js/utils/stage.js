@@ -52,7 +52,8 @@ Polyworks.Stage = (function() {
 	};
 	
 	function _calculateSizes() {
-		module.winW = document.documentElement.clientWidth; 
+		module.winW = document.documentElement.clientWidth;
+		alert('clientWidth = ' + document.documentElement.clientWidth); 
 		module.winH = document.documentElement.clientHeight;
 
 		module.gameH = (module.winH > 800) ? 800 : module.winH;

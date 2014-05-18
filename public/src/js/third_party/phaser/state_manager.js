@@ -71,6 +71,8 @@ Polyworks.StateManager = (function() {
 	
 	Controller.prototype.create = function() {
 		trace('StateController['+this.id+']/create');
+		var world = this.config.world;
+		this.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
 	};
 	
@@ -134,6 +136,7 @@ Polyworks.StateManager = (function() {
 	
 	module.changeState = function(id) {
 		trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
+		alert('document.documentElement.clientWidth = ' + document.documentElement.clientWidth);
 		if(this.currentId !== id) {
 			if(this.states.hasOwnProperty(id)) {
 				this.currentId = id;

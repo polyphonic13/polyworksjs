@@ -30,12 +30,14 @@
 
 		<script type="text/javascript" src="../src/js/third_party/phaser/phaser_game.js"></script>
 	</head>
-	<body>
+	<body onload="startGame();">
 		<div id='game_container'></div>
 <!--		<button onclick="PhaserGame.destroy();">quit</button> -->
 		<script type="text/javascript">
-		var aspectRatio = [9, 16];
-		PhaserGame.init(aspectRatio);
+		function startGame() {
+			var aspectRatio = [9, 16];
+			PhaserGame.init(aspectRatio);
+		}
 		</script>
 	</body>
 </html>

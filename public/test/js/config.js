@@ -29,8 +29,17 @@ var GameConfig = (function() {
 				tilemaps: []
 			},
 			screens: [
+			// start
 			{
 				id: 'start',
+				world: {
+					x: 0,
+					y: 0,
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
+				},
+				clearWorld: true,
+				clearCache: false,
 				assets: {
 					images: [
 					'startBg'
@@ -66,12 +75,33 @@ var GameConfig = (function() {
 						},
 						context: this,
 						frames: [0, 1, 1, 0]
+					},
+					{
+						type: 'PhaserText',
+						id: 'start-screen-title',
+						text: 'This is a game',
+						style: {
+						    font: "24px Arial",
+					        fill: "#ffffff"
+						},
+						x: 0,
+						y: (Polyworks.Stage.unit * 2),
+						centerX: true
 					}
 					]
 				}]
 			},
+			// play
 			{
 				id: 'play',
+				world: {
+					x: 0,
+					y: 0,
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
+				},
+				clearWorld: true,
+				clearCache: false,
 				assets: {
 					images: [
 					'playBg'
@@ -95,14 +125,23 @@ var GameConfig = (function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
 						}
 					}
-				}],
-				update: function() {
-					this.count++;
-					trace('StateController['+this.id+']/update, count = ' + this.count);
-				}
+				}]//,
+				// update: function() {
+				// 	this.count++;
+				// 	trace('StateController['+this.id+']/update, count = ' + this.count);
+				// }
 			},
+			// game over
 			{
 				id: 'gameOver',
+				world: {
+					x: 0,
+					y: 0,
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
+				},
+				clearWorld: true,
+				clearCache: false,
 				assets: {
 					images: [
 					'gameOverBg'
