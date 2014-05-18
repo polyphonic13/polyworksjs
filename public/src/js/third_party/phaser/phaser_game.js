@@ -52,28 +52,17 @@ var PhaserGame = (function() {
 	}
 	
 	function _preload() {
-		trace('PhaserGame/preload, config = ', PhaserGame.config, this);
-		Polyworks.PhaserLoader.init(PhaserGame.config.assets, PhaserGame.phaser);
-		// var images = PhaserGame.config.images;
-		// trace('\timages = ', images);
-		// Polyworks.Utils.each(images,
-		// 	function(image, key) {
-		// 		trace('\t\timage['+key+'] loaded = ' + PhaserGame.loaded.images[key]);
-		// 		if(!PhaserGame.loaded.images[key]) {
-		// 			trace('\t\timages['+key+']' + image);
-		// 			PhaserGame.phaser.load.image(key, image);
-		// 			PhaserGame.loaded.images[key] = true;
-		// 		}
-		// 	},
-		// 	PhaserGame
-		// );
-
+		trace('PhaserGame/preload');
+		Polyworks.PhaserLoader.init(module.config.assets, module.phaser);
+		if(module.config.preload) {
+			Polyworks.PhaserLoader.load(module.config.preload);
+		}
 	}
 	
 	function _create() {
 		trace('PhaserGame/create');
-		Polyworks.StateManager.init(PhaserGame.config.screens, PhaserGame.phaser);
-		Polyworks.StateManager.changeState(PhaserGame.config.defaultScreen);
+		Polyworks.StateManager.init(module.config.screens, module.phaser);
+		Polyworks.StateManager.changeState(module.config.defaultScreen);
 	}
 	
 	function _update() {

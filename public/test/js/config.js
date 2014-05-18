@@ -11,28 +11,46 @@ var GameConfig = (function() {
 				images: {
 					startBg: 'images/bg_blue.gif',
 					playBg: 'images/bg_green.gif',
-					gameOverBg: 'images/bg_red.gif'
+					gameOverBg: 'images/bg_red.gif',
+					playButton: 'images/play_button.gif'
 				},
-				sprites: {
-
-				}
+				sprites: {},
+				tilemaps: {}
+			},
+			preload: {
+				images: [
+				'playButton'
+				],
+				sprites: [],
+				tilemaps: []
 			},
 			screens: [
 			{
 				id: 'start',
 				assets: {
 					images: [
-					'startBg'
+					'startBg',
+					'playButton'
 					]
 				},
-				views: [{
+				views: [
+				{
 					type: 'PhaserSprite',
 					id: 'start-background',
 					img: 'startBg',
-					x: 0,
-					y: 0,
 					width: Polyworks.Stage.gameW,
 					height: Polyworks.Stage.gameH,
+					x: 0,
+					y: 0,
+				},
+				{
+					type: 'PhaserSprite',
+					id: 'play-button',
+					img: 'playButton',
+					width: Polyworks.Stage.gameW,
+					height: ((Polyworks.Stage.gameW)/5),
+					x: 0,
+					y: (Polyworks.Stage.gameH * 0.6),
 					input: {
 						inputUp: function() {
 							trace('start background input up function');
