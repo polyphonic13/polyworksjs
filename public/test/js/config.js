@@ -4,6 +4,7 @@ var GameConfig = (function() {
 	}
 	
 	module.init = function(callback, context) {
+		trace('MODULE INIT, STAGE = ', Polyworks.Stage);
 		var config = {
 			gameType: 'phaser',
 			images: {
@@ -23,8 +24,8 @@ var GameConfig = (function() {
 					img: 'stageBg',
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.stageW,
-					height: Polyworks.Stage.stageH
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
 				}]
 			},
 			{
@@ -36,8 +37,8 @@ var GameConfig = (function() {
 					img: 'playBg',
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.stageW,
-					height: Polyworks.Stage.stageH
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
 				}]
 			},
 			{
@@ -49,8 +50,8 @@ var GameConfig = (function() {
 					img: 'gameOverBg',
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.stageW,
-					height: Polyworks.Stage.stageH
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
 				}]
 			}],
 			defaultScreen: 'start'

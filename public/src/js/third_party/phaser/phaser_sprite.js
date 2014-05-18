@@ -4,7 +4,7 @@ Polyworks.PhaserSprite = (function() {
 		trace('PhaserSprite/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
-		this.sprite = TestGame.phaser.add.sprite(config.x, config.y, config.img);
+		this.sprite = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
 		this.sprite.width = config.width;
 		this.sprite.height = config.height;
 	}
