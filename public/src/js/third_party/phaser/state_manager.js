@@ -83,6 +83,10 @@ Polyworks.StateManager = (function() {
 		var world = this.config.world;
 		this.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
+		
+		if(this.config.create) {
+			this.config.create.call(this);
+		}
 	};
 	
 	Controller.prototype.getView = function(id) {
@@ -93,7 +97,6 @@ Polyworks.StateManager = (function() {
 		return this.views[id];
 	}
 	
-
 	Controller.prototype.update = function() {
 		if(this.config.update) {
 			this.config.update.call(this);
@@ -112,6 +115,10 @@ Polyworks.StateManager = (function() {
 	
 	Controller.prototype.shutdown = function() {
 		trace('StateController['+this.id+']/shutdown');
+		if(this.config.shutdown) {
+			this.config.shutdown.call(this);
+		}
+		
 		Polyworks.Utils.each(
 			this.views,
 			function(view, key) {

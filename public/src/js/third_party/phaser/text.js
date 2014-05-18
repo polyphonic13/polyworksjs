@@ -9,6 +9,15 @@ Polyworks.PhaserText = (function() {
 		var phaser = PhaserGame.phaser;
 		
 		this.view = phaser.add.text(config.x, config.y, config.text, config.style);
+
+		Polyworks.Utils.each(
+			config.attrs,
+			function(attr, key) {
+				this.view[key] = attr;
+			},
+			this
+		);
+
 		if(config.centerX) {
 			var newX = Polyworks.Stage.gameW/2 - this.view.width/2;
 			this.view.x = newX;

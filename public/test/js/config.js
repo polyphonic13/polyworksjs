@@ -1,4 +1,6 @@
 var GameConfig = (function() {
+	var TIME_PER_TURN = 5;
+	
 	var module = {
 		
 	}
@@ -59,6 +61,9 @@ var GameConfig = (function() {
 					'playButton'
 					]
 				},
+				attrs: {
+					count: 0
+				},
 				listeners: [
 				{
 					event: Polyworks.Events.HIDE_NOTIFICATION,
@@ -108,7 +113,7 @@ var GameConfig = (function() {
 					},
 					{
 						type: 'PhaserText',
-						id: 'start-screen-title',
+						id: 'start-state-title',
 						text: 'This is a game',
 						style: {
 						    font: "24px Arial",
@@ -147,10 +152,11 @@ var GameConfig = (function() {
 					{
 						type: 'PhaserText',
 						id: 'notification-title',
-						text: 'This is a notification',
+						text: 'This is a notification about some very important game events that are happening',
 						style: {
 						    font: "18px Arial",
-					        fill: "#000000"
+					        fill: "#000000",
+							wordWrap: "true"
 						},
 						x: 0,
 						y: 0,
@@ -178,7 +184,28 @@ var GameConfig = (function() {
 					]
 				},
 				attrs: {
-					count: 0
+					timePerTurn: TIME_PER_TURN
+				},
+				create: function() {
+					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
+					this.turnTimer.loop(1000, function() {
+							trace('\ttimePerTurn = ' + this.timePerTurn);
+							this.timePerTurn--;
+							this.views['turn-time'].setText('Turn time: ' + this.timePerTurn);
+							if(this.timePerTurn <= 0) {
+								Polyworks.PhaserTime.removeTimer('turnTime');
+							}
+						},
+						this
+					);
+					this.turnTimer.start();
+				},
+				// update: function() {
+				// 	this.count++;
+				// 	trace('StateController['+this.id+']/update, count = ' + this.count);
+				// },
+				shutdown: function() {
+					Polyworks.PhaserTime.removeTimer('turnTime');
 				},
 				views: [
 				{
@@ -195,11 +222,20 @@ var GameConfig = (function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
 						}
 					}
-				}]//,
-				// update: function() {
-				// 	this.count++;
-				// 	trace('StateController['+this.id+']/update, count = ' + this.count);
-				// }
+				},
+				{
+					type: 'PhaserText',
+					id: 'turn-time',
+					text: 'Turn time: ' + TIME_PER_TURN,
+					style: {
+					    font: "24px Arial",
+				        fill: "#ffffff"
+					},
+					x: 0,
+					y: (Polyworks.Stage.unit * 2),
+					centerX: true
+				}
+				]
 			},
 			// game over
 			{
@@ -232,7 +268,20 @@ var GameConfig = (function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
 						}
 					}
-				}]
+				},
+				{
+					type: 'PhaserText',
+					id: 'gameOver-title',
+					text: 'Game Over',
+					style: {
+					    font: "24px Arial",
+				        fill: "#ffffff"
+					},
+					x: 0,
+					y: (Polyworks.Stage.unit * 2),
+					centerX: true
+				}
+				]
 			}],
 			defaultScreen: 'start'
 		};

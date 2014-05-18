@@ -44,7 +44,7 @@ var PhaserGame = (function() {
 				render: _render 
 			}
 		);
-		
+		Polyworks.PhaserTime.init(module.phaser);
 	}
 	
 	function _addEventListeners() {
