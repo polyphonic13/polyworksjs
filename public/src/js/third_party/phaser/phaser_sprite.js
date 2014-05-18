@@ -9,7 +9,7 @@ Polyworks.PhaserSprite = (function() {
 		this.sprite.height = config.height;
 		
 		if(config.input) {
-			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.sprite);
+			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.sprite, this.id);
 		}
 	}
 

@@ -7,20 +7,27 @@ var GameConfig = (function() {
 		trace('MODULE INIT, STAGE = ', Polyworks.Stage);
 		var config = {
 			gameType: 'phaser',
-			images: {
-				startBg: 'images/bg_blue.gif',
-				playBg: 'images/bg_green.gif',
-				gameOverBg: 'images/bg_red.gif'
-			},
-			sprites: {
-				
+			assets: {
+				images: {
+					startBg: 'images/bg_blue.gif',
+					playBg: 'images/bg_green.gif',
+					gameOverBg: 'images/bg_red.gif'
+				},
+				sprites: {
+
+				}
 			},
 			screens: [
 			{
 				id: 'start',
+				assets: {
+					images: [
+					'startBg'
+					]
+				},
 				views: [{
 					type: 'PhaserSprite',
-					id: 'background',
+					id: 'start-background',
 					img: 'startBg',
 					x: 0,
 					y: 0,
@@ -28,6 +35,7 @@ var GameConfig = (function() {
 					height: Polyworks.Stage.gameH,
 					input: {
 						inputUp: function() {
+							trace('start background input up function');
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						}
 					}
@@ -35,28 +43,50 @@ var GameConfig = (function() {
 			},
 			{
 				id: 'play',
+				assets: {
+					images: [
+					'playBg'
+					]
+				},
 				views: [
 				{
 					type: 'PhaserSprite',
-					id: 'background',
+					id: 'play-background',
 					img: 'playBg',
 					x: 0,
 					y: 0,
 					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					height: Polyworks.Stage.gameH,
+					input: {
+						inputUp: function() {
+							trace('start background input up function');
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
+						}
+					}
 				}]
 			},
 			{
 				id: 'gameOver',
+				assets: {
+					images: [
+					'gameOverBg'
+					]
+				},
 				views: [
 				{
 					type: 'PhaserSprite',
-					id: 'background',
+					id: 'gameOver-background',
 					img: 'gameOverBg',
 					x: 0,
 					y: 0,
 					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					height: Polyworks.Stage.gameH,
+					input: {
+						inputUp: function() {
+							trace('start background input up function');
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
+						}
+					}
 				}]
 			}],
 			defaultScreen: 'start'

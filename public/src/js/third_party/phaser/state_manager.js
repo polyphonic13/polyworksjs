@@ -47,42 +47,23 @@ Polyworks.StateManager = (function() {
 		this.id = config.id;
 		
 		this.phaser.state.add(this.id, this, false);
-		// this.views = Polyworks.DisplayFactory.createViews(config.views);
 	};
 	
 	StateController.prototype.start = function() {
 		trace('StateController['+this.id+']/start');
-		// Polyworks.Utils.each(
-		// 	this.views,
-		// 	function(view) {
-		// 		view.show();
-		// 	},
-		// 	this
-		// );
-		// this.active = true;
 	};
 
 	StateController.prototype.preload = function() {
-		trace('StageController['+this.id+']/preload');
-		Polyworks.Utils.each(
-			this.views,
-			function(image, key) {
-				if(!PhaserGame.loaded.images[key]) {
-					trace('\tloading: ' + view);
-					this.phaser.load.image(image, key);
-					PhaserGame.loaded.images[key];
-				}
-			},
-			this
-		);
+		trace('StageController['+this.id+']/preload, preloaded = ' + this.preloaded);
+		if(!this.preloaded) {
+			Polyworks.PhaserLoader.load(this.config.assets);
+			this.preloaded = true;
+		}
 	};
 	
 	StateController.prototype.create = function() {
 		trace('StageController['+this.id+']/create');
-		if(!this.created) {
-			this.views = Polyworks.DisplayFactory.createViews(this.config.views);
-			this.created = true;
-		}
+		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
 	}
 	
 /*	
@@ -139,16 +120,13 @@ Polyworks.StateManager = (function() {
 			},
 			this
 		);
-		trace('\tstateeens = ', this.states);
+		trace('\tstates = ', this.states);
 	};
 	
-	module.activate = function(id) {
-		trace('StateManager/activate, id = ' + id + ', currentId = ' + this.currentId);
+	module.changeState = function(id) {
+		trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
 		if(this.currentId !== id) {
 			if(this.states.hasOwnProperty(id)) {
-				if(this.currentId !== '') {
-					this.states[this.currentId].deactivate();
-				}
 				this.currentId = id;
 				trace('\tstates['+id+'] = ', this.states[id]);
 				// this.states[id].activate();
@@ -157,30 +135,6 @@ Polyworks.StateManager = (function() {
 		}
 	};
 
-	module.update = function() {
-		this.states[this.currentId].update();
-	};
-	
-	module.deactivate = function(id) {
-		if(this.states.hasOwnProperty(id)) {
-			this.states[id].deactivate();
-			if(this.currentId === id) {
-				this.currentId = '';
-			}
-		}
-	};
-	
-	module.deactivateAll = function() {
-		Polyworks.Utils.each(
-			this.states,
-			function(state, id) {
-				this.state(id).deactivate();
-			},
-			this
-		);
-		this.currentId = '';
-	};
-	
 	module.destroy = function() {
 		
 	};
