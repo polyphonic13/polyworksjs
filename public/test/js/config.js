@@ -21,11 +21,16 @@ var GameConfig = (function() {
 				views: [{
 					type: 'PhaserSprite',
 					id: 'background',
-					img: 'stageBg',
+					img: 'startBg',
 					x: 0,
 					y: 0,
 					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					height: Polyworks.Stage.gameH,
+					input: {
+						inputUp: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+						}
+					}
 				}]
 			},
 			{

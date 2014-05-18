@@ -7,6 +7,10 @@ Polyworks.PhaserSprite = (function() {
 		this.sprite = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
 		this.sprite.width = config.width;
 		this.sprite.height = config.height;
+		
+		if(config.input) {
+			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.sprite);
+		}
 	}
 
 	PhaserSprite.prototype.show = function() {
