@@ -1,6 +1,5 @@
 var PhaserGame = (function() {
-	var screens = Polyworks.StateManager;
-	
+	var _inPlay = false;
 	var module = {};
 
 	module.init = function(aspectRatio) {
@@ -13,15 +12,24 @@ var PhaserGame = (function() {
 		module.stage.init(aspectRatio, false, _onStageInitialized, module);
 	};
 	
+	module.destroy = function() {
+		trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
+		if(_inPlay) {
+			Polyworks.StateManager.destroy();
+			module.phaser.destroy();
+			_inPlay = false;
+		}
+	};
+	
 	function _onStageInitialized() {
 		trace('PhaserGame/onStageInitialized');
 		GameConfig.init(_onConfigInitialized, module);
 	}
 	
 	function _onConfigInitialized(config) {
-		PhaserGame.config = config;
-		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', PhaserGame.config, module);
-		
+		module.config = config;
+		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', module.config, module);
+		_inPlay = true;
 		_addEventListeners();
 		
 		module.phaser = new Phaser.Game(
@@ -36,6 +44,7 @@ var PhaserGame = (function() {
 				render: _render 
 			}
 		);
+		
 	}
 	
 	function _addEventListeners() {

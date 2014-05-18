@@ -3,7 +3,7 @@ Polyworks.PhaserSprite = (function() {
 	var module = {};
 
 	function Controller(config) {
-		trace('SpriteController/constructor, config = ', config);
+		trace('SpriteController['+config.id+']/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
 		this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
@@ -15,12 +15,9 @@ Polyworks.PhaserSprite = (function() {
 		}
 	}
 
-	Controller.prototype.show = function() {
-		trace('Controller['+this.id+']/show')
-	};
-	
-	Controller.prototype.hide = function() {
-		
+	Controller.prototype.destroy = function() {
+		trace('SpriteController['+this.id+']/destroy');
+		this.view.destroy();
 	};
 	
 	module.Controller = Controller;

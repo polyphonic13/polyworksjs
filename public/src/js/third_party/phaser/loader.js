@@ -47,8 +47,8 @@ Polyworks.PhaserLoader = (function() {
 				assets.sprites,
 				function(sprite) {
 					if(!this.loaded.sprites[sprite]) {
-						trace('\tloading: sprite = ' + sprite + ', url = ' + sprites[sprite]);
-						_phaser.load.spritesheet(sprite, sprites[sprite].url, sprites[sprite].width, sprites[sprite].height, sprites[sprite].frames);
+						trace('\tloading: sprite[' + sprite + '] = ', sprites[sprite]);
+						_phaser.load.spritesheet(sprite, sprites[sprite].url, sprites[sprite].width, sprites[sprite].height);
 					}
 				},
 				this

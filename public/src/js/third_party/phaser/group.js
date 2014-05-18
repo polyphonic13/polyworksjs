@@ -11,7 +11,7 @@ Polyworks.PhaserGroup = (function() {
 		Polyworks.Utils.each(
 			config.attrs,
 			function(attr, key) {
-				this.group[key] = attr;
+				this.view[key] = attr;
 			},
 			this
 		);
@@ -31,6 +31,27 @@ Polyworks.PhaserGroup = (function() {
 		);
 		
 	}
+	
+	Controller.prototype.remove = function(child) {
+		this.view.remove(child);
+		delete this.children[child];
+	};
+	
+	Controller.prototype.removeAll = function() {
+		// trace('GroupController['+this.id+']/remove, children = ', this.children);
+		this.view.removeAll();
+		Polyworks.Utils.each(
+			this.children,
+			function(child) {
+				delete this.children[child];
+			}
+		)
+	};
+
+	Controller.prototype.destroy = function() {
+		trace('GroupController['+this.id+']/destroy');
+		this.view.destroy(true);
+	};
 	
 	module.Controller = Controller; 
 	

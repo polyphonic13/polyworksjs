@@ -11,16 +11,20 @@ var GameConfig = (function() {
 				images: {
 					startBg: 'images/bg_blue.gif',
 					playBg: 'images/bg_green.gif',
-					gameOverBg: 'images/bg_red.gif',
-					playButton: 'images/play_button.gif'
+					gameOverBg: 'images/bg_red.gif'
 				},
-				sprites: {},
+				sprites: {
+					playButton: {
+						url: 'images/play_button_sprite_800x320.gif',
+						width: 800,
+						height: 160,
+						frames: 2
+					}
+				},
 				tilemaps: {}
 			},
 			preload: {
-				images: [
-				'playButton'
-				],
+				images: [],
 				sprites: [],
 				tilemaps: []
 			},
@@ -29,7 +33,9 @@ var GameConfig = (function() {
 				id: 'start',
 				assets: {
 					images: [
-					'startBg',
+					'startBg'
+					],
+					sprites: [
 					'playButton'
 					]
 				},
@@ -48,24 +54,20 @@ var GameConfig = (function() {
 						y: 0,
 					},
 					{
-						type: 'PhaserSprite',
+						type: 'PhaserButton',
 						id: 'play-button',
 						img: 'playButton',
 						width: Polyworks.Stage.gameW,
 						height: ((Polyworks.Stage.gameW)/5),
 						x: 0,
 						y: (Polyworks.Stage.gameH * 0.6),
-						input: {
-							attrs: {
-								enableHandCursor: true
-							},
-							// enableDrag: [ false, true ],
-							inputUp: function() {
-								trace('start background input up function');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
-							}
-						}
-					}]
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
+					}
+					]
 				}]
 			},
 			{

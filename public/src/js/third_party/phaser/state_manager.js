@@ -97,9 +97,10 @@ Polyworks.StateManager = (function() {
 		);
 		this.active = false;
 	};
+*/
 	
-	StateController.prototype.destroy = function() {
-		trace('StateController['+this.id+']/destroy');
+	StateController.prototype.shutdown = function() {
+		trace('StateController['+this.id+']/shutdown');
 		Polyworks.Utils.each(
 			this.views,
 			function(view, key) {
@@ -109,7 +110,7 @@ Polyworks.StateManager = (function() {
 			this
 		);
 	};
-*/	
+
 	module.StateController = StateController;
 	
 	module.init = function(config, phaser) {
@@ -149,7 +150,7 @@ Polyworks.StateManager = (function() {
 	};
 	
 	module.destroy = function() {
-		
+		this.states[this.currentId].shutdown();
 	};
 	
 	return module;
