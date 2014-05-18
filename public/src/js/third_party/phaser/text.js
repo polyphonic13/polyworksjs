@@ -8,10 +8,15 @@ Polyworks.PhaserText = (function() {
 		
 		var phaser = PhaserGame.phaser;
 		
-		var x = (config.centerX) ? phaser.world.centerX : config.x;
-		var y = (config.centerY) ? phaser.world.centerY : config.y;
-		trace('\t\t\tx is = ' + x);
-		this.view = phaser.add.text(x, y, config.text, config.style);
+		this.view = phaser.add.text(config.x, config.y, config.text, config.style);
+		if(config.centerX) {
+			var newX = Polyworks.Stage.gameW/2 - this.view.width/2;
+			this.view.x = newX;
+		}
+		if(config.centerY) {
+			var newY = Polyworks.Stage.gameH/2 - this.view.height/2;
+			this.view.y = newY;
+		}
 	}
 
 	Controller.prototype.setText = function(text) {

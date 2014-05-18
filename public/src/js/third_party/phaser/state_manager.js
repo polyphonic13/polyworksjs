@@ -136,7 +136,6 @@ Polyworks.StateManager = (function() {
 	
 	module.changeState = function(id) {
 		trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
-		alert('document.documentElement.clientWidth = ' + document.documentElement.clientWidth);
 		if(this.currentId !== id) {
 			if(this.states.hasOwnProperty(id)) {
 				this.currentId = id;
