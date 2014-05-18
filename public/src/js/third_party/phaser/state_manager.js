@@ -40,20 +40,28 @@ Polyworks.StateManager = (function() {
 
 	var module = {};
 	
-	function StateController(config, phaser) {
+	function Controller(config, phaser) {
 		trace('StateController/constructor, config = ', config);
 		this.config = config;
 		this.phaser = phaser;
 		this.id = config.id;
 		
+		Polyworks.Utils.each(
+			config.attrs,
+			function(attr, key) {
+				this[key] = attr;
+			},
+			this
+		);
+		
 		this.phaser.state.add(this.id, this, false);
 	};
 	
-	StateController.prototype.start = function() {
+	Controller.prototype.start = function() {
 		trace('StateController['+this.id+']/start');
 	};
 
-	StateController.prototype.preload = function() {
+	Controller.prototype.preload = function() {
 		trace('StateController['+this.id+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
 			Polyworks.PhaserLoader.load(this.config.assets);
@@ -61,12 +69,12 @@ Polyworks.StateManager = (function() {
 		}
 	};
 	
-	StateController.prototype.create = function() {
+	Controller.prototype.create = function() {
 		trace('StateController['+this.id+']/create');
 		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
 	};
 	
-	StateController.prototype.getView = function(id) {
+	Controller.prototype.getView = function(id) {
 		trace('StateController['+this.id+']/getView, id = ' + id);
 		if(!this.views.hasOwnProperty(id)) {
 			return;
@@ -74,32 +82,24 @@ Polyworks.StateManager = (function() {
 		return this.views[id];
 	}
 	
-/*	
-	StateController.prototype.update = function() {
-		trace('StateController['+this.id+']/update');
-		Polyworks.Utils.each(
-			this.views,
-			function(view) {
-				view.update();
-			},
-			this
-		);
+
+	Controller.prototype.update = function() {
+		if(this.config.update) {
+			this.config.update.call(this);
+		}
+		
+
+		// trace('StateController['+this.id+']/update');
+		// Polyworks.Utils.each(
+		// 	this.views,
+		// 	function(view) {
+		// 		view.update();
+		// 	},
+		// 	this
+		// );
 	};
 	
-	StateController.prototype.deactive = function() {
-		trace('StateController['+this.id+']/deactivate');
-		Polyworks.Utils.each(
-			this.views,
-			function(view) {
-				view.hide();
-			},
-			this
-		);
-		this.active = false;
-	};
-*/
-	
-	StateController.prototype.shutdown = function() {
+	Controller.prototype.shutdown = function() {
 		trace('StateController['+this.id+']/shutdown');
 		Polyworks.Utils.each(
 			this.views,
@@ -111,7 +111,7 @@ Polyworks.StateManager = (function() {
 		);
 	};
 
-	module.StateController = StateController;
+	module.Controller = Controller;
 	
 	module.init = function(config, phaser) {
 		trace('StateManager/init, config = ', config);
@@ -124,8 +124,8 @@ Polyworks.StateManager = (function() {
 			config,
 			function(state) {
 				trace('\tadding stateeen[' + state.id + ']');
-				// this.states[state.id] = new this.StateController(state);
-				this.states[state.id] = new this.StateController(state, phaser);
+				// this.states[state.id] = new this.Controller(state);
+				this.states[state.id] = new this.Controller(state, phaser);
 			},
 			this
 		);

@@ -77,6 +77,9 @@ var GameConfig = (function() {
 					'playBg'
 					]
 				},
+				attrs: {
+					count: 0
+				},
 				views: [
 				{
 					type: 'PhaserSprite',
@@ -92,7 +95,11 @@ var GameConfig = (function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
 						}
 					}
-				}]
+				}],
+				update: function() {
+					this.count++;
+					trace('StateController['+this.id+']/update, count = ' + this.count);
+				}
 			},
 			{
 				id: 'gameOver',
