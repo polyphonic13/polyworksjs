@@ -32,6 +32,14 @@ Polyworks.PhaserGroup = (function() {
 		
 	}
 	
+	Controller.prototype.hide = function() {
+		this.view.visible = false;
+	};
+	
+	Controller.prototype.show = function() {
+		this.view.visible = true;
+	};
+	
 	Controller.prototype.remove = function(child) {
 		this.view.remove(child);
 		delete this.children[child];

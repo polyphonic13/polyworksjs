@@ -53,7 +53,16 @@ Polyworks.StateManager = (function() {
 			},
 			this
 		);
-		
+	
+		if(config.listeners) {
+			Polyworks.Utils.each(
+				config.listeners,
+				function(listener) {
+					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
+				},
+			this
+			);
+		}
 		this.phaser.state.add(this.id, this, false);
 	};
 	
@@ -111,6 +120,16 @@ Polyworks.StateManager = (function() {
 			},
 			this
 		);
+
+		if(this.config.listeners) {
+			Polyworks.Utils.each(
+				this.config.listeners,
+				function(listener) {
+					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
+				},
+			this
+			);
+		}
 	};
 
 	module.Controller = Controller;
