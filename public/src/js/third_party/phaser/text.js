@@ -10,13 +10,7 @@ Polyworks.PhaserText = (function() {
 		
 		this.view = phaser.add.text(config.x, config.y, config.text, config.style);
 
-		Polyworks.Utils.each(
-			config.attrs,
-			function(attr, key) {
-				this.view[key] = attr;
-			},
-			this
-		);
+		Initializer.setViewAttributes(config.attrs, this.view);
 
 		if(config.centerX) {
 			var newX = Polyworks.Stage.gameW/2 - this.view.width/2;
@@ -36,10 +30,7 @@ Polyworks.PhaserText = (function() {
 		}
 	};
 	
-	Controller.prototype.destroy = function() {
-		trace('TextController['+this.id+']/destroy');
-		this.view.destroy();
-	};
+	Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller;
 	return module;

@@ -1,5 +1,17 @@
 Polyworks.Initializer = (function(){
 	
+	var standardMethods = {
+		hide: function() {
+			this.view.visible = false;
+		},
+		show: function() {
+			this.view.visible = true;
+		},
+		destroy: function() {
+			this.view.destroy(true);
+		}
+	};
+	
 	var module = {};
 	
 	module.setGlobalAttributes = function(config, controller) {
@@ -19,6 +31,16 @@ Polyworks.Initializer = (function(){
 				this
 			);
 		}
+	};
+	
+	module.addStandardMethods = function(controller) {
+		Polyworks.Utils.each(
+			standardMethods,
+			function(method, key) {
+				controller.prototype[key] = method;
+			},
+			this
+		);
 	};
 	
 	return module;

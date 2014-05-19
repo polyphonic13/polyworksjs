@@ -5,60 +5,14 @@ Polyworks.PhaserTileMap = (function() {
 		trace('TileMapController['+config.id+']/constructor, views = ', config.views);
 		this.id = config.id;
 		this.config = config;
-		this.view = PhaserGame.phaser.add.group();
 
-		// set any group attributes
-		Polyworks.Utils.each(
-			config.attrs,
-			function(attr, key) {
-				this.view[key] = attr;
-			},
-			this
-		);
+		this.view = PhaserGame.phaser.add.tilemap();
+		this.view.addTilesetImage(config.img);
 
-		// create children collection
-		this.children = Polyworks.DisplayFactory.createViews(config.views);
-		// trace('\tchildren = ', this.children);
-
-		// loop through children collection and add to group
-		Polyworks.Utils.each(
-			this.children,
-			function(child) {
-				// trace('\t\tchild = ', child);
-				this.view.add(child.view);
-			},
-			this
-		);
+		Initializer.setViewAttributes(config.attrs, this.view);
 	}
-	
-	Controller.prototype.hide = function() {
-		this.view.visible = false;
-	};
-	
-	Controller.prototype.show = function() {
-		this.view.visible = true;
-	};
-	
-	Controller.prototype.remove = function(child) {
-		this.view.remove(child);
-		delete this.children[child];
-	};
-	
-	Controller.prototype.removeAll = function() {
-		// trace('TileMapController['+this.id+']/remove, children = ', this.children);
-		this.view.removeAll();
-		Polyworks.Utils.each(
-			this.children,
-			function(child) {
-				delete this.children[child];
-			}
-		);
-	};
 
-	Controller.prototype.destroy = function() {
-		trace('TileMapController['+this.id+']/destroy');
-		this.view.destroy(true);
-	};
+	Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller; 
 	
