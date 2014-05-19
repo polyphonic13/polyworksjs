@@ -30,6 +30,10 @@ Polyworks.PhaserText = (function() {
 
 	Controller.prototype.setText = function(text) {
 		this.view.setText(text);
+		if(this.config.centerX) {
+			var newX = Polyworks.Stage.gameW/2 - this.view.width/2;
+			this.view.x = newX;
+		}
 	};
 	
 	Controller.prototype.destroy = function() {

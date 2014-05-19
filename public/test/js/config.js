@@ -1,5 +1,6 @@
 var GameConfig = (function() {
-	var TIME_PER_TURN = 5;
+	var TIME_PER_TURN = 10;
+	var TURN_TIME_INTERVAL = 1000;
 	
 	var module = {
 		
@@ -17,10 +18,22 @@ var GameConfig = (function() {
 					gameOverBg: 'images/bg_red.gif'
 				},
 				sprites: {
-					playButton: {
-						url: 'images/play_button_sprite_800x320.gif',
+					gameStartButton: {
+						url: 'images/game_start_button.gif',
 						width: 800,
 						height: 160,
+						frames: 2
+					},
+					pauseButton: {
+						url: 'images/pause_button.png',
+						width: 50,
+						height: 50,
+						frames: 2
+					},
+					playButton: {
+						url: 'images/play_button.png',
+						width: 50,
+						height: 50,
 						frames: 2
 					},
 					closeButton: {
@@ -58,7 +71,7 @@ var GameConfig = (function() {
 					'startBg'
 					],
 					sprites: [
-					'playButton'
+					'gameStartButton'
 					]
 				},
 				attrs: {
@@ -99,8 +112,8 @@ var GameConfig = (function() {
 					},
 					{
 						type: 'PhaserButton',
-						id: 'play-button',
-						img: 'playButton',
+						id: 'game-start-button',
+						img: 'gameStartButton',
 						width: Polyworks.Stage.gameW,
 						height: ((Polyworks.Stage.gameW)/5),
 						x: 0,
@@ -181,19 +194,47 @@ var GameConfig = (function() {
 				assets: {
 					images: [
 					'playBg'
+					],
+					sprites: [
+					'pauseButton',
+					'playButton'
 					]
 				},
-				attrs: {
-					timePerTurn: TIME_PER_TURN
+				listeners: [
+				{
+					event: Polyworks.Events.PAUSE_GAME,
+					handler: function(event) {
+						this.turnTimer.pause();
+						this.views['pause-button'].hide();
+						this.views['resume-button'].show();
+					}
 				},
+				{
+					event: Polyworks.Events.RESUME_GAME,
+					handler: function(event) {
+						this.turnTimer.resume();
+						this.views['resume-button'].hide();
+						this.views['pause-button'].show();
+					}
+				},
+				{
+					event: Polyworks.Events.TURN_ENDED,
+					handler: function(event) {
+						Polyworks.PhaserTime.removeTimer('turnTime');
+						this.views['turn-time'].setText('Turn ended');
+						this.views['pause-button'].hide();
+					}
+				}
+				],
 				create: function() {
+					this.timePerTurn = TIME_PER_TURN;
 					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
-					this.turnTimer.loop(1000, function() {
+					this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
 							trace('\ttimePerTurn = ' + this.timePerTurn);
 							this.timePerTurn--;
 							this.views['turn-time'].setText('Turn time: ' + this.timePerTurn);
 							if(this.timePerTurn <= 0) {
-								Polyworks.PhaserTime.removeTimer('turnTime');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
 							}
 						},
 						this
@@ -234,6 +275,40 @@ var GameConfig = (function() {
 					x: 0,
 					y: (Polyworks.Stage.unit * 2),
 					centerX: true
+				},
+				{
+					type: 'PhaserButton',
+					id: 'pause-button',
+					img: 'pauseButton',
+					width: Polyworks.Stage.unit * 2,
+					height: Polyworks.Stage.unit * 2,
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
+					attrs: {
+						visible: true
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
+				},
+				{
+					type: 'PhaserButton',
+					id: 'resume-button',
+					img: 'playButton',
+					width: Polyworks.Stage.unit * 2,
+					height: Polyworks.Stage.unit * 2,
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
+					attrs: {
+						visible: false
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
 				}
 				]
 			},

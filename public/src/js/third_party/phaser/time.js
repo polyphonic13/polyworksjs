@@ -42,6 +42,14 @@ Polyworks.PhaserTime = (function() {
 		this.timer.start();
 	};
 	
+	Controller.prototype.pause = function() {
+		this.timer.pause();
+	};
+	
+	Controller.prototype.resume = function() {
+		this.timer.resume();
+	};
+	
 	Controller.prototype.add = function(delay, callback, context) {
 		module.add(this.timer, delay, callback, context);
 	};

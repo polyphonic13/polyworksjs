@@ -24,6 +24,7 @@ Polyworks.PhaserSprite = (function() {
 	}
 
 	Controller.prototype.hide = function() {
+		trace('SpriteController['+this.id+']/hide');
 		this.view.visible = false;
 	};
 	
