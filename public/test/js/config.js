@@ -1,13 +1,11 @@
 var GameConfig = (function() {
 	var TIME_PER_TURN = 10;
 	var TURN_TIME_INTERVAL = 1000;
+	var GRID_CELLS = 9;
 	
-	var module = {
-		
-	}
+	var module = {}
 	
 	module.init = function(callback, context) {
-		trace('MODULE INIT, STAGE = ', Polyworks.Stage);
 		var config = {
 			gameType: 'phaser',
 			assets: {
@@ -73,9 +71,6 @@ var GameConfig = (function() {
 					sprites: [
 					'gameStartButton'
 					]
-				},
-				attrs: {
-					count: 0
 				},
 				listeners: [
 				{
@@ -199,6 +194,10 @@ var GameConfig = (function() {
 					'pauseButton',
 					'playButton'
 					]
+				},
+				attrs: {
+					grid: Polyworks.GridGenerator.createSquare(GRID_CELLS, Polyworks.Stage.unit)
+					// grid: Polyworks.GridGenerator.createSquare(3, 10)
 				},
 				listeners: [
 				{
