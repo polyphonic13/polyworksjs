@@ -50,7 +50,8 @@ var GameConfig = (function() {
 					}	
 				},
 				tilemaps: {
-					grass01: 'data/grass_tile_map01.json'
+					grass01: 'data/grass_tile_map01.json',
+					greyTiles: 'data/grass_tile_map02.json'
 				}
 			},
 			preload: {
@@ -205,6 +206,7 @@ var GameConfig = (function() {
 				assets: {
 					images: [
 					'playBg',
+					'greyTiles',
 					'grassTiles'
 					],
 					sprites: [
@@ -212,7 +214,7 @@ var GameConfig = (function() {
 					'playButton'
 					],
 					tilemaps: [
-					'grass01'
+					'greyTiles'
 					]
 				},
 				attrs: {
@@ -263,23 +265,6 @@ var GameConfig = (function() {
 				},
 				views: [
 				{
-					type: 'PhaserSprite',
-					id: 'play-background',
-					img: 'playBg',
-					x: 0,
-					y: 0,
-					attrs: {
-						width: Polyworks.Stage.gameW,
-						height: Polyworks.Stage.gameH
-					// },
-					// input: {
-					// 	inputUp: function() {
-					// 		trace('start background input up function');
-					// 		Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
-					// 	}
-					}
-				},
-				{
 					type: 'PhaserTileMap',
 					id: 'tile-map',
 					img: 'grassTiles',
@@ -294,6 +279,40 @@ var GameConfig = (function() {
 						xCells: 10,
 						yCells: 10
 					}]
+				},
+				{
+					type: 'PhaserGroup',
+					id: 'mask-sprites',
+					views: [
+					{
+						type: 'PhaserSprite',
+						id: 'play-mask-top',
+						img: 'playBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: Polyworks.Stage.gameW,
+							height: Polyworks.Stage.unit * 3
+						},
+						input: {
+							inputUp: function() {
+								trace('start background input up function');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
+							}
+						}
+					},
+					{
+						type: 'PhaserSprite',
+						id: 'play-mask-bottom',
+						img: 'playBg',
+						x: 0,
+						y: Polyworks.Stage.unit * 13,
+						attrs: {
+							width: Polyworks.Stage.gameW,
+							height: Polyworks.Stage.unit * 3
+						}
+					}
+					]
 				},
 				{
 					type: 'PhaserText',
@@ -311,8 +330,8 @@ var GameConfig = (function() {
 					type: 'PhaserButton',
 					id: 'pause-button',
 					img: 'pauseButton',
-					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
-					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 2.5),
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 2.5),
 					attrs: {
 						width: Polyworks.Stage.unit * 2,
 						height: Polyworks.Stage.unit * 2,

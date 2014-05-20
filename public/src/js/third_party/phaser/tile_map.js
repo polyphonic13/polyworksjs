@@ -13,9 +13,9 @@ Polyworks.PhaserTileMap = (function() {
 
 
 		this.phaser = PhaserGame.phaser;
-		_map = this.phaser.add.tilemap('grass01');
+		_map = this.phaser.add.tilemap('greyTiles');
 
-	    _map.addTilesetImage('test1', 'grassTiles');
+	    _map.addTilesetImage('test1', 'greyTiles');
 
 	    _currentTile = _map.getTile(2, 3);
 
@@ -88,23 +88,23 @@ if(config.layers) {
 		      }
 		  }
 
-	    if (cursors.left.isDown)
-	    {
-	        game.camera.x -= 4;
-	    }
-	    else if (cursors.right.isDown)
-	    {
-	        game.camera.x += 4;
-	    }
-
-	    if (cursors.up.isDown)
-	    {
-	        game.camera.y -= 4;
-	    }
-	    else if (cursors.down.isDown)
-	    {
-	        game.camera.y += 4;
-	    }
+	    // if (cursors.left.isDown)
+	    // {
+	    //     game.camera.x -= 4;
+	    // }
+	    // else if (cursors.right.isDown)
+	    // {
+	    //     game.camera.x += 4;
+	    // }
+	    // 
+	    // if (cursors.up.isDown)
+	    // {
+	    //     game.camera.y -= 4;
+	    // }
+	    // else if (cursors.down.isDown)
+	    // {
+	    //     game.camera.y += 4;
+	    // }
 	};
 	// Controller.prototype.onInputDown = function(sprite, pointer) {
 	// 	trace('TileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
