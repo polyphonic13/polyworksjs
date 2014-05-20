@@ -45,7 +45,7 @@ Polyworks.StateManager = (function() {
 		this.config = config;
 		this.phaser = phaser;
 		this.id = config.id;
-		
+
 		Polyworks.Utils.each(
 			config.attrs,
 			function(attr, key) {
@@ -101,16 +101,17 @@ Polyworks.StateManager = (function() {
 		if(this.config.update) {
 			this.config.update.call(this);
 		}
-		
 
 		// trace('StateController['+this.id+']/update');
-		// Polyworks.Utils.each(
-		// 	this.views,
-		// 	function(view) {
-		// 		view.update();
-		// 	},
-		// 	this
-		// );
+		Polyworks.Utils.each(
+			this.views,
+			function(view) {
+				if(view.update) {
+					view.update();
+				}
+			},
+			this
+		);
 	};
 	
 	Controller.prototype.shutdown = function() {

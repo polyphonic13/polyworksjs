@@ -3,7 +3,7 @@ var GameConfig = (function() {
 	var TURN_TIME_INTERVAL = 1000;
 	var GRID_CELLS = 9;
 	
-	var module = {}
+	var module = {};
 	
 	module.init = function(callback, context) {
 		var config = {
@@ -50,7 +50,7 @@ var GameConfig = (function() {
 					}	
 				},
 				tilemaps: {
-					grass01: 'data/grass_tile_map01.json',
+					grass01: 'data/grass_tile_map01.json'
 				}
 			},
 			preload: {
@@ -256,26 +256,7 @@ var GameConfig = (function() {
 						},
 						this
 					);
-					this.turnTimer.start();
-				},
-				update: function() {
-				    this.marker.x = this.layer.getTileX(this.phaser.input.activePointer.worldX) * 32;
-				    this.marker.y = this.layer.getTileY(this.phaser.input.activePointer.worldY) * 32;
-
-				    if (this.phaser.input.mousePointer.isDown)
-				    {
-				        if (this.phaser.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
-				        {
-				            this.currentTile = this.map.getTile(this.layer.getTileX(marker.x), this.layer.getTileY(marker.y));
-				        }
-				        else
-				        {
-				            if (this.map.getTile(layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.currentTile)
-				            {
-				                this.map.putTile(this.currentTile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
-				            }
-				        }
-				    }
+					// this.turnTimer.start();
 				},
 				shutdown: function() {
 					Polyworks.PhaserTime.removeTimer('turnTime');
@@ -299,6 +280,22 @@ var GameConfig = (function() {
 					}
 				},
 				{
+					type: 'PhaserTileMap',
+					id: 'tile-map',
+					img: 'grassTiles',
+					attrs: {
+						x: 0,
+						y: (Polyworks.Stage.unit * 3)
+					},
+					cellSize: (Polyworks.Stage.unit),
+					layers: [
+					{
+						id: 'main',
+						xCells: 10,
+						yCells: 10
+					}]
+				},
+				{
 					type: 'PhaserText',
 					id: 'turn-time',
 					text: 'Turn time: ' + TIME_PER_TURN,
@@ -309,22 +306,6 @@ var GameConfig = (function() {
 					x: 0,
 					y: (Polyworks.Stage.unit * 2),
 					centerX: true
-				},
-				{
-					type: 'PhaserTileMap',
-					id: 'tile-map',
-					img: 'greyTiles',
-					cellSize: (Polyworks.Stage.unit),
-					attrs: {
-						x: 0,
-						y: (Polyworks.Stage.unit * 3),
-					},
-					layers: [
-					{
-						id: 'main',
-						xCells: 10,
-						yCells: 10
-					}]
 				},
 				{
 					type: 'PhaserButton',
@@ -412,8 +393,7 @@ var GameConfig = (function() {
 			}],
 			defaultScreen: 'start'
 		};
-		
 		callback.call(context, config);
-	}
+	};
 	return module;
 }());

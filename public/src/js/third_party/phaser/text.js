@@ -2,7 +2,7 @@ Polyworks.PhaserText = (function() {
 	var module = {};
 	
 	function Controller(config) {
-		trace('TextController['+config.id+']/constructor, config = ', config);
+		// trace('TextController['+config.id+']/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
 		

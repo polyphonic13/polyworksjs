@@ -2,7 +2,7 @@ Polyworks.PhaserGroup = (function() {
 	var module = {};
 	
 	function Controller(config) {
-		trace('GroupController['+config.id+']/constructor, views = ', config.views);
+		// trace('GroupController['+config.id+']/constructor, views = ', config.views);
 		this.id = config.id;
 		this.config = config;
 		this.view = PhaserGame.phaser.add.group();
