@@ -13,7 +13,9 @@ var GameConfig = (function() {
 					whiteBlock: 'images/white_rect32x32.png',
 					startBg: 'images/bg_blue.gif',
 					playBg: 'images/bg_green.gif',
-					gameOverBg: 'images/bg_red.gif'
+					gameOverBg: 'images/bg_red.gif',
+					greyTiles: 'images/grey_tiles.gif',
+					grassTiles: 'images/grass-tiles-2-small.png'
 				},
 				sprites: {
 					gameStartButton: {
@@ -39,15 +41,17 @@ var GameConfig = (function() {
 						width: 50,
 						height: 50,
 						frames: 2
-					},
-					greyTiles: {
-						url: 'images/grey_tiles.gif',
-						width: 32,
-						height: 32,
-						frames: 3
+					// },
+					// greyTiles: {
+					// 	url: 'images/grey_tiles.gif',
+					// 	width: 32,
+					// 	height: 32,
+					// 	frames: 3
 					}	
 				},
-				tilemaps: {}
+				tilemaps: {
+					grass01: 'data/grass_tile_map01.json',
+				}
 			},
 			preload: {
 				images: [
@@ -200,17 +204,18 @@ var GameConfig = (function() {
 				clearCache: false,
 				assets: {
 					images: [
-					'playBg'
+					'playBg',
+					'grassTiles'
 					],
 					sprites: [
 					'pauseButton',
-					'playButton',
-					'greyTiles'
+					'playButton'
+					],
+					tilemaps: [
+					'grass01'
 					]
 				},
 				attrs: {
-					// grid: Polyworks.GridGenerator.createSquare(GRID_CELLS, Polyworks.Stage.unit)
-					// grid: Polyworks.GridGenerator.createSquare(3, 10)
 				},
 				listeners: [
 				{
@@ -253,10 +258,25 @@ var GameConfig = (function() {
 					);
 					this.turnTimer.start();
 				},
-				// update: function() {
-				// 	this.count++;
-				// 	trace('StateController['+this.id+']/update, count = ' + this.count);
-				// },
+				update: function() {
+				    this.marker.x = this.layer.getTileX(this.phaser.input.activePointer.worldX) * 32;
+				    this.marker.y = this.layer.getTileY(this.phaser.input.activePointer.worldY) * 32;
+
+				    if (this.phaser.input.mousePointer.isDown)
+				    {
+				        if (this.phaser.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
+				        {
+				            this.currentTile = this.map.getTile(this.layer.getTileX(marker.x), this.layer.getTileY(marker.y));
+				        }
+				        else
+				        {
+				            if (this.map.getTile(layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y)) != this.currentTile)
+				            {
+				                this.map.putTile(this.currentTile, this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y))
+				            }
+				        }
+				    }
+				},
 				shutdown: function() {
 					Polyworks.PhaserTime.removeTimer('turnTime');
 				},
@@ -270,12 +290,12 @@ var GameConfig = (function() {
 					attrs: {
 						width: Polyworks.Stage.gameW,
 						height: Polyworks.Stage.gameH
-					},
-					input: {
-						inputUp: function() {
-							trace('start background input up function');
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
-						}
+					// },
+					// input: {
+					// 	inputUp: function() {
+					// 		trace('start background input up function');
+					// 		Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
+					// 	}
 					}
 				},
 				{
@@ -294,13 +314,16 @@ var GameConfig = (function() {
 					type: 'PhaserTileMap',
 					id: 'tile-map',
 					img: 'greyTiles',
+					cellSize: (Polyworks.Stage.unit),
+					attrs: {
+						x: 0,
+						y: (Polyworks.Stage.unit * 3),
+					},
 					layers: [
 					{
 						id: 'main',
-						xCells: 9,
-						yCells: 9,
-						cellW: (Polyworks.Stage.unit),
-						cellH: (Polyworks.Stage.unit)
+						xCells: 10,
+						yCells: 10
 					}]
 				},
 				{

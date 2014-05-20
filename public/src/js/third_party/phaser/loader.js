@@ -6,7 +6,8 @@ Polyworks.PhaserLoader = (function() {
 	
 	module.loaded = {
 		images: {},
-		sprites: {}
+		sprites: {},
+		tilemaps: {}
 	};
 	
 	module.init = function(config, phaser) {
@@ -63,7 +64,7 @@ Polyworks.PhaserLoader = (function() {
 				function(tilemap) {
 					if(!this.loaded.tilemaps[tilemap]) {
 						trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
-						_phaser.load.tilemapsheet(tilemap, tilemaps[tilemap].url, tilemaps[tilemap].data, tilemaps[tilemap].format);
+						_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, Phaser.Tilemap.TILED_JSON ); // Phaser.Tilemap.TILED_JSON = 1
 					}
 				},
 				this
