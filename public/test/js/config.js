@@ -95,10 +95,12 @@ var GameConfig = (function() {
 						type: 'PhaserSprite',
 						id: 'start-background',
 						img: 'startBg',
-						width: Polyworks.Stage.gameW,
-						height: Polyworks.Stage.gameH,
 						x: 0,
 						y: 0,
+						attrs: {
+							width: Polyworks.Stage.gameW,
+							height: Polyworks.Stage.gameH
+						},
 						input: {
 							inputUp: function() {
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_NOTIFICATION });
@@ -109,10 +111,12 @@ var GameConfig = (function() {
 						type: 'PhaserButton',
 						id: 'game-start-button',
 						img: 'gameStartButton',
-						width: Polyworks.Stage.gameW,
-						height: ((Polyworks.Stage.gameW)/5),
 						x: 0,
 						y: (Polyworks.Stage.gameH * 0.7),
+						attrs: {
+							width: Polyworks.Stage.gameW,
+							height: ((Polyworks.Stage.gameW)/5)
+						},
 						callback: function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						},
@@ -144,10 +148,12 @@ var GameConfig = (function() {
 						type: 'PhaserSprite',
 						id: 'white-bg',
 						img: 'whiteBlock',
-						width: (Polyworks.Stage.gameW - (Polyworks.Stage.unit * 2)),
-						height: (Polyworks.Stage.gameH - (Polyworks.Stage.unit * 2)),
 						x: Polyworks.Stage.unit,
 						y: Polyworks.Stage.unit,
+						attrs: {
+							width: (Polyworks.Stage.gameW - (Polyworks.Stage.unit * 2)),
+							height: (Polyworks.Stage.gameH - (Polyworks.Stage.unit * 2))
+						},
 						attrs: {
 							alpha: 0.95
 						},
@@ -254,8 +260,10 @@ var GameConfig = (function() {
 					img: 'playBg',
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH,
+					attrs: {
+						width: Polyworks.Stage.gameW,
+						height: Polyworks.Stage.gameH
+					},
 					input: {
 						inputUp: function() {
 							trace('start background input up function');
@@ -279,11 +287,11 @@ var GameConfig = (function() {
 					type: 'PhaserButton',
 					id: 'pause-button',
 					img: 'pauseButton',
-					width: Polyworks.Stage.unit * 2,
-					height: Polyworks.Stage.unit * 2,
 					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
 					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
 					attrs: {
+						width: Polyworks.Stage.unit * 2,
+						height: Polyworks.Stage.unit * 2,
 						visible: true
 					},
 					callback: function() {
@@ -296,11 +304,11 @@ var GameConfig = (function() {
 					type: 'PhaserButton',
 					id: 'resume-button',
 					img: 'playButton',
-					width: Polyworks.Stage.unit * 2,
-					height: Polyworks.Stage.unit * 2,
 					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
 					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
 					attrs: {
+						width: Polyworks.Stage.unit * 2,
+						height: Polyworks.Stage.unit * 2,
 						visible: false
 					},
 					callback: function() {
@@ -334,8 +342,10 @@ var GameConfig = (function() {
 					img: 'gameOverBg',
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH,
+					attrs: {
+						width: Polyworks.Stage.gameW,
+						height: Polyworks.Stage.gameH
+					},
 					input: {
 						inputUp: function() {
 							trace('start background input up function');

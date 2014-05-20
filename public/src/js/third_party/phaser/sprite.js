@@ -7,8 +7,6 @@ Polyworks.PhaserSprite = (function() {
 		this.id = config.id;
 		this.config = config;
 		this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
-		this.view.width = config.width;
-		this.view.height = config.height;
 
 		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 
