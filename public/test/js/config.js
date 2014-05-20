@@ -39,7 +39,13 @@ var GameConfig = (function() {
 						width: 50,
 						height: 50,
 						frames: 2
-					}
+					},
+					greyTiles: {
+						url: 'images/grey_tiles.gif',
+						width: 32,
+						height: 32,
+						frames: 3
+					}	
 				},
 				tilemaps: {}
 			},
@@ -198,11 +204,12 @@ var GameConfig = (function() {
 					],
 					sprites: [
 					'pauseButton',
-					'playButton'
+					'playButton',
+					'greyTiles'
 					]
 				},
 				attrs: {
-					grid: Polyworks.GridGenerator.createSquare(GRID_CELLS, Polyworks.Stage.unit)
+					// grid: Polyworks.GridGenerator.createSquare(GRID_CELLS, Polyworks.Stage.unit)
 					// grid: Polyworks.GridGenerator.createSquare(3, 10)
 				},
 				listeners: [
@@ -282,6 +289,19 @@ var GameConfig = (function() {
 					x: 0,
 					y: (Polyworks.Stage.unit * 2),
 					centerX: true
+				},
+				{
+					type: 'PhaserTileMap',
+					id: 'tile-map',
+					img: 'greyTiles',
+					layers: [
+					{
+						id: 'main',
+						xCells: 9,
+						yCells: 9,
+						cellW: (Polyworks.Stage.unit),
+						cellH: (Polyworks.Stage.unit)
+					}]
 				},
 				{
 					type: 'PhaserButton',
