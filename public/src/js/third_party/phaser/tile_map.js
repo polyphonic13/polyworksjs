@@ -9,10 +9,10 @@ Polyworks.PhaserTileMap = (function() {
 		this.view = PhaserGame.phaser.add.tilemap();
 		this.view.addTilesetImage(config.img);
 
-		Initializer.setViewAttributes(config.attrs, this.view);
+		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 	}
 
-	Initializer.addStandardMethods(Controller);
+	Polyworks.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller; 
 	

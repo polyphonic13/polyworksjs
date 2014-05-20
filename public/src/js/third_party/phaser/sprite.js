@@ -10,14 +10,14 @@ Polyworks.PhaserSprite = (function() {
 		this.view.width = config.width;
 		this.view.height = config.height;
 
-		Initializer.setViewAttributes(config.attrs, this.view);
+		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 
 		if(config.input) {
 			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.view, this.id);
 		}
 	}
 
-	Initializer.addStandardMethods(Controller);
+	Polyworks.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller;
 	

@@ -21,10 +21,10 @@ Polyworks.Initializer = (function(){
 		}
 	};
 	
-	module.setViewAttributes = function(config, view) {
-		if(config.attrs) {
+	module.setViewAttributes = function(attrs, view) {
+		if(attrs) {
 			Polyworks.Utils.each(
-				config.attrs,
+				attrs,
 				function(attr, key) {
 					view[key] = attr;
 				},

@@ -7,7 +7,7 @@ Polyworks.PhaserGroup = (function() {
 		this.config = config;
 		this.view = PhaserGame.phaser.add.group();
 
-		Initializer.setViewAttributes(config.attrs, this.view);
+		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 
 		// create children collection
 		this.children = Polyworks.DisplayFactory.createViews(config.views);
@@ -40,7 +40,7 @@ Polyworks.PhaserGroup = (function() {
 		)
 	};
 
-	Initializer.addStandardMethods(Controller);
+	Polyworks.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller; 
 	
