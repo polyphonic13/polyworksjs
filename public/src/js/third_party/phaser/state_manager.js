@@ -40,10 +40,9 @@ Polyworks.StateManager = (function() {
 
 	var module = {};
 	
-	function Controller(config, phaser) {
+	function Controller(config) {
 		trace('StateController/constructor, config = ', config);
 		this.config = config;
-		this.phaser = phaser;
 		this.id = config.id;
 
 		Polyworks.Utils.each(
@@ -63,7 +62,7 @@ Polyworks.StateManager = (function() {
 			this
 			);
 		}
-		this.phaser.state.add(this.id, this, false);
+		PhaserGame.phaser.state.add(this.id, this, false);
 	};
 	
 	Controller.prototype.start = function() {
@@ -81,8 +80,8 @@ Polyworks.StateManager = (function() {
 	Controller.prototype.create = function() {
 		trace('StateController['+this.id+']/create');
 		var world = this.config.world;
-		this.phaser.world.setBounds(world.x, world.y, world.width, world.height);
-		this.views = Polyworks.DisplayFactory.createViews(this.config.views);
+		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
+		this.views = Polyworks.PhaserView.build(this.config.views);
 		
 		if(this.config.create) {
 			this.config.create.call(this);
@@ -103,15 +102,15 @@ Polyworks.StateManager = (function() {
 		}
 
 		// trace('StateController['+this.id+']/update');
-		Polyworks.Utils.each(
-			this.views,
-			function(view) {
-				if(view.update) {
-					view.update();
-				}
-			},
-			this
-		);
+		// Polyworks.Utils.each(
+		// 	this.views,
+		// 	function(view) {
+		// 		if(view.update) {
+		// 			view.update();
+		// 		}
+		// 	},
+		// 	this
+		// );
 	};
 	
 	Controller.prototype.shutdown = function() {
@@ -145,16 +144,15 @@ Polyworks.StateManager = (function() {
 	module.init = function(config, phaser) {
 		trace('StateManager/init, config = ', config);
 		this.config = config;
-		this.phaser = phaser;
 		this.states = {};
 		this.currentId = '';
 
 		Polyworks.Utils.each(
 			config,
 			function(state) {
-				trace('\tadding stateeen[' + state.id + ']');
+				trace('\tadding state[' + state.id + ']');
 				// this.states[state.id] = new this.Controller(state);
-				this.states[state.id] = new this.Controller(state, phaser);
+				this.states[state.id] = new this.Controller(state);
 			},
 			this
 		);
@@ -168,7 +166,7 @@ Polyworks.StateManager = (function() {
 				this.currentId = id;
 				trace('\tstates['+id+'] = ', this.states[id]);
 				// this.states[id].activate();
-				this.phaser.state.start(id, this.states[id].clearWorld, this.states[id].clearCache);
+				PhaserGame.phaser.state.start(id, this.states[id].clearWorld, this.states[id].clearCache);
 			}
 		}
 	};

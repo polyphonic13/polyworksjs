@@ -8,10 +8,20 @@ var GameConfig = (function() {
 	module.init = function(callback, context) {
 		var config = {
 			gameType: 'phaser',
+			pallete: {
+				darkRed: '#ba1d3a',
+				lightRed: '#e21a49',
+				black: '#000000',
+				white: '#ffffff'
+			},
 			assets: {
 				images: {
+					startBg: 'images/screen_mocks_start.gif',
+					manualBg: 'images/screen_mocks_manual.gif',
+					briefBg: 'images/screen_mocks_brief.gif',
+					buildBg: 'images/screen_mocks_build.gif',
+					worldBg: 'images/screen_mocks_world.gif',
 					whiteBlock: 'images/white_rect32x32.png',
-					startBg: 'images/bg_blue.gif',
 					playBg: 'images/bg_green.gif',
 					gameOverBg: 'images/bg_red.gif',
 					greyTiles: 'images/grey_tiles.gif',
@@ -126,25 +136,14 @@ var GameConfig = (function() {
 						y: (Polyworks.Stage.gameH * 0.7),
 						attrs: {
 							width: Polyworks.Stage.gameW,
-							height: ((Polyworks.Stage.gameW)/5)
+							height: ((Polyworks.Stage.gameW)/5),
+							alpha: 0.75
 						},
 						callback: function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						},
 						context: this,
 						frames: [0, 1, 1, 0]
-					},
-					{
-						type: 'PhaserText',
-						id: 'start-state-title',
-						text: 'This is a game',
-						style: {
-						    font: "24px Arial",
-					        fill: "#ffffff"
-						},
-						x: 0,
-						y: (Polyworks.Stage.unit * 2),
-						centerX: true
 					}
 					]
 				},
@@ -163,9 +162,7 @@ var GameConfig = (function() {
 						y: Polyworks.Stage.unit,
 						attrs: {
 							width: (Polyworks.Stage.gameW - (Polyworks.Stage.unit * 2)),
-							height: (Polyworks.Stage.gameH - (Polyworks.Stage.unit * 2))
-						},
-						attrs: {
+							height: (Polyworks.Stage.gameH - (Polyworks.Stage.unit * 2)),
 							alpha: 0.95
 						},
 						input: {

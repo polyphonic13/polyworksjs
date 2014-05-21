@@ -10,7 +10,7 @@ Polyworks.PhaserGroup = (function() {
 		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 
 		// create children collection
-		this.children = Polyworks.DisplayFactory.createViews(config.views);
+		this.children = Polyworks.DisplayFactory.createPhaserViews(config.views);
 		// trace('\tchildren = ', this.children);
 
 		// loop through children collection and add to group

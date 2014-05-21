@@ -6,7 +6,7 @@ Polyworks.ScreenManager = (function() {
 		trace('ScreenController/constructor, config = ', config);
 		this.config = config;
 		this.id = config.id;
-		this.views = Polyworks.DisplayFactory.createViews(config.views);
+		this.views = Polyworks.DisplayFactory.createPhaserViews(config.views);
 	};
 	
 	ScreenController.prototype.activate = function() {

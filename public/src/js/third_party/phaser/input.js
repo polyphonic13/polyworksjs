@@ -1,26 +1,27 @@
 Polyworks.PhaserInput = (function() {
 	var module = {};
+	var _controllers = {};
 	
-	function InputController(config, sprite, id) {
-		trace('InputController/constructor, config = ', config, '\tsprite = ', sprite);
+	function InputController(config, view, id) {
+		trace('InputController/constructor, config = ', config, '\tview = ', view);
 		this.config = config;
-		this.sprite = sprite;
+		this.view = view;
 		this.id = id;
 		
-		sprite.inputEnabled = true;
+		view.inputEnabled = true;
 
 		Polyworks.Utils.each(
 			this.config.attrs,
 			function(attr, key) {
-				sprite.input[key] = attr;
+				view.input[key] = attr;
 			},
 			this
 		);
 
-		// sprite.input.enableDrag(true, true);
-		if(this.config.enableDrag) sprite.input.enableDrag(this.config.enableDrag);
-		if(this.config.inputDown) sprite.events.onInputDown.add(this.inputDown, this);
-		if(this.config.inputUp) sprite.events.onInputUp.add(this.inputUp, this);
+		// view.input.enableDrag(true, true);
+		if(this.config.enableDrag) view.input.enableDrag(this.config.enableDrag);
+		if(this.config.inputDown) view.events.onInputDown.add(this.inputDown, this);
+		if(this.config.inputUp) view.events.onInputUp.add(this.inputUp, this);
 		
 	}
 	
