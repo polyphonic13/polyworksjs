@@ -54,6 +54,14 @@ Polyworks.PhaserView = (function() {
 		);
 	};
 	
+	ViewController.prototype.callMethod = function(method, args) {
+		trace('ViewController['+this.id+']/callMethod, method = ' + method + '\n\targs = ' + args);
+		if(this.view[method]) {
+			trace('\tview has method, ', this.view);
+			this.view[method](args);
+		}
+	};
+	
 	ViewController.prototype.hide = function() {
 		this.view.visible = false;
 	};

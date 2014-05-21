@@ -21,7 +21,8 @@ var GameConfig = (function() {
 					briefBg: 'images/screen_mocks_brief.gif',
 					buildBg: 'images/screen_mocks_build.gif',
 					worldBg: 'images/screen_mocks_world.gif',
-					whiteBlock: 'images/white_rect32x32.png',
+					blockWhite: 'images/block_white.png',
+					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
 					blockGreen: 'images/block_green.gif',
 					blockRed: 'images/block_red.gif',
@@ -29,26 +30,26 @@ var GameConfig = (function() {
 					grassTiles: 'images/grass-tiles-2-small.png'
 				},
 				sprites: {
-					gameStartButton: {
-						url: 'images/game_start_button.gif',
+					buttonGameStart: {
+						url: 'images/button_game_start.gif',
 						width: 800,
 						height: 160,
 						frames: 2
 					},
-					pauseButton: {
-						url: 'images/pause_button.png',
+					buttonPause: {
+						url: 'images/button_pause.png',
 						width: 50,
 						height: 50,
 						frames: 2
 					},
-					playButton: {
-						url: 'images/play_button.png',
+					buttonPlay: {
+						url: 'images/button_play.png',
 						width: 50,
 						height: 50,
 						frames: 2
 					},
-					closeButton: {
-						url: 'images/close_button.png',
+					buttonClose: {
+						url: 'images/button_close.png',
 						width: 50,
 						height: 50,
 						frames: 2
@@ -67,10 +68,11 @@ var GameConfig = (function() {
 			},
 			preload: {
 				images: [
-				'whiteBlock'
+				'blockWhite',
+				'blockClear'
 				],
 				sprites: [
-				'closeButton'
+				'buttonClose'
 				],
 				tilemaps: []
 			},
@@ -89,10 +91,11 @@ var GameConfig = (function() {
 				assets: {
 					images: [
 					'startBg',
-					'blockBlue'
+					'blockClear',
+					'blockWhite'
 					],
 					sprites: [
-					'gameStartButton'
+					'buttonGameStart'
 					]
 				},
 				listeners: [
@@ -110,6 +113,7 @@ var GameConfig = (function() {
 				}
 				],
 				views: [
+				// bg
 				{
 					type: 'sprite',
 					id: 'start-background',
@@ -121,46 +125,11 @@ var GameConfig = (function() {
 						height: Polyworks.Stage.gameH
 					}
 				},
-				{
-					type: 'text',
-					id: 'start-title',
-					text: 'start state',
-					style: {
-					    font: "24px Arial",
-				        fill: "#ffffff"
-					},
-					x: 0,
-					y: (Polyworks.Stage.unit * 2),
-					position: {
-						centerX: true
-					}
-				},
-				{
-					type: 'text',
-					id: 'start-subtitle',
-					text: 'this is a subtile',
-					style: {
-					    font: "18px Arial",
-				        fill: "#ffffff"
-					},
-					x: Polyworks.Stage.unit * 2,
-					y: (Polyworks.Stage.unit * 5)
-				},
-				{
-					type: 'sprite',
-					id: 'start-background',
-					img: 'blockBlue',
-					x: Polyworks.Stage.unit * 2,
-					y: Polyworks.Stage.unit * 3,
-					attrs: {
-						width: Polyworks.Stage.unit,
-						height: Polyworks.Stage.unit
-					}
-				},
+				// turn start button
 				{
 					type: 'button',
 					id: 'game-start-button',
-					img: 'gameStartButton',
+					img: 'buttonGameStart',
 					x: 0,
 					y: (Polyworks.Stage.gameH * 0.7),
 					attrs: {
@@ -173,180 +142,276 @@ var GameConfig = (function() {
 					},
 					context: this,
 					frames: [0, 1, 1, 0]
+				},
+				// manual button
+				{
+					type: 'button',
+					id: 'manual-button',
+					img: 'blockClear',
+					x: 0,
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 2.5),
+					attrs: {
+						width: Polyworks.Stage.unit * 2.5,
+						height: Polyworks.Stage.unit * 2.5,
+						alpha: 0.75
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'manual' });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
+				}
+				]
+			},
+			// play
+			{
+				id: 'play',
+				world: {
+					x: 0,
+					y: 0,
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
+				},
+				clearWorld: true,
+				clearCache: false,
+				assets: {
+					images: [
+					'worldBg',
+					'greyTiles',
+					'grassTiles'
+					],
+					sprites: [
+					'buttonPause',
+					'buttonPlay'
+					],
+					tilemaps: [
+					'greyTiles'
+					]
+				},
+				attrs: {
+				},
+				listeners: [
+				{
+					event: Polyworks.Events.PAUSE_GAME,
+					handler: function(event) {
+						this.turnTimer.pause();
+						this.views['pause-button'].hide();
+						this.views['resume-button'].show();
+					}
+				},
+				{
+					event: Polyworks.Events.RESUME_GAME,
+					handler: function(event) {
+						this.turnTimer.resume();
+						this.views['resume-button'].hide();
+						this.views['pause-button'].show();
+					}
+				},
+				{
+					event: Polyworks.Events.TURN_ENDED,
+					handler: function(event) {
+						Polyworks.PhaserTime.removeTimer('turnTime');
+						this.views['turn-time'].callMethod('setText', ['Turn ended']);
+						this.views['pause-button'].hide();
+					}
+				}
+				],
+				create: function() {
+					this.timePerTurn = TIME_PER_TURN;
+					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
+					this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
+							trace('\ttimePerTurn = ' + this.timePerTurn);
+							this.timePerTurn--;
+							var text = 'Turn time: ' + this.timePerTurn;
+							this.views['turn-time'].callMethod('setText', [text]);
+							if(this.timePerTurn <= 0) {
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
+							}
+						},
+						this
+					);
+					this.turnTimer.start();
+				},
+				shutdown: function() {
+					Polyworks.PhaserTime.removeTimer('turnTime');
+				},
+				views: [
+				// bg
+				{
+					type: 'sprite',
+					id: 'play-background',
+					img: 'worldBg',
+					x: 0,
+					y: 0,
+					attrs: {
+						width: Polyworks.Stage.gameW,
+						height: Polyworks.Stage.gameH
+					}
+				},
+				// turn timer text
+				{
+					type: 'text',
+					id: 'turn-time',
+					text: 'Turn time: ' + TIME_PER_TURN,
+					style: {
+					    font: "24px Arial",
+				        fill: "#ffffff"
+					},
+					x: 0,
+					y: (Polyworks.Stage.unit * 2),
+					position: {
+						centerX: true
+					}
+				},
+				// pause button
+				{
+					type: 'button',
+					id: 'pause-button',
+					img: 'buttonPause',
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
+					attrs: {
+						width: Polyworks.Stage.unit * 1.5,
+						height: Polyworks.Stage.unit * 1.5,
+						visible: true
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
+				},
+				// play button
+				{
+					type: 'button',
+					id: 'resume-button',
+					img: 'buttonPlay',
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
+					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
+					attrs: {
+						width: Polyworks.Stage.unit * 1.5,
+						height: Polyworks.Stage.unit * 1.5,
+						visible: false
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
+				}
+				// {
+				// 	type: 'PhaserTileMap',
+				// 	id: 'tile-map',
+				// 	img: 'grassTiles',
+				// 	attrs: {
+				// 		x: 0,
+				// 		y: (Polyworks.Stage.unit * 3)
+				// 	},
+				// 	cellSize: (Polyworks.Stage.unit),
+				// 	layers: [
+				// 	{
+				// 		id: 'main',
+				// 		xCells: 10,
+				// 		yCells: 10
+				// 	}]
+				// },
+				// {
+				// 	type: 'PhaserGroup',
+				// 	id: 'mask-sprites',
+				// 	views: [
+				// 	{
+				// 		type: 'PhaserSprite',
+				// 		id: 'play-mask-top',
+				// 		img: 'worldBg',
+				// 		x: 0,
+				// 		y: 0,
+				// 		attrs: {
+				// 			width: Polyworks.Stage.gameW,
+				// 			height: Polyworks.Stage.unit * 3
+				// 		},
+				// 		input: {
+				// 			inputUp: function() {
+				// 				trace('start background input up function');
+				// 				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
+				// 			}
+				// 		}
+				// 	},
+				// 	{
+				// 		type: 'PhaserSprite',
+				// 		id: 'play-mask-bottom',
+				// 		img: 'worldBg',
+				// 		x: 0,
+				// 		y: Polyworks.Stage.unit * 13,
+				// 		attrs: {
+				// 			width: Polyworks.Stage.gameW,
+				// 			height: Polyworks.Stage.unit * 3
+				// 		}
+				// 	}
+				// 	]
+				// },
+				]
+			},
+			// manual
+			{
+				id: 'manual',
+				world: {
+					x: 0,
+					y: 0,
+					width: Polyworks.Stage.gameW,
+					height: Polyworks.Stage.gameH
+				},
+				clearWorld: true,
+				clearCache: false,
+				assets: {
+					images: [
+					'manualBg'
+					],
+					sprites: [
+					'buttonClose',
+					],
+					tilemaps: [
+					'greyTiles'
+					]
+				},
+				attrs: {
+				},
+				listeners: [
+				],
+				create: function() {
+				},
+				shutdown: function() {
+				},
+				views: [
+				{
+					type: 'sprite',
+					id: 'manual-background',
+					img: 'manualBg',
+					x: 0,
+					y: 0,
+					attrs: {
+						width: Polyworks.Stage.gameW,
+						height: Polyworks.Stage.gameH
+					}
+				},
+				{
+					type: 'button',
+					id: 'close-button',
+					img: 'buttonClose',
+					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.5),
+					y: (Polyworks.Stage.unit * 0.5),
+					attrs: {
+						width: Polyworks.Stage.unit * 1,
+						height: Polyworks.Stage.unit * 1
+					},
+					callback: function() {
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
+					},
+					context: this,
+					frames: [0, 1, 1, 0]
 				}
 				]
 			}
 			],
-			// play
-			// {
-			// 	id: 'play',
-			// 	world: {
-			// 		x: 0,
-			// 		y: 0,
-			// 		width: Polyworks.Stage.gameW,
-			// 		height: Polyworks.Stage.gameH
-			// 	},
-			// 	clearWorld: true,
-			// 	clearCache: false,
-			// 	assets: {
-			// 		images: [
-			// 		'playBg',
-			// 		'greyTiles',
-			// 		'grassTiles'
-			// 		],
-			// 		sprites: [
-			// 		'pauseButton',
-			// 		'playButton'
-			// 		],
-			// 		tilemaps: [
-			// 		'greyTiles'
-			// 		]
-			// 	},
-			// 	attrs: {
-			// 	},
-			// 	listeners: [
-			// 	{
-			// 		event: Polyworks.Events.PAUSE_GAME,
-			// 		handler: function(event) {
-			// 			this.turnTimer.pause();
-			// 			this.views['pause-button'].hide();
-			// 			this.views['resume-button'].show();
-			// 		}
-			// 	},
-			// 	{
-			// 		event: Polyworks.Events.RESUME_GAME,
-			// 		handler: function(event) {
-			// 			this.turnTimer.resume();
-			// 			this.views['resume-button'].hide();
-			// 			this.views['pause-button'].show();
-			// 		}
-			// 	},
-			// 	{
-			// 		event: Polyworks.Events.TURN_ENDED,
-			// 		handler: function(event) {
-			// 			Polyworks.PhaserTime.removeTimer('turnTime');
-			// 			this.views['turn-time'].setText('Turn ended');
-			// 			this.views['pause-button'].hide();
-			// 		}
-			// 	}
-			// 	],
-			// 	create: function() {
-			// 		this.timePerTurn = TIME_PER_TURN;
-			// 		this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
-			// 		this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-			// 				trace('\ttimePerTurn = ' + this.timePerTurn);
-			// 				this.timePerTurn--;
-			// 				this.views['turn-time'].setText('Turn time: ' + this.timePerTurn);
-			// 				if(this.timePerTurn <= 0) {
-			// 					Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
-			// 				}
-			// 			},
-			// 			this
-			// 		);
-			// 		// this.turnTimer.start();
-			// 	},
-			// 	shutdown: function() {
-			// 		Polyworks.PhaserTime.removeTimer('turnTime');
-			// 	},
-			// 	views: [
-			// 	{
-			// 		type: 'PhaserTileMap',
-			// 		id: 'tile-map',
-			// 		img: 'grassTiles',
-			// 		attrs: {
-			// 			x: 0,
-			// 			y: (Polyworks.Stage.unit * 3)
-			// 		},
-			// 		cellSize: (Polyworks.Stage.unit),
-			// 		layers: [
-			// 		{
-			// 			id: 'main',
-			// 			xCells: 10,
-			// 			yCells: 10
-			// 		}]
-			// 	},
-			// 	{
-			// 		type: 'PhaserGroup',
-			// 		id: 'mask-sprites',
-			// 		views: [
-			// 		{
-			// 			type: 'PhaserSprite',
-			// 			id: 'play-mask-top',
-			// 			img: 'playBg',
-			// 			x: 0,
-			// 			y: 0,
-			// 			attrs: {
-			// 				width: Polyworks.Stage.gameW,
-			// 				height: Polyworks.Stage.unit * 3
-			// 			},
-			// 			input: {
-			// 				inputUp: function() {
-			// 					trace('start background input up function');
-			// 					Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
-			// 				}
-			// 			}
-			// 		},
-			// 		{
-			// 			type: 'PhaserSprite',
-			// 			id: 'play-mask-bottom',
-			// 			img: 'playBg',
-			// 			x: 0,
-			// 			y: Polyworks.Stage.unit * 13,
-			// 			attrs: {
-			// 				width: Polyworks.Stage.gameW,
-			// 				height: Polyworks.Stage.unit * 3
-			// 			}
-			// 		}
-			// 		]
-			// 	},
-			// 	{
-			// 		type: 'PhaserText',
-			// 		id: 'turn-time',
-			// 		text: 'Turn time: ' + TIME_PER_TURN,
-			// 		style: {
-			// 		    font: "24px Arial",
-			// 	        fill: "#ffffff"
-			// 		},
-			// 		x: 0,
-			// 		y: (Polyworks.Stage.unit * 2),
-			// 		centerX: true
-			// 	},
-			// 	{
-			// 		type: 'PhaserButton',
-			// 		id: 'pause-button',
-			// 		img: 'pauseButton',
-			// 		x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 2.5),
-			// 		y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 2.5),
-			// 		attrs: {
-			// 			width: Polyworks.Stage.unit * 2,
-			// 			height: Polyworks.Stage.unit * 2,
-			// 			visible: true
-			// 		},
-			// 		callback: function() {
-			// 			Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
-			// 		},
-			// 		context: this,
-			// 		frames: [0, 1, 1, 0]
-			// 	},
-			// 	{
-			// 		type: 'PhaserButton',
-			// 		id: 'resume-button',
-			// 		img: 'playButton',
-			// 		x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
-			// 		y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
-			// 		attrs: {
-			// 			width: Polyworks.Stage.unit * 2,
-			// 			height: Polyworks.Stage.unit * 2,
-			// 			visible: false
-			// 		},
-			// 		callback: function() {
-			// 			Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
-			// 		},
-			// 		context: this,
-			// 		frames: [0, 1, 1, 0]
-			// 	}
-			// 	]
-			// },
 			// game over
 			// {
 			// 	id: 'gameOver',
