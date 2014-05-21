@@ -2,11 +2,11 @@ Polyworks.PhaserInput = (function() {
 	var module = {};
 	var _controllers = {};
 	
-	function InputController(config, controller, id) {
+	function InputController(config, controller) {
 		trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
 		this.config = config;
 		this.controller = controller;
-		this.id = id;
+		this.id = controller.id;
 
 		var view = controller.view;
 

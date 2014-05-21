@@ -82,7 +82,7 @@ Polyworks.StateManager = (function() {
 		var world = this.config.world;
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 		this.views = Polyworks.PhaserView.build(this.config.views);
-		
+
 		if(this.config.create) {
 			this.config.create.call(this);
 		}
@@ -94,7 +94,7 @@ Polyworks.StateManager = (function() {
 			return;
 		}
 		return this.views[id];
-	}
+	};
 	
 	Controller.prototype.update = function() {
 		if(this.config.update) {
@@ -118,7 +118,7 @@ Polyworks.StateManager = (function() {
 		if(this.config.shutdown) {
 			this.config.shutdown.call(this);
 		}
-		
+
 		Polyworks.Utils.each(
 			this.views,
 			function(view, key) {

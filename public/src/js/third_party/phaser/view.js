@@ -38,12 +38,20 @@ Polyworks.PhaserView = (function() {
 
 		this.set(config.attrs);
 
-		if(config.input) {
-			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this, this.id);
-		}
-
 		if(config.position) {
 			Polyworks.PhaserPositioner.set(config.position, this.view);
+		}
+
+		if(config.input) {
+			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this);
+		}
+
+		if(config.animation) {
+			this.animationController = new Polyworks.PhaserAnimation.AnimationController(config.animation, this);
+		}
+
+		if(config.physical && this.view.body) {
+			this.physicsController = new Polworks.PhaserPhysics.PhysicsController(config.physical, this);
 		}
 	};
 	
