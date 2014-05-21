@@ -2,12 +2,14 @@ Polyworks.PhaserInput = (function() {
 	var module = {};
 	var _controllers = {};
 	
-	function InputController(config, view, id) {
-		trace('InputController/constructor, config = ', config, '\tview = ', view);
+	function InputController(config, controller, id) {
+		trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
 		this.config = config;
-		this.view = view;
+		this.controller = controller;
 		this.id = id;
-		
+
+		var view = controller.view;
+
 		view.inputEnabled = true;
 
 		Polyworks.Utils.each(
@@ -18,11 +20,10 @@ Polyworks.PhaserInput = (function() {
 			this
 		);
 
-		// view.input.enableDrag(true, true);
 		if(this.config.enableDrag) view.input.enableDrag(this.config.enableDrag);
 		if(this.config.inputDown) view.events.onInputDown.add(this.inputDown, this);
 		if(this.config.inputUp) view.events.onInputUp.add(this.inputUp, this);
-		
+
 	}
 	
 	InputController.prototype.inputDown = function(event) {

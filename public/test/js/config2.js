@@ -76,6 +76,7 @@ var GameConfig = (function() {
 				],
 				tilemaps: []
 			},
+			defaultScreen: 'start',
 			screens: [
 			// start
 			{
@@ -92,6 +93,8 @@ var GameConfig = (function() {
 					images: [
 					'startBg',
 					'blockClear',
+					'blockRed',
+					'blockBlue',
 					'blockWhite'
 					],
 					sprites: [
@@ -125,7 +128,7 @@ var GameConfig = (function() {
 						height: Polyworks.Stage.gameH
 					}
 				},
-				// turn start button
+				// game start button
 				{
 					type: 'button',
 					id: 'game-start-button',
@@ -142,6 +145,43 @@ var GameConfig = (function() {
 					},
 					context: this,
 					frames: [0, 1, 1, 0]
+				},
+				{
+					type: 'group',
+					id: 'start-test-group',
+					views: [
+					{
+						type: 'sprite',
+						id: 'test-view-1',
+						img: 'blockRed',
+						x: Polyworks.Stage.unit * 2,
+						y: Polyworks.Stage.unit * 2,
+						attrs: {
+							width: Polyworks.Stage.unit,
+							height: Polyworks.Stage.unit
+						},
+						input: {
+							enableDrag: [true, true]
+						}
+					},
+					{
+						type: 'sprite',
+						id: 'test-view-2',
+						img: 'blockBlue',
+						x: Polyworks.Stage.unit * 4,
+						y: Polyworks.Stage.unit * 2,
+						attrs: {
+							width: Polyworks.Stage.unit,
+							height: Polyworks.Stage.unit
+						},
+						input: {
+							inputUp: function() {
+								trace('blue block input up function, this = ', this);
+								this.controller.group.removeChild('test-view-1');
+							}
+						}
+					}
+					]
 				},
 				// manual button
 				{
@@ -367,7 +407,7 @@ var GameConfig = (function() {
 					'manualBg'
 					],
 					sprites: [
-					'buttonClose',
+					'buttonClose'
 					],
 					tilemaps: [
 					'greyTiles'
@@ -411,56 +451,7 @@ var GameConfig = (function() {
 				}
 				]
 			}
-			],
-			// game over
-			// {
-			// 	id: 'gameOver',
-			// 	world: {
-			// 		x: 0,
-			// 		y: 0,
-			// 		width: Polyworks.Stage.gameW,
-			// 		height: Polyworks.Stage.gameH
-			// 	},
-			// 	clearWorld: true,
-			// 	clearCache: false,
-			// 	assets: {
-			// 		images: [
-			// 		'gameOverBg'
-			// 		]
-			// 	},
-			// 	views: [
-			// 	{
-			// 		type: 'PhaserSprite',
-			// 		id: 'gameOver-background',
-			// 		img: 'gameOverBg',
-			// 		x: 0,
-			// 		y: 0,
-			// 		attrs: {
-			// 			width: Polyworks.Stage.gameW,
-			// 			height: Polyworks.Stage.gameH
-			// 		},
-			// 		input: {
-			// 			inputUp: function() {
-			// 				trace('start background input up function');
-			// 				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
-			// 			}
-			// 		}
-			// 	},
-			// 	{
-			// 		type: 'PhaserText',
-			// 		id: 'gameOver-title',
-			// 		text: 'Game Over',
-			// 		style: {
-			// 		    font: "24px Arial",
-			// 	        fill: "#ffffff"
-			// 		},
-			// 		x: 0,
-			// 		y: (Polyworks.Stage.unit * 2),
-			// 		centerX: true
-			// 	}
-			// 	]
-			// }],
-			defaultScreen: 'start'
+			]
 		};
 		callback.call(context, config);
 	};
