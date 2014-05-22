@@ -2,8 +2,8 @@ Polyworks.PhaserText = (function() {
 	var module = {};
 	
 	function Controller(config) {
-		// trace('TextController['+config.id+']/constructor, config = ', config);
-		this.id = config.id;
+		// trace('TextController['+config.name+']/constructor, config = ', config);
+		this.name = config.name;
 		this.config = config;
 		
 		var phaser = PhaserGame.phaser;

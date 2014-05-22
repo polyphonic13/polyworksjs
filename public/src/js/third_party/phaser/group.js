@@ -2,8 +2,8 @@ Polyworks.PhaserGroup = (function() {
 	var module = {};
 	
 	function Controller(config) {
-		// trace('GroupController['+config.id+']/constructor, views = ', config.views);
-		this.id = config.id;
+		// trace('GroupController['+config.name+']/constructor, views = ', config.views);
+		this.name = config.name;
 		this.config = config;
 		this.view = PhaserGame.phaser.add.group();
 
@@ -30,7 +30,7 @@ Polyworks.PhaserGroup = (function() {
 	};
 	
 	Controller.prototype.removeAll = function() {
-		// trace('GroupController['+this.id+']/remove, children = ', this.children);
+		// trace('GroupController['+this.name+']/remove, children = ', this.children);
 		this.view.removeAll();
 		Polyworks.Utils.each(
 			this.children,

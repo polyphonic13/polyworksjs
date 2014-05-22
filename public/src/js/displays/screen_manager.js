@@ -5,12 +5,12 @@ Polyworks.ScreenManager = (function() {
 	function ScreenController(config) {
 		trace('ScreenController/constructor, config = ', config);
 		this.config = config;
-		this.id = config.id;
+		this.name = config.name;
 		this.views = Polyworks.DisplayFactory.createPhaserViews(config.views);
 	};
 	
 	ScreenController.prototype.activate = function() {
-		trace('ScreenController['+this.id+']/activate');
+		trace('ScreenController['+this.name+']/activate');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -22,7 +22,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.update = function() {
-		trace('ScreenController['+this.id+']/update');
+		trace('ScreenController['+this.name+']/update');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -33,7 +33,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.deactive = function() {
-		trace('ScreenController['+this.id+']/deactivate');
+		trace('ScreenController['+this.name+']/deactivate');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -45,7 +45,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.destroy = function() {
-		trace('ScreenController['+this.id+']/destroy');
+		trace('ScreenController['+this.name+']/destroy');
 		Polyworks.Utils.each(
 			this.views,
 			function(view, key) {
@@ -67,8 +67,8 @@ Polyworks.ScreenManager = (function() {
 		Polyworks.Utils.each(
 			config,
 			function(scr) {
-				trace('\tadding screen[' + scr.id + ']');
-				this.screens[scr.id] = new this.ScreenController(scr);
+				trace('\tadding screen[' + scr.name + ']');
+				this.screens[scr.name] = new this.ScreenController(scr);
 			},
 			this
 		);

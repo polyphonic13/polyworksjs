@@ -6,7 +6,7 @@ Polyworks.PhaserPhysics = (function() {
 	function PhysicsController(config, controller) {
 		this.config = config;
 		this.controller = controller;
-		this.id = controller.id;
+		this.name = controller.name;
 
 		var physics = config.physics;
 

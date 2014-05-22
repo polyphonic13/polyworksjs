@@ -5,5 +5,7 @@ Polyworks.Events = {
 	RESUME_GAME: 'resumeGame',
 	TURN_ENDED: 'turnEnded',
 	SHOW_NOTIFICATION: 'showNotification',
-	HIDE_NOTIFICATION: 'hideNotification'
+	HIDE_NOTIFICATION: 'hideNotification',
+	ZOOM_IN: 'zoomIn',
+	ZOOM_OUT: 'zoomOut'
 };

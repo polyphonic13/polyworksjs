@@ -84,11 +84,11 @@ Polyworks.DOMManager = (function() {
 		Polyworks.Utils.each(
 			images,
 			function(image) {
-				this.images[image.id] = new Image();
-				this.images[image.id].onload = function(loader) {
+				this.images[image.name] = new Image();
+				this.images[image.name].onload = function(loader) {
 					loader.imageLoaded();
 				}(this);
-				this.images[image.id].src = image.src;
+				this.images[image.name].src = image.src;
 			},
 			this
 		);

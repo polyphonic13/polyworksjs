@@ -16,8 +16,8 @@ Polyworks.Initializer = (function(){
 	
 	module.setGlobalAttributes = function(config, controller) {
 		controller.config = config;
-		if(config.id) {
-			controller.id = config.id;
+		if(config.name) {
+			controller.name = config.name;
 		}
 	};
 	

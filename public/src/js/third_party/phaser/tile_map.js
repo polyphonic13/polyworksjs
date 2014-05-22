@@ -3,12 +3,12 @@ Polyworks.PhaserTileMap = (function() {
 	
 	var _map;
 	var _layer;
+	var _layers = {};
 	var _marker; 
 	var _currentTile; 
 	
 	function TileMapController(config) {
-		trace('TileMapTileMapController['+config.id+']/constructor, config = ', config);
-		this.id = config.id;
+		// trace('TileMapTileMapController['+config.name+']/constructor, config = ', config);
 		this.config = config;
 
 
@@ -19,10 +19,30 @@ Polyworks.PhaserTileMap = (function() {
 
 	    _currentTile = _map.getTile(2, 3);
 
+
+/*
 	    _layer = _map.createLayer('TileLayer1');
 		_layer.alpha = 0.75;
-		
 	    _layer.resizeWorld();
+*/
+
+		if(config.layers) {
+			var layerName;
+			Polyworks.Utils.each(
+				config.layers,
+				function(layer) {
+					// trace('\tmaking layer['+layer.name+']: ', layer);
+					_layers[layer.name] = _map.createLayer(layer.name);
+					Polyworks.Initializer.setViewAttributes(layer.attrs, layer);
+					if(layer.resizeWorld) {
+						_layers[layer.name].resizeWorld();
+					}
+					layerName = layer.name;
+				},
+				this
+			);
+			this.currentLayer = config.defaultLayer || layerName;
+		}
 
 	    _marker = this.phaser.add.graphics();
 	    _marker.lineStyle(2, 0x000000, 1);
@@ -31,20 +51,14 @@ Polyworks.PhaserTileMap = (function() {
 	    cursors = this.phaser.input.keyboard.createCursorKeys();
 	
 		this.view = _map;
+		this.view.name = this.name = config.name;
+
 		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 
+		Polyworks.EventCenter.bind(Polyworks.Events.ZOOM_IN, this.onZoomIn, this);
+		Polyworks.EventCenter.bind(Polyworks.Events.ZOOM_OUT, this.onZoomOut, this);
+
 /*
-if(config.layers) {
-	_layers = {};
-	Polyworks.Utils.each(
-		config.layers,
-		function(layer) {
-			trace('\tmaking layer['+layer.id+']: ', layer);
-			_layers[layer.id] = this.view.create(layer.id, layer.xCells, layer.yCells, this.config.cellSize, this.config.cellSize);
-		},
-		this
-	);
-}
 		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
 		
 		// this.view.inputEnabled = true;
@@ -64,7 +78,49 @@ if(config.layers) {
 
 	    tileSelector.fixedToCamera = true;
 */	
-	}
+	};
+
+	TileMapController.prototype.onZoomIn = function(event) {
+		this.zoomLayers(false, event.allLayers);
+	};
+	
+	TileMapController.prototype.onZoomOut = function(event) {
+		this.zoomLayers(true, event.allLayers);
+	};
+	
+	TileMapController.prototype.zoomLayers = function(out, allLayers) {
+		if(allLayers) {
+			Polyworks.Utils.each(
+				_layers,
+				function(layer) {
+					this.zoomLayer(layer, out);
+				},
+				this
+			);
+		} else {
+			this.zoomLayer(_layers[this.currentLayer], out);
+		}
+	};
+	
+	TileMapController.prototype.zoomLayer = function(layer, out) {
+		var zoomCeil = this.view.zoomCeil;
+		var zoomFloor = this.view.zoomFloor;
+		var zoomFactor = this.view.zoomFactor;
+		// trace('zoomLayer, out = ' + out, 'layer = ', layer, 'zoomFloor = ' + zoomFloor + ', zoomCeil = ' + zoomCeil);
+		if(out) {
+			if(layer.scale.x > zoomFloor) {
+				// trace('\t\tzooming out');
+				layer.scale.x -= zoomFactor;
+				layer.scale.y -= zoomFactor;
+			}
+		} else {
+		 	if(layer.scale.x < zoomCeil) {
+				// trace('\t\tzooming in');
+				layer.scale.x += zoomFactor;
+				layer.scale.y += zoomFactor;
+			}
+		}
+	};
 
 	TileMapController.prototype.update = function() {
 		// trace('TileMapTileMapController/update, this = ', this);
@@ -78,41 +134,42 @@ if(config.layers) {
 		
 		  if (this.phaser.input.mousePointer.isDown)
 		  {
+			var layer = _layers[this.currentLayer];
 			// trace('mouse pointer down');
 		      if (this.phaser.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
 		      {
-		          _currentTile = _map.getTile(_layer.getTileX(_marker.x), _layer.getTileY(_marker.y));
+		          _currentTile = _map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y));
 				// trace('\tshift down, _currentTile = ', _currentTile);
 		      }
 		      else
 		      {
-		          if (_map.getTile(_layer.getTileX(_marker.x), _layer.getTileY(_marker.y)) != _currentTile)
+		          if (_map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y)) != _currentTile)
 		          {
 						// trace('putting a tile in a new location');
-		              _map.putTile(_currentTile, _layer.getTileX(_marker.x), _layer.getTileY(_marker.y));
+		              _map.putTile(_currentTile, layer.getTileX(_marker.x), layer.getTileY(_marker.y));
 		          }
 		      }
 		  }
 	};
 	// TileMapController.prototype.onInputDown = function(sprite, pointer) {
-	// 	trace('TileMapTileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
+	// 	// trace('TileMapTileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
 	// 	this.pickTitle(sprite, pointer);
 	// };
 	// 
 	// TileMapController.prototype.pickTile = function(sprite, pointer) {
 	//     currentTile = PhaserGame.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
-	// 	trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
+	// 	// trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
 	// };
 
 	Polyworks.Initializer.addStandardMethods(TileMapController);
 
 	module.build = function(tilemaps) {
-		trace('PhaserTileMap/build');
+		// trace('PhaserTileMap/build');
 		var collection = {};
 		Polyworks.Utils.each(
 			tilemaps,
 			function(tilemap) {
-				collection[tilemap.id] = new Polyworks.PhaserTileMap.TileMapController(tilemap);
+				collection[tilemap.name] = new Polyworks.PhaserTileMap.TileMapController(tilemap);
 			},
 			this
 		);

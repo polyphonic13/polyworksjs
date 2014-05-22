@@ -9,8 +9,7 @@ Polyworks.PhaserView = (function() {
 	var module = {};
 	
 	function ViewController(config) {
-		trace('ViewController['+config.id+']/constructor');
-		this.id = config.id;
+		// trace('ViewController['+config.name+']/constructor');
 		this.config = config;
 
 		switch(config.type) {
@@ -53,6 +52,8 @@ Polyworks.PhaserView = (function() {
 		if(config.physical && this.view.body) {
 			this.physicsController = new Polworks.PhaserPhysics.PhysicsController(config.physical, this);
 		}
+
+		this.view.name = this.name = config.name;
 	};
 	
 	ViewController.prototype.update = function() {
@@ -66,7 +67,7 @@ Polyworks.PhaserView = (function() {
 		Polyworks.Utils.each(
 			params,
 			function(param, key) {
-				trace('\tparam['+key+'] = ' + param);
+				// trace('\tparam['+key+'] = ' + param);
 				this.view[key] = param;
 			},
 			this
@@ -74,9 +75,9 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	ViewController.prototype.callMethod = function(method, args) {
-		trace('ViewController['+this.id+']/callMethod, method = ' + method + '\n\targs = ' + args);
+		// trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
 		if(this.view[method]) {
-			trace('\tview has method, ', this.view);
+			// trace('\tview has method, ', this.view);
 			this.view[method](args);
 		}
 	};
@@ -124,30 +125,30 @@ Polyworks.PhaserView = (function() {
 	module.ViewController = ViewController;
 	
 	module.build = function(views) {
-		trace('PhaserView/factory, views = ', views);
+		// trace('PhaserView/factory, views = ', views);
 		var collection = {};
 
 		Polyworks.Utils.each(views,
 			function(view) {
-				trace('\tview.type = ' + view.type);
-				collection[view.id] = new Polyworks.PhaserView.ViewController(view);
+				// trace('\tview.type = ' + view.type);
+				collection[view.name] = new Polyworks.PhaserView.ViewController(view);
 				if(view.type === viewTypes.GROUP) {
-					collection[view.id].children = Polyworks.PhaserView.build(view.views);
-					Polyworks.PhaserView.initGroup(collection[view.id]);
+					collection[view.name].children = Polyworks.PhaserView.build(view.views);
+					Polyworks.PhaserView.initGroup(collection[view.name]);
 				}
 			},
 			this
 		);
-		trace('PhaserView, end build, collection = ', collection);
+		// trace('PhaserView, end build, collection = ', collection);
 		return collection;
 	};
 	
 	module.initGroup = function(controller) {
-		trace('PhaserView/initGroup, controller = ', controller);
+		// trace('PhaserView/initGroup, controller = ', controller);
 		Polyworks.Utils.each(
 			controller.children,
 			function(child) {
-				trace('\tchild = ', child);
+				// trace('\tchild = ', child);
 				controller.view.add(child.view);
 				child.group = controller;
 			},

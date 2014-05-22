@@ -82,7 +82,7 @@ var GameConfig = (function() {
 			screens: [
 			// start
 			{
-				id: 'start',
+				name: 'start',
 				world: {
 					x: 0,
 					y: 0,
@@ -121,7 +121,7 @@ var GameConfig = (function() {
 				// bg
 				{
 					type: 'sprite',
-					id: 'start-background',
+					name: 'start-background',
 					img: 'startBg',
 					x: 0,
 					y: 0,
@@ -133,7 +133,7 @@ var GameConfig = (function() {
 				// game start button
 				{
 					type: 'button',
-					id: 'game-start-button',
+					name: 'game-start-button',
 					img: 'buttonGameStart',
 					x: 0,
 					y: (Polyworks.Stage.gameH * 0.7),
@@ -151,7 +151,7 @@ var GameConfig = (function() {
 				// manual button
 				{
 					type: 'button',
-					id: 'manual-button',
+					name: 'manual-button',
 					img: 'blockClear',
 					x: 0,
 					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 2.5),
@@ -170,7 +170,7 @@ var GameConfig = (function() {
 			},
 			// play
 			{
-				id: 'play',
+				name: 'play',
 				world: {
 					x: 0,
 					y: 0,
@@ -194,8 +194,6 @@ var GameConfig = (function() {
 					tilemaps: [
 					'greyTiles'
 					]
-				},
-				attrs: {
 				},
 				listeners: [
 				{
@@ -237,7 +235,7 @@ var GameConfig = (function() {
 						},
 						this
 					);
-					this.turnTimer.start();
+					// this.turnTimer.start();
 				},
 				shutdown: function() {
 					Polyworks.PhaserTime.removeTimer('turnTime');
@@ -245,18 +243,26 @@ var GameConfig = (function() {
 				tilemaps: [
 				{
 					type: 'PhaserTileMap',
-					id: 'tile-map',
+					name: 'tile-map',
 					img: 'grassTiles',
 					attrs: {
 						x: 0,
 						y: (Polyworks.Stage.unit * 3)
 					},
 					cellSize: (Polyworks.Stage.unit),
+					deafultLayer: 'TileLayer1',
+					attrs: {
+						zoomFactor: 0.25,
+						zoomCeil: 2.5,
+						zoomFloor: 1
+					},
 					layers: [
 					{
-						id: 'main',
-						xCells: 10,
-						yCells: 10
+						name: 'TileLayer1',
+						resizeWorld: true,
+						attrs: {
+							alpha: 0.75
+						}
 					}
 					]
 				}
@@ -265,7 +271,7 @@ var GameConfig = (function() {
 				// bg
 				{
 					type: 'sprite',
-					id: 'play-background',
+					name: 'play-background',
 					img: 'worldBg',
 					x: 0,
 					y: 0,
@@ -277,13 +283,13 @@ var GameConfig = (function() {
 				// plus/minus group
 				{
 					type: 'group',
-					id: 'start-test-group',
+					name: 'start-test-group',
 					views: [
 					{
 						type: 'sprite',
-						id: 'plus-button',
+						name: 'plus-button',
 						img: 'buttonPlus',
-						x: Polyworks.Stage.unit * 0.1,
+						x: Polyworks.Stage.unit * 0.2,
 						y: Polyworks.Stage.unit * 4,
 						attrs: {
 							width: Polyworks.Stage.unit,
@@ -292,23 +298,25 @@ var GameConfig = (function() {
 						},
 						input: {
 							inputUp: function() {
-								trace('plus pressed');
+								// trace('plus pressed');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_IN });
 							}
 						}
 					},
 					{
 						type: 'sprite',
-						id: 'minus-button',
+						name: 'minus-button',
 						img: 'buttonMinus',
-						x: Polyworks.Stage.unit * 0.1,
-						y: Polyworks.Stage.unit * 5.1,
+						x: Polyworks.Stage.unit * 0.2,
+						y: Polyworks.Stage.unit * 5.2,
 						attrs: {
 							width: Polyworks.Stage.unit,
 							height: Polyworks.Stage.unit
 						},
 						input: {
 							inputUp: function() {
-								trace('minus pressed');
+								// trace('minus pressed');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_OUT });
 							}
 						}
 					}
@@ -317,7 +325,7 @@ var GameConfig = (function() {
 				// turn timer text
 				{
 					type: 'text',
-					id: 'turn-time',
+					name: 'turn-time',
 					text: 'Turn time: ' + TIME_PER_TURN,
 					style: {
 					    font: "24px Arial",
@@ -332,7 +340,7 @@ var GameConfig = (function() {
 				// pause button
 				{
 					type: 'button',
-					id: 'pause-button',
+					name: 'pause-button',
 					img: 'buttonPause',
 					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
 					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
@@ -350,7 +358,7 @@ var GameConfig = (function() {
 				// play button
 				{
 					type: 'button',
-					id: 'resume-button',
+					name: 'resume-button',
 					img: 'buttonPlay',
 					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
 					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
@@ -369,7 +377,7 @@ var GameConfig = (function() {
 			},
 			// manual
 			{
-				id: 'manual',
+				name: 'manual',
 				world: {
 					x: 0,
 					y: 0,
@@ -400,7 +408,7 @@ var GameConfig = (function() {
 				views: [
 				{
 					type: 'sprite',
-					id: 'manual-background',
+					name: 'manual-background',
 					img: 'manualBg',
 					x: 0,
 					y: 0,
@@ -411,7 +419,7 @@ var GameConfig = (function() {
 				},
 				{
 					type: 'button',
-					id: 'close-button',
+					name: 'close-button',
 					img: 'buttonClose',
 					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.5),
 					y: (Polyworks.Stage.unit * 0.5),

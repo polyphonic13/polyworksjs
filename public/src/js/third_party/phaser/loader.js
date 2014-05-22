@@ -11,7 +11,7 @@ Polyworks.PhaserLoader = (function() {
 	};
 	
 	module.init = function(config, phaser) {
-		trace('PhaserLoader/init, config = ', config);
+		// trace('PhaserLoader/init, config = ', config);
 		_config = config;
 		_phaser = phaser;
 		
@@ -32,7 +32,7 @@ Polyworks.PhaserLoader = (function() {
 				assets.images,
 				function(image) {
 					if(!this.loaded.images[image]) {
-						trace('\t------- loading: image = ' + image + ', url = ' + images[image]);
+						// trace('\t------- loading: image = ' + image + ', url = ' + images[image]);
 						_phaser.load.image(image, images[image]);
 						this.loaded.images[image] = true;
 					}
@@ -48,7 +48,7 @@ Polyworks.PhaserLoader = (function() {
 				assets.sprites,
 				function(sprite) {
 					if(!this.loaded.sprites[sprite]) {
-						trace('\tloading: sprite[' + sprite + '] = ', sprites[sprite]);
+						// trace('\tloading: sprite[' + sprite + '] = ', sprites[sprite]);
 						_phaser.load.spritesheet(sprite, sprites[sprite].url, sprites[sprite].width, sprites[sprite].height);
 					}
 				},
@@ -63,7 +63,7 @@ Polyworks.PhaserLoader = (function() {
 				assets.tilemaps,
 				function(tilemap) {
 					if(!this.loaded.tilemaps[tilemap]) {
-						trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
+						// trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
 						_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, Phaser.Tilemap.TILED_JSON ); // Phaser.Tilemap.TILED_JSON = 1
 					}
 				},
@@ -73,7 +73,7 @@ Polyworks.PhaserLoader = (function() {
 	}
 	
 	function _initAssets(assets, type) {
-		trace('Loader/_initAssets, this = ', this);
+		// trace('Loader/_initAssets, this = ', this);
 		Polyworks.Utils.each(
 			assets,
 			function(asset, key) {

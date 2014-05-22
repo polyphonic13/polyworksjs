@@ -8,7 +8,7 @@ Polyworks.DisplayFactory = (function() {
 		Polyworks.Utils.each(views,
 			function(view) {
 				trace('\tview.type = ' + view.type);
-				collection[view.id] = new Polyworks.PhaserView.ViewController(view);
+				collection[view.name] = new Polyworks.PhaserView.ViewController(view);
 			},
 			this
 		);

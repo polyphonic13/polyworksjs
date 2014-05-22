@@ -3,9 +3,9 @@ Polyworks.StateManager = (function() {
 	var module = {};
 	
 	function Controller(config) {
-		trace('StateController/constructor, config = ', config);
+		// trace('StateController/constructor, config = ', config);
 		this.config = config;
-		this.id = config.id;
+		this.name = config.name;
 
 		Polyworks.Utils.each(
 			config.attrs,
@@ -24,15 +24,15 @@ Polyworks.StateManager = (function() {
 			this
 			);
 		}
-		PhaserGame.phaser.state.add(this.id, this, false);
+		PhaserGame.phaser.state.add(this.name, this, false);
 	};
 	
 	Controller.prototype.start = function() {
-		trace('StateController['+this.id+']/start');
+		// trace('StateController['+this.name+']/start');
 	};
 
 	Controller.prototype.preload = function() {
-		trace('StateController['+this.id+']/preload, preloaded = ' + this.preloaded);
+		// trace('StateController['+this.name+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
 			Polyworks.PhaserLoader.load(this.config.assets);
 			this.preloaded = true;
@@ -40,7 +40,7 @@ Polyworks.StateManager = (function() {
 	};
 	
 	Controller.prototype.create = function() {
-		trace('StateController['+this.id+']/create');
+		// trace('StateController['+this.name+']/create');
 		var world = this.config.world;
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
@@ -70,7 +70,7 @@ Polyworks.StateManager = (function() {
 	};
 	
 	Controller.prototype.getView = function(id) {
-		trace('StateController['+this.id+']/getView, id = ' + id);
+		// trace('StateController['+this.name+']/getView, id = ' + id);
 		if(!this.views.hasOwnProperty(id)) {
 			return;
 		}
@@ -78,7 +78,7 @@ Polyworks.StateManager = (function() {
 	};
 	
 	Controller.prototype.shutdown = function() {
-		trace('StateController['+this.id+']/shutdown');
+		// trace('StateController['+this.name+']/shutdown');
 		if(this.config.shutdown) {
 			this.config.shutdown.call(this);
 		}
@@ -106,7 +106,7 @@ Polyworks.StateManager = (function() {
 	module.Controller = Controller;
 	
 	module.init = function(config) {
-		trace('StateManager/init, config = ', config);
+		// trace('StateManager/init, config = ', config);
 		this.config = config;
 		this.states = {};
 		this.currentId = '';
@@ -114,21 +114,21 @@ Polyworks.StateManager = (function() {
 		Polyworks.Utils.each(
 			config,
 			function(state) {
-				trace('\tadding state[' + state.id + ']');
-				// this.states[state.id] = new this.Controller(state);
-				this.states[state.id] = new this.Controller(state);
+				// trace('\tadding state[' + state.name + ']');
+				// this.states[state.name] = new this.Controller(state);
+				this.states[state.name] = new this.Controller(state);
 			},
 			this
 		);
-		trace('\tstates = ', this.states);
+		// trace('\tstates = ', this.states);
 	};
 	
 	module.changeState = function(id) {
-		trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
+		// trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
 		if(this.currentId !== id) {
 			if(this.states.hasOwnProperty(id)) {
 				this.currentId = id;
-				trace('\tstates['+id+'] = ', this.states[id]);
+				// trace('\tstates['+id+'] = ', this.states[id]);
 				// this.states[id].activate();
 				PhaserGame.phaser.state.start(id, this.states[id].clearWorld, this.states[id].clearCache);
 			}
@@ -136,7 +136,7 @@ Polyworks.StateManager = (function() {
 	};
 
 	module.getView = function(id) {
-		trace('StateManager/getView, id = ' + id);
+		// trace('StateManager/getView, id = ' + id);
 		return this.state[this.currentId].getView();
 	};
 	

@@ -6,7 +6,7 @@ Polyworks.PhaserInput = (function() {
 		trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
 		this.config = config;
 		this.controller = controller;
-		this.id = controller.id;
+		this.name = controller.name;
 
 		var view = controller.view;
 
@@ -27,14 +27,14 @@ Polyworks.PhaserInput = (function() {
 	}
 	
 	InputController.prototype.inputDown = function(event) {
-		trace('InputController['+this.id+']/inputDown, event = ', event, '\tconfig = ', this.config);
+		// trace('InputController['+this.name+']/inputDown, event = ', event, '\tconfig = ', this.config);
 		if(this.config.inputDown) {
 			this.config.inputDown.call(this);
 		}
 	};
 	
 	InputController.prototype.inputUp = function(event) {
-		trace('InputController['+this.id+']/inputUp, event = ', event, '\tconfig = ', this.config);
+		// trace('InputController['+this.name+']/inputUp, event = ', event, '\tconfig = ', this.config);
 		if(this.config.inputUp) {
 			this.config.inputUp.call(this);
 		}

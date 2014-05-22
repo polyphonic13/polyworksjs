@@ -5,7 +5,7 @@ Polyworks.PhaserAnimation = (function() {
 	function AnimationController(config, controller, id) {
 		this.config = config;
 		this.controller = controller;
-		this.id = controller.id;
+		this.name = controller.name;
 
 		var animations = config.animations;
 		this.currentAnimation = config.defaultAnimation || '';
