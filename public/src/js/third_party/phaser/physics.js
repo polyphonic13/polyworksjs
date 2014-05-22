@@ -1,7 +1,6 @@
 Polyworks.PhaserPhysics = (function() {
 	var module = {};
 
-	module.physics = PhaserGame.phaser.physics; 
 	module.controllers = [];
 	
 	function PhysicsController(config, controller) {
@@ -62,6 +61,10 @@ Polyworks.PhaserPhysics = (function() {
 	};
 	
 	module.PhysicsController = PhysicsController; 
+	
+	module.init = function() {
+		module.physics = PhaserGame.phaser.physics; 
+	};
 	
 	module.checkAllCollisions = function(targets) {
 		Polyworks.Utils.each(

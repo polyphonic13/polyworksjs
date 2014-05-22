@@ -55,6 +55,12 @@ Polyworks.PhaserView = (function() {
 		}
 	};
 	
+	ViewController.prototype.update = function() {
+		if(this.view.update) {
+			this.view.update();
+		}
+	};
+	
 	ViewController.prototype.set = function(params) {
 		// trace('ViewController/set, view = ', this.view);
 		Polyworks.Utils.each(
@@ -150,5 +156,16 @@ Polyworks.PhaserView = (function() {
 
 	};
 	
+	module.update = function(controllers) {
+		Polyworks.Utils.each(
+			controllers,
+			function(controller) {
+				
+				controller.update();
+			},
+			this
+		);
+	};
+
 	return module;
 }());

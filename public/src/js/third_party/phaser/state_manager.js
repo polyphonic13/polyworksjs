@@ -1,41 +1,3 @@
-/*
-attrs: [
-{
-	name: 'menuGroup',
-	cl: 'GroupCollection',
-	attrs: [
-	{
-		name: 'gameTitle',
-		cl: 'Sprite',
-		attrs: {
-			img: 'gameTitle',
-			phaser: {
-				// width: winW
-				width: stageUnit * 6,
-				height: stageUnit * 6
-			},
-			start: {
-				// x: 0,
-				x: (winW/2 - (stageUnit * 3)),
-				y: 0
-			}
-		}
-	}
-	]
-},
-{
-	name: 'menuControls',
-	cl: 'ControlButtons',
-	type: 'menu',
-	attrs: {
-		start: {
-			x: 0,
-			y: 0
-		}
-	}
-}
-]
-*/
 Polyworks.StateManager = (function() {
 
 	var module = {};
@@ -81,11 +43,30 @@ Polyworks.StateManager = (function() {
 		trace('StateController['+this.id+']/create');
 		var world = this.config.world;
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
-		this.views = Polyworks.PhaserView.build(this.config.views);
+
+		if(this.config.tilemaps) {
+			this.tileMaps = Polyworks.PhaserTileMap.build(this.config.tilemaps);
+		}
+
+		if(this.config.views) {
+			this.views = Polyworks.PhaserView.build(this.config.views);
+		}
 
 		if(this.config.create) {
 			this.config.create.call(this);
 		}
+	};
+	
+	Controller.prototype.update = function() {
+		if(this.config.update) {
+			this.config.update.call(this);
+		}
+		// if(this.views) {
+		// 	Polyworks.PhaserView.update(this.views);
+		// }
+		// if(this.tilesMaps) {
+			Polyworks.PhaserTileMap.update(this.tileMaps);
+		// }
 	};
 	
 	Controller.prototype.getView = function(id) {
@@ -94,23 +75,6 @@ Polyworks.StateManager = (function() {
 			return;
 		}
 		return this.views[id];
-	};
-	
-	Controller.prototype.update = function() {
-		if(this.config.update) {
-			this.config.update.call(this);
-		}
-
-		// trace('StateController['+this.id+']/update');
-		// Polyworks.Utils.each(
-		// 	this.views,
-		// 	function(view) {
-		// 		if(view.update) {
-		// 			view.update();
-		// 		}
-		// 	},
-		// 	this
-		// );
 	};
 	
 	Controller.prototype.shutdown = function() {
@@ -141,7 +105,7 @@ Polyworks.StateManager = (function() {
 
 	module.Controller = Controller;
 	
-	module.init = function(config, phaser) {
+	module.init = function(config) {
 		trace('StateManager/init, config = ', config);
 		this.config = config;
 		this.states = {};

@@ -69,6 +69,7 @@ var PhaserGame = (function() {
 	
 	function _create() {
 		trace('PhaserGame/create');
+		Polyworks.PhaserPhysics.init();
 		Polyworks.StateManager.init(module.config.screens, module.phaser);
 		Polyworks.StateManager.changeState(module.config.defaultScreen);
 	}

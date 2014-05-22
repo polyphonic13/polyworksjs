@@ -6,8 +6,8 @@ Polyworks.PhaserTileMap = (function() {
 	var _marker; 
 	var _currentTile; 
 	
-	function Controller(config) {
-		trace('TileMapController['+config.id+']/constructor, config = ', config);
+	function TileMapController(config) {
+		trace('TileMapTileMapController['+config.id+']/constructor, config = ', config);
 		this.id = config.id;
 		this.config = config;
 
@@ -20,12 +20,13 @@ Polyworks.PhaserTileMap = (function() {
 	    _currentTile = _map.getTile(2, 3);
 
 	    _layer = _map.createLayer('TileLayer1');
-
+		_layer.alpha = 0.75;
+		
 	    _layer.resizeWorld();
 
 	    _marker = this.phaser.add.graphics();
 	    _marker.lineStyle(2, 0x000000, 1);
-	    _marker.drawRect(0, 0, 32, 32);
+	    _marker.drawRect(0, 0, 3, 3);
 
 	    cursors = this.phaser.input.keyboard.createCursorKeys();
 	
@@ -65,11 +66,16 @@ if(config.layers) {
 */	
 	}
 
-	Controller.prototype.update = function() {
-		// trace('TileMapController/update, this = ', this);
-		  _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 32;
-		  _marker.y = _layer.getTileY(this.phaser.input.activePointer.worldY) * 32;
-
+	TileMapController.prototype.update = function() {
+		// trace('TileMapTileMapController/update, this = ', this);
+		  // _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 32;
+		  // _marker.y = _layer.getTileY(this.phaser.input.activePointer.worldY) * 32;
+		  // _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 31;
+		  // _marker.y = _layer.getTileY(this.phaser.input.activePointer.worldY) * 31;
+		
+		var pointerX = _marker.x = this.phaser.input.activePointer.worldX;
+		var pointerY = _marker.y = this.phaser.input.activePointer.worldY;
+		
 		  if (this.phaser.input.mousePointer.isDown)
 		  {
 			// trace('mouse pointer down');
@@ -87,38 +93,43 @@ if(config.layers) {
 		          }
 		      }
 		  }
-
-	    // if (cursors.left.isDown)
-	    // {
-	    //     game.camera.x -= 4;
-	    // }
-	    // else if (cursors.right.isDown)
-	    // {
-	    //     game.camera.x += 4;
-	    // }
-	    // 
-	    // if (cursors.up.isDown)
-	    // {
-	    //     game.camera.y -= 4;
-	    // }
-	    // else if (cursors.down.isDown)
-	    // {
-	    //     game.camera.y += 4;
-	    // }
 	};
-	// Controller.prototype.onInputDown = function(sprite, pointer) {
-	// 	trace('TileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
+	// TileMapController.prototype.onInputDown = function(sprite, pointer) {
+	// 	trace('TileMapTileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
 	// 	this.pickTitle(sprite, pointer);
 	// };
 	// 
-	// Controller.prototype.pickTile = function(sprite, pointer) {
+	// TileMapController.prototype.pickTile = function(sprite, pointer) {
 	//     currentTile = PhaserGame.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
-	// 	trace('TileMapController/pickTile, currentTile = ', currentTile);
+	// 	trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
 	// };
 
-	Polyworks.Initializer.addStandardMethods(Controller);
+	Polyworks.Initializer.addStandardMethods(TileMapController);
+
+	module.build = function(tilemaps) {
+		trace('PhaserTileMap/build');
+		var collection = {};
+		Polyworks.Utils.each(
+			tilemaps,
+			function(tilemap) {
+				collection[tilemap.id] = new Polyworks.PhaserTileMap.TileMapController(tilemap);
+			},
+			this
+		);
+		return collection;
+	};
 	
-	module.Controller = Controller; 
+	module.update = function(controllers) {
+		Polyworks.Utils.each(
+			controllers,
+			function(controller) {
+				controller.update();
+			},
+			this
+		);
+	};
+	
+	module.TileMapController = TileMapController; 
 	
 	return module;
 }());
