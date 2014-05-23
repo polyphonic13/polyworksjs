@@ -52,14 +52,37 @@ Polyworks.StateManager = (function() {
 			this.views = Polyworks.PhaserView.build(this.config.views);
 		}
 
+		if(this.config.inputs) {
+			this.inputs = {};
+			Polyworks.Utils.each(
+				this.config.inputs,
+				function(input) {
+					this.inputs[input.name] = new Polyworks.PhaserInput[input.type](input);
+				},
+				this
+			);
+		}
+
 		if(this.config.create) {
 			this.config.create.call(this);
 		}
+		
 	};
 	
 	Controller.prototype.update = function() {
 		if(this.config.update) {
 			this.config.update.call(this);
+		}
+		if(this.inputs) {
+			Polyworks.Utils.each(
+				this.inputs,
+				function(input) {
+					if(input.update) {
+						input.update();
+					}
+				},
+				this
+			);
 		}
 		// if(this.views) {
 		// 	Polyworks.PhaserView.update(this.views);

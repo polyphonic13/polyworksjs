@@ -40,6 +40,39 @@ Polyworks.PhaserInput = (function() {
 		}
 	};
 	
+	InputController.prototype.drag = function(event) {
+		
+	};
+	
+	InputController.prototype.test = function() {
+		trace('test');
+	};
+	
+	function CameraDragger(config) {
+		this.name = config.name;
+		this.config = config;
+		this.camera = null;
+	};
+	
+	CameraDragger.prototype.update = function() {
+	    this.dragCamera(PhaserGame.phaser.input.mousePointer);
+	    this.dragCamera(PhaserGame.phaser.input.pointer1);
+	};
+	
+	CameraDragger.prototype.dragCamera = function(pointer) {
+	    if (!pointer.timeDown) { return; }
+	    if (pointer.isDown && !pointer.targetObject) {
+	        if (this.camera) {
+	            PhaserGame.phaser.camera.x += this.camera.x - pointer.position.x;
+	            PhaserGame.phaser.camera.y += this.camera.y - pointer.position.y;
+	        }
+	        this.camera = pointer.position.clone();
+	    }
+	    if (pointer.isUp) { this.camera = null; }
+	};
+	
+	module.CameraDragger = CameraDragger;
+	
 	module.InputController = InputController; 
 	
 	return module;

@@ -43,13 +43,12 @@ Polyworks.PhaserTileMap = (function() {
 			);
 			this.currentLayer = config.defaultLayer || layerName;
 		}
-
+		
+		// painting marker thing
 	    _marker = this.phaser.add.graphics();
 	    _marker.lineStyle(2, 0x000000, 1);
 	    _marker.drawRect(0, 0, 3, 3);
 
-	    cursors = this.phaser.input.keyboard.createCursorKeys();
-	
 		this.view = _map;
 		this.view.name = this.name = config.name;
 
@@ -80,6 +79,10 @@ Polyworks.PhaserTileMap = (function() {
 */	
 	};
 
+	TileMapController.prototype.onInputDown = function(event) {
+		trace('TileMapController/onInputDown, event = ' + event);
+	};
+	
 	TileMapController.prototype.onZoomIn = function(event) {
 		this.zoomLayers(false, event.allLayers);
 	};
@@ -132,24 +135,24 @@ Polyworks.PhaserTileMap = (function() {
 		var pointerX = _marker.x = this.phaser.input.activePointer.worldX;
 		var pointerY = _marker.y = this.phaser.input.activePointer.worldY;
 		
-		  if (this.phaser.input.mousePointer.isDown)
-		  {
-			var layer = _layers[this.currentLayer];
-			// trace('mouse pointer down');
-		      if (this.phaser.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
-		      {
-		          _currentTile = _map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y));
-				// trace('\tshift down, _currentTile = ', _currentTile);
-		      }
-		      else
-		      {
-		          if (_map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y)) != _currentTile)
-		          {
-						// trace('putting a tile in a new location');
-		              _map.putTile(_currentTile, layer.getTileX(_marker.x), layer.getTileY(_marker.y));
-		          }
-		      }
-		  }
+			// 		  if (this.phaser.input.mousePointer.isDown)
+			// 		  {
+			// var layer = _layers[this.currentLayer];
+			// // trace('mouse pointer down');
+			// 		      if (this.phaser.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
+			// 		      {
+			// 		          _currentTile = _map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y));
+			// 	// trace('\tshift down, _currentTile = ', _currentTile);
+			// 		      }
+			// 		      else
+			// 		      {
+			// 		          if (_map.getTile(layer.getTileX(_marker.x), layer.getTileY(_marker.y)) != _currentTile)
+			// 		          {
+			// 			// trace('putting a tile in a new location');
+			// 		              _map.putTile(_currentTile, layer.getTileX(_marker.x), layer.getTileY(_marker.y));
+			// 		          }
+			// 		      }
+			// 		  }
 	};
 	// TileMapController.prototype.onInputDown = function(sprite, pointer) {
 	// 	// trace('TileMapTileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);

@@ -78,7 +78,7 @@ var GameConfig = (function() {
 				],
 				tilemaps: []
 			},
-			defaultScreen: 'start',
+			defaultScreen: 'play',
 			screens: [
 			// start
 			{
@@ -240,6 +240,12 @@ var GameConfig = (function() {
 				shutdown: function() {
 					Polyworks.PhaserTime.removeTimer('turnTime');
 				},
+				inputs: [
+				{
+					type: 'CameraDragger',
+					name: 'camera-dragger'
+				}
+				],
 				tilemaps: [
 				{
 					type: 'PhaserTileMap',
@@ -277,13 +283,17 @@ var GameConfig = (function() {
 					y: 0,
 					attrs: {
 						width: Polyworks.Stage.gameW,
-						height: Polyworks.Stage.gameH
+						height: Polyworks.Stage.gameH,
+						fixedToCamera: true
 					}
 				},
-				// plus/minus group
+				// buttons group
 				{
 					type: 'group',
-					name: 'start-test-group',
+					name: 'start-state-buttons',
+					attrs: {
+						fixedToCamera: true
+					},
 					views: [
 					{
 						type: 'sprite',
@@ -319,59 +329,68 @@ var GameConfig = (function() {
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_OUT });
 							}
 						}
+					},
+					// pause button
+					{
+						type: 'button',
+						name: 'pause-button',
+						img: 'buttonPause',
+						x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
+						y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
+						attrs: {
+							width: Polyworks.Stage.unit * 1.5,
+							height: Polyworks.Stage.unit * 1.5,
+							visible: true
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
+					},
+					// play button
+					{
+						type: 'button',
+						name: 'resume-button',
+						img: 'buttonPlay',
+						x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
+						y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
+						attrs: {
+							width: Polyworks.Stage.unit * 1.5,
+							height: Polyworks.Stage.unit * 1.5,
+							visible: false
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
 					}
 					]
 				},
 				// turn timer text
 				{
-					type: 'text',
-					name: 'turn-time',
-					text: 'Turn time: ' + TIME_PER_TURN,
-					style: {
-					    font: "24px Arial",
-				        fill: "#ffffff"
+					type: 'group',
+					name: 'start-state-text',
+					attrs: {
+						fixedToCamera: true
 					},
-					x: 0,
-					y: (Polyworks.Stage.unit * 2),
-					position: {
-						centerX: true
+					views: [
+					{
+						type: 'text',
+						name: 'turn-time',
+						text: 'Turn time: ' + TIME_PER_TURN,
+						style: {
+						    font: "24px Arial",
+					        fill: "#ffffff"
+						},
+						x: 0,
+						y: (Polyworks.Stage.unit * 2),
+						position: {
+							centerX: true
+						}
 					}
-				},
-				// pause button
-				{
-					type: 'button',
-					name: 'pause-button',
-					img: 'buttonPause',
-					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
-					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
-					attrs: {
-						width: Polyworks.Stage.unit * 1.5,
-						height: Polyworks.Stage.unit * 1.5,
-						visible: true
-					},
-					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
-					},
-					context: this,
-					frames: [0, 1, 1, 0]
-				},
-				// play button
-				{
-					type: 'button',
-					name: 'resume-button',
-					img: 'buttonPlay',
-					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 1.75),
-					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 4.75),
-					attrs: {
-						width: Polyworks.Stage.unit * 1.5,
-						height: Polyworks.Stage.unit * 1.5,
-						visible: false
-					},
-					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
-					},
-					context: this,
-					frames: [0, 1, 1, 0]
+					]
 				}
 				]
 			},

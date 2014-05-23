@@ -2,6 +2,8 @@ var PhaserGame = (function() {
 	var _inPlay = false;
 	var module = {};
 
+	module.camera = null;
+	
 	module.init = function(aspectRatio) {
 		module.loaded = {
 			images: {},
@@ -31,6 +33,7 @@ var PhaserGame = (function() {
 		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', module.config, module);
 		_inPlay = true;
 		_addEventListeners();
+		
 		
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
