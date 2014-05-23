@@ -16,6 +16,7 @@ Polyworks.PhaserTileMap = (function() {
 		_map = this.phaser.add.tilemap('greyTiles');
 
 	    _map.addTilesetImage('test1', 'greyTiles');
+	    // _map.addTilesetImage('greytiles2', 'greyTiles');
 
 	    _currentTile = _map.getTile(2, 3);
 
@@ -45,9 +46,9 @@ Polyworks.PhaserTileMap = (function() {
 		}
 		
 		// painting marker thing
-	    _marker = this.phaser.add.graphics();
-	    _marker.lineStyle(2, 0x000000, 1);
-	    _marker.drawRect(0, 0, 3, 3);
+	    // _marker = this.phaser.add.graphics();
+	    // _marker.lineStyle(2, 0x000000, 1);
+	    // _marker.drawRect(0, 0, 3, 3);
 
 		this.view = _map;
 		this.view.name = this.name = config.name;
@@ -132,8 +133,8 @@ Polyworks.PhaserTileMap = (function() {
 		  // _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 31;
 		  // _marker.y = _layer.getTileY(this.phaser.input.activePointer.worldY) * 31;
 		
-		var pointerX = _marker.x = this.phaser.input.activePointer.worldX;
-		var pointerY = _marker.y = this.phaser.input.activePointer.worldY;
+		// var pointerX = _marker.x = this.phaser.input.activePointer.worldX;
+		// var pointerY = _marker.y = this.phaser.input.activePointer.worldY;
 		
 			// 		  if (this.phaser.input.mousePointer.isDown)
 			// 		  {

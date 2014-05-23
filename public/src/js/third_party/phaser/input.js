@@ -62,7 +62,9 @@ Polyworks.PhaserInput = (function() {
 	CameraDragger.prototype.dragCamera = function(pointer) {
 	    if (!pointer.timeDown) { return; }
 	    if (pointer.isDown && !pointer.targetObject) {
+
 	        if (this.camera) {
+				// trace('pointer is down and there is a camera, going to move it');
 	            PhaserGame.phaser.camera.x += this.camera.x - pointer.position.x;
 	            PhaserGame.phaser.camera.y += this.camera.y - pointer.position.y;
 	        }

@@ -57,7 +57,7 @@ Polyworks.Stage = (function() {
 
 		module.gameH = (module.winH > 800) ? 800 : module.winH;
 		module.gameW = ((module.winH/_aspectRatio[1]) * _aspectRatio[0]);
-
+		
 		if(module.gameW > module.winW) {
 			module.gameW = module.winW;
 			module.gameH = (module.gameW/_aspectRatio[0]) * _aspectRatio[1];

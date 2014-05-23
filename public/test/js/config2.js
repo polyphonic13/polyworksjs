@@ -66,6 +66,7 @@ var GameConfig = (function() {
 				tilemaps: {
 					grass01: 'data/grass_tile_map01.json',
 					greyTiles: 'data/grass_tile_map02.json'
+					// greyTiles: 'data/grass_tile_map02.json'
 				}
 			},
 			preload: {
@@ -172,10 +173,12 @@ var GameConfig = (function() {
 			{
 				name: 'play',
 				world: {
-					x: 0,
-					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					x: -1000,
+					y: -1000,
+					// width: Polyworks.Stage.gameW,
+					// height: Polyworks.Stage.gameH
+					width: 2000,
+					height: 2000
 				},
 				clearWorld: true,
 				clearCache: false,
@@ -284,7 +287,7 @@ var GameConfig = (function() {
 					attrs: {
 						width: Polyworks.Stage.gameW,
 						height: Polyworks.Stage.gameH,
-						fixedToCamera: true
+						// fixedToCamera: true
 					}
 				},
 				// buttons group

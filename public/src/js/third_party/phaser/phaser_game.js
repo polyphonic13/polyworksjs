@@ -30,7 +30,7 @@ var PhaserGame = (function() {
 	
 	function _onConfigInitialized(config) {
 		module.config = config;
-		trace('PhaserGame/onConfigInitalized, config = ', config, '\tPhaserGame.config = ', module.config, module);
+		trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
 		_addEventListeners();
 		
