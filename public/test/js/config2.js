@@ -414,6 +414,18 @@ var GameConfig = (function() {
 						attrs: {
 							width: Polyworks.Stage.unit * 2,
 							height: Polyworks.Stage.unit * 1
+						},
+						input: {
+							inputDown: function() {
+								trace('factory-icon/inputDown, this = ', this);
+								if(this.selected) {
+									PhaserGame.selectedIcon = '';
+									this.selected = false;
+								} else {
+									PhaserGame.selectedIcon = this.name;
+									this.selected = true;
+								}
+							}
 						}
 					},
 					{
@@ -425,6 +437,17 @@ var GameConfig = (function() {
 						attrs: {
 							width: Polyworks.Stage.unit * 2,
 							height: Polyworks.Stage.unit * 1
+						},
+						input: {
+							inputDown: function() {
+								if(this.selected) {
+									PhaserGame.selectedIcon = '';
+									this.selected = false;
+								} else {
+									PhaserGame.selectedIcon = this.name;
+									this.selected = true;
+								}
+							}
 						}
 					}
 					]
