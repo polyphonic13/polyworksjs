@@ -9,7 +9,7 @@ var PhaserGame = (function() {
 			images: {},
 			sprites: {}
 		};
-		
+
 		module.stage = Polyworks.Stage;
 		module.stage.init(aspectRatio, false, _onStageInitialized, module);
 	};
@@ -33,8 +33,7 @@ var PhaserGame = (function() {
 		trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
 		_addEventListeners();
-		
-		
+
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
 			module.stage.gameH, 
@@ -49,6 +48,30 @@ var PhaserGame = (function() {
 		);
 	}
 	
+	function _preload() {
+		trace('PhaserGame/preload');
+		Polyworks.PhaserLoader.init(module.config.assets, module.phaser);
+		if(module.config.preload) {
+			Polyworks.PhaserLoader.load(module.config.preload);
+		}
+	}
+	
+	function _create() {
+		trace('PhaserGame/create');
+		Polyworks.PhaserScale.init(module.config.stage);
+		Polyworks.PhaserPhysics.init();
+		Polyworks.StateManager.init(module.config.screens, module.phaser);
+		Polyworks.StateManager.changeState(module.config.defaultScreen);
+	}
+	
+	function _update() {
+
+	}
+	
+	function _render() {
+		// trace('PhaserGame/render');
+	}
+	
 	function _addEventListeners() {
 		Polyworks.EventCenter.bind(Polyworks.Events.CHANGE_STATE, _onChangeState, module);
 	}
@@ -60,28 +83,6 @@ var PhaserGame = (function() {
 	function _onChangeState(event) {
 		trace('PhaserGame/_onChangeState, event = ', event);
 		Polyworks.StateManager.changeState(event.value);
-	}
-	
-	function _preload() {
-		trace('PhaserGame/preload');
-		Polyworks.PhaserLoader.init(module.config.assets, module.phaser);
-		if(module.config.preload) {
-			Polyworks.PhaserLoader.load(module.config.preload);
-		}
-	}
-	
-	function _create() {
-		trace('PhaserGame/create');
-		Polyworks.PhaserPhysics.init();
-		Polyworks.StateManager.init(module.config.screens, module.phaser);
-		Polyworks.StateManager.changeState(module.config.defaultScreen);
-	}
-	
-	function _update() {
-	}
-	
-	function _render() {
-		// trace('PhaserGame/render');
 	}
 	
 	return module;

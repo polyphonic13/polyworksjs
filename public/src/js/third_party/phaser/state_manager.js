@@ -42,7 +42,7 @@ Polyworks.StateManager = (function() {
 	Controller.prototype.create = function() {
 		// trace('StateController['+this.name+']/create');
 		var world = this.config.world;
-		alert('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
+		trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
 		if(this.config.tilemaps) {

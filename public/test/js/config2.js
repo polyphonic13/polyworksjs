@@ -26,8 +26,9 @@ var GameConfig = (function() {
 					blockBlue: 'images/block_blue.gif',
 					blockGreen: 'images/block_green.gif',
 					blockRed: 'images/block_red.gif',
-					greyTiles: 'images/grey_tiles.gif',
-					grassTiles: 'images/grass-tiles-2-small.png',
+					greyTiles: 'images/grey_tiles2.gif',
+					iconFactory: 'images/icon_factory.gif',
+					iconShowroom: 'images/icon_showroom.gif',
 					buttonPlus: 'images/button_plus.png',
 					buttonMinus: 'images/button_minus.png'
 				},
@@ -55,18 +56,13 @@ var GameConfig = (function() {
 						width: 50,
 						height: 50,
 						frames: 2
-					// },
-					// greyTiles: {
-					// 	url: 'images/grey_tiles.gif',
-					// 	width: 32,
-					// 	height: 32,
-					// 	frames: 3
 					}	
 				},
 				tilemaps: {
 					grass01: 'data/grass_tile_map01.json',
-					greyTiles: 'data/grass_tile_map02.json'
 					// greyTiles: 'data/grass_tile_map02.json'
+					// greyTiles: 'data/grass_tile_map02.json',
+					greyTiles: 'data/factory_world.json'
 				}
 			},
 			preload: {
@@ -78,6 +74,10 @@ var GameConfig = (function() {
 				'buttonClose'
 				],
 				tilemaps: []
+			},
+			stage: {
+				fullScreen: true,
+				scaleMode: Phaser.ScaleManager.SHOW_ALL
 			},
 			defaultScreen: 'play',
 			screens: [
@@ -188,7 +188,9 @@ var GameConfig = (function() {
 					'greyTiles',
 					'grassTiles',
 					'buttonPlus',
-					'buttonMinus'
+					'buttonMinus',
+					'iconFactory',
+					'iconShowroom'
 					],
 					sprites: [
 					'buttonPause',
@@ -243,12 +245,12 @@ var GameConfig = (function() {
 				shutdown: function() {
 					Polyworks.PhaserTime.removeTimer('turnTime');
 				},
-				inputs: [
-				{
-					type: 'CameraDragger',
-					name: 'camera-dragger'
-				}
-				],
+				// inputs: [
+				// {
+				// 	type: 'CameraDragger',
+				// 	name: 'camera-dragger'
+				// }
+				// ],
 				tilemaps: [
 				{
 					type: 'PhaserTileMap',
@@ -263,11 +265,11 @@ var GameConfig = (function() {
 					attrs: {
 						zoomFactor: 0.25,
 						zoomCeil: 2.5,
-						zoomFloor: 1
+						zoomFloor: .25
 					},
 					layers: [
 					{
-						name: 'TileLayer1',
+						name: 'layer1',
 						resizeWorld: true,
 						attrs: {
 							alpha: 0.75
@@ -287,8 +289,32 @@ var GameConfig = (function() {
 					attrs: {
 						width: Polyworks.Stage.gameW,
 						height: Polyworks.Stage.gameH,
-						// fixedToCamera: true
+						fixedToCamera: true
 					}
+				},
+				// turn timer text
+				{
+					type: 'group',
+					name: 'start-state-text',
+					attrs: {
+						fixedToCamera: true
+					},
+					views: [
+					{
+						type: 'text',
+						name: 'turn-time',
+						text: 'Turn time: ' + TIME_PER_TURN,
+						style: {
+						    font: "24px Arial",
+					        fill: "#ffffff"
+						},
+						x: 0,
+						y: (Polyworks.Stage.unit * 2),
+						position: {
+							centerX: true
+						}
+					}
+					]
 				},
 				// buttons group
 				{
@@ -371,26 +397,34 @@ var GameConfig = (function() {
 					}
 					]
 				},
-				// turn timer text
+				// icons group
 				{
 					type: 'group',
-					name: 'start-state-text',
+					name: 'start-state-icons',
 					attrs: {
 						fixedToCamera: true
 					},
 					views: [
 					{
-						type: 'text',
-						name: 'turn-time',
-						text: 'Turn time: ' + TIME_PER_TURN,
-						style: {
-						    font: "24px Arial",
-					        fill: "#ffffff"
-						},
-						x: 0,
-						y: (Polyworks.Stage.unit * 2),
-						position: {
-							centerX: true
+						type: 'sprite',
+						name: 'factory-icon',
+						img: 'iconFactory',
+						x: Polyworks.Stage.unit,
+						y: Polyworks.Stage.unit * 11,
+						attrs: {
+							width: Polyworks.Stage.unit * 2,
+							height: Polyworks.Stage.unit * 1
+						}
+					},
+					{
+						type: 'sprite',
+						name: 'showroom-icon',
+						img: 'iconShowroom',
+						x: Polyworks.Stage.unit * 4,
+						y: Polyworks.Stage.unit * 11,
+						attrs: {
+							width: Polyworks.Stage.unit * 2,
+							height: Polyworks.Stage.unit * 1
 						}
 					}
 					]
