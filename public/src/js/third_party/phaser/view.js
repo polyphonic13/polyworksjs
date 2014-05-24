@@ -9,7 +9,7 @@ Polyworks.PhaserView = (function() {
 	var module = {};
 	
 	function ViewController(config) {
-		// trace('ViewController['+config.name+']/constructor');
+		trace('ViewController['+config.name+']/constructor, type = ' + config.type);
 		this.config = config;
 
 		switch(config.type) {
@@ -125,22 +125,35 @@ Polyworks.PhaserView = (function() {
 	module.ViewController = ViewController;
 	
 	module.build = function(views) {
-		// trace('PhaserView/factory, views = ', views);
+		trace('PhaserView/factory, views = ', views);
 		var collection = {};
 
 		Polyworks.Utils.each(views,
 			function(view) {
-				// trace('\tview.type = ' + view.type);
-				collection[view.name] = new Polyworks.PhaserView.ViewController(view);
-				if(view.type === viewTypes.GROUP) {
-					collection[view.name].children = Polyworks.PhaserView.build(view.views);
-					Polyworks.PhaserView.initGroup(collection[view.name]);
+				trace('\tview.type = ' + view.type);
+				if(view.type) {
+					collection[view.name] = module.addView(view);
+					// collection[view.name] = new Polyworks.PhaserView.ViewController(view);
+					// if(view.type === viewTypes.GROUP) {
+					// 	collection[view.name].children = Polyworks.PhaserView.build(view.views);
+					// 	Polyworks.PhaserView.initGroup(collection[view.name]);
+					// }
 				}
 			},
 			this
 		);
-		// trace('PhaserView, end build, collection = ', collection);
+		trace('PhaserView, end build, collection = ', collection);
 		return collection;
+	};
+	
+	module.addView = function(view) {
+		trace('PhaserView/addView, view = ', view);
+		var view = new Polyworks.PhaserView.ViewController(view);
+		if(view.type == viewTypes.GROUP) {
+			view.children = Polyworks.PhaserView.build(view.views);
+			Polyworks.PhaserView.initGroup(view);
+		}
+		return view;
 	};
 	
 	module.initGroup = function(controller) {
@@ -155,6 +168,19 @@ Polyworks.PhaserView = (function() {
 			this
 		);
 
+	};
+	
+	module.removeView = function(name, collection) {
+		Polyworks.Utils.each(
+			collection,
+			function(child, idx) {
+				if(child.view.name === name) {
+					child.destroy();
+					collection.splice(idx, 1);
+				}
+			},
+			this
+		);
 	};
 	
 	module.update = function(controllers) {

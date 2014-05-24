@@ -14,7 +14,7 @@ Polyworks.StateManager = (function() {
 			},
 			this
 		);
-	
+		trace('state['+this.name+'] listeners = ', config.listeners);
 		if(config.listeners) {
 			Polyworks.Utils.each(
 				config.listeners,
@@ -24,6 +24,7 @@ Polyworks.StateManager = (function() {
 			this
 			);
 		}
+		
 		PhaserGame.phaser.state.add(this.name, this, false);
 	};
 	

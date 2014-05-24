@@ -3,24 +3,84 @@ var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 var gameLogic = {
 	states: {
-		start: {
+		global: 
+		{
+			listeners:[
+			// add notification
+			{
+				event: Polyworks.Events.ADD_NOTIFICATION,
+				handler: function(event) 
+				{
+					this.views['notification'] = new Polyworks.PhaserView.addView(PhaserGame.config.globalViews['notification']);
+					this.views['notification'].set({
+						text: event.value
+					});
+				}
+			},
+			// remove notification
+			{
+				event: Polyworks.Events.REMOVE_NOTIFICATION,
+				handler: function(event) 
+				{
+					Polyworks.PhaserView.removeView('notification', this.views);
+				}
+			}
+			]
+		},
+		start: 
+		{
 			listeners: [
+			// hide notification
 			{
 				event: Polyworks.Events.HIDE_NOTIFICATION,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					this.views['notification'].hide();
 				}
 			},
+			// show notification
 			{
 				event: Polyworks.Events.SHOW_NOTIFICATION,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					this.views['notification'].show();
 				}
 			}
 			]
 		},
-		play: {
-			create: function() {
+		play: 
+		{
+			listeners: [
+			// pause
+			{
+				event: Polyworks.Events.PAUSE_GAME,
+				handler: function(event) {
+					this.turnTimer.pause();
+					this.views['pause-button'].hide();
+					this.views['resume-button'].show();
+				}
+			},
+			// resume
+			{
+				event: Polyworks.Events.RESUME_GAME,
+				handler: function(event) {
+					this.turnTimer.resume();
+					this.views['resume-button'].hide();
+					this.views['pause-button'].show();
+				}
+			},
+			// turn ended
+			{
+				event: Polyworks.Events.TURN_ENDED,
+				handler: function(event) {
+					Polyworks.PhaserTime.removeTimer('turnTime');
+					this.views['turn-time'].callMethod('setText', ['Turn ended']);
+					this.views['pause-button'].hide();
+				}
+			}
+			],
+			create: function() 
+			{
 				this.timePerTurn = TIME_PER_TURN;
 				this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
 				this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
@@ -36,12 +96,16 @@ var gameLogic = {
 				);
 				// this.turnTimer.start();
 			},
-			shutdown: function() {
+			shutdown: function() 
+			{
 				Polyworks.PhaserTime.removeTimer('turnTime');
 			},
-			views: {
-				icons: {
-					input: {
+			views: 
+			{
+				icons: 
+				{
+					input: 
+					{
 						inputDown: function() {
 							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.name);
 							if(this.selected) {
@@ -66,6 +130,44 @@ var gameLogic = {
 								view.y = Polyworks.Stage.unit * 9.4;
 							}
 							trace('view x/y is now: ' + view.x + '/' + view.y);
+						}
+					}
+				}
+			}
+		},
+		tractors: 
+		{
+			listeners: [
+			// add notification
+			{
+				event: Polyworks.Events.ADD_NOTIFICATION,
+				handler: function(event) 
+				{
+					trace('add notification event handlers');
+					this.views['notification'] = new Polyworks.PhaserView.build(PhaserGame.config.globalViews['notification']);
+					this.views['notification'].set({
+						text: event.value
+					});
+				}
+			},
+			// remove notification
+			{
+				event: Polyworks.Events.REMOVE_NOTIFICATION,
+				handler: function(event) 
+				{
+					Polyworks.PhaserView.removeView('notification', this.views);
+				}
+			}
+			],
+			views: 
+			{
+				bg: 
+				{
+					input:
+					{
+						inputDown: function() {
+							trace('tractors.views.bg.input.inputDown');
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.ADD_NOTIFICATION, value: 'hello notification' });
 						}
 					}
 				}
