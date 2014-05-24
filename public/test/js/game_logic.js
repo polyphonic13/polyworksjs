@@ -13,19 +13,21 @@ var gameLogic = {
 								PhaserGame.selectedIcon = this.controller.name;
 								this.selected = true;
 								var input = this.controller.view.input;
+								var attrs = this.controller.config.attrs;
 								input.enableDrag();
-								input.enableSnap(90, 90, false, true);
+								// input.enableSnap(attrs.width, attrs.height, false, true);
+								input.enableSnap(32, 32, false, true);
 							}
 						},
 						onDragStop: function() {
-							trace('config on drag stop, view.x = ' + this.controller.view.y + ', max = ' + (Polyworks.Stage.unit * 10.5) + ', min = ' + (Polyworks.Stage.unit * 3.5));
 							var view = this.controller.view;
+							trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (Polyworks.Stage.unit * 10.5) + ', min = ' + (Polyworks.Stage.unit * 3.5));
 							if(view.y < (Polyworks.Stage.unit * 3.5)) {
 								view.y = Polyworks.Stage.unit * 3.5;
 							} else if(view.y > (Polyworks.Stage.unit * 10.5)) {
 								view.y = Polyworks.Stage.unit * 9.4;
 							}
-							trace('view.y is now: ' + view.y);
+							trace('view x/y is now: ' + view.x + '/' + view.y);
 						}
 					}
 				}
