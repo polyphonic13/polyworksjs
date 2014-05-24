@@ -30,8 +30,8 @@
 
             },
          "spacing":0,
-         "tileheight":33,
-         "tilewidth":32
+         "tileheight":"Polyworks.Stage.unt",
+         "tilewidth":"Polyworks.Stage.unt"
         }],
  "tilewidth":33,
  "version":1,

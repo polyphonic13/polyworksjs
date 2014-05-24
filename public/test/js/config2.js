@@ -1,7 +1,4 @@
 var GameConfig = (function() {
-	var TIME_PER_TURN = 10;
-	var TURN_TIME_INTERVAL = 1000;
-	var GRID_CELLS = 9;
 	
 	var module = {};
 	
@@ -101,20 +98,7 @@ var GameConfig = (function() {
 					'buttonGameStart'
 					]
 				},
-				listeners: [
-				{
-					event: Polyworks.Events.HIDE_NOTIFICATION,
-					handler: function(event) {
-						this.views['notification'].hide();
-					}
-				},
-				{
-					event: Polyworks.Events.SHOW_NOTIFICATION,
-					handler: function(event) {
-						this.views['notification'].show();
-					}
-				}
-				],
+				listeners: gameLogic.states.start.listeners,
 				views: [
 				// bg
 				{
@@ -222,25 +206,8 @@ var GameConfig = (function() {
 					}
 				}
 				],
-				create: function() {
-					this.timePerTurn = TIME_PER_TURN;
-					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
-					this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-							trace('\ttimePerTurn = ' + this.timePerTurn);
-							this.timePerTurn--;
-							var text = 'Turn time: ' + this.timePerTurn;
-							this.views['turn-time'].callMethod('setText', [text]);
-							if(this.timePerTurn <= 0) {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
-							}
-						},
-						this
-					);
-					// this.turnTimer.start();
-				},
-				shutdown: function() {
-					Polyworks.PhaserTime.removeTimer('turnTime');
-				},
+				create: gameLogic.states.play.create,
+				shutdown: gameLogic.states.play.shutdown,
 				// inputs: [
 				// {
 				// 	type: 'CameraDragger',
