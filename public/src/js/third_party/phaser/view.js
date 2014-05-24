@@ -132,12 +132,12 @@ Polyworks.PhaserView = (function() {
 			function(view) {
 				trace('\tview.type = ' + view.type);
 				if(view.type) {
-					collection[view.name] = module.addView(view);
-					// collection[view.name] = new Polyworks.PhaserView.ViewController(view);
-					// if(view.type === viewTypes.GROUP) {
-					// 	collection[view.name].children = Polyworks.PhaserView.build(view.views);
-					// 	Polyworks.PhaserView.initGroup(collection[view.name]);
-					// }
+					// collection[view.name] = module.addView(view);
+					collection[view.name] = new Polyworks.PhaserView.ViewController(view);
+					if(view.type === viewTypes.GROUP) {
+						collection[view.name].children = Polyworks.PhaserView.build(view.views);
+						Polyworks.PhaserView.initGroup(collection[view.name]);
+					}
 				}
 			},
 			this

@@ -144,7 +144,7 @@ var gameLogic = {
 				handler: function(event) 
 				{
 					trace('add notification event handlers');
-					this.views['notification'] = new Polyworks.PhaserView.build(PhaserGame.config.globalViews['notification']);
+					this.views['notification'] = new Polyworks.PhaserView.addView(PhaserGame.config.globalViews['notification']);
 					this.views['notification'].set({
 						text: event.value
 					});
