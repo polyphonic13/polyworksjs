@@ -59,10 +59,7 @@ var GameConfig = (function() {
 					}	
 				},
 				tilemaps: {
-					grass01: 'data/grass_tile_map01.json',
-					// greyTiles: 'data/grass_tile_map02.json'
-					// greyTiles: 'data/grass_tile_map02.json',
-					greyTiles: 'data/factory_world.json'
+					greyTilesMap: 'data/factory_world.json'
 				}
 			},
 			preload: {
@@ -186,7 +183,6 @@ var GameConfig = (function() {
 					images: [
 					'worldBg',
 					'greyTiles',
-					'grassTiles',
 					'buttonPlus',
 					'buttonMinus',
 					'iconFactory',
@@ -197,7 +193,7 @@ var GameConfig = (function() {
 					'buttonPlay'
 					],
 					tilemaps: [
-					'greyTiles'
+					'greyTilesMap'
 					]
 				},
 				listeners: [
@@ -415,18 +411,7 @@ var GameConfig = (function() {
 							width: Polyworks.Stage.unit * 2,
 							height: Polyworks.Stage.unit * 1
 						},
-						input: {
-							inputDown: function() {
-								trace('factory-icon/inputDown, this = ', this);
-								if(this.selected) {
-									PhaserGame.selectedIcon = '';
-									this.selected = false;
-								} else {
-									PhaserGame.selectedIcon = this.name;
-									this.selected = true;
-								}
-							}
-						}
+						input: gameLogic.states.play.views.icons.input
 					},
 					{
 						type: 'sprite',
@@ -438,17 +423,7 @@ var GameConfig = (function() {
 							width: Polyworks.Stage.unit * 2,
 							height: Polyworks.Stage.unit * 1
 						},
-						input: {
-							inputDown: function() {
-								if(this.selected) {
-									PhaserGame.selectedIcon = '';
-									this.selected = false;
-								} else {
-									PhaserGame.selectedIcon = this.name;
-									this.selected = true;
-								}
-							}
-						}
+						input: gameLogic.states.play.views.icons.input
 					}
 					]
 				}

@@ -13,7 +13,7 @@ Polyworks.PhaserTileMap = (function() {
 
 
 		this.phaser = PhaserGame.phaser;
-		_map = this.phaser.add.tilemap('greyTiles');
+		_map = this.phaser.add.tilemap('greyTilesMap');
 
 		// _map.addTilesetImage('test1', 'greyTiles');
 		_map.addTilesetImage('factory_tileset', 'greyTiles');

@@ -24,6 +24,7 @@ Polyworks.PhaserInput = (function() {
 		if(this.config.enableDrag) view.input.enableDrag(this.config.enableDrag);
 		if(this.config.inputDown) view.events.onInputDown.add(this.inputDown, this);
 		if(this.config.inputUp) view.events.onInputUp.add(this.inputUp, this);
+		if(this.config.onDragStop) view.events.onDragStop.add(this.onDragStop, this);
 
 	}
 	
@@ -43,6 +44,13 @@ Polyworks.PhaserInput = (function() {
 		// trace('InputController['+this.name+']/inputUp, event = ', event, '\tconfig = ', this.config);
 		if(this.config.inputUp) {
 			this.config.inputUp.call(this);
+		}
+	};
+	
+	InputController.prototype.onDragStop = function(event) {
+		trace('InputController['+this.name+']/onDragStop, event = ', event, '\tconfig = ', this.config);
+		if(this.config.onDragStop) {
+			this.config.onDragStop.call(this);
 		}
 	};
 	
