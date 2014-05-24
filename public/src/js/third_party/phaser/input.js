@@ -48,7 +48,7 @@ Polyworks.PhaserInput = (function() {
 	};
 	
 	InputController.prototype.onDragStop = function(event) {
-		trace('InputController['+this.name+']/onDragStop, event = ', event, '\tconfig = ', this.config);
+		// trace('InputController['+this.name+']/onDragStop, event = ', event, '\tconfig = ', this.config);
 		if(this.config.onDragStop) {
 			this.config.onDragStop.call(this);
 		}

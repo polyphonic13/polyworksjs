@@ -5,7 +5,7 @@ var gameLogic = {
 				icons: {
 					input: {
 						inputDown: function() {
-							trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.name);
+							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.name);
 							if(this.selected) {
 								PhaserGame.selectedIcon = '';
 								this.selected = false;
@@ -18,7 +18,14 @@ var gameLogic = {
 							}
 						},
 						onDragStop: function() {
-							trace('config on drag stop for: ', this.controller.view);
+							trace('config on drag stop, view.x = ' + this.controller.view.y + ', max = ' + (Polyworks.Stage.unit * 10.5) + ', min = ' + (Polyworks.Stage.unit * 3.5));
+							var view = this.controller.view;
+							if(view.y < (Polyworks.Stage.unit * 3.5)) {
+								view.y = Polyworks.Stage.unit * 3.5;
+							} else if(view.y > (Polyworks.Stage.unit * 10.5)) {
+								view.y = Polyworks.Stage.unit * 9.4;
+							}
+							trace('view.y is now: ' + view.y);
 						}
 					}
 				}
