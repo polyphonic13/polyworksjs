@@ -3,13 +3,7 @@ var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 var gameLogic = {
 	states: {
-		global: 
-		{
-			listeners:[
-			]
-		},
-		start: 
-		{
+		start: {
 			listeners: [
 			// hide notification
 			{
@@ -27,18 +21,37 @@ var gameLogic = {
 					this.views['notification'].show();
 				}
 			}
-			]
+			],
+			views: {
+				startButton: {
+					callback: function() {
+						if(PhaserGame.firstPlay) {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'manual' });
+							PhaserGame.firstPlay = false;
+						} else {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+						}
+					}
+				}
+			}
 		},
-		play: 
-		{
+		play: {
 			listeners: [
+			// start
+			{
+				event: Polyworks.Events.START_TURN,
+				handler: function(event) {
+					this.turnTimer.start();
+					this.views['start-state-buttons'].children['pause-button'].show();
+				}
+			},
 			// pause
 			{
 				event: Polyworks.Events.PAUSE_GAME,
 				handler: function(event) {
 					this.turnTimer.pause();
-					this.views['pause-button'].hide();
-					this.views['resume-button'].show();
+					this.views['start-state-buttons'].children['pause-button'].hide();
+					this.views['start-state-buttons'].children['resume-button'].show();
 				}
 			},
 			// resume
@@ -46,8 +59,8 @@ var gameLogic = {
 				event: Polyworks.Events.RESUME_GAME,
 				handler: function(event) {
 					this.turnTimer.resume();
-					this.views['resume-button'].hide();
-					this.views['pause-button'].show();
+					this.views['start-state-buttons'].children['resume-button'].hide();
+					this.views['start-state-buttons'].children['pause-button'].show();
 				}
 			},
 			// turn ended
@@ -55,20 +68,19 @@ var gameLogic = {
 				event: Polyworks.Events.TURN_ENDED,
 				handler: function(event) {
 					Polyworks.PhaserTime.removeTimer('turnTime');
-					this.views['turn-time'].callMethod('setText', ['Turn ended']);
-					this.views['pause-button'].hide();
+					this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
+					this.views['start-state-buttons'].children['pause-button'].hide();
 				}
 			}
 			],
-			create: function() 
-			{
+			create: function() {
 				this.timePerTurn = TIME_PER_TURN;
 				this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
 				this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-						trace('\ttimePerTurn = ' + this.timePerTurn);
+						trace('\ttimePerTurn = ' + this.timePerTurn + ', views = ', this.views);
 						this.timePerTurn--;
 						var text = 'Turn time: ' + this.timePerTurn;
-						this.views['turn-time'].callMethod('setText', [text]);
+						this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
 						if(this.timePerTurn <= 0) {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
 						}
@@ -77,16 +89,50 @@ var gameLogic = {
 				);
 				// this.turnTimer.start();
 			},
-			shutdown: function() 
-			{
+			shutdown: function() {
 				Polyworks.PhaserTime.removeTimer('turnTime');
 			},
-			views: 
-			{
-				icons: 
-				{
-					input: 
-					{
+			views: {
+				buttonsGroup: {
+					plusButton: {
+						input: {
+							inputUp: function() {
+								// trace('plus pressed');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_IN });
+							}
+						}
+					},
+					minusButton: {
+						input: {
+							inputUp: function() {
+								// trace('plus pressed');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_OUT });
+							}
+						}
+					},
+					pauseButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+						}
+					},
+					resumeButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+						}
+					},
+					startBuildingButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.START_TURN });
+						}
+					},
+					equipmentButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+						}
+					}
+				},
+				iconsGroup: {
+					input: {
 						inputDown: function() {
 							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
 							if(this.selected) {
@@ -116,8 +162,7 @@ var gameLogic = {
 				}
 			}
 		},
-		tractors: 
-		{
+		equipment: {
 			listeners: [
 			// add notification
 			{
@@ -138,15 +183,19 @@ var gameLogic = {
 				}
 			}
 			],
-			views: 
-			{
-				bg: 
-				{
-					input:
-					{
+			views: {
+				bg: {
+					input:{
 						inputDown: function() {
-							trace('tractors.views.bg.input.inputDown');
+							trace('equipment.views.bg.input.inputDown');
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.UPDATE_AND_SHOW_NOTIFICATION, value: 'hello notification' });
+						}
+					}
+				},
+				buttonsGroup: {
+					closeButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						}
 					}
 				}

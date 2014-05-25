@@ -67,7 +67,7 @@ Polyworks.Stage = (function() {
 		module.gameX = (module.winW/2) - (module.gameW/2);
 		module.gameY = (module.winH/2) - (module.gameH/2);
 
-		trace('\nwinW = ' + module.winW + ', winH = ' + module.winH + '\ngameW = ' + module.gameW + ', gameH = ' + module.gameH + '\nunit = ' + module.unit + '\ngameX = ' + module.gameX + ', gameY = ' + module.gameY);
+		// trace('\nwinW = ' + module.winW + ', winH = ' + module.winH + '\ngameW = ' + module.gameW + ', gameH = ' + module.gameH + '\nunit = ' + module.unit + '\ngameX = ' + module.gameX + ', gameY = ' + module.gameY);
 
 		var loadingWidth = module.winW - 80;
 		var loadingHeight = module.winH - 80;
@@ -82,7 +82,7 @@ Polyworks.Stage = (function() {
 
 
 	function _sizeAndPositionDiv(div, width, height, left, top) {
-		trace('Stage/_sizeAndPositionDiv, div = ', div, '\twidth = ' + width + ', height = ' + height + '\n\tleft = ' + left + ', top = ' + top);
+		// trace('Stage/_sizeAndPositionDiv, div = ', div, '\twidth = ' + width + ', height = ' + height + '\n\tleft = ' + left + ', top = ' + top);
 		div.style.width = width + 'px';
 		div.style.height = height + 'px';
 		div.style.left = left + 'px';

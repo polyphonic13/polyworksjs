@@ -2,7 +2,7 @@ Polyworks.PhaserScale = (function() {
 	var module = {};
 	
 	module.init = function(config) {
-		trace('PhaserScale/init, config = ', config);
+		// trace('PhaserScale/init, config = ', config);
 		var scaleManager = PhaserGame.phaser.scale;
 
 		if(config.fullScreen) {

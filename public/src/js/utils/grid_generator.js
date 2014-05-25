@@ -6,7 +6,7 @@ Polyworks.GridGenerator = (function() {
 	};
 	
 	module.createRectangle = function(xLength, yLength, xDimension, yDimension) {
-		trace('--------------- createRectangle\n\txLength = ' + xLength + '\n\tyLength = ' + yLength + '\n\txDimension = ' + xDimension + '\n\tyDimension = ' + yDimension);
+		// trace('--------------- createRectangle\n\txLength = ' + xLength + '\n\tyLength = ' + yLength + '\n\txDimension = ' + xDimension + '\n\tyDimension = ' + yDimension);
 		var grid = [];
 		var cell;
 
@@ -29,7 +29,7 @@ Polyworks.GridGenerator = (function() {
 				grid.push(cell);
 			}
 		}
-		trace('grid generator returning: ', grid);
+		// trace('grid generator returning: ', grid);
 		return grid;
 	};
 	

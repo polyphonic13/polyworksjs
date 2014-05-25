@@ -122,7 +122,7 @@ Polyworks.Utils = (function() {
 					}
 					parsedString = parsedString.replace(match, output);
 				}
-				//trace(parsedString);
+				//// trace(parsedString);
 			} else {
 				parsedString = null;
 			}

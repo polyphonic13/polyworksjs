@@ -28,7 +28,7 @@ Polyworks.Storage = (function() {
 	};
 	
 	module.destroy = function() {
-		trace('Storage/destroy');
+		// trace('Storage/destroy');
 		localStorage.clear();
 	};
 	
@@ -75,10 +75,10 @@ Polyworks.Storage = (function() {
 	
 	function _supportsLocalStorage() {
 		try {
-			trace('STORAGE AVAILABLE');
+			// trace('STORAGE AVAILABLE');
 			return 'localStorage' in window && window['localStorage'] !== null;
 		} catch(e) {
-			trace('STORAGE NOT AVAILABLE');
+			// trace('STORAGE NOT AVAILABLE');
 			return false;
 		}
 	}

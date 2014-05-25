@@ -8,7 +8,7 @@ Polyworks.DOMManager = (function() {
 			Polyworks.Utils.each(
 				elements,
 				function(element) {
-					trace('DOMManager/addElements, type = ' + element.type + ', element = ', element);
+					// trace('DOMManager/addElements, type = ' + element.type + ', element = ', element);
 					var el = document.createElement(element.type);
 
 					if(element.attrs) { el = this.addAttributes(element.attrs, el); }

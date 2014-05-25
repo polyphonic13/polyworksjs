@@ -1,6 +1,7 @@
 Polyworks.Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
+	START_TURN: 'startTurn',
 	PAUSE_GAME: 'pauseGame',
 	RESUME_GAME: 'resumeGame',
 	TURN_ENDED: 'turnEnded',

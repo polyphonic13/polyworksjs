@@ -3,14 +3,14 @@ Polyworks.ScreenManager = (function() {
 	var module = {};
 	
 	function ScreenController(config) {
-		trace('ScreenController/constructor, config = ', config);
+		// trace('ScreenController/constructor, config = ', config);
 		this.config = config;
 		this.name = config.name;
 		this.views = Polyworks.DisplayFactory.createPhaserViews(config.views);
 	};
 	
 	ScreenController.prototype.activate = function() {
-		trace('ScreenController['+this.name+']/activate');
+		// trace('ScreenController['+this.name+']/activate');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -22,7 +22,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.update = function() {
-		trace('ScreenController['+this.name+']/update');
+		// trace('ScreenController['+this.name+']/update');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -33,7 +33,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.deactive = function() {
-		trace('ScreenController['+this.name+']/deactivate');
+		// trace('ScreenController['+this.name+']/deactivate');
 		Polyworks.Utils.each(
 			this.views,
 			function(view) {
@@ -45,7 +45,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	ScreenController.prototype.destroy = function() {
-		trace('ScreenController['+this.name+']/destroy');
+		// trace('ScreenController['+this.name+']/destroy');
 		Polyworks.Utils.each(
 			this.views,
 			function(view, key) {
@@ -59,7 +59,7 @@ Polyworks.ScreenManager = (function() {
 	module.ScreenController = ScreenController;
 	
 	module.init = function(config) {
-		trace('ScreenManager/init, config = ', config);
+		// trace('ScreenManager/init, config = ', config);
 		this.config = config;
 		this.screens = {};
 		this.currentId = '';
@@ -67,23 +67,23 @@ Polyworks.ScreenManager = (function() {
 		Polyworks.Utils.each(
 			config,
 			function(scr) {
-				trace('\tadding screen[' + scr.name + ']');
+				// trace('\tadding screen[' + scr.name + ']');
 				this.screens[scr.name] = new this.ScreenController(scr);
 			},
 			this
 		);
-		trace('\tscreens = ', this.screens);
+		// trace('\tscreens = ', this.screens);
 	};
 	
 	module.activate = function(id) {
-		trace('ScreenManager/activate, id = ' + id + ', currentId = ' + this.currentId);
+		// trace('ScreenManager/activate, id = ' + id + ', currentId = ' + this.currentId);
 		if(this.currentId !== id) {
 			if(this.screens.hasOwnProperty(id)) {
 				if(this.currentId !== '') {
 					this.screens[this.currentId].deactivate();
 				}
 				this.currentId = id;
-				trace('\tscreens['+id+'] = ', this.screens[id]);
+				// trace('\tscreens['+id+'] = ', this.screens[id]);
 				this.screens[id].activate();
 			}
 		}

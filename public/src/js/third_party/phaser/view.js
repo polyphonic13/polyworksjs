@@ -9,7 +9,7 @@ Polyworks.PhaserView = (function() {
 	var module = {};
 	
 	function ViewController(config, name) {
-		trace('ViewController['+config.name+']/constructor, type = ' + config.type);
+		// trace('ViewController['+config.name+']/constructor, type = ' + config.type);
 		this.name = name;
 		this.config = config;
 
@@ -32,7 +32,7 @@ Polyworks.PhaserView = (function() {
 			break; 
 
 			default: 
-			trace('warning, unknown view type: ' + config.type);
+			// trace('warning, unknown view type: ' + config.type);
 			break;
 		}
 
@@ -126,12 +126,12 @@ Polyworks.PhaserView = (function() {
 	module.ViewController = ViewController;
 	
 	module.build = function(views) {
-		trace('PhaserView/factory, views = ', views);
+		// trace('PhaserView/factory, views = ', views);
 		var collection = {};
 
 		Polyworks.Utils.each(views,
 			function(view, key) {
-				trace('\tview.type = ' + view.type);
+				// trace('\tview.type = ' + view.type);
 				collection[view.name] = new Polyworks.PhaserView.ViewController(view, key);
 				if(view.type === viewTypes.GROUP) {
 					collection[view.name].children = Polyworks.PhaserView.build(view.views);
@@ -140,7 +140,7 @@ Polyworks.PhaserView = (function() {
 			},
 			this
 		);
-		trace('PhaserView, end build, collection = ', collection);
+		// trace('PhaserView, end build, collection = ', collection);
 		return collection;
 	};
 	

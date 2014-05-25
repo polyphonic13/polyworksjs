@@ -69,7 +69,7 @@ Polyworks.PhaserTileMap = (function() {
 	};
 
 	TileMapController.prototype.onInputDown = function(event) {
-		trace('TileMapController/onInputDown, event = ' + event);
+		// trace('TileMapController/onInputDown, event = ' + event);
 	};
 
 	TileMapController.prototype.onZoomIn = function(event) {

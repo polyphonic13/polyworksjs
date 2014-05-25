@@ -16,7 +16,7 @@ var PhaserGame = (function() {
 	};
 	
 	module.destroy = function() {
-		trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
+		// trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
 		if(_inPlay) {
 			Polyworks.StateManager.destroy();
 			module.phaser.destroy();
@@ -31,16 +31,18 @@ var PhaserGame = (function() {
 	};
 	
 	function _onStageInitialized() {
-		trace('PhaserGame/onStageInitialized');
+		// trace('PhaserGame/onStageInitialized');
 		GameConfig.init(_onConfigInitialized, module);
 	}
 	
 	function _onConfigInitialized(config) {
 		module.config = config;
-		trace('PhaserGame/onConfigInitalized, config = ', config);
+		// trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
 		_addListeners();
-
+		
+		Polyworks.Utils.extend(module, config.attrs);
+		
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
 			module.stage.gameH, 
@@ -56,7 +58,7 @@ var PhaserGame = (function() {
 	}
 	
 	function _preload() {
-		trace('PhaserGame/_preload');
+		// trace('PhaserGame/_preload');
 		Polyworks.PhaserLoader.init(module.config.assets, module.phaser);
 		if(module.config.preload) {
 			Polyworks.PhaserLoader.load(module.config.preload);
@@ -64,7 +66,7 @@ var PhaserGame = (function() {
 	}
 	
 	function _create() {
-		trace('PhaserGame/_create');
+		// trace('PhaserGame/_create');
 		Polyworks.PhaserScale.init(module.config.stage);
 		Polyworks.PhaserPhysics.init();
 		
@@ -100,12 +102,12 @@ var PhaserGame = (function() {
 	}
 	
 	function _onChangeState(event) {
-		trace('PhaserGame/_onChangeState, event = ', event);
+		// trace('PhaserGame/_onChangeState, event = ', event);
 		Polyworks.StateManager.changeState(event.value);
 	}
 	
 	function _quit() {
-		trace('PhaserGame/_quit');
+		// trace('PhaserGame/_quit');
 		_isQuit = true;
 		Polyworks.StateManager.destroy();
 		_removeListeners();

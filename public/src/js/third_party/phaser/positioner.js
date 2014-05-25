@@ -2,7 +2,7 @@ Polyworks.PhaserPositioner = (function() {
 	var module = {};
 	
 	module.set = function(params, view) {
-		trace('PhaserPositioner/set, params = ', params);
+		// trace('PhaserPositioner/set, params = ', params);
 		if(params.centerX) {
 			var x = Polyworks.Stage.gameW/2 - view.width/2;
 			view.x = x;

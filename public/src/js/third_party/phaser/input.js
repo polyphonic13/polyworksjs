@@ -3,7 +3,7 @@ Polyworks.PhaserInput = (function() {
 	var _controllers = {};
 	
 	function InputController(config, controller) {
-		trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
+		// trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
 		this.config = config;
 		this.controller = controller;
 		this.name = controller.view.name;
@@ -87,7 +87,7 @@ Polyworks.PhaserInput = (function() {
 	module.CameraDragger = CameraDragger;
 
 	module.initKeyboard = function(controls) {
-		trace('--------- PhaserInput/initKeyboard, controls = ', controls);
+		// trace('--------- PhaserInput/initKeyboard, controls = ', controls);
 		module.keys = {};
 		
 		Polyworks.Utils.each(
@@ -95,15 +95,15 @@ Polyworks.PhaserInput = (function() {
 			function(control) {
 				var key;
 				var input = {};
-				trace('\tadding control: ', control);
+				// trace('\tadding control: ', control);
 				key = PhaserGame.phaser.input.keyboard.addKey(control.code);
 				if(control.inputDown) {
-					trace('\t\tadding input down: ', control.inputDown);
+					// trace('\t\tadding input down: ', control.inputDown);
 					// key.onDown.add(control.inputDown);
 					input.inputDown = control.inputDown;
 				}
 				if(control.inputUp) {
-					trace('\t\tadding input up: ', control.inputUp);
+					// trace('\t\tadding input up: ', control.inputUp);
 					// key.onUp.add(control.inputUp);
 					input.inputUp = control.inputUp;
 				}
