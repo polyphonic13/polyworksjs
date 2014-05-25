@@ -10,5 +10,6 @@ Polyworks.Events = {
 	UPDATE_AND_SHOW_NOTIFICATION: 'updateAndShowNotification',
 	HIDE_NOTIFICATION: 'hideNotification',
 	ZOOM_IN: 'zoomIn',
-	ZOOM_OUT: 'zoomOut'
+	ZOOM_OUT: 'zoomOut',
+	QUIT: 'quit'
 };

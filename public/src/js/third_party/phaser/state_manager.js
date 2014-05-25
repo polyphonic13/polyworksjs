@@ -93,6 +93,7 @@ Polyworks.StateManager = (function() {
 		// if(this.tilesMaps) {
 			Polyworks.PhaserTileMap.update(this.tileMaps);
 		// }
+		Polyworks.PhaserInput.updateKeyboard();
 	};
 	
 	Controller.prototype.getView = function(id) {

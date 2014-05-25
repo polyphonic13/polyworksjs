@@ -57,10 +57,6 @@ Polyworks.PhaserInput = (function() {
 		
 	};
 	
-	InputController.prototype.test = function() {
-		trace('test');
-	};
-	
 	function CameraDragger(config) {
 		this.name = config.name;
 		this.config = config;
@@ -86,9 +82,57 @@ Polyworks.PhaserInput = (function() {
 	    if (pointer.isUp) { this.camera = null; }
 	};
 	
-	module.CameraDragger = CameraDragger;
-	
 	module.InputController = InputController; 
+
+	module.CameraDragger = CameraDragger;
+
+	module.initKeyboard = function(controls) {
+		trace('--------- PhaserInput/initKeyboard, controls = ', controls);
+		module.keys = {};
+		
+		Polyworks.Utils.each(
+			controls,
+			function(control) {
+				var key;
+				var input = {};
+				trace('\tadding control: ', control);
+				key = PhaserGame.phaser.input.keyboard.addKey(control.code);
+				if(control.inputDown) {
+					trace('\t\tadding input down: ', control.inputDown);
+					// key.onDown.add(control.inputDown);
+					input.inputDown = control.inputDown;
+				}
+				if(control.inputUp) {
+					trace('\t\tadding input up: ', control.inputUp);
+					// key.onUp.add(control.inputUp);
+					input.inputUp = control.inputUp;
+				}
+				module.keys[control.code] = {
+					key: key,
+					input: input
+				};
+			},
+			this
+		);
+		// return keys;
+	};
 	
+	module.updateKeyboard = function(controls) {
+		// trace('PhaserInput/updateKeyboard');
+		Polyworks.Utils.each(
+			module.keys,
+			function(control, id) {
+				// trace('control['+id+']');
+				if(control.key.isDown && control.input.inputDown) {
+					// trace('control['+id+']/isDown');
+					control.input.inputDown();
+				}
+				if(control.key.isUp && control.input.inputUp) {
+					control.input.inputDown();
+				}
+			},
+			this
+		);
+	};
 	return module;
 }());

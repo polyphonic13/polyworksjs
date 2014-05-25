@@ -18,61 +18,71 @@ var GameConfig = (function() {
 		};
 
 		var globalViews = {
-			notification: {
-				type: 'group',
-				name: 'notification',
-				attrs: {
-					visible: false,
-					fixedToCamera: true
-				},
-				views: {
-					notificationBg: {
-						type: 'sprite',
-						name: 'notification-bg',
-						img: 'blockWhite',
-						x: (gameUnit/2),
-						y: (gameUnit/2),
-						attrs: {
-							width: (gameW - gameUnit),
-							height: (gameH - gameUnit),
-							alpha: 0.75,
-							fixedToCamera: true
-						}
+			states: {
+				notification: {
+					type: 'group',
+					name: 'notification',
+					attrs: {
+						visible: false,
+						fixedToCamera: true
 					},
-					notificationText: {
-						type: 'text',
-						name: 'notification-text',
-						text: '',
-						style: {
-						    font: "18px Arial",
-					        fill: "#000000"
+					views: {
+						notificationBg: {
+							type: 'sprite',
+							name: 'notification-bg',
+							img: 'blockWhite',
+							x: (gameUnit/2),
+							y: (gameUnit/2),
+							attrs: {
+								width: (gameW - gameUnit),
+								height: (gameH - gameUnit),
+								alpha: 0.75,
+								fixedToCamera: true
+							}
 						},
-						x: 0,
-						y: (gameUnit * 2),
-						position: {
-							centerX: true
+						notificationText: {
+							type: 'text',
+							name: 'notification-text',
+							text: '',
+							style: {
+							    font: "18px Arial",
+						        fill: "#000000"
+							},
+							x: 0,
+							y: (gameUnit * 2),
+							position: {
+								centerX: true
+							}
+						},
+						closeButton: {
+							type: 'button',
+							name: 'close-button',
+							img: 'buttonClose',
+							x: (gameW - gameUnit * 1.25),
+							y: (gameUnit * 0.25),
+							attrs: {
+								width: gameUnit * 1,
+								height: gameUnit * 1
+							},
+							callback: function() {
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
+							},
+							context: this,
+							frames: [0, 1, 1, 0]
 						}
-					},
-					closeButton: {
-						type: 'button',
-						name: 'close-button',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.25),
-						y: (gameUnit * 0.25),
-						attrs: {
-							width: gameUnit * 1,
-							height: gameUnit * 1
-						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
 					}
 				}
 			}
 		};
 		
+		var fontSizes = {
+			xs: (gameUnit * 0.5),
+			sm: (gameUnit * 0.6),
+			md: (gameUnit * 0.75),
+			lg: (gameUnit * 1.0),
+			xl: (gameUnit * 1.5)
+		};
+
 		var config = {
 			gameType: 'phaser',
 			pallete: {
@@ -143,6 +153,16 @@ var GameConfig = (function() {
 				fullScreen: true,
 				scaleMode: Phaser.ScaleManager.SHOW_ALL
 			},
+			// input: {
+			// 	keys: [
+			// 	{
+			// 		code: Polyworks.InputCodes.QUIT,
+			// 		inputDown: function() {
+			// 			PhaserGame.quit();
+			// 		}
+			// 	}
+			// 	]
+			// },
 			defaultScreen: 'tractors',
 			screens: [
 			// start
@@ -582,7 +602,7 @@ var GameConfig = (function() {
 							}
 						}
 					},
-					notification: Polyworks.Utils.clone(globalViews.notification)
+					notification: Polyworks.Utils.clone(globalViews.states.notification)
 				}
 			}
 			]
