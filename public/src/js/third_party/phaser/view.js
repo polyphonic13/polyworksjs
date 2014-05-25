@@ -8,8 +8,9 @@ Polyworks.PhaserView = (function() {
 	
 	var module = {};
 	
-	function ViewController(config) {
+	function ViewController(config, name) {
 		trace('ViewController['+config.name+']/constructor, type = ' + config.type);
+		this.name = name;
 		this.config = config;
 
 		switch(config.type) {
@@ -129,31 +130,18 @@ Polyworks.PhaserView = (function() {
 		var collection = {};
 
 		Polyworks.Utils.each(views,
-			function(view) {
+			function(view, key) {
 				trace('\tview.type = ' + view.type);
-				if(view.type) {
-					// collection[view.name] = module.addView(view);
-					collection[view.name] = new Polyworks.PhaserView.ViewController(view);
-					if(view.type === viewTypes.GROUP) {
-						collection[view.name].children = Polyworks.PhaserView.build(view.views);
-						Polyworks.PhaserView.initGroup(collection[view.name]);
-					}
+				collection[view.name] = new Polyworks.PhaserView.ViewController(view, key);
+				if(view.type === viewTypes.GROUP) {
+					collection[view.name].children = Polyworks.PhaserView.build(view.views);
+					Polyworks.PhaserView.initGroup(collection[view.name]);
 				}
 			},
 			this
 		);
 		trace('PhaserView, end build, collection = ', collection);
 		return collection;
-	};
-	
-	module.addView = function(view) {
-		trace('PhaserView/addView, view = ', view);
-		var view = new Polyworks.PhaserView.ViewController(view);
-		if(view.type == viewTypes.GROUP) {
-			view.children = Polyworks.PhaserView.build(view.views);
-			Polyworks.PhaserView.initGroup(view);
-		}
-		return view;
 	};
 	
 	module.initGroup = function(controller) {

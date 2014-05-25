@@ -6,7 +6,6 @@ Polyworks.PhaserInput = (function() {
 		trace('InputController/constructor, config = ', config, '\tcontroller = ', controller);
 		this.config = config;
 		this.controller = controller;
-		// this.name = controller.name;
 		this.name = controller.view.name;
 
 		var view = controller.view;

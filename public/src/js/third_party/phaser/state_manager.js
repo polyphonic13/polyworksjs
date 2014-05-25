@@ -15,15 +15,6 @@ Polyworks.StateManager = (function() {
 			this
 		);
 		trace('state['+this.name+'] listeners = ', config.listeners);
-		if(config.listeners) {
-			Polyworks.Utils.each(
-				config.listeners,
-				function(listener) {
-					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
-				},
-			this
-			);
-		}
 		
 		PhaserGame.phaser.state.add(this.name, this, false);
 	};
@@ -62,6 +53,16 @@ Polyworks.StateManager = (function() {
 					this.inputs[input.name] = new Polyworks.PhaserInput[input.type](input);
 				},
 				this
+			);
+		}
+
+		if(this.config.listeners) {
+			Polyworks.Utils.each(
+				this.config.listeners,
+				function(listener) {
+					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
+				},
+			this
 			);
 		}
 

@@ -17,6 +17,62 @@ var GameConfig = (function() {
 			height: gameH
 		};
 
+		var globalViews = {
+			notification: {
+				type: 'group',
+				name: 'notification',
+				attrs: {
+					visible: false,
+					fixedToCamera: true
+				},
+				views: {
+					notificationBg: {
+						type: 'sprite',
+						name: 'notification-bg',
+						img: 'blockWhite',
+						x: (gameUnit/2),
+						y: (gameUnit/2),
+						attrs: {
+							width: (gameW - gameUnit),
+							height: (gameH - gameUnit),
+							alpha: 0.75,
+							fixedToCamera: true
+						}
+					},
+					notificationText: {
+						type: 'text',
+						name: 'notification-text',
+						text: '',
+						style: {
+						    font: "18px Arial",
+					        fill: "#000000"
+						},
+						x: 0,
+						y: (gameUnit * 2),
+						position: {
+							centerX: true
+						}
+					},
+					closeButton: {
+						type: 'button',
+						name: 'close-button',
+						img: 'buttonClose',
+						x: (gameW - gameUnit * 1.25),
+						y: (gameUnit * 0.25),
+						attrs: {
+							width: gameUnit * 1,
+							height: gameUnit * 1
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
+					}
+				}
+			}
+		};
+		
 		var config = {
 			gameType: 'phaser',
 			pallete: {
@@ -87,60 +143,6 @@ var GameConfig = (function() {
 				fullScreen: true,
 				scaleMode: Phaser.ScaleManager.SHOW_ALL
 			},
-			globalViews: {
-				notification: {
-					type: 'group',
-					name: 'notification',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
-						type: 'sprite',
-						name: 'notification-bg',
-						img: 'blockWhite',
-						x: (gameUnit/2),
-						y: (gameUnit/2),
-						attrs: {
-							width: (gameW - gameUnit),
-							height: (gameH - gameUnit),
-							alpha: 0.75,
-							fixedToCamera: true
-						}
-					},
-					{
-						type: 'text',
-						name: 'notification-text',
-						text: '',
-						style: {
-						    font: "184px Arial",
-					        fill: "#000000"
-						},
-						x: 0,
-						y: (gameUnit * 2),
-						position: {
-							centerX: true
-						}
-					},
-					{
-						type: 'button',
-						name: 'close-button',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.5),
-						y: (gameUnit * 0.5),
-						attrs: {
-							width: gameUnit * 1,
-							height: gameUnit * 1
-						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.REMOVE_NOTIFICATION });
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
-					}
-					]
-				}
-			},
 			defaultScreen: 'tractors',
 			screens: [
 			// start
@@ -162,56 +164,56 @@ var GameConfig = (function() {
 					]
 				},
 				listeners: gameLogic.states.start.listeners,
-				views: [
-				// bg
-				{
-					type: 'sprite',
-					name: 'start-background',
-					img: 'startBg',
-					x: 0,
-					y: 0,
-					attrs: {
-						width: gameW,
-						height: gameH
+				views: {
+					// bg
+					stateBg: {
+						type: 'sprite',
+						name: 'start-background',
+						img: 'startBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					// game start button
+					startButton: {
+						type: 'button',
+						name: 'game-start-button',
+						img: 'buttonGameStart',
+						x: 0,
+						y: (gameH * 0.7),
+						attrs: {
+							width: gameW,
+							height: ((gameW)/5),
+							alpha: 0.75
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
+					},
+					// manual button
+					manualButton: {
+						type: 'button',
+						name: 'manual-button',
+						img: 'blockClear',
+						x: 0,
+						y: (gameH - gameUnit * 2.5),
+						attrs: {
+							width: gameUnit * 2.5,
+							height: gameUnit * 2.5,
+							alpha: 0.75
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'manual' });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
 					}
-				},
-				// game start button
-				{
-					type: 'button',
-					name: 'game-start-button',
-					img: 'buttonGameStart',
-					x: 0,
-					y: (gameH * 0.7),
-					attrs: {
-						width: gameW,
-						height: ((gameW)/5),
-						alpha: 0.75
-					},
-					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
-					},
-					context: this,
-					frames: [0, 1, 1, 0]
-				},
-				// manual button
-				{
-					type: 'button',
-					name: 'manual-button',
-					img: 'blockClear',
-					x: 0,
-					y: (gameH - gameUnit * 2.5),
-					attrs: {
-						width: gameUnit * 2.5,
-						height: gameUnit * 2.5,
-						alpha: 0.75
-					},
-					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'manual' });
-					},
-					context: this,
-					frames: [0, 1, 1, 0]
 				}
-				]
 			},
 			// manual
 			{
@@ -230,43 +232,35 @@ var GameConfig = (function() {
 					'greyTiles'
 					]
 				},
-				attrs: {
-				},
-				listeners: [
-				],
-				create: function() {
-				},
-				shutdown: function() {
-				},
-				views: [
-				{
-					type: 'sprite',
-					name: 'manual-background',
-					img: 'manualBg',
-					x: 0,
-					y: 0,
-					attrs: {
-						width: gameW,
-						height: gameH
+				views: {
+					stateBg: {
+						type: 'sprite',
+						name: 'manual-background',
+						img: 'manualBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					closeButton: {
+						type: 'button',
+						name: 'close-button',
+						img: 'buttonClose',
+						x: (gameW - gameUnit * 1.5),
+						y: (gameUnit * 0.5),
+						attrs: {
+							width: gameUnit * 1,
+							height: gameUnit * 1
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
 					}
-				},
-				{
-					type: 'button',
-					name: 'close-button',
-					img: 'buttonClose',
-					x: (gameW - gameUnit * 1.5),
-					y: (gameUnit * 0.5),
-					attrs: {
-						width: gameUnit * 1,
-						height: gameUnit * 1
-					},
-					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
-					},
-					context: this,
-					frames: [0, 1, 1, 0]
 				}
-				]
 			},
 			// play
 			{
@@ -322,160 +316,164 @@ var GameConfig = (function() {
 					]
 				}
 				],
-				views: [
-				// bg
+				views: 
 				{
-					type: 'sprite',
-					name: 'play-background',
-					img: 'worldBg',
-					x: 0,
-					y: 0,
-					attrs: {
-						width: gameW,
-						height: gameH,
-						fixedToCamera: true
-					}
-				},
-				// text group
-				{
-					type: 'group',
-					name: 'start-state-text',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
-						type: 'text',
-						name: 'turn-time',
-						text: 'Turn time: ' + TIME_PER_TURN,
-						style: {
-						    font: "24px Arial",
-					        fill: "#ffffff"
-						},
+					// bg
+					stateBg: {
+						type: 'sprite',
+						name: 'play-background',
+						img: 'worldBg',
 						x: 0,
-						y: (gameUnit * 2),
-						position: {
-							centerX: true
-						}
-					}
-					]
-				},
-				// buttons group
-				{
-					type: 'group',
-					name: 'start-state-buttons',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
-						type: 'sprite',
-						name: 'plus-button',
-						img: 'buttonPlus',
-						x: gameUnit * 0.2,
-						y: gameUnit * 4,
+						y: 0,
 						attrs: {
-							width: gameUnit,
-							height: gameUnit,
-							collideWorldBounds: true
+							width: gameW,
+							height: gameH,
+							fixedToCamera: true
+						}
+					},
+					// text group
+					textGroup: {
+						type: 'group',
+						name: 'start-state-text',
+						attrs: {
+							fixedToCamera: true
 						},
-						input: {
-							inputUp: function() {
-								// trace('plus pressed');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_IN });
+						views: 
+						{
+							timerText: {
+								type: 'text',
+								name: 'turn-time',
+								text: 'Turn time: ' + TIME_PER_TURN,
+								style: {
+								    font: "24px Arial",
+							        fill: "#ffffff"
+								},
+								x: 0,
+								y: (gameUnit * 2),
+								position: {
+									centerX: true
+								}
 							}
 						}
 					},
-					{
-						type: 'sprite',
-						name: 'minus-button',
-						img: 'buttonMinus',
-						x: gameUnit * 0.2,
-						y: gameUnit * 5.2,
+					// buttons group
+					buttonsGroup: {
+						type: 'group',
+						name: 'start-state-buttons',
 						attrs: {
-							width: gameUnit,
-							height: gameUnit
+							fixedToCamera: true
 						},
-						input: {
-							inputUp: function() {
-								// trace('minus pressed');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_OUT });
+						views: 
+						{
+							plusButton: {
+								type: 'sprite',
+								name: 'plus-button',
+								img: 'buttonPlus',
+								x: gameUnit * 0.2,
+								y: gameUnit * 4,
+								attrs: {
+									width: gameUnit,
+									height: gameUnit,
+									collideWorldBounds: true
+								},
+								input: {
+									inputUp: function() {
+										// trace('plus pressed');
+										Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_IN });
+									}
+								}
+							},
+							minusButton: {
+								type: 'sprite',
+								name: 'minus-button',
+								img: 'buttonMinus',
+								x: gameUnit * 0.2,
+								y: gameUnit * 5.2,
+								attrs: {
+									width: gameUnit,
+									height: gameUnit
+								},
+								input: {
+									inputUp: function() {
+										// trace('minus pressed');
+										Polyworks.EventCenter.trigger({ type: Polyworks.Events.ZOOM_OUT });
+									}
+								}
+							},
+							// pause button
+							pauseButton: {
+								type: 'button',
+								name: 'pause-button',
+								img: 'buttonPause',
+								x: (gameW - gameUnit * 1.75),
+								y: (gameH - gameUnit * 4.75),
+								attrs: {
+									width: gameUnit * 1.5,
+									height: gameUnit * 1.5,
+									visible: true
+								},
+								callback: function() {
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+								},
+								context: this,
+								frames: [0, 1, 1, 0]
+							},
+							// play button
+							playButton: {
+								type: 'button',
+								name: 'resume-button',
+								img: 'buttonPlay',
+								x: (gameW - gameUnit * 1.75),
+								y: (gameH - gameUnit * 4.75),
+								attrs: {
+									width: gameUnit * 1.5,
+									height: gameUnit * 1.5,
+									visible: false
+								},
+								callback: function() {
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+								},
+								context: this,
+								frames: [0, 1, 1, 0]
 							}
 						}
 					},
-					// pause button
-					{
-						type: 'button',
-						name: 'pause-button',
-						img: 'buttonPause',
-						x: (gameW - gameUnit * 1.75),
-						y: (gameH - gameUnit * 4.75),
+					// icons group
+					iconsGroup: {
+						type: 'group',
+						name: 'start-state-icons',
 						attrs: {
-							width: gameUnit * 1.5,
-							height: gameUnit * 1.5,
-							visible: true
+							fixedToCamera: true
 						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
-					},
-					// play button
-					{
-						type: 'button',
-						name: 'resume-button',
-						img: 'buttonPlay',
-						x: (gameW - gameUnit * 1.75),
-						y: (gameH - gameUnit * 4.75),
-						attrs: {
-							width: gameUnit * 1.5,
-							height: gameUnit * 1.5,
-							visible: false
-						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
+						views: 
+						{
+							factoryIcon: {
+								type: 'sprite',
+								name: 'factory-icon',
+								img: 'iconFactory',
+								x: gameUnit,
+								y: gameUnit * 11,
+								attrs: {
+									width: gameUnit * 2,
+									height: gameUnit * 1
+								},
+								input: gameLogic.states.play.views.icons.input
+							},
+							showroomIcon: {
+								type: 'sprite',
+								name: 'showroom-icon',
+								img: 'iconShowroom',
+								x: gameUnit * 4,
+								y: gameUnit * 11,
+								attrs: {
+									width: gameUnit * 2,
+									height: gameUnit * 1
+								},
+								input: gameLogic.states.play.views.icons.input
+							}
+						}
 					}
-					]
-				},
-				// icons group
-				{
-					type: 'group',
-					name: 'start-state-icons',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
-						type: 'sprite',
-						name: 'factory-icon',
-						img: 'iconFactory',
-						x: gameUnit,
-						y: gameUnit * 11,
-						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 1
-						},
-						input: gameLogic.states.play.views.icons.input
-					},
-					{
-						type: 'sprite',
-						name: 'showroom-icon',
-						img: 'iconShowroom',
-						x: gameUnit * 4,
-						y: gameUnit * 11,
-						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 1
-						},
-						input: gameLogic.states.play.views.icons.input
-					}
-					]
 				}
-				]
 			},
 			// tractor builder
 			{
@@ -493,95 +491,99 @@ var GameConfig = (function() {
 					]
 				},
 				listeners: gameLogic.states.tractors.listeners,
-				views: [
-				// bg
-				{
-					type: 'sprite',
-					name: 'tractors-state-bg',
-					img: 'blockGreen',
-					x: 0,
-					y: 0,
-					attrs: {
-						width: gameW,
-						height: gameH,
-						fixedToCamera: true
-					},
-					input: gameLogic.states.tractors.views.bg.input
-				},
-				// text group
-				{
-					type: 'group',
-					name: 'tractors-text-group',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
-						type: 'text',
-						name: 'tractors-title',
-						text: 'build your tractor',
-						style: {
-						    font: "24px Arial",
-					        fill: "#ffffff"
-						},
-						x: 0,
-						y: (gameUnit * 2),
-						position: {
-							centerX: true
-						}
-					}
-					]
-				},
-				// buttons group
-				{
-					type: 'group',
-					name: 'tractors-state-button-group',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					// close button
-					{
-						type: 'button',
-						name: 'close-button',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.75),
-						y: (gameUnit * 0.25),
-						attrs: {
-							width: gameUnit * 1.5,
-							height: gameUnit * 1.5,
-							visible: true
-						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
-					}
-					]
-				},
-				// icons group
-				{
-					type: 'group',
-					name: 'tractors-state-icon-group',
-					attrs: {
-						fixedToCamera: true
-					},
-					views: [
-					{
+				views: {
+					// bg
+					bg: {
 						type: 'sprite',
-						name: 'white-bg',
-						img: 'blockWhite',
-						x: gameUnit,
-						y: gameUnit,
+						name: 'tractors-state-bg',
+						img: 'blockGreen',
+						x: 0,
+						y: 0,
 						attrs: {
-							width: (gameW - (gameUnit * 2)),
-							height: (gameH - (gameUnit * 2)),
-							alpha: 0.5
+							width: gameW,
+							height: gameH,
+							fixedToCamera: true
+						},
+						input: gameLogic.states.tractors.views.bg.input
+					},
+					// text group
+					textGroup: {
+						type: 'group',
+						name: 'tractors-text-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						{
+							stageTitle: {
+								type: 'text',
+								name: 'tractors-title',
+								text: 'build your tractor',
+								style: {
+								    font: "24px Arial",
+							        fill: "#ffffff"
+								},
+								x: 0,
+								y: (gameUnit * 2),
+								position: {
+									centerX: true
+								}
+							}
 						}
-					}]
+					},
+					// buttons group
+					buttonsGroup: {
+						type: 'group',
+						name: 'tractors-state-button-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						// close button
+						{
+							closeButton: {
+								type: 'button',
+								name: 'close-button',
+								img: 'buttonClose',
+								x: (gameW - gameUnit * 1.25),
+								y: (gameUnit * 0.25),
+								attrs: {
+									width: gameUnit * 1,
+									height: gameUnit * 1
+								},
+								callback: function() {
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+								},
+								context: this,
+								frames: [0, 1, 1, 0]
+							}
+						}
+					},
+					// icons group
+					iconsGroup: {
+						type: 'group',
+						name: 'tractors-state-icon-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						{
+							whiteBg: {
+								type: 'sprite',
+								name: 'white-bg',
+								img: 'blockWhite',
+								x: gameUnit,
+								y: gameUnit,
+								attrs: {
+									width: (gameW - (gameUnit * 2)),
+									height: (gameH - (gameUnit * 2)),
+									alpha: 0.5
+								}
+							}
+						}
+					},
+					notification: Polyworks.Utils.clone(globalViews.notification)
 				}
-				]
 			}
 			]
 		};

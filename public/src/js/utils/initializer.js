@@ -14,13 +14,6 @@ Polyworks.Initializer = (function(){
 	
 	var module = {};
 	
-	module.setGlobalAttributes = function(config, controller) {
-		controller.config = config;
-		if(config.name) {
-			controller.name = config.name;
-		}
-	};
-	
 	module.setViewAttributes = function(attrs, view) {
 		if(attrs) {
 			Polyworks.Utils.each(

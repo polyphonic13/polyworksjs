@@ -6,25 +6,6 @@ var gameLogic = {
 		global: 
 		{
 			listeners:[
-			// add notification
-			{
-				event: Polyworks.Events.ADD_NOTIFICATION,
-				handler: function(event) 
-				{
-					this.views['notification'] = new Polyworks.PhaserView.addView(PhaserGame.config.globalViews['notification']);
-					this.views['notification'].set({
-						text: event.value
-					});
-				}
-			},
-			// remove notification
-			{
-				event: Polyworks.Events.REMOVE_NOTIFICATION,
-				handler: function(event) 
-				{
-					Polyworks.PhaserView.removeView('notification', this.views);
-				}
-			}
 			]
 		},
 		start: 
@@ -33,8 +14,8 @@ var gameLogic = {
 			// hide notification
 			{
 				event: Polyworks.Events.HIDE_NOTIFICATION,
-				handler: function(event) 
-				{
+				handler: function(event) {
+					trace('hide notification handler, this = ', this);
 					this.views['notification'].hide();
 				}
 			},
@@ -107,12 +88,12 @@ var gameLogic = {
 					input: 
 					{
 						inputDown: function() {
-							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.name);
+							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
 							if(this.selected) {
 								PhaserGame.selectedIcon = '';
 								this.selected = false;
 							} else {
-								PhaserGame.selectedIcon = this.controller.name;
+								PhaserGame.selectedIcon = this.controller.id;
 								this.selected = true;
 								var input = this.controller.view.input;
 								var attrs = this.controller.config.attrs;
@@ -140,22 +121,20 @@ var gameLogic = {
 			listeners: [
 			// add notification
 			{
-				event: Polyworks.Events.ADD_NOTIFICATION,
+				event: Polyworks.Events.UPDATE_AND_SHOW_NOTIFICATION,
 				handler: function(event) 
 				{
-					trace('add notification event handlers');
-					this.views['notification'] = new Polyworks.PhaserView.addView(PhaserGame.config.globalViews['notification']);
-					this.views['notification'].set({
-						text: event.value
-					});
+					trace('add notification event handlers, notification = ', (this.views['notification']));
+					this.views['notification'].children['notification-text'].view.setText(event.value);
+					this.views['notification'].show();
 				}
 			},
 			// remove notification
 			{
-				event: Polyworks.Events.REMOVE_NOTIFICATION,
+				event: Polyworks.Events.HIDE_NOTIFICATION,
 				handler: function(event) 
 				{
-					Polyworks.PhaserView.removeView('notification', this.views);
+					this.views['notification'].hide();
 				}
 			}
 			],
@@ -167,7 +146,7 @@ var gameLogic = {
 					{
 						inputDown: function() {
 							trace('tractors.views.bg.input.inputDown');
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.ADD_NOTIFICATION, value: 'hello notification' });
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.UPDATE_AND_SHOW_NOTIFICATION, value: 'hello notification' });
 						}
 					}
 				}
