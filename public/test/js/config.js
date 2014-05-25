@@ -246,7 +246,7 @@ var GameConfig = (function() {
 					this.timePerTurn = TIME_PER_TURN;
 					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
 					this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-							trace('\ttimePerTurn = ' + this.timePerTurn);
+							// trace('\ttimePerTurn = ' + this.timePerTurn);
 							this.timePerTurn--;
 							this.views['turn-time'].setText('Turn time: ' + this.timePerTurn);
 							if(this.timePerTurn <= 0) {

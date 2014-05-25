@@ -4,12 +4,20 @@ var GameConfig = (function() {
 	
 	module.init = function(callback, context) {
 		// stage sizes cached
-		var screenW = Polyworks.Stage.screenW;
-		var screenH = Polyworks.Stage.screenH;
+		var stateW = Polyworks.Stage.stateW;
+		var stateH = Polyworks.Stage.stateH;
 		var gameW = Polyworks.Stage.gameW;
 		var gameH = Polyworks.Stage.gameH;
 		var gameUnit = Polyworks.Stage.unit;
 		
+		var fontSizes = {
+			xs: (gameUnit * 0.5),
+			sm: (gameUnit * 0.6),
+			md: (gameUnit * 0.75),
+			lg: (gameUnit * 1.0),
+			xl: (gameUnit * 1.5)
+		};
+
 		var defaultWorld = {
 			x: 0,
 			y: 0,
@@ -45,8 +53,8 @@ var GameConfig = (function() {
 							name: 'notification-text',
 							text: '',
 							style: {
-							    font: "18px Arial",
-						        fill: "#000000"
+							    font: (fontSizes.md + 'px Arial'),
+						        fill: '#000000'
 							},
 							x: 0,
 							y: (gameUnit * 2),
@@ -75,14 +83,6 @@ var GameConfig = (function() {
 			}
 		};
 		
-		var fontSizes = {
-			xs: (gameUnit * 0.5),
-			sm: (gameUnit * 0.6),
-			md: (gameUnit * 0.75),
-			lg: (gameUnit * 1.0),
-			xl: (gameUnit * 1.5)
-		};
-
 		var config = {
 			gameType: 'phaser',
 			pallete: {
@@ -153,21 +153,11 @@ var GameConfig = (function() {
 				fullScreen: true,
 				scaleMode: Phaser.ScaleManager.SHOW_ALL
 			},
-			// input: {
-			// 	keys: [
-			// 	{
-			// 		code: Polyworks.InputCodes.QUIT,
-			// 		inputDown: function() {
-			// 			PhaserGame.quit();
-			// 		}
-			// 	}
-			// 	]
-			// },
 			attrs: {
-				firstPlay: true
+				firstPlay: false
 			},
 			defaultScreen: 'start',
-			screens: [
+			states: [
 			// start
 			{
 				name: 'start',
@@ -368,8 +358,8 @@ var GameConfig = (function() {
 								name: 'turn-time',
 								text: 'Turn time: ' + TIME_PER_TURN,
 								style: {
-								    font: "24px Arial",
-							        fill: "#ffffff"
+								    font: (fontSizes.md + 'px Arial'),
+							        fill: '#ffffff'
 								},
 								x: 0,
 								y: (gameUnit * 2),
@@ -551,16 +541,30 @@ var GameConfig = (function() {
 						},
 						views: 
 						{
-							stageTitle: {
+							title: {
 								type: 'text',
 								name: 'equipment-title',
-								text: 'build your tractor',
+								text: 'Equipment Assembly',
 								style: {
-								    font: "24px Arial",
-							        fill: "#ffffff"
+								    font: (fontSizes.md + 'px Arial'),
+							        fill: '#ffffff'
 								},
 								x: 0,
 								y: (gameUnit * 2),
+								position: {
+									centerX: true
+								}
+							},
+							subtitle: {
+								type: 'text',
+								name: 'type-subtitle',
+								text: 'Choose a machine type:',
+								style: {
+									font: (fontSizes.sm + 'px Arial'),
+									fill: '#ffffff'
+								},
+								x: 0,
+								y: (gameUnit * 4),
 								position: {
 									centerX: true
 								}

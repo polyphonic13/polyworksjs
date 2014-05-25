@@ -76,7 +76,7 @@ var PhaserGame = (function() {
 			}
 		}
 		
-		Polyworks.StateManager.init(module.config.screens, module.phaser);
+		Polyworks.StateManager.init(module.config.states, module.phaser);
 		if(module.config.defaultScreen) {
 			Polyworks.StateManager.changeState(module.config.defaultScreen);
 		}

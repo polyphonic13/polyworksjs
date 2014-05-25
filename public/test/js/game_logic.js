@@ -1,26 +1,28 @@
-var TIME_PER_TURN = 10;
+var TIME_PER_TURN = 20;
 var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
+
 var gameLogic = {
 	states: {
 		start: {
 			listeners: [
-			// hide notification
-			{
-				event: Polyworks.Events.HIDE_NOTIFICATION,
-				handler: function(event) {
-					trace('hide notification handler, this = ', this);
-					this.views['notification'].hide();
-				}
-			},
-			// show notification
-			{
-				event: Polyworks.Events.SHOW_NOTIFICATION,
-				handler: function(event) 
-				{
-					this.views['notification'].show();
-				}
-			}
+			// // hide notification
+			// {
+			// 	event: Polyworks.Events.HIDE_NOTIFICATION,
+			// 	handler: function(event) {
+			// 		trace('hide notification handler, this = ', this);
+			// 		this.views['notification'].hide();
+			// 	}
+			// },
+			// // show notification
+			// {
+			// 	event: Polyworks.Events.SHOW_NOTIFICATION,
+			// 	handler: function(event) 
+			// 	{
+			// 		trace('show notification, this.views = ', this);
+			// 		this.views['notification'].show();
+			// 	}
+			// }
 			],
 			views: {
 				startButton: {
@@ -77,7 +79,7 @@ var gameLogic = {
 				this.timePerTurn = TIME_PER_TURN;
 				this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
 				this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-						trace('\ttimePerTurn = ' + this.timePerTurn + ', views = ', this.views);
+						// trace('\ttimePerTurn = ' + this.timePerTurn + ', views = ', this.views);
 						this.timePerTurn--;
 						var text = 'Turn time: ' + this.timePerTurn;
 						this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
@@ -150,13 +152,13 @@ var gameLogic = {
 						},
 						onDragStop: function() {
 							var view = this.controller.view;
-							trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (Polyworks.Stage.unit * 10.5) + ', min = ' + (Polyworks.Stage.unit * 3.5));
+							// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (Polyworks.Stage.unit * 10.5) + ', min = ' + (Polyworks.Stage.unit * 3.5));
 							if(view.y < (Polyworks.Stage.unit * 3.5)) {
 								view.y = Polyworks.Stage.unit * 3.5;
 							} else if(view.y > (Polyworks.Stage.unit * 10.5)) {
 								view.y = Polyworks.Stage.unit * 9.4;
 							}
-							trace('view x/y is now: ' + view.x + '/' + view.y);
+							// trace('view x/y is now: ' + view.x + '/' + view.y);
 						}
 					}
 				}
