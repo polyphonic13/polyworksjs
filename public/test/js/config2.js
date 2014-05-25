@@ -26,58 +26,81 @@ var GameConfig = (function() {
 		};
 
 		var globalViews = {
-			states: {
-				notification: {
-					type: 'group',
-					name: 'notification',
-					attrs: {
-						visible: false,
-						fixedToCamera: true
-					},
-					views: {
-						notificationBg: {
-							type: 'sprite',
-							name: 'notification-bg',
-							img: 'blockWhite',
-							x: (gameUnit/2),
-							y: (gameUnit/2),
-							attrs: {
-								width: (gameW - gameUnit),
-								height: (gameH - gameUnit),
-								alpha: 0.75,
-								fixedToCamera: true
-							}
-						},
-						notificationText: {
-							type: 'text',
-							name: 'notification-text',
-							text: '',
-							style: {
-							    font: (fontSizes.md + 'px Arial'),
-						        fill: '#000000'
-							},
-							x: 0,
-							y: (gameUnit * 2),
-							position: {
-								centerX: true
-							}
-						},
-						closeButton: {
-							type: 'button',
-							name: 'close-button',
-							img: 'buttonClose',
-							x: (gameW - gameUnit * 1.25),
-							y: (gameUnit * 0.25),
-							attrs: {
-								width: gameUnit * 1,
-								height: gameUnit * 1
-							},
-							callback: function() {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
-							},
-							context: this,
-							frames: [0, 1, 1, 0]
+			notification: {
+				type: 'group',
+				name: 'notification',
+				attrs: {
+					visible: false,
+					fixedToCamera: true
+				},
+				views: {
+					notificationBg: {
+						type: 'sprite',
+						name: 'notification-bg',
+						img: 'blockWhite',
+						x: (gameUnit/2),
+						y: (gameUnit/2),
+						attrs: {
+							width: (gameW - gameUnit),
+							height: (gameH - gameUnit),
+							alpha: 0.75,
+							fixedToCamera: true
 						}
+					},
+					notificationText: {
+						type: 'text',
+						name: 'notification-text',
+						text: '',
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: '#000000'
+						},
+						x: 0,
+						y: (gameUnit * 2),
+						position: {
+							centerX: true
+						}
+					},
+					closeButton: {
+						type: 'button',
+						name: 'close-button',
+						img: 'buttonClose',
+						x: (gameW - gameUnit * 1.25),
+						y: (gameUnit * 0.25),
+						attrs: {
+							width: gameUnit * 1,
+							height: gameUnit * 1
+						},
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
+						},
+						context: this,
+						frames: [0, 1, 1, 0]
+					}
+				}
+			},
+			partMarket: {
+				type: 'group',
+				name: 'partsMarket',
+				attrs: {
+					visible: false
+				},
+				views: {
+					marketBg: {
+						type: 'sprite',
+						name: 'notification-bg',
+						img: 'blockWhite',
+						x: (gameUnit/2),
+						y: (gameUnit/2),
+						attrs: {
+							width: (gameW - gameUnit),
+							height: (gameH - gameUnit),
+							alpha: 0.75,
+							fixedToCamera: true
+						}
+					},
+					{
+						
 					}
 				}
 			}
