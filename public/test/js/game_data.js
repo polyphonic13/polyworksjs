@@ -1,107 +1,93 @@
 var gameData = {
-	money: 1000000,
-	factories: [
-	{
-		location: 3
-	},
-	{
-		location: 10
-	}
-	],
-	showrooms: [
-	{
-		
-	},
-	{
-		
-	}
-	],
-	equipment: {
-		tractors: {
-			basic: [
-			{
-				body: 1,
-				chasis: 1,
-				frontWheels: 1,
-				rearWheels: 1,
-				cab: 1
-			}
-			],
-			medium: [
-			{
-				body: 1,
-				chasis: 2,
-				frontWheels: 1,
-				rearWheels: 4,
-				cab: 1
-			}
-			],
-			heavy: [
-			{
-				body: 3,
-				chasis: 3,
-				frontWheels: 2,
-				rearWheels: 2,
-				cab: 2
-			}
-			]
+	market: {
+		tires: [
+		{
+			type: 'w1',
+			cost: 500
 		},
-		skidSteers: {
-			basic: [
-			{
-				body: 1,
-				chasis: 1,
-				frontWheels: 1,
-				rearWheels: 1,
-				cab: 1
-			}
-			],
-			medium: [
-			{
-				body: 2,
-				chasis: 2,
-				frontWheels: 2,
-				rearWheels: 2,
-				cab: 2
-			}
-			],
-			heavy: [
-			{
-				body: 3,
-				chasis: 3,
-				frontWheels: 3,
-				rearWheels: 3,
-				cab: 3
-			}
-			]
+		{
+			type: 'w2',
+			cost: 300
+		},
+		{
+			type: 'w3',
+			cost: 1000
 		}
+		],
+		engines: [
+		{
+			type: 'e1',
+			cost: 2000
+		},
+		{
+			type: 'e2',
+			cost: 5000
+		}
+		],
+		transmissions: [
+		{
+			type: 't1',
+			cost: 1000
+		},
+		{
+			type: 't2',
+			cost: 3000
+		}
+		],
+		cabs: [
+		{
+			type: 'c1',
+			cost: 500
+		},
+		{
+			type: 'c2',
+			cost: 650
+		}
+		],
+		headlights: [
+		{
+			type: 'h1',
+			cost: 100
+		},
+		{
+			type: 'h2',
+			cost: 200
+		}
+		],
+		bucketAttachedments: [
+		{
+			type: 'ba1',
+			cost: 200
+		},
+		{
+			type: 'ba2',
+			cost: 400
+		}
+		]
 	},
-	tradeRoutes: [
-	{
-		name: 'asia',
-		lifeTime: 2,
-		consumption: {
-			tractors: {
-				basic: [5],
-				medium: [0],
-				heavy: [1]
-			},
-			skidSteers: {
-				basic: [0],
-				medium: [3],
-				heavy: [1]
-				
-			}
-		}
-	}
-	],
 	suppliers: [
 	{
-		name: 'jon doe tractor parts',
-		lifeTime: 3,
-		supplies: {
-			
+		name: 'john doe',
+		location: 'texas',
+		parts: {
+			bucketAttachments: [
+			{
+				type: 'ba1',
+				cost: 50,
+				bulkAmount: 1000
+			}
+			],
+			wheels: [
+			{
+				type: 'c3',
+				cost: 100,
+				bulkAmount: 5000
+			}
+			]
 		}
+	},
+	{
+		
 	}
 	]
 }

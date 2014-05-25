@@ -200,6 +200,45 @@ var gameLogic = {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						}
 					}
+				},
+				iconsGroup: {
+					tractor: {
+						input: {
+							inputDown: function() {
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'tractorBuilder' });
+							}
+						}
+					},
+					skidsteer: {
+						input: {
+							inputDown: function() {
+								trace('skid steer icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'skidsteerBuilder' });
+							}
+						}
+					}
+				}
+			}
+		},
+		tractorBuilder: {
+			views: {
+				buttonsGroup: {
+					closeButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+						}
+					}
+				}
+			}
+		},
+		skidsteerBuilder: {
+			views: {
+				buttonsGroup: {
+					closeButton: {
+						callback: function() {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+						}
+					}
 				}
 			}
 		}

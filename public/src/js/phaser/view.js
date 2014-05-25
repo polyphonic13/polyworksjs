@@ -9,13 +9,12 @@ Polyworks.PhaserView = (function() {
 	var module = {};
 	
 	function ViewController(config, name) {
-		// trace('ViewController['+config.name+']/constructor, type = ' + config.type);
+		// trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
 		this.name = name;
 		this.config = config;
 
 		switch(config.type) {
 			case viewTypes.SPRITE:
-			// trace('\tgoing to create sprite with: ', config);
 			this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
 			break;
 

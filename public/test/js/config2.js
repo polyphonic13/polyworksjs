@@ -106,6 +106,8 @@ var GameConfig = (function() {
 					greyTiles: 'images/grey_tiles2.gif',
 					iconFactory: 'images/icon_factory.gif',
 					iconShowroom: 'images/icon_showroom.gif',
+					iconTractor: 'images/icon_tractor.gif',
+					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonPlus: 'images/button_plus.png',
 					buttonMinus: 'images/button_minus.png'
 				},
@@ -156,7 +158,7 @@ var GameConfig = (function() {
 			attrs: {
 				firstPlay: false
 			},
-			defaultScreen: 'start',
+			defaultScreen: 'play',
 			states: [
 			// start
 			{
@@ -510,7 +512,9 @@ var GameConfig = (function() {
 				assets: {
 					images: [
 					'blockGreen',
-					'blockWhite'
+					'blockWhite',
+					'iconTractor',
+					'iconSkidsteer'
 					],
 					sprites: [
 					'buttonClose'
@@ -606,21 +610,197 @@ var GameConfig = (function() {
 						},
 						views: 
 						{
-							whiteBg: {
+							tractorIcon: {
 								type: 'sprite',
-								name: 'white-bg',
-								img: 'blockWhite',
-								x: gameUnit,
-								y: gameUnit,
+								name: 'tractor',
+								img: 'iconTractor',
+								x: gameUnit * 3,
+								y: gameUnit * 7,
 								attrs: {
-									width: (gameW - (gameUnit * 2)),
-									height: (gameH - (gameUnit * 2)),
-									alpha: 0.5
-								}
+									width: gameUnit * 4,
+									height: gameUnit * 2
+								},
+								input: gameLogic.states.equipment.views.iconsGroup.tractor.input
+							},
+							skidsteerIcon: {
+								type: 'sprite',
+								name: 'skidsteer',
+								img: 'iconSkidsteer',
+								x: gameUnit * 3,
+								y: gameUnit * 11,
+								attrs: {
+									width: gameUnit * 4,
+									height: gameUnit * 2
+								},
+								input: gameLogic.states.equipment.views.iconsGroup.skidsteer.input
 							}
 						}
 					},
 					notification: Polyworks.Utils.clone(globalViews.states.notification)
+				}
+			},
+			// tractor builder
+			{
+				name: 'tractorBuilder',
+				world: defaultWorld,
+				clearWorld: true,
+				clearCache: false,
+				assets: {
+					images: [
+					'buildBg',
+					'blockWhite'
+					],
+					sprites: [
+					'buttonClose'
+					]
+				},
+				views: {
+					// bg
+					bg: {
+						type: 'sprite',
+						name: 'tractor-state-bg',
+						img: 'buildBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH,
+							fixedToCamera: true
+						}
+					},
+					// text group
+					textGroup: {
+						type: 'group',
+						name: 'tractor-text-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						{
+							title: {
+								type: 'text',
+								name: 'equipment-title',
+								text: 'Build tractor',
+								style: {
+								    font: (fontSizes.md + 'px Arial'),
+							        fill: '#ffffff'
+								},
+								x: 0,
+								y: (gameUnit * 2),
+								position: {
+									centerX: true
+								}
+							}
+						}
+					},
+					// buttons group
+					buttonsGroup: {
+						type: 'group',
+						name: 'tractor-builder-state-button-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						// close button
+						{
+							closeButton: {
+								type: 'button',
+								name: 'close-button',
+								img: 'buttonClose',
+								x: (gameW - gameUnit * 1.25),
+								y: (gameUnit * 0.25),
+								attrs: {
+									width: gameUnit * 1,
+									height: gameUnit * 1
+								},
+								callback: gameLogic.states.tractorBuilder.views.buttonsGroup.closeButton.callback,
+								context: this,
+								frames: [0, 1, 1, 0]
+							}
+						}
+					}
+				}
+			},
+			// skid steer builder
+			{
+				name: 'skidsteerBuilder',
+				world: defaultWorld,
+				clearWorld: true,
+				clearCache: false,
+				assets: {
+					images: [
+					'buildBg',
+					'blockWhite'
+					],
+					sprites: [
+					'buttonClose'
+					]
+				},
+				views: {
+					// bg
+					bg: {
+						type: 'sprite',
+						name: 'skid-steer-state-bg',
+						img: 'buildBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH,
+							fixedToCamera: true
+						}
+					},
+					// text group
+					textGroup: {
+						type: 'group',
+						name: 'skid-steer-text-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						{
+							title: {
+								type: 'text',
+								name: 'equipment-title',
+								text: 'Build Skid Steer',
+								style: {
+								    font: (fontSizes.md + 'px Arial'),
+							        fill: '#ffffff'
+								},
+								x: 0,
+								y: (gameUnit * 2),
+								position: {
+									centerX: true
+								}
+							}
+						}
+					},
+					// buttons group
+					buttonsGroup: {
+						type: 'group',
+						name: 'tractor-builder-state-button-group',
+						attrs: {
+							fixedToCamera: true
+						},
+						views: 
+						// close button
+						{
+							closeButton: {
+								type: 'button',
+								name: 'close-button',
+								img: 'buttonClose',
+								x: (gameW - gameUnit * 1.25),
+								y: (gameUnit * 0.25),
+								attrs: {
+									width: gameUnit * 1,
+									height: gameUnit * 1
+								},
+								callback: gameLogic.states.skidsteerBuilder.views.buttonsGroup.closeButton.callback,
+								context: this,
+								frames: [0, 1, 1, 0]
+							}
+						}
+					}
 				}
 			}
 			]
