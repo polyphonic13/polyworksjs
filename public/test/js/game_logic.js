@@ -65,6 +65,15 @@ var gameLogic = {
 					this.views['start-state-buttons'].children['pause-button'].show();
 				}
 			},
+			// game time updated
+			{
+				event: Polyworks.Events.GAME_TIME_UPDATED,
+				handler: function(event) {
+					var text = 'Turn time: ' + event.value;
+					this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
+
+				}
+			},
 			// turn ended
 			{
 				event: Polyworks.Events.TURN_ENDED,
@@ -81,10 +90,10 @@ var gameLogic = {
 				this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
 						// trace('\ttimePerTurn = ' + this.timePerTurn + ', views = ', this.views);
 						this.timePerTurn--;
-						var text = 'Turn time: ' + this.timePerTurn;
-						this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
 						if(this.timePerTurn <= 0) {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
+						} else {
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.GAME_TIME_UPDATED, value: this.timePerTurn });
 						}
 					},
 					this

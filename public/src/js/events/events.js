@@ -4,6 +4,7 @@ Polyworks.Events = {
 	START_TURN: 'startTurn',
 	PAUSE_GAME: 'pauseGame',
 	RESUME_GAME: 'resumeGame',
+	GAME_TIME_UPDATED: 'gameTimeUpdated',
 	TURN_ENDED: 'turnEnded',
 	ADD_NOTIFICATION: 'addNotification',
 	REMOVE_NOTIFICATION: 'removeNotification',

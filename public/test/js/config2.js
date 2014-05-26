@@ -25,7 +25,7 @@ var GameConfig = (function() {
 			height: gameH
 		};
 
-		var globalViews = {
+		var sharedViews = {
 			notification: {
 				type: 'group',
 				name: 'notification',
@@ -98,9 +98,6 @@ var GameConfig = (function() {
 							alpha: 0.75,
 							fixedToCamera: true
 						}
-					},
-					{
-						
 					}
 				}
 			}
@@ -108,7 +105,7 @@ var GameConfig = (function() {
 		
 		var config = {
 			gameType: 'phaser',
-			pallete: {
+			palette: {
 				darkRed: '#ba1d3a',
 				lightRed: '#e21a49',
 				black: '#000000',
@@ -659,7 +656,7 @@ var GameConfig = (function() {
 							}
 						}
 					},
-					notification: Polyworks.Utils.clone(globalViews.states.notification)
+					notification: Polyworks.Utils.clone(sharedViews.notification)
 				}
 			},
 			// tractor builder
