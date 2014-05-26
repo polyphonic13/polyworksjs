@@ -79,16 +79,16 @@ var GameConfig = (function() {
 					}
 				}
 			},
-			partMarket: {
+			overlayMenu: {
 				type: 'group',
-				name: 'partsMarket',
+				name: 'overlay-menu',
 				attrs: {
 					visible: false
 				},
 				views: {
-					marketBg: {
+					menuBg: {
 						type: 'sprite',
-						name: 'notification-bg',
+						name: 'menu-bg',
 						img: 'blockWhite',
 						x: (gameUnit/2),
 						y: (gameUnit/2),
@@ -97,6 +97,43 @@ var GameConfig = (function() {
 							height: (gameH - gameUnit),
 							alpha: 0.75,
 							fixedToCamera: true
+						}
+					}
+				}
+			},
+			overlayMenuItem: {
+				type: 'group',
+				name: 'overlay-menu-item',
+				views: {
+					icon: {
+						type: 'sprite',
+						name: 'menu-item-icon',
+						img: '',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 4
+						}
+					},
+					description: {
+						type: 'text',
+						name: 'menu-item-description',
+						text: '',
+						x: gameUnit * 2,
+						y: 0,
+						attrs: {
+							
+						}
+					},
+					cost: {
+						type: 'text',
+						name: 'menu-item-cose',
+						text: '',
+						x: gameUnit * 2,
+						y: gameUnit * 2,
+						attrs: {
+							
 						}
 					}
 				}
@@ -178,7 +215,7 @@ var GameConfig = (function() {
 			attrs: {
 				firstPlay: false
 			},
-			defaultScreen: 'play',
+			defaultScreen: 'tractorBuilder',
 			states: [
 			// start
 			{
@@ -668,7 +705,10 @@ var GameConfig = (function() {
 				assets: {
 					images: [
 					'buildBg',
-					'blockWhite'
+					'blockWhite',
+					'blockRed',
+					'blockGreen',
+					'blockBlue'
 					],
 					sprites: [
 					'buttonClose'
@@ -736,6 +776,105 @@ var GameConfig = (function() {
 								callback: gameLogic.states.tractorBuilder.views.buttonsGroup.closeButton.callback,
 								context: this,
 								frames: [0, 1, 1, 0]
+							}
+						}
+					},
+					// icons group
+					iconsGroup: {
+						type: 'group',
+						name: 'tractor-builder-state-icon-group',
+						views: 
+						{
+							wheelIcon1: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockWhite',
+								x: (gameUnit * 1.5),
+								y: (gameUnit * 11),
+								attrs: {
+									width: gameUnit * 1.5,
+									height: gameUnit * 2,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.wheelIcon.input
+							},
+							wheelIcon2: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockWhite',
+								x: (gameUnit * 3.5),
+								y: (gameUnit * 12),
+								attrs: {
+									width: gameUnit * 2,
+									height: gameUnit * 1.5,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.wheelIcon.input
+							},
+							wheelIcon3: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockWhite',
+								x: (gameUnit * 7),
+								y: (gameUnit * 9.5),
+								attrs: {
+									width: gameUnit * 2,
+									height: gameUnit * 3,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.wheelIcon.input
+							},
+							engineIcon: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockRed',
+								x: (gameUnit * 4),
+								y: (gameUnit * 9),
+								attrs: {
+									width: gameUnit * 2,
+									height: gameUnit * 2,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.engineIcon.input
+							},
+							transmissionIcon: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockBlue',
+								x: (gameUnit * 3),
+								y: (gameUnit * 11),
+								attrs: {
+									width: gameUnit * 4,
+									height: gameUnit * 1,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.transmissionIcon.input
+							},
+							cabIcon: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockGreen',
+								x: (gameUnit * 4.5),
+								y: (gameUnit * 7),
+								attrs: {
+									width: gameUnit * 3,
+									height: gameUnit * 2,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.cabIcon.input
+							},
+							headlightsIcon: {
+								type: 'sprite',
+								name: 'wheel-icon',
+								img: 'blockGreen',
+								x: (gameUnit * 3),
+								y: (gameUnit * 9),
+								attrs: {
+									width: gameUnit * 1,
+									height: gameUnit * 2,
+									alpha: 0.5
+								},
+								input: gameLogic.states.tractorBuilder.views.iconsGroup.headlightsIcon.input
 							}
 						}
 					}

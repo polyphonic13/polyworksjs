@@ -230,11 +230,64 @@ var gameLogic = {
 			}
 		},
 		tractorBuilder: {
+			listeners: [
+			{
+				event: Polyworks.Events.OPEN_OVERLAY_MENU,
+				handler: function(event) {
+					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen);
+					if(!this.overlayMenuOpen) {
+						this.overlayMenuOpen = true
+					}
+				}
+			}
+			],
 			views: {
 				buttonsGroup: {
 					closeButton: {
 						callback: function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+						}
+					}
+				},
+				iconsGroup: {
+					wheelIcon: {
+						input: {
+							inputDown: function() {
+								trace('wheel icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'wheels' });
+							}
+						}
+					},
+					engineIcon: {
+						input: {
+							inputDown: function() {
+								trace('engine icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'engines' });
+							}
+						}
+					},
+					transmissionIcon: {
+						input: {
+							inputDown: function() {
+								trace('transmission icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'transmissions' });
+							}
+						}
+					},
+					cabIcon: {
+						input: {
+							inputDown: function() {
+								trace('cab icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'cabs' });
+							}
+						}
+					},
+					headlightsIcon: {
+						input: {
+							inputDown: function() {
+								trace('headlights icon input down');
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'headlights' });
+							}
 						}
 					}
 				}

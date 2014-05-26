@@ -6,6 +6,8 @@ Polyworks.Events = {
 	RESUME_GAME: 'resumeGame',
 	GAME_TIME_UPDATED: 'gameTimeUpdated',
 	TURN_ENDED: 'turnEnded',
+	OPEN_OVERLAY_MENU: 'openOverlayMenu',
+	CLOSE_OVERLAY_MENU: 'closeOverlayMenu',
 	ADD_NOTIFICATION: 'addNotification',
 	REMOVE_NOTIFICATION: 'removeNotification',
 	SHOW_NOTIFICATION: 'showNotification',
