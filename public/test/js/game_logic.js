@@ -3,12 +3,24 @@ var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 
 var gameLogic = {
+	sharedViews: {
+		notification: {
+			callback: function() {
+				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_NOTIFICATION });
+			}
+		},
+		overlayMenu: {
+			callback: function() {
+				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_OVERLAY_MENU });
+			}
+		}
+	},
 	states: {
 		start: {
 			listeners: [
 			// // hide notification
 			// {
-			// 	event: Polyworks.Events.HIDE_NOTIFICATION,
+			// 	event: Polyworks.Events.CLOSE_NOTIFICATION,
 			// 	handler: function(event) {
 			// 		trace('hide notification handler, this = ', this);
 			// 		this.views['notification'].hide();
@@ -177,17 +189,22 @@ var gameLogic = {
 			listeners: [
 			// add notification
 			{
-				event: Polyworks.Events.UPDATE_AND_SHOW_NOTIFICATION,
+				event: Polyworks.Events.OPEN_NOTIFICATION,
 				handler: function(event) 
 				{
 					trace('add notification event handlers, notification = ', (this.views['notification']));
-					this.views['notification'].children['notification-text'].view.setText(event.value);
-					this.views['notification'].show();
+					var notification = this.views['notification'];
+					var notificationView = notification.children['notification-text'].view;
+					
+					if(notificationView.text !== event.value) {
+						notificationView.setText(event.value);
+					}
+					notification.show();
 				}
 			},
 			// remove notification
 			{
-				event: Polyworks.Events.HIDE_NOTIFICATION,
+				event: Polyworks.Events.CLOSE_NOTIFICATION,
 				handler: function(event) 
 				{
 					this.views['notification'].hide();
@@ -199,7 +216,7 @@ var gameLogic = {
 					input:{
 						inputDown: function() {
 							trace('equipment.views.bg.input.inputDown');
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.UPDATE_AND_SHOW_NOTIFICATION, value: 'hello notification' });
+							Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_NOTIFICATION, value: 'hello notification' });
 						}
 					}
 				},
@@ -230,13 +247,33 @@ var gameLogic = {
 			}
 		},
 		tractorBuilder: {
+			methods: 
+			{
+				addOverlayMenuItems: function(type) {
+					trace('this['+this.name+']/addOverlayMenuItems, type = ' + type);
+				}
+			},
 			listeners: [
 			{
 				event: Polyworks.Events.OPEN_OVERLAY_MENU,
 				handler: function(event) {
 					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen);
 					if(!this.overlayMenuOpen) {
-						this.overlayMenuOpen = true
+						if(this.overlayMenuType !== event.value) {
+							this.methods.addOverlayMenuItems.call(this, event.value);
+						}
+						
+						this.overlayMenuType = event.value;
+						this.overlayMenuOpen = true;
+					}
+				}
+			},
+			{
+				event: Polyworks.Events.CLOSE_OVERLAY_MENU,
+				handler: function(event) {
+					trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
+					if(this.overlayMenuOpen) {
+						this.overlayMenuOpen = false;
 					}
 				}
 			}

@@ -32,7 +32,7 @@ Polyworks.StateManager = (function() {
 	};
 	
 	Controller.prototype.create = function() {
-		// trace('StateController['+this.name+']/create');
+		trace('StateController['+this.name+']/create, this.config = ', this.config);
 		var world = this.config.world;
 		// trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
@@ -56,10 +56,26 @@ Polyworks.StateManager = (function() {
 			);
 		}
 
+		if(this.config.methods) {
+			trace('there are methods');
+			this.methods = {};
+			Polyworks.Utils.each(
+				this.config.methods,
+				function(method, key) {
+					trace('adding ' + key + ' to prototype as method: ', method);
+					this.methods[key] = method;
+				},
+				this
+			);
+		}
+		
+		trace('post method add, this = ', this);
 		if(this.config.listeners) {
+			trace('there are listeners');
 			Polyworks.Utils.each(
 				this.config.listeners,
 				function(listener) {
+					trace('\tadding listener:', listener);
 					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this

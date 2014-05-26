@@ -71,9 +71,7 @@ var GameConfig = (function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
-						},
+						callback: gameLogic.sharedViews.notification.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
 					}
@@ -714,6 +712,8 @@ var GameConfig = (function() {
 					'buttonClose'
 					]
 				},
+				methods: gameLogic.states.tractorBuilder.methods,
+				listeners: gameLogic.states.tractorBuilder.listeners,
 				views: {
 					// bg
 					bg: {

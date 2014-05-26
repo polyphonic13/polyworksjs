@@ -95,7 +95,7 @@ var GameConfig = (function() {
 				},
 				listeners: [
 				{
-					event: Polyworks.Events.HIDE_NOTIFICATION,
+					event: Polyworks.Events.CLOSE_NOTIFICATION,
 					handler: function(event) {
 						this.views['notification'].hide();
 					}
@@ -167,7 +167,7 @@ var GameConfig = (function() {
 						},
 						input: {
 							inputUp: function() {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.HIDE_NOTIFICATION });
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_NOTIFICATION });
 							}
 						}
 					},
