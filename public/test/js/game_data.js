@@ -30,11 +30,13 @@ var gameData = {
 		{
 			type: 'e1',
 			icon: 'engine1',
+			description: 'basic engine',
 			cost: 2000
 		},
 		{
 			type: 'e2',
 			icon: 'engine2',
+			description: 'super engine',
 			cost: 5000
 		}
 		],

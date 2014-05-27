@@ -210,12 +210,17 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	module.removeView = function(name, collection) {
+		trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
 		Polyworks.Utils.each(
 			collection,
-			function(child, idx) {
+			function(child, key) {
 				if(child.view.name === name) {
-					child.destroy();
-					collection.splice(idx, 1);
+					trace('\tremoving ', child);
+					child.view.destroy();
+					if(child.group) {
+						child.group.view.destroy();
+					}
+					delete collection[key];
 				}
 			},
 			this
