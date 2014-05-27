@@ -127,18 +127,18 @@ var GameConfig = (function() {
 			overlayMenuItem: {
 				type: 'group',
 				name: 'overlay-menu-item',
-				offset: (gameUnit * 2),
-				totalHeight: (gameUnit * 3),
+				offset: (gameUnit * 3),
+				totalHeight: (gameUnit * 2.5),
 				views: {
 					bg: {
 						type: 'sprite',
 						name: 'menu-item-bg',
-						img: 'blockWhite',
+						img: 'blockBlue',
 						x: 0,
 						y: 0,
 						attrs: {
 							width: gameW,
-							height: (gameUnit * 3),
+							height: (gameUnit * 2),
 							alpha: 0.33
 						}
 					},
@@ -147,18 +147,18 @@ var GameConfig = (function() {
 						name: 'menu-item-icon',
 						img: '',
 						x: gameUnit,
-						y: gameUnit,
+						y: gameUnit * 0.25,
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 2
+							width: gameUnit * 1.5,
+							height: gameUnit * 1.5
 						}
 					},
 					description: {
 						type: 'text',
 						name: 'menu-item-description',
 						text: '',
-						x: gameUnit * 4,
-						y: gameUnit,
+						x: gameUnit * 3,
+						y: gameUnit * 0.25,
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.black
@@ -166,10 +166,10 @@ var GameConfig = (function() {
 					},
 					cost: {
 						type: 'text',
-						name: 'menu-item-cose',
+						name: 'menu-item-cost',
 						text: '',
-						x: gameUnit * 4,
-						y: gameUnit * 2,
+						x: gameUnit * 3,
+						y: gameUnit * 1,
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.black
@@ -204,6 +204,7 @@ var GameConfig = (function() {
 					wheels1: 'images/parts_icons/wheels1.gif',
 					wheels2: 'images/parts_icons/wheels2.gif',
 					wheels3: 'images/parts_icons/wheels3.gif',
+					wheels4: 'images/parts_icons/wheels4.gif',
 					engine1: 'images/parts_icons/engine1.gif',
 					engine2: 'images/parts_icons/engine2.gif'
 				},
@@ -244,6 +245,7 @@ var GameConfig = (function() {
 				'wheels1',
 				'wheels2',
 				'wheels3',
+				'wheels4',
 				'engine1',
 				'engine2'
 				],

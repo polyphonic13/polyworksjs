@@ -11,11 +11,17 @@ var gameData = {
 			type: 'w2',
 			icon: 'wheels2',
 			description: 'cheap wheels',
-			cost: 300
+			cost: 250
 		},
 		{
 			type: 'w3',
 			icon: 'wheels3',
+			description: 'average wheels',
+			cost: 350
+		},
+		{
+			type: 'w4',
+			icon: 'wheels4',
 			description: 'best wheels',
 			cost: 1000
 		}

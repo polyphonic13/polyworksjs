@@ -83,11 +83,31 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	ViewController.prototype.hide = function() {
+		// trace('ViewController, hide, this = ', this);
+		if(this.children) {
+			Polyworks.Utils.each(
+				this.children,
+				function(child) {
+					// trace('\thiding child: ', child);
+					child.hide();
+				},
+			this
+			);
+		}
 		this.view.visible = false;
 	};
 	
 	ViewController.prototype.show = function() {
-		this.view.visible = true;
+		if(this.children) {
+			Polyworks.Utils.each(
+				this.children,
+				function(child) {
+					// trace('\tshowing child: ', child);
+					child.show();
+				},
+			this
+			);
+		}		this.view.visible = true;
 	};
 	
 	// groups only
@@ -180,8 +200,10 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	module.addView = function(view, collection) {
+		// trace('PhaserView/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
 		collection[view.name] = new Polyworks.PhaserView.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
+			// trace('\tit is a group, going to call build on it');
 			collection[view.name].children = Polyworks.PhaserView.build(view.views);
 			Polyworks.PhaserView.initGroup(collection[view.name]);
 		}

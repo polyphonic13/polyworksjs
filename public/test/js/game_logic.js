@@ -10,7 +10,6 @@ var gameLogic = {
 			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData);
 			var menuConfig = PhaserGame.sharedViews.overlayMenu;
 			var itemConfig = PhaserGame.sharedViews.overlayMenuItem;
-			var item = {};
 			var count = 0;
 			var itemY = 0;
 			var offset = itemConfig.offset;
@@ -19,7 +18,8 @@ var gameLogic = {
 			Polyworks.Utils.each(
 				partsData,
 				function(part, p) {
-					item = Polyworks.Utils.clone(itemConfig);
+					var item = Polyworks.Utils.clone(itemConfig);
+					item.name = part.type;
 					item.views.icon.img = part.icon;
 					item.views.description.text = part.description;
 					item.views.cost.text = '$' + part.cost;
@@ -311,6 +311,7 @@ var gameLogic = {
 				handler: function(event) {
 					trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
 					if(this.overlayMenuOpen) {
+						trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						this.views['overlay-menu'].hide();
 						this.overlayMenuOpen = false;
 					}
