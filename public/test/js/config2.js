@@ -116,6 +116,11 @@ var GameConfig = (function() {
 						callback: gameLogic.sharedViews.overlayMenu.closeButton.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
+					},
+					items: {
+						type: 'group',
+						name: 'items-group',
+						views: {}
 					}
 				}
 			},

@@ -33,7 +33,7 @@ var gameLogic = {
 						this
 					);
 
-					menuConfig.views[p] = item;
+					menuConfig.views['items'].views[p] = item;
 					count++;
 				},
 				this
