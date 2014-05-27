@@ -1,19 +1,22 @@
 var gameData = {
 	market: {
-		tires: [
+		wheels: [
 		{
 			type: 'w1',
 			icon: 'wheels1',
+			description: 'great wheels',
 			cost: 500
 		},
 		{
 			type: 'w2',
 			icon: 'wheels2',
+			description: 'cheap wheels',
 			cost: 300
 		},
 		{
 			type: 'w3',
 			icon: 'wheels3',
+			description: 'best wheels',
 			cost: 1000
 		}
 		],
@@ -65,7 +68,7 @@ var gameData = {
 			cost: 200
 		}
 		],
-		bucketAttachedments: [
+		buckets: [
 		{
 			type: 'ba1',
 			icon: 'bucket1',
@@ -83,7 +86,7 @@ var gameData = {
 		name: 'john doe',
 		location: 'texas',
 		parts: {
-			bucketAttachments: [
+			buckets: [
 			{
 				type: 'ba1',
 				cost: 50,
@@ -100,7 +103,24 @@ var gameData = {
 		}
 	},
 	{
-		
+		name: 'jane smith',
+		location: 'arkansas',
+		parts: {
+			engines: [
+			{
+				type: 'ba1',
+				cost: 50,
+				bulkAmount: 1000
+			}
+			],
+			transmissions: [
+			{
+				type: 't2',
+				cost: 100,
+				bulkAmount: 5000
+			}
+			]
+		}
 	}
 	]
-}
+};

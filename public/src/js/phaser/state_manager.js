@@ -15,7 +15,6 @@ Polyworks.StateManager = (function() {
 			this
 		);
 		// trace('state['+this.name+'] listeners = ', config.listeners);
-		
 		PhaserGame.phaser.state.add(this.name, this, false);
 	};
 	

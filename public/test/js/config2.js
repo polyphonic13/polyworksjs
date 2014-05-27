@@ -9,7 +9,14 @@ var GameConfig = (function() {
 		var gameW = Polyworks.Stage.gameW;
 		var gameH = Polyworks.Stage.gameH;
 		var gameUnit = Polyworks.Stage.unit;
-		
+
+		var defaultWorld = {
+			x: 0,
+			y: 0,
+			width: gameW,
+			height: gameH
+		};
+
 		var fontSizes = {
 			xs: (gameUnit * 0.5),
 			sm: (gameUnit * 0.6),
@@ -17,12 +24,11 @@ var GameConfig = (function() {
 			lg: (gameUnit * 1.0),
 			xl: (gameUnit * 1.5)
 		};
-
-		var defaultWorld = {
-			x: 0,
-			y: 0,
-			width: gameW,
-			height: gameH
+		var palette = {
+			darkRed: '#ba1d3a',
+			lightRed: '#e21a49',
+			black: '#000000',
+			white: '#ffffff'
 		};
 
 		var sharedViews = {
@@ -53,7 +59,7 @@ var GameConfig = (function() {
 						text: '',
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
-					        fill: '#000000'
+					        fill: palette.black
 						},
 						x: 0,
 						y: (gameUnit * 2),
@@ -71,7 +77,7 @@ var GameConfig = (function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.sharedViews.notification.callback,
+						callback: gameLogic.sharedViews.notification.closeButton.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
 					}
@@ -96,56 +102,81 @@ var GameConfig = (function() {
 							alpha: 0.75,
 							fixedToCamera: true
 						}
+					},
+					closeButton: {
+						type: 'button',
+						name: 'close-button',
+						img: 'buttonClose',
+						x: (gameW - gameUnit * 1.25),
+						y: (gameUnit * 0.25),
+						attrs: {
+							width: gameUnit * 1,
+							height: gameUnit * 1
+						},
+						callback: gameLogic.sharedViews.overlayMenu.closeButton.callback,
+						context: this,
+						frames: [0, 1, 1, 0]
 					}
 				}
 			},
 			overlayMenuItem: {
 				type: 'group',
 				name: 'overlay-menu-item',
+				offset: (gameUnit * 2),
+				totalHeight: (gameUnit * 3),
 				views: {
+					bg: {
+						type: 'sprite',
+						name: 'menu-item-bg',
+						img: 'blockWhite',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: (gameUnit * 3),
+							alpha: 0.33
+						}
+					},
 					icon: {
 						type: 'sprite',
 						name: 'menu-item-icon',
 						img: '',
-						x: 0,
-						y: 0,
+						x: gameUnit,
+						y: gameUnit,
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 4
+							width: gameUnit * 2,
+							height: gameUnit * 2
 						}
 					},
 					description: {
 						type: 'text',
 						name: 'menu-item-description',
 						text: '',
-						x: gameUnit * 2,
-						y: 0,
-						attrs: {
-							
+						x: gameUnit * 4,
+						y: gameUnit,
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.black
 						}
 					},
 					cost: {
 						type: 'text',
 						name: 'menu-item-cose',
 						text: '',
-						x: gameUnit * 2,
+						x: gameUnit * 4,
 						y: gameUnit * 2,
-						attrs: {
-							
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.black
 						}
 					}
 				}
 			}
 		};
-		
+
 		var config = {
+			gameEl: 'game_container',
 			gameType: 'phaser',
-			palette: {
-				darkRed: '#ba1d3a',
-				lightRed: '#e21a49',
-				black: '#000000',
-				white: '#ffffff'
-			},
 			assets: {
 				images: {
 					startBg: 'images/screen_mocks_start.gif',
@@ -164,7 +195,12 @@ var GameConfig = (function() {
 					iconTractor: 'images/icon_tractor.gif',
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonPlus: 'images/button_plus.png',
-					buttonMinus: 'images/button_minus.png'
+					buttonMinus: 'images/button_minus.png',
+					wheels1: 'images/parts_icons/wheels1.gif',
+					wheels2: 'images/parts_icons/wheels2.gif',
+					wheels3: 'images/parts_icons/wheels3.gif',
+					engine1: 'images/parts_icons/engine1.gif',
+					engine2: 'images/parts_icons/engine2.gif'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -199,7 +235,12 @@ var GameConfig = (function() {
 			preload: {
 				images: [
 				'blockWhite',
-				'blockClear'
+				'blockClear',
+				'wheels1',
+				'wheels2',
+				'wheels3',
+				'engine1',
+				'engine2'
 				],
 				sprites: [
 				'buttonClose'
@@ -211,7 +252,9 @@ var GameConfig = (function() {
 				scaleMode: Phaser.ScaleManager.SHOW_ALL
 			},
 			attrs: {
-				firstPlay: false
+				firstPlay: false,
+				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems,
+				sharedViews: sharedViews
 			},
 			defaultScreen: 'tractorBuilder',
 			states: [
@@ -416,7 +459,7 @@ var GameConfig = (function() {
 								text: 'Turn time: ' + TIME_PER_TURN,
 								style: {
 								    font: (fontSizes.md + 'px Arial'),
-							        fill: '#ffffff'
+							        fill: palette.white
 								},
 								x: 0,
 								y: (gameUnit * 2),
@@ -606,7 +649,7 @@ var GameConfig = (function() {
 								text: 'Equipment Assembly',
 								style: {
 								    font: (fontSizes.md + 'px Arial'),
-							        fill: '#ffffff'
+							        fill: palette.white
 								},
 								x: 0,
 								y: (gameUnit * 2),
@@ -620,7 +663,7 @@ var GameConfig = (function() {
 								text: 'Choose a machine type:',
 								style: {
 									font: (fontSizes.sm + 'px Arial'),
-									fill: '#ffffff'
+									fill: palette.white
 								},
 								x: 0,
 								y: (gameUnit * 4),
@@ -712,8 +755,9 @@ var GameConfig = (function() {
 					'buttonClose'
 					]
 				},
-				methods: gameLogic.states.tractorBuilder.methods,
+				methods: gameLogic.sharedMethods,
 				listeners: gameLogic.states.tractorBuilder.listeners,
+				shutdown: gameLogic.states.tractorBuilder.shutdown,
 				views: {
 					// bg
 					bg: {
@@ -743,7 +787,7 @@ var GameConfig = (function() {
 								text: 'Build tractor',
 								style: {
 								    font: (fontSizes.md + 'px Arial'),
-							        fill: '#ffffff'
+							        fill: palette.white
 								},
 								x: 0,
 								y: (gameUnit * 2),
@@ -924,7 +968,7 @@ var GameConfig = (function() {
 								text: 'Build Skid Steer',
 								style: {
 								    font: (fontSizes.md + 'px Arial'),
-							        fill: '#ffffff'
+							        fill: palette.white
 								},
 								x: 0,
 								y: (gameUnit * 2),

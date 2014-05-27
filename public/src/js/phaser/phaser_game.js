@@ -40,14 +40,14 @@ var PhaserGame = (function() {
 		// trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
 		_addListeners();
-		
+
 		Polyworks.Utils.extend(module, config.attrs);
-		
+
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
 			module.stage.gameH, 
 			Phaser.AUTO, 
-			'game_container',
+			config.gameEl,
 			{ 
 				preload: _preload, 
 				create: _create, 
@@ -69,13 +69,13 @@ var PhaserGame = (function() {
 		// trace('PhaserGame/_create');
 		Polyworks.PhaserScale.init(module.config.stage);
 		Polyworks.PhaserPhysics.init();
-		
+
 		if(module.config.input) {
 			if(module.config.input.keys) {
 				module.keyboard = Polyworks.PhaserInput.initKeyboard(module.config.input.keys);
 			}
 		}
-		
+
 		Polyworks.StateManager.init(module.config.states, module.phaser);
 		if(module.config.defaultScreen) {
 			Polyworks.StateManager.changeState(module.config.defaultScreen);
@@ -112,7 +112,6 @@ var PhaserGame = (function() {
 		Polyworks.StateManager.destroy();
 		_removeListeners();
 		module.phaser.destroy();
-		
 	}
 	
 	return module;

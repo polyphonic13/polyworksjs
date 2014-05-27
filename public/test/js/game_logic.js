@@ -3,15 +3,58 @@ var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 
 var gameLogic = {
+	methods: {
+		addOverlayMenuItems: function(type, collection) {
+			var partsData = gameData.market[type];
+			// var overlayMenu = collection['overlay-menu'];
+			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData);
+			var menuConfig = PhaserGame.sharedViews.overlayMenu;
+			var itemConfig = PhaserGame.sharedViews.overlayMenuItem;
+			var item = {};
+			var count = 0;
+			var itemY = 0;
+			var offset = itemConfig.offset;
+			var totalHeight = itemConfig.totalHeight;
+
+			Polyworks.Utils.each(
+				partsData,
+				function(part, p) {
+					item = Polyworks.Utils.clone(itemConfig);
+					item.views.icon.img = part.icon;
+					item.views.description.text = part.description;
+					item.views.cost.text = '$' + part.cost;
+
+					itemY = (totalHeight * count) + offset;
+					Polyworks.Utils.each(
+						item.views,
+						function(view) {
+							view.y += itemY;
+						},
+						this
+					);
+
+					menuConfig.views[p] = item;
+					count++;
+				},
+				this
+			);
+			Polyworks.PhaserView.addView(menuConfig, collection);
+			trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
+		}
+	},
 	sharedViews: {
 		notification: {
-			callback: function() {
-				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_NOTIFICATION });
+			closeButton: {
+				callback: function() {
+					Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_NOTIFICATION });
+				}
 			}
 		},
 		overlayMenu: {
-			callback: function() {
-				Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_OVERLAY_MENU });
+			closeButton: {
+				callback: function() {
+					Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_OVERLAY_MENU });
+				}
 			}
 		}
 	},
@@ -247,22 +290,17 @@ var gameLogic = {
 			}
 		},
 		tractorBuilder: {
-			methods: 
-			{
-				addOverlayMenuItems: function(type) {
-					trace('this['+this.name+']/addOverlayMenuItems, type = ' + type);
-				}
-			},
 			listeners: [
 			{
 				event: Polyworks.Events.OPEN_OVERLAY_MENU,
 				handler: function(event) {
-					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen);
+					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
 					if(!this.overlayMenuOpen) {
 						if(this.overlayMenuType !== event.value) {
-							this.methods.addOverlayMenuItems.call(this, event.value);
+							PhaserGame.addOverlayMenuItems.call(this, event.value, this.views);
 						}
-						
+
+						this.views['overlay-menu'].show();
 						this.overlayMenuType = event.value;
 						this.overlayMenuOpen = true;
 					}
@@ -273,11 +311,16 @@ var gameLogic = {
 				handler: function(event) {
 					trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
 					if(this.overlayMenuOpen) {
+						this.views['overlay-menu'].hide();
 						this.overlayMenuOpen = false;
 					}
 				}
 			}
 			],
+			shutdown: function() {
+				this.overlayMenuType = '';
+				this.overlayMenuOpen = false;
+			},
 			views: {
 				buttonsGroup: {
 					closeButton: {
