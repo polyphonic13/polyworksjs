@@ -205,8 +205,14 @@ var GameConfig = (function() {
 					wheels2: 'images/parts_icons/wheels2.gif',
 					wheels3: 'images/parts_icons/wheels3.gif',
 					wheels4: 'images/parts_icons/wheels4.gif',
+					transmission1: 'images/parts_icons/engine1.gif',
+					engine2: 'images/parts_icons/engine2.gif'
 					engine1: 'images/parts_icons/engine1.gif',
 					engine2: 'images/parts_icons/engine2.gif'
+					cab1: 'images/parts_icons/cab1.gif',
+					cab2: 'images/parts_icons/cab2.gif'
+					headlights1: 'images/parts_icons/headlights1.gif',
+					headlights2: 'images/parts_icons/headlights2.gif'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -247,7 +253,11 @@ var GameConfig = (function() {
 				'wheels3',
 				'wheels4',
 				'engine1',
-				'engine2'
+				'engine2',
+				'cab1',
+				'cab2',
+				'headlights1',
+				'headlights2'
 				],
 				sprites: [
 				'buttonClose'
