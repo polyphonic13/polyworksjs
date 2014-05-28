@@ -2,27 +2,21 @@ var gameData = {
 	market: {
 		wheels: [
 		{
-			type: 'w1',
-			icon: 'wheels1',
-			description: 'great wheels',
-			cost: 500
-		},
-		{
-			type: 'w2',
-			icon: 'wheels2',
-			description: 'cheap wheels',
-			cost: 250
-		},
-		{
 			type: 'w3',
-			icon: 'wheels3',
-			description: 'average wheels',
+			icon: 'wheels2',
+			description: 'basic wheels',
 			cost: 350
 		},
 		{
+			type: 'w1',
+			icon: 'wheels1',
+			description: 'standard wheels',
+			cost: 500
+		},
+		{
 			type: 'w4',
-			icon: 'wheels4',
-			description: 'best wheels',
+			icon: 'wheels3',
+			description: 'deluxe wheels',
 			cost: 1000
 		}
 		],
@@ -36,7 +30,13 @@ var gameData = {
 		{
 			type: 'e2',
 			icon: 'engine2',
-			description: 'super engine',
+			description: 'standard engine',
+			cost: 3000
+		},
+		{
+			type: 'e3',
+			icon: 'engine3',
+			description: 'deluxe engine',
 			cost: 5000
 		}
 		],
@@ -44,11 +44,19 @@ var gameData = {
 		{
 			type: 't1',
 			icon: 'transmission1',
+			description: 'basic transmission',
 			cost: 1000
 		},
 		{
 			type: 't2',
 			icon: 'transmission2',
+			description: 'standard transmission',
+			cost: 1500
+		},
+		{
+			type: 't3',
+			icon: 'transmission3',
+			description: 'deluxe transmission',
 			cost: 3000
 		}
 		],
@@ -56,35 +64,59 @@ var gameData = {
 		{
 			type: 'c1',
 			icon: 'cab1',
+			description: 'basic cabs',
 			cost: 500
 		},
 		{
 			type: 'c2',
 			icon: 'cab2',
+			description: 'standard cabs',
 			cost: 650
+		},
+		{
+			type: 'c3',
+			icon: 'cab3',
+			description: 'deluxe cabs',
+			cost: 1000
 		}
 		],
 		headlights: [
 		{
 			type: 'h1',
 			icon: 'headlights1',
+			description: 'basic headlights',
 			cost: 100
 		},
 		{
 			type: 'h2',
 			icon: 'headlights2',
+			description: 'standard headlights',
 			cost: 200
+		},
+		{
+			type: 'h3',
+			icon: 'headlights3',
+			description: 'deluxe headlights',
+			cost: 500
 		}
 		],
 		buckets: [
 		{
 			type: 'ba1',
 			icon: 'bucket1',
+			description: 'basic bucket',
 			cost: 200
 		},
 		{
 			type: 'ba2',
 			icon: 'bucket2',
+			description: 'standard bucket',
+			cost: 300
+		},
+		{
+			type: 'ba3',
+			icon: 'bucket3',
+			description: 'deluxe bucket',
 			cost: 400
 		}
 		]

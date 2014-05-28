@@ -184,11 +184,12 @@ var GameConfig = (function() {
 			gameType: 'phaser',
 			assets: {
 				images: {
-					startBg: 'images/screen_mocks_start.gif',
-					manualBg: 'images/screen_mocks_manual.gif',
-					briefBg: 'images/screen_mocks_brief.gif',
-					buildBg: 'images/screen_mocks_build.gif',
-					worldBg: 'images/screen_mocks_world.gif',
+					startBg: 'images/screens/screen_mocks_start.gif',
+					manualBg: 'images/screens/screen_mocks_manual.gif',
+					briefBg: 'images/screens/screen_mocks_brief.gif',
+					worldBg: 'images/screens/screen_mocks_world.gif',
+					buildBg: 'images/screens/screen_mocks_build.gif',
+					tractorPickerBg: 'images/screens/screen_mocks_tractor_picker.gif',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -204,15 +205,18 @@ var GameConfig = (function() {
 					wheels1: 'images/parts_icons/wheels1.gif',
 					wheels2: 'images/parts_icons/wheels2.gif',
 					wheels3: 'images/parts_icons/wheels3.gif',
-					wheels4: 'images/parts_icons/wheels4.gif',
-					transmission1: 'images/parts_icons/engine1.gif',
-					engine2: 'images/parts_icons/engine2.gif'
+					transmission1: 'images/parts_icons/transmission1.gif',
+					transmission2: 'images/parts_icons/transmission2.gif',
+					transmission3: 'images/parts_icons/transmission3.gif',
 					engine1: 'images/parts_icons/engine1.gif',
-					engine2: 'images/parts_icons/engine2.gif'
+					engine2: 'images/parts_icons/engine2.gif',
+					engine3: 'images/parts_icons/engine3.gif',
 					cab1: 'images/parts_icons/cab1.gif',
-					cab2: 'images/parts_icons/cab2.gif'
+					cab2: 'images/parts_icons/cab2.gif',
+					cab3: 'images/parts_icons/cab3.gif',
 					headlights1: 'images/parts_icons/headlights1.gif',
-					headlights2: 'images/parts_icons/headlights2.gif'
+					headlights2: 'images/parts_icons/headlights2.gif',
+					headlights3: 'images/parts_icons/headlights3.gif'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -251,13 +255,18 @@ var GameConfig = (function() {
 				'wheels1',
 				'wheels2',
 				'wheels3',
-				'wheels4',
+				'transmission1',
+				'transmission2',
+				'transmission3',
 				'engine1',
 				'engine2',
+				'engine3',
 				'cab1',
 				'cab2',
+				'cab3',
 				'headlights1',
-				'headlights2'
+				'headlights2',
+				'headlights3'
 				],
 				sprites: [
 				'buttonClose'
