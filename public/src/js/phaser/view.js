@@ -218,6 +218,7 @@ Polyworks.PhaserView = (function() {
 					trace('\tremoving ', child);
 					child.view.destroy();
 					if(child.group) {
+						trace('\t\tcalling group destroy also');
 						child.group.view.destroy();
 					}
 					delete collection[key];

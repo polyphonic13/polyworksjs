@@ -10,12 +10,13 @@ var gameLogic = {
 			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
 			
 			// remove previously added items since different
-			if(collection['overlay-menu'] && collection['overlay-menu'].children['items-group']) {
-				Polyworks.PhaserView.removeView('items-group', collection['overlay-menu'].children);
+			if(collection['overlay-menu']) {
+				// Polyworks.PhaserView.removeView('items-group', collection['overlay-menu'].children);
+				Polyworks.PhaserView.removeView('overlay-menu', collection);
 			}
 			
-			var menuConfig = PhaserGame.sharedViews.overlayMenu;
-			var itemConfig = PhaserGame.sharedViews.overlayMenuItem;
+			var menuConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenu);
+			var itemConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
 			var count = 0;
 			var itemY = 0;
 			var offset = itemConfig.offset;
