@@ -11,6 +11,8 @@ Polyworks.Events = {
 	OPEN_NOTIFICATION: 'openNotification',
 	UPDATE_AND_OPEN_NOTIFICATION: 'updateAndOpenNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
+	SHOW_BUILD_GROUP: 'showBuildGroup',
+	HIDE_GROUP: 'hideGroup',
 	ZOOM_IN: 'zoomIn',
 	ZOOM_OUT: 'zoomOut',
 	QUIT: 'quit'

@@ -61,13 +61,13 @@ Polyworks.StateManager = (function() {
 			Polyworks.Utils.each(
 				this.config.methods,
 				function(method, key) {
-					trace('adding ' + key + ' to prototype as method: ', method);
+					// trace('adding ' + key + ' to prototype as method: ', method);
 					this.methods[key] = method;
 				},
 				this
 			);
 		}
-		
+
 		trace('post method add, this = ', this);
 		if(this.config.listeners) {
 			trace('there are listeners');
@@ -84,7 +84,7 @@ Polyworks.StateManager = (function() {
 		if(this.config.create) {
 			this.config.create.call(this);
 		}
-		
+
 	};
 	
 	Controller.prototype.update = function() {

@@ -166,7 +166,7 @@ var gameLogic = {
 				Polyworks.PhaserTime.removeTimer('turnTime');
 			},
 			views: {
-				buttonsGroup: {
+				buttons: {
 					plusButton: {
 						input: {
 							inputUp: function() {
@@ -204,7 +204,7 @@ var gameLogic = {
 						}
 					}
 				},
-				iconsGroup: {
+				icons: {
 					input: {
 						inputDown: function() {
 							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
@@ -270,25 +270,26 @@ var gameLogic = {
 						}
 					}
 				},
-				buttonsGroup: {
+				buttons: {
 					closeButton: {
 						callback: function() {
 							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
 						}
 					}
 				},
-				iconsGroup: {
+				icons: {
 					tractor: {
 						input: {
 							inputDown: function() {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'tractorBuilder' });
+								PhaserGame.equipmentAction = EquipmentActions.CREATE;
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipmentEditor' });
 							}
 						}
 					},
 					skidsteer: {
 						input: {
 							inputDown: function() {
-								trace('skid steer icon input down');
+								PhaserGame.equipmentAction = EquipmentActions.CREATE;
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'skidsteerBuilder' });
 							}
 						}
@@ -296,8 +297,17 @@ var gameLogic = {
 				}
 			}
 		},
-		tractorBuilder: {
+		equipmentEditor: {
 			listeners: [
+			{
+				event: Polyworks.Events.SHOW_BUILD_GROUP,
+				handler: function(event) {
+					trace('showBuildGroup, category = ' + event.category);
+					this.equipmentCategory = event.category;
+					this.views[event.previousGroup].hide();
+					this.views['build-group'].show();
+				}
+			},
 			{
 				event: Polyworks.Events.OPEN_OVERLAY_MENU,
 				handler: function(event) {
@@ -325,68 +335,152 @@ var gameLogic = {
 				}
 			}
 			],
+			create: function() {
+				trace('create, views = ', this.views);
+				switch(PhaserGame.equipmentAction) {
+					case EquipmentActions.CREATE:
+					this.views['create-group'].show();
+					break;
+
+					case EquipmentActions.EDIT:
+					break;
+
+					case EquipmentActions.DELETE:
+					break;
+
+					default: 
+					trace('error: unknown equipment action: ' + PhaserGame.equipmentAction);
+					break;
+				}
+				PhaserGame.equipmentAction = '';
+			},
 			shutdown: function() {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
 			},
+			methods: {
+				addOverlayMenuItems: function(type, collection) {
+					var partsData = gameData.market[type];
+					// var overlayMenu = collection['overlay-menu'];
+					trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
+
+					// remove previously added items since different
+					if(collection['overlay-menu']) {
+						// Polyworks.PhaserView.removeView('items-group', collection['overlay-menu'].children);
+						Polyworks.PhaserView.removeView('overlay-menu', collection);
+					}
+
+					var menuConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenu);
+					var itemConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
+					var count = 0;
+					var itemY = 0;
+					var offset = itemConfig.offset;
+					var totalHeight = itemConfig.totalHeight;
+
+					Polyworks.Utils.each(
+						partsData,
+						function(part, p) {
+							var item = Polyworks.Utils.clone(itemConfig);
+							item.name = part.type;
+							item.views.icon.img = part.icon;
+							item.views.description.text = part.description;
+							item.views.cost.text = '$' + part.cost;
+
+							itemY = (totalHeight * count) + offset;
+							Polyworks.Utils.each(
+								item.views,
+								function(view) {
+									view.y += itemY;
+								},
+								this
+							);
+
+							menuConfig.views['items'].views[p] = item;
+							count++;
+						},
+						this
+					);
+					Polyworks.PhaserView.addView(menuConfig, collection);
+					trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
+				}
+			},
 			views: {
-				buttonsGroup: {
-					closeButton: {
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+				buildGroup: {
+					buttons: {
+						closeButton: {
+							callback: function() {
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+							}
+						}
+					},
+					icons: {
+						wheelIcon: {
+							input: {
+								inputDown: function() {
+									trace('wheel icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'wheels' });
+								}
+							}
+						},
+						engineIcon: {
+							input: {
+								inputDown: function() {
+									trace('engine icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'engines' });
+								}
+							}
+						},
+						transmissionIcon: {
+							input: {
+								inputDown: function() {
+									trace('transmission icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'transmissions' });
+								}
+							}
+						},
+						cabIcon: {
+							input: {
+								inputDown: function() {
+									trace('cab icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'cabs' });
+								}
+							}
+						},
+						headlightsIcon: {
+							input: {
+								inputDown: function() {
+									trace('headlights icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'headlights' });
+								}
+							}
 						}
 					}
 				},
-				iconsGroup: {
-					wheelIcon: {
-						input: {
-							inputDown: function() {
-								trace('wheel icon input down');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'wheels' });
+				createGroup: {
+					icons: {
+						createBasic: {
+							input: {
+								inputDown: function() {
+									trace('createBasic icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.BASIC, previousGroup: 'create-group' });
+								}
 							}
-						}
-					},
-					engineIcon: {
-						input: {
-							inputDown: function() {
-								trace('engine icon input down');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'engines' });
+						},
+						createMedium: {
+							input: {
+								inputDown: function() {
+									trace('createMedium icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.MEDIUM, previousGroup: 'create-group' });
+								}
 							}
-						}
-					},
-					transmissionIcon: {
-						input: {
-							inputDown: function() {
-								trace('transmission icon input down');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'transmissions' });
+						},
+						createHeavy: {
+							input: {
+								inputDown: function() {
+									trace('createHeavy icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.HEAVY, previousGroup: 'create-group' });
+								}
 							}
-						}
-					},
-					cabIcon: {
-						input: {
-							inputDown: function() {
-								trace('cab icon input down');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'cabs' });
-							}
-						}
-					},
-					headlightsIcon: {
-						input: {
-							inputDown: function() {
-								trace('headlights icon input down');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'headlights' });
-							}
-						}
-					}
-				}
-			}
-		},
-		skidsteerBuilder: {
-			views: {
-				buttonsGroup: {
-					closeButton: {
-						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
 						}
 					}
 				}
