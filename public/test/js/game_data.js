@@ -2,140 +2,212 @@ var gameData = {
 	market: {
 		wheels: [
 		{
-			type: 'w3',
+			id: 'w3',
 			icon: 'wheels2',
 			description: 'basic wheels',
-			cost: 350
+			cost: {
+				basic: 350,
+				medium: 700,
+				heavy: 1050
+			}
 		},
 		{
-			type: 'w1',
+			id: 'w1',
 			icon: 'wheels1',
 			description: 'standard wheels',
-			cost: 500
+			cost: {
+				basic: 500,
+				medium: 1000,
+				heavy: 1500
+			}
 		},
 		{
-			type: 'w4',
+			id: 'w4',
 			icon: 'wheels3',
 			description: 'deluxe wheels',
-			cost: 1000
+			cost: {
+				basic: 1000,
+				medium: 2000,
+				heavy: 3000
+			}
 		}
 		],
 		engines: [
 		{
-			type: 'e1',
+			id: 'e1',
 			icon: 'engine1',
 			description: 'basic engine',
-			cost: 2000
+			cost: {
+				basic: 2000,
+				medium: 4000,
+				heavy: 6000
+			}
 		},
 		{
-			type: 'e2',
+			id: 'e2',
 			icon: 'engine2',
 			description: 'standard engine',
-			cost: 3000
+			cost: {
+				basic: 3000,
+				medium: 6000,
+				heavy: 9000
+			}
 		},
 		{
-			type: 'e3',
+			id: 'e3',
 			icon: 'engine3',
 			description: 'deluxe engine',
-			cost: 5000
+			cost: {
+				basic: 5000,
+				medium: 10000,
+				heavy: 15000
+			}
 		}
 		],
 		transmissions: [
 		{
-			type: 't1',
+			id: 't1',
 			icon: 'transmission1',
 			description: 'basic transmission',
-			cost: 1000
+			cost: {
+				basic: 1000,
+				medium: 2000,
+				heavy: 3000
+			}
 		},
 		{
-			type: 't2',
+			id: 't2',
 			icon: 'transmission2',
 			description: 'standard transmission',
-			cost: 1500
+			cost: {
+				basic: 2000,
+				medium: 4000,
+				heavy: 6000
+			}
 		},
 		{
-			type: 't3',
+			id: 't3',
 			icon: 'transmission3',
 			description: 'deluxe transmission',
-			cost: 3000
+			cost: {
+				basic: 3000,
+				medium: 6000,
+				heavy: 9000
+			}
 		}
 		],
 		cabs: [
 		{
-			type: 'c1',
+			id: 'c1',
 			icon: 'cab1',
 			description: 'basic cabs',
-			cost: 500
+			cost: {
+				basic: 300,
+				medium: 600,
+				heavy: 900
+			}
 		},
 		{
-			type: 'c2',
+			id: 'c2',
 			icon: 'cab2',
 			description: 'standard cabs',
-			cost: 650
+			cost: {
+				basic: 400,
+				medium: 800,
+				heavy: 1200
+			}
 		},
 		{
-			type: 'c3',
+			id: 'c3',
 			icon: 'cab3',
 			description: 'deluxe cabs',
-			cost: 1000
+			cost: {
+				basic: 1000,
+				medium: 2000,
+				heavy: 3000
+			}
 		}
 		],
 		headlights: [
 		{
-			type: 'h1',
+			id: 'h1',
 			icon: 'headlights1',
 			description: 'basic headlights',
-			cost: 100
+			cost: {
+				basic: 30,
+				medium: 60,
+				heavy: 90
+			}
 		},
 		{
-			type: 'h2',
+			id: 'h2',
 			icon: 'headlights2',
 			description: 'standard headlights',
-			cost: 200
+			cost: {
+				basic: 60,
+				medium: 120,
+				heavy: 180
+			}
 		},
 		{
-			type: 'h3',
+			id: 'h3',
 			icon: 'headlights3',
 			description: 'deluxe headlights',
-			cost: 500
+			cost: {
+				basic: 300,
+				medium: 600,
+				heavy: 900
+			}
 		}
 		],
 		buckets: [
 		{
-			type: 'ba1',
+			id: 'ba1',
 			icon: 'bucket1',
 			description: 'basic bucket',
-			cost: 200
+			cost: {
+				basic: 300,
+				medium: 600,
+				heavy: 900
+			}
 		},
 		{
-			type: 'ba2',
+			id: 'ba2',
 			icon: 'bucket2',
 			description: 'standard bucket',
-			cost: 300
+			cost: {
+				basic: 600,
+				medium: 1200,
+				heavy: 1800
+			}
 		},
 		{
-			type: 'ba3',
+			id: 'ba3',
 			icon: 'bucket3',
 			description: 'deluxe bucket',
-			cost: 400
+			cost: {
+				basic: 1000,
+				medium: 2000,
+				heavy: 3000
+			}
 		}
 		]
 	},
 	suppliers: [
 	{
-		name: 'john doe',
+		id: 'john doe',
 		location: 'texas',
 		parts: {
 			buckets: [
 			{
-				type: 'ba1',
+				id: 'ba1',
 				cost: 50,
 				bulkAmount: 1000
 			}
 			],
 			wheels: [
 			{
-				type: 'c3',
+				id: 'c3',
 				cost: 100,
 				bulkAmount: 5000
 			}
@@ -143,19 +215,19 @@ var gameData = {
 		}
 	},
 	{
-		name: 'jane smith',
+		id: 'jane smith',
 		location: 'arkansas',
 		parts: {
 			engines: [
 			{
-				type: 'ba1',
+				id: 'ba1',
 				cost: 50,
 				bulkAmount: 1000
 			}
 			],
 			transmissions: [
 			{
-				type: 't2',
+				id: 't2',
 				cost: 100,
 				bulkAmount: 5000
 			}

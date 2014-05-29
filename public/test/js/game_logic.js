@@ -8,28 +8,29 @@ var gameLogic = {
 			var partsData = gameData.market[type];
 			// var overlayMenu = collection['overlay-menu'];
 			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
-			
+
 			// remove previously added items since different
 			if(collection['overlay-menu']) {
 				// Polyworks.PhaserView.removeView('items-group', collection['overlay-menu'].children);
 				Polyworks.PhaserView.removeView('overlay-menu', collection);
 			}
-			
+
 			var menuConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenu);
 			var itemConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
 			var count = 0;
 			var itemY = 0;
 			var offset = itemConfig.offset;
 			var totalHeight = itemConfig.totalHeight;
+			var size = PhaserGame.currentEquipmentSize;
 
 			Polyworks.Utils.each(
 				partsData,
 				function(part, p) {
 					var item = Polyworks.Utils.clone(itemConfig);
-					item.name = part.type;
+					item.name = part.id;
 					item.views.icon.img = part.icon;
 					item.views.description.text = part.description;
-					item.views.cost.text = '$' + part.cost;
+					item.views.cost.text = '$' + part.cost[size];
 
 					itemY = (totalHeight * count) + offset;
 					Polyworks.Utils.each(
@@ -302,8 +303,8 @@ var gameLogic = {
 			{
 				event: Polyworks.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
-					trace('showBuildGroup, category = ' + event.category);
-					this.equipmentCategory = event.category;
+					trace('showBuildGroup, size = ' + event.size);
+					PhaserGame.currentEquipmentSize = event.size;
 					this.views[event.previousGroup].hide();
 					this.views['build-group'].show();
 				}
@@ -358,52 +359,6 @@ var gameLogic = {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
 			},
-			methods: {
-				addOverlayMenuItems: function(type, collection) {
-					var partsData = gameData.market[type];
-					// var overlayMenu = collection['overlay-menu'];
-					trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
-
-					// remove previously added items since different
-					if(collection['overlay-menu']) {
-						// Polyworks.PhaserView.removeView('items-group', collection['overlay-menu'].children);
-						Polyworks.PhaserView.removeView('overlay-menu', collection);
-					}
-
-					var menuConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenu);
-					var itemConfig = Polyworks.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
-					var count = 0;
-					var itemY = 0;
-					var offset = itemConfig.offset;
-					var totalHeight = itemConfig.totalHeight;
-
-					Polyworks.Utils.each(
-						partsData,
-						function(part, p) {
-							var item = Polyworks.Utils.clone(itemConfig);
-							item.name = part.type;
-							item.views.icon.img = part.icon;
-							item.views.description.text = part.description;
-							item.views.cost.text = '$' + part.cost;
-
-							itemY = (totalHeight * count) + offset;
-							Polyworks.Utils.each(
-								item.views,
-								function(view) {
-									view.y += itemY;
-								},
-								this
-							);
-
-							menuConfig.views['items'].views[p] = item;
-							count++;
-						},
-						this
-					);
-					Polyworks.PhaserView.addView(menuConfig, collection);
-					trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
-				}
-			},
 			views: {
 				buildGroup: {
 					buttons: {
@@ -456,13 +411,13 @@ var gameLogic = {
 						}
 					}
 				},
-				createGroup: {
+				machineSize: {
 					icons: {
 						createBasic: {
 							input: {
 								inputDown: function() {
 									trace('createBasic icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.BASIC, previousGroup: 'create-group' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.BASIC, previousGroup: 'create-group' });
 								}
 							}
 						},
@@ -470,7 +425,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('createMedium icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.MEDIUM, previousGroup: 'create-group' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.MEDIUM, previousGroup: 'create-group' });
 								}
 							}
 						},
@@ -478,7 +433,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('createHeavy icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, category: EquipmentCategories.HEAVY, previousGroup: 'create-group' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.HEAVY, previousGroup: 'create-group' });
 								}
 							}
 						}

@@ -74098,12 +74098,12 @@ Phaser.Physics.P2.Body.prototype = {
     * Note that the impact event happens after collision resolution, so it cannot be used to prevent a collision from happening.
     * It also happens mid-step. So do not destroy a Body during this callback, instead set safeDestroy to true so it will be killed on the next preUpdate.
     *
-    * @method Phaser.Physics.P2.Body#createGroupCallback
+    * @method Phaser.Physics.P2.Body#machineSizeCallback
     * @param {Phaser.Physics.CollisionGroup} group - The Group to send impact events for.
     * @param {function} callback - The callback to fire on impact. Set to null to clear a previously set callback.
     * @param {object} callbackContext - The context under which the callback will fire.
     */
-    createGroupCallback: function (group, callback, callbackContext) {
+    machineSizeCallback: function (group, callback, callbackContext) {
 
         if (callback === null)
         {
@@ -74260,7 +74260,7 @@ Phaser.Physics.P2.Body.prototype = {
 
                     if (callback)
                     {
-                        this.createGroupCallback(group[i], callback, callbackContext);
+                        this.machineSizeCallback(group[i], callback, callbackContext);
                     }
                 }
             }
@@ -74273,7 +74273,7 @@ Phaser.Physics.P2.Body.prototype = {
 
                 if (callback)
                 {
-                    this.createGroupCallback(group, callback, callbackContext);
+                    this.machineSizeCallback(group, callback, callbackContext);
                 }
             }
         }

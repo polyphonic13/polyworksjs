@@ -27,6 +27,8 @@ var GameConfig = (function() {
 		var palette = {
 			darkRed: '#ba1d3a',
 			lightRed: '#e21a49',
+			orange: '#fca600',
+			green: '#009b1d',
 			black: '#000000',
 			white: '#ffffff'
 		};
@@ -202,6 +204,7 @@ var GameConfig = (function() {
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonPlus: 'images/button_plus.png',
 					buttonMinus: 'images/button_minus.png',
+					// parts icons
 					wheels1: 'images/parts_icons/wheels1.gif',
 					wheels2: 'images/parts_icons/wheels2.gif',
 					wheels3: 'images/parts_icons/wheels3.gif',
@@ -216,7 +219,20 @@ var GameConfig = (function() {
 					cab3: 'images/parts_icons/cab3.gif',
 					headlights1: 'images/parts_icons/headlights1.gif',
 					headlights2: 'images/parts_icons/headlights2.gif',
-					headlights3: 'images/parts_icons/headlights3.gif'
+					headlights3: 'images/parts_icons/headlights3.gif',
+					// parts
+					wheelsGrey: 'images/parts/wheels_grey.gif',
+					wheelsGreen: 'images/parts/wheels_green.gif',
+					wheelsOrange: 'images/parts/wheels_orange.gif',
+					wheelsRed: 'images/parts/wheels_red.gif',
+					engineGrey: 'images/parts/engine_grey.gif',
+					engineGreen: 'images/parts/engine_green.gif',
+					engineOrange: 'images/parts/engine_orange.gif',
+					engineRed: 'images/parts/engine_red.gif',
+					cabGrey: 'images/parts/cab_grey.gif',
+					cabGreen: 'images/parts/cab_green.gif',
+					cabOrange: 'images/parts/cab_orange.gif',
+					cabRed: 'images/parts/cab_red.gif'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -777,7 +793,19 @@ var GameConfig = (function() {
 					'blockWhite',
 					'blockRed',
 					'blockGreen',
-					'blockBlue'
+					'blockBlue',
+					'wheelsGrey',
+					'wheelsGreen',
+					'wheelsOrange',
+					'wheelsRed',
+					'engineGrey',
+					'engineGreen',
+					'engineOrange',
+					'engineRed',
+					'cabGrey',
+					'cabGreen',
+					'cabOrange',
+					'cabRed'
 					],
 					sprites: [
 					'buttonClose'
@@ -859,107 +887,52 @@ var GameConfig = (function() {
 								}
 							},
 							// icons group
-							icons: {
+							parts: {
 								type: 'group',
 								name: 'tractor-builder-state-icon-group',
 								views: 
 								{
-									wheelIcon1: {
+									wheelsPart: {
 										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockWhite',
-										x: (gameUnit * 1.5),
-										y: (gameUnit * 11),
+										name: 'wheel-part',
+										img: 'wheelsGrey',
+										x: (gameUnit * 1),
+										y: (gameUnit * 7.5),
 										attrs: {
-											width: gameUnit * 1.5,
-											height: gameUnit * 2,
-											alpha: 0.5
+											width: gameUnit * 8,
+											height: gameUnit * 8
 										},
 										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.wheelIcon.input
 									},
-									wheelIcon2: {
+									enginePart: {
 										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockWhite',
-										x: (gameUnit * 3.5),
-										y: (gameUnit * 12),
+										name: 'engine-part',
+										img: 'engineGrey',
+										x: (gameUnit * 2.5),
+										y: (gameUnit * 8.9),
 										attrs: {
-											width: gameUnit * 2,
-											height: gameUnit * 1.5,
-											alpha: 0.5
-										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.wheelIcon.input
-									},
-									wheelIcon3: {
-										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockWhite',
-										x: (gameUnit * 7),
-										y: (gameUnit * 9.5),
-										attrs: {
-											width: gameUnit * 2,
-											height: gameUnit * 3,
-											alpha: 0.5
-										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.wheelIcon.input
-									},
-									engineIcon: {
-										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockRed',
-										x: (gameUnit * 4),
-										y: (gameUnit * 9),
-										attrs: {
-											width: gameUnit * 2,
-											height: gameUnit * 2,
-											alpha: 0.5
+											width: gameUnit * 4.25,
+											height: gameUnit * 4.25
 										},
 										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.engineIcon.input
 									},
-									transmissionIcon: {
-										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockBlue',
-										x: (gameUnit * 3),
-										y: (gameUnit * 11),
-										attrs: {
-											width: gameUnit * 4,
-											height: gameUnit * 1,
-											alpha: 0.5
-										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.transmissionIcon.input
-									},
 									cabIcon: {
 										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockGreen',
+										name: 'cab-part',
+										img: 'cabGrey',
 										x: (gameUnit * 4.5),
-										y: (gameUnit * 7),
+										y: (gameUnit * 7.25),
 										attrs: {
 											width: gameUnit * 3,
-											height: gameUnit * 2,
-											alpha: 0.5
+											height: gameUnit * 3
 										},
 										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.cabIcon.input
-									},
-									headlightsIcon: {
-										type: 'sprite',
-										name: 'wheel-icon',
-										img: 'blockGreen',
-										x: (gameUnit * 3),
-										y: (gameUnit * 9),
-										attrs: {
-											width: gameUnit * 1,
-											height: gameUnit * 2,
-											alpha: 0.5
-										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.headlightsIcon.input
 									}
 								}
 							}
 						}
 					},
-					createGroup: {
+					machineSize: {
 						type: 'group',
 						name: 'create-group',
 						attrs: {
@@ -992,7 +965,7 @@ var GameConfig = (function() {
 											height: gameUnit * 4,
 											alpha: 0.5
 										},
-										input: gameLogic.states.equipmentEditor.views.createGroup.icons.createBasic.input
+										input: gameLogic.states.equipmentEditor.views.machineSize.icons.createBasic.input
 									},
 									medium: {
 										type: 'sprite',
@@ -1005,7 +978,7 @@ var GameConfig = (function() {
 											height: gameUnit * 4.5,
 											alpha: 0.5
 										},
-										input: gameLogic.states.equipmentEditor.views.createGroup.icons.createMedium.input
+										input: gameLogic.states.equipmentEditor.views.machineSize.icons.createMedium.input
 									},
 									heavy: {
 										type: 'sprite',
@@ -1018,7 +991,7 @@ var GameConfig = (function() {
 											height: gameUnit * 5,
 											alpha: 0.5
 										},
-										input: gameLogic.states.equipmentEditor.views.createGroup.icons.createHeavy.input
+										input: gameLogic.states.equipmentEditor.views.machineSize.icons.createHeavy.input
 									}
 								}
 							}
