@@ -4,21 +4,21 @@ var gameData = {
 		{
 			id: 'w3',
 			icon: 'wheels2',
-			img: 'wheelsGreen',
+			frame: 1,
 			description: 'basic wheels',
 			cost: [350, 700, 1050]
 		},
 		{
 			id: 'w1',
 			icon: 'wheels1',
-			img: 'wheelsOrange',
+			frame: 2,
 			description: 'standard wheels',
 			cost: [500, 1000, 1500]
 		},
 		{
 			id: 'w4',
 			icon: 'wheels3',
-			img: 'wheelsRed',
+			frame: 3,
 			description: 'deluxe wheels',
 			cost: [1000, 2000, 3000]
 		}
@@ -27,21 +27,21 @@ var gameData = {
 		{
 			id: 'e1',
 			icon: 'engine1',
-			img: 'engineGreen',
+			frame: 1,
 			description: 'basic engine',
 			cost: [2000, 4000, 6000]
 		},
 		{
 			id: 'e2',
 			icon: 'engine2',
-			img: 'engineOrange',
+			frame: 2,
 			description: 'standard engine',
 			cost: [3000, 6000, 9000]
 		},
 		{
 			id: 'e3',
 			icon: 'engine3',
-			img: 'engineRed',
+			frame: 3,
 			description: 'deluxe engine',
 			cost: [5000, 10000, 15000]
 		}
@@ -50,21 +50,21 @@ var gameData = {
 		{
 			id: 'c1',
 			icon: 'cab1',
-			img: 'cabGreen',
+			frame: 1,
 			description: 'basic cab',
 			cost: [300, 600, 900]
 		},
 		{
 			id: 'c2',
 			icon: 'cab2',
-			img: 'cabOrange',
+			frame: 2,
 			description: 'standard cab',
 			cost: [400, 800, 1200]
 		},
 		{
 			id: 'c3',
 			icon: 'cab3',
-			img: 'cabRed',
+			frame: 3,
 			description: 'deluxe cab',
 			cost: [1000, 2000, 3000]
 		}

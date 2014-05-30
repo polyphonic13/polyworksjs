@@ -10,8 +10,8 @@ var EquipmentActions = {
 };
 
 var EquipmentTypes = {
-	TRACTOR: 0,
-	SKIDSTEER: 1
+	TRACTOR: 'tractor',
+	SKIDSTEER: 'skidsteer'
 };
 
 var EquipmentSizes = {

@@ -7,12 +7,10 @@ var gameLogic = {
 		addOverlayMenuItems: function(type, collection) {
 			PhaserGame.currentPartType = type;
 			var partsData = gameData.market[type];
-			// var overlayMenu = collection['overlay-menu'];
 			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
 
 			// remove previously added items since different
 			if(collection['overlay-menu']) {
-				// pwg.PhaserView.removeView('items-group', collection['overlay-menu'].children);
 				pwg.PhaserView.removeView('overlay-menu', collection);
 			}
 
@@ -23,7 +21,6 @@ var gameLogic = {
 			var offset = itemConfig.offset;
 			var totalHeight = itemConfig.totalHeight;
 			var size = PhaserGame.newMachine.get('size');
-			// var size = playerData.equipment[PhaserGame.activeMachineId].get('size');
 
 			pwg.Utils.each(
 				partsData,
@@ -35,7 +32,7 @@ var gameLogic = {
 					item.views.description.text = part.description;
 					item.views.cost.text = '$' + part.cost[size];
 					item.views.invisButton.partIdx = p;
-					
+
 					itemY = (totalHeight * count) + offset;
 					pwg.Utils.each(
 						item.views,
@@ -52,6 +49,9 @@ var gameLogic = {
 			);
 			pwg.PhaserView.addView(menuConfig, collection);
 			trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
+		},
+		addPartToEditorView: function(type) {
+
 		}
 	},
 	sharedViews: {
@@ -73,10 +73,7 @@ var gameLogic = {
 			invisButton: {
 				input: {
 					inputDown: function(event) {
-						trace('invisButton inputDown, this = ', this);
-						PhaserGame.newMachine.setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
-						// playerData.equipment[PhaserGame.activeMachineId].setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
-						pwg.EventCenter.trigger({ type: pwg.Events.CLOSE_OVERLAY_MENU });
+						pwg.EventCenter.trigger({ type: pwg.Events.ADD_PART, value: this.controller.config.partIdx });
 					}
 				}
 			}
@@ -84,25 +81,6 @@ var gameLogic = {
 	},
 	states: {
 		start: {
-			listeners: [
-			// // hide notification
-			// {
-			// 	event: pwg.Events.CLOSE_NOTIFICATION,
-			// 	handler: function(event) {
-			// 		trace('hide notification handler, this = ', this);
-			// 		this.views['notification'].hide();
-			// 	}
-			// },
-			// // show notification
-			// {
-			// 	event: pwg.Events.SHOW_NOTIFICATION,
-			// 	handler: function(event) 
-			// 	{
-			// 		trace('show notification, this.views = ', this);
-			// 		this.views['notification'].show();
-			// 	}
-			// }
-			],
 			views: {
 				startButton: {
 					callback: function() {
@@ -262,7 +240,7 @@ var gameLogic = {
 					trace('add notification event handlers, notification = ', (this.views['notification']));
 					var notification = this.views['notification'];
 					var notificationView = notification.children['notification-text'].view;
-					
+
 					if(notificationView.text !== event.value) {
 						notificationView.setText(event.value);
 					}
@@ -319,13 +297,26 @@ var gameLogic = {
 		equipmentEditor: {
 			listeners: [
 			{
+				event: pwg.Events.ADD_PART,
+				handler: function(event) {
+					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
+					PhaserGame.addPartToEditorView(event.value);
+					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
+					var frame = gameData.market[this.overlayMenuType][event.value].frame;
+					trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
+					var partView = this.overlayMenuType + '-part';
+					this.views['editor-group'].children['editor-parts'].children[partView].view.frame = frame;
+					pwg.EventCenter.trigger({ type: pwg.Events.CLOSE_OVERLAY_MENU });
+				}
+			},
+			{
 				event: pwg.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
 					trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.newMachine.set('size', event.size);
 					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
 					this.views[event.previousGroup].hide();
-					this.views['build-group'].show();
+					this.views['editor-group'].show();
 				}
 			},
 			{

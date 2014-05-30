@@ -200,19 +200,19 @@ var GameConfig = (function() {
 		var equipmentEditorImages = {
 			wheels: {
 				x: (gameUnit * 1),
-				y: (gameUnit * 7.5),
+				y: (gameUnit * 5.5),
 				width: gameUnit * 8,
 				height: gameUnit * 8
 			},
 			engine: {
 				x: (gameUnit * 2.5),
-				y: (gameUnit * 8.9),
+				y: (gameUnit * 6.9),
 				width: gameUnit * 4.25,
 				height: gameUnit * 4.25
 			},
 			cab: {
 				x: (gameUnit * 4.5),
-				y: (gameUnit * 7.25),
+				y: (gameUnit * 5.25),
 				width: gameUnit * 3,
 				height: gameUnit * 3
 			}
@@ -295,7 +295,25 @@ var GameConfig = (function() {
 						width: 50,
 						height: 50,
 						frames: 2
-					}	
+					},
+					wheelsSprites: {
+						url: 'images/parts/wheels_spritesheet.gif',
+						width: 125,
+						height: 125,
+						frames: 16
+					},
+					engineSprites: {
+						url: 'images/parts/engine_spritesheet.gif',
+						width: 100,
+						height: 100,
+						frames: 16
+					},
+					cabSprites: {
+						url: 'images/parts/cab_spritesheet.gif',
+						width: 100,
+						height: 100,
+						frames: 16
+					}
 				},
 				tilemaps: {
 					greyTilesMap: 'data/factory_world.json'
@@ -336,6 +354,7 @@ var GameConfig = (function() {
 				activeMachineId: -1,
 				sharedViews: sharedViews,
 				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems,
+				addPartToEditorView: gameLogic.methods.addPartToEditorView,
 				equipmentEditorImages: equipmentEditorImages
 			},
 			defaultScreen: 'equipment',
@@ -847,7 +866,10 @@ var GameConfig = (function() {
 					'cabRed'
 					],
 					sprites: [
-					'buttonClose'
+					'buttonClose',
+					'wheelsSprites',
+					'engineSprites',
+					'cabSprites'
 					]
 				},
 				listeners: gameLogic.states.equipmentEditor.listeners,
@@ -857,7 +879,7 @@ var GameConfig = (function() {
 				views: {
 					editor: {
 						type: 'group',
-						name: 'build-group',
+						name: 'editor-group',
 						attrs: {
 							visible: false
 						},
@@ -865,7 +887,7 @@ var GameConfig = (function() {
 							// bg
 							bg: {
 								type: 'sprite',
-								name: 'tractor-state-bg',
+								name: 'editor-bg',
 								img: 'buildBg',
 								x: 0,
 								y: 0,
@@ -877,7 +899,7 @@ var GameConfig = (function() {
 							// text group
 							text: {
 								type: 'group',
-								name: 'tractor-text-group',
+								name: 'editor-text',
 								attrs: {
 									fixedToCamera: true
 								},
@@ -936,7 +958,7 @@ var GameConfig = (function() {
 							// buttons group
 							buttons: {
 								type: 'group',
-								name: 'tractor-builder-state-button-group',
+								name: 'editor-buttons',
 								attrs: {
 									fixedToCamera: true
 								},
@@ -977,42 +999,45 @@ var GameConfig = (function() {
 							// parts group
 							parts: {
 								type: 'group',
-								name: 'tractor-builder-state-icon-group',
+								name: 'editor-parts',
 								views: 
 								{
 									wheelsPart: {
 										type: 'sprite',
-										name: 'wheel-part',
-										img: 'wheelsGrey',
+										name: 'wheels-part',
+										img: 'wheelsSprites',
 										x: equipmentEditorImages.wheels.x,
 										y: equipmentEditorImages.wheels.y,
 										attrs: {
 											width: equipmentEditorImages.wheels.width,
-											height: equipmentEditorImages.wheels.height
+											height: equipmentEditorImages.wheels.height,
+											frame: 0
 										},
 										input: gameLogic.states.equipmentEditor.views.editor.icons.wheelIcon.input
 									},
 									enginePart: {
 										type: 'sprite',
 										name: 'engine-part',
-										img: 'engineGrey',
+										img: 'engineSprites',
 										x: equipmentEditorImages.engine.x,
 										y: equipmentEditorImages.engine.y,
 										attrs: {
 											width: equipmentEditorImages.engine.width,
-											height: equipmentEditorImages.engine.height
+											height: equipmentEditorImages.engine.height,
+											frame: 0
 										},
 										input: gameLogic.states.equipmentEditor.views.editor.icons.engineIcon.input
 									},
 									cabIcon: {
 										type: 'sprite',
 										name: 'cab-part',
-										img: 'cabGrey',
+										img: 'cabSprites',
 										x: equipmentEditorImages.cab.x,
 										y: equipmentEditorImages.cab.y,
 										attrs: {
 											width: equipmentEditorImages.cab.width,
-											height: equipmentEditorImages.cab.height
+											height: equipmentEditorImages.cab.height,
+											frame: 0
 										},
 										input: gameLogic.states.equipmentEditor.views.editor.icons.cabIcon.input
 									}
