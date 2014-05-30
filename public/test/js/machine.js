@@ -34,7 +34,7 @@ var Machine = function() {
 	
 	Machine.prototype.save = function() {
 		this.calculateCost();
-		// playerData.equipment.push(this.config);
+		playerData.equipment[this.id] = this.config;
 	};
 	
 	Machine.prototype.calculateCost = function() {
