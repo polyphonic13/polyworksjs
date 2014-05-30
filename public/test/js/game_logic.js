@@ -319,7 +319,7 @@ var gameLogic = {
 			{
 				event: pwg.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
-					// trace('showBuildGroup, size = ' + event.size);
+					trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.newMachine.set('size', event.size);
 					this.views[event.previousGroup].hide();
 					this.views['build-group'].show();

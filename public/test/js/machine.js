@@ -5,7 +5,7 @@ var Machine = function() {
 		id: '',
 		type: -1,
 		size: -1,
-		cost: -1,
+		cost: 0,
 		parts: {}
 	};
 	
