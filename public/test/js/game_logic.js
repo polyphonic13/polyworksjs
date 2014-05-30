@@ -5,6 +5,7 @@ var GRID_CELLS = 9;
 var gameLogic = {
 	methods: {
 		addOverlayMenuItems: function(type, collection) {
+			PhaserGame.currentPartType = type;
 			var partsData = gameData.market[type];
 			// var overlayMenu = collection['overlay-menu'];
 			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
@@ -21,17 +22,19 @@ var gameLogic = {
 			var itemY = 0;
 			var offset = itemConfig.offset;
 			var totalHeight = itemConfig.totalHeight;
-			var size = PhaserGame.currentEquipmentSize;
+			var size = PhaserGame.newMachine.get('size');
 
 			Polyworks.Utils.each(
 				partsData,
 				function(part, p) {
+					trace('\tadding part[' + p + '] info to views');
 					var item = Polyworks.Utils.clone(itemConfig);
 					item.name = part.id;
 					item.views.icon.img = part.icon;
 					item.views.description.text = part.description;
 					item.views.cost.text = '$' + part.cost[size];
-
+					item.views.invisButton.partIdx = p;
+					
 					itemY = (totalHeight * count) + offset;
 					Polyworks.Utils.each(
 						item.views,
@@ -62,6 +65,17 @@ var gameLogic = {
 			closeButton: {
 				callback: function() {
 					Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_OVERLAY_MENU });
+				}
+			}
+		},
+		overlayMenuItem: {
+			invisButton: {
+				input: {
+					inputDown: function(event) {
+						trace('invisButton inputDown, this = ', this);
+						PhaserGame.newMachine.setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
+						Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_OVERLAY_MENU });
+					}
 				}
 			}
 		}
@@ -282,7 +296,8 @@ var gameLogic = {
 					tractor: {
 						input: {
 							inputDown: function() {
-								PhaserGame.equipmentAction = EquipmentActions.CREATE;
+								PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
+								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipmentEditor' });
 							}
 						}
@@ -290,7 +305,8 @@ var gameLogic = {
 					skidsteer: {
 						input: {
 							inputDown: function() {
-								PhaserGame.equipmentAction = EquipmentActions.CREATE;
+								PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER
+								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'skidsteerBuilder' });
 							}
 						}
@@ -303,8 +319,8 @@ var gameLogic = {
 			{
 				event: Polyworks.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
-					trace('showBuildGroup, size = ' + event.size);
-					PhaserGame.currentEquipmentSize = event.size;
+					// trace('showBuildGroup, size = ' + event.size);
+					PhaserGame.newMachine.set('size', event.size);
 					this.views[event.previousGroup].hide();
 					this.views['build-group'].show();
 				}
@@ -338,9 +354,13 @@ var gameLogic = {
 			],
 			create: function() {
 				trace('create, views = ', this.views);
-				switch(PhaserGame.equipmentAction) {
+				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
 					this.views['create-group'].show();
+					PhaserGame.newMachine = new Machine({
+						id: String(new Date().getTime()),
+						type: PhaserGame.currentEquipmentType
+					});
 					break;
 
 					case EquipmentActions.EDIT:
@@ -350,20 +370,26 @@ var gameLogic = {
 					break;
 
 					default: 
-					trace('error: unknown equipment action: ' + PhaserGame.equipmentAction);
+					trace('error: unknown equipment action: ' + PhaserGame.currentEquipmentAction);
 					break;
 				}
-				PhaserGame.equipmentAction = '';
+				PhaserGame.currentEquipmentAction = '';
 			},
 			shutdown: function() {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
 			},
 			views: {
-				buildGroup: {
+				editor: {
 					buttons: {
 						closeButton: {
 							callback: function() {
+								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
+							}
+						},
+						saveButton: {
+							callback: function() {
+								PhaserGame.newMachine.save();
 								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'equipment' });
 							}
 						}
@@ -373,7 +399,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('wheel icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'wheels' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
 								}
 							}
 						},
@@ -381,7 +407,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('engine icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'engines' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
 								}
 							}
 						},
@@ -389,7 +415,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('transmission icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'transmissions' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
 								}
 							}
 						},
@@ -397,7 +423,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('cab icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: 'cabs' });
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
 								}
 							}
 						},
@@ -416,24 +442,24 @@ var gameLogic = {
 						createBasic: {
 							input: {
 								inputDown: function() {
-									trace('createBasic icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.BASIC, previousGroup: 'create-group' });
+									// trace('createBasic icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.BASIC, previousGroup: 'create-group' });
 								}
 							}
 						},
 						createMedium: {
 							input: {
 								inputDown: function() {
-									trace('createMedium icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.MEDIUM, previousGroup: 'create-group' });
+									// trace('createMedium icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.MEDIUM, previousGroup: 'create-group' });
 								}
 							}
 						},
 						createHeavy: {
 							input: {
 								inputDown: function() {
-									trace('createHeavy icon input down');
-									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentCategories.HEAVY, previousGroup: 'create-group' });
+									// trace('createHeavy icon input down');
+									Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.HEAVY, previousGroup: 'create-group' });
 								}
 							}
 						}

@@ -1,7 +1,7 @@
-var EquipmentTypes = {
-	TRACTOR: 'tractor',
-	SKID_STEER: 'skidsteer'
-};
+// var EquipmentTypes = {
+// 	TRACTOR: 'tractor',
+// 	SKID_STEER: 'skidsteer'
+// };
 
 var EquipmentActions = {
 	CREATE: 'create',
@@ -9,17 +9,23 @@ var EquipmentActions = {
 	DELETE: 'delete'
 };
 
-var EquipmentCategories = {
-	BASIC: 'basic',
-	MEDIUM: 'medium',
-	HEAVY: 'heavy'
+var EquipmentTypes = {
+	TRACTOR: 0,
+	SKIDSTEER: 1
+};
+
+var EquipmentSizes = {
+	BASIC: 0,
+	MEDIUM: 1,
+	HEAVY: 2
 };
 
 var PartTypes = {
 	WHEELS: 'wheels',
-	ENGINES: 'engines',
-	TRANSMISSIONS: 'transmissions',
-	CABS: 'cabs',
+	ENGINE: 'engine',
+	TRANSMISSION: 'transmission',
+	CAB: 'cab',
 	HEADLIGHTS: 'headlights',
-	BUCKETS: 'buckets'
+	BUCKET: 'bucket'
 };
+

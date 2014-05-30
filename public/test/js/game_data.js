@@ -4,128 +4,89 @@ var gameData = {
 		{
 			id: 'w3',
 			icon: 'wheels2',
+			img: 'wheelsGreen',
 			description: 'basic wheels',
-			cost: {
-				basic: 350,
-				medium: 700,
-				heavy: 1050
-			}
+			cost: [350, 700, 1050]
 		},
 		{
 			id: 'w1',
 			icon: 'wheels1',
+			img: 'wheelsOrange',
 			description: 'standard wheels',
-			cost: {
-				basic: 500,
-				medium: 1000,
-				heavy: 1500
-			}
+			cost: [500, 1000, 1500]
 		},
 		{
 			id: 'w4',
 			icon: 'wheels3',
+			img: 'wheelsRed',
 			description: 'deluxe wheels',
-			cost: {
-				basic: 1000,
-				medium: 2000,
-				heavy: 3000
-			}
+			cost: [1000, 2000, 3000]
 		}
 		],
-		engines: [
+		engine: [
 		{
 			id: 'e1',
 			icon: 'engine1',
+			img: 'engineGreen',
 			description: 'basic engine',
-			cost: {
-				basic: 2000,
-				medium: 4000,
-				heavy: 6000
-			}
+			cost: [2000, 4000, 6000]
 		},
 		{
 			id: 'e2',
 			icon: 'engine2',
+			img: 'engineOrange',
 			description: 'standard engine',
-			cost: {
-				basic: 3000,
-				medium: 6000,
-				heavy: 9000
-			}
+			cost: [3000, 6000, 9000]
 		},
 		{
 			id: 'e3',
 			icon: 'engine3',
+			img: 'engineRed',
 			description: 'deluxe engine',
-			cost: {
-				basic: 5000,
-				medium: 10000,
-				heavy: 15000
-			}
+			cost: [5000, 10000, 15000]
 		}
 		],
-		transmissions: [
+		cab: [
+		{
+			id: 'c1',
+			icon: 'cab1',
+			img: 'cabGreen',
+			description: 'basic cab',
+			cost: [300, 600, 900]
+		},
+		{
+			id: 'c2',
+			icon: 'cab2',
+			img: 'cabOrange',
+			description: 'standard cab',
+			cost: [400, 800, 1200]
+		},
+		{
+			id: 'c3',
+			icon: 'cab3',
+			img: 'cabRed',
+			description: 'deluxe cab',
+			cost: [1000, 2000, 3000]
+		}
+		],
+		transmission: [
 		{
 			id: 't1',
 			icon: 'transmission1',
 			description: 'basic transmission',
-			cost: {
-				basic: 1000,
-				medium: 2000,
-				heavy: 3000
-			}
+			cost: [1000, 2000, 3000]
 		},
 		{
 			id: 't2',
 			icon: 'transmission2',
 			description: 'standard transmission',
-			cost: {
-				basic: 2000,
-				medium: 4000,
-				heavy: 6000
-			}
+			cost: [2000, 4000, 6000]
 		},
 		{
 			id: 't3',
 			icon: 'transmission3',
 			description: 'deluxe transmission',
-			cost: {
-				basic: 3000,
-				medium: 6000,
-				heavy: 9000
-			}
-		}
-		],
-		cabs: [
-		{
-			id: 'c1',
-			icon: 'cab1',
-			description: 'basic cabs',
-			cost: {
-				basic: 300,
-				medium: 600,
-				heavy: 900
-			}
-		},
-		{
-			id: 'c2',
-			icon: 'cab2',
-			description: 'standard cabs',
-			cost: {
-				basic: 400,
-				medium: 800,
-				heavy: 1200
-			}
-		},
-		{
-			id: 'c3',
-			icon: 'cab3',
-			description: 'deluxe cabs',
-			cost: {
-				basic: 1000,
-				medium: 2000,
-				heavy: 3000
-			}
+			cost: [3000, 6000, 9000]
 		}
 		],
 		headlights: [
@@ -133,63 +94,39 @@ var gameData = {
 			id: 'h1',
 			icon: 'headlights1',
 			description: 'basic headlights',
-			cost: {
-				basic: 30,
-				medium: 60,
-				heavy: 90
-			}
+			cost: [30, 60, 90]
 		},
 		{
 			id: 'h2',
 			icon: 'headlights2',
 			description: 'standard headlights',
-			cost: {
-				basic: 60,
-				medium: 120,
-				heavy: 180
-			}
+			cost: [60, 120, 180]
 		},
 		{
 			id: 'h3',
 			icon: 'headlights3',
 			description: 'deluxe headlights',
-			cost: {
-				basic: 300,
-				medium: 600,
-				heavy: 900
-			}
+			cost: [300, 600, 900]
 		}
 		],
-		buckets: [
+		bucket: [
 		{
 			id: 'ba1',
 			icon: 'bucket1',
 			description: 'basic bucket',
-			cost: {
-				basic: 300,
-				medium: 600,
-				heavy: 900
-			}
+			cost: [300, 600, 900]
 		},
 		{
 			id: 'ba2',
 			icon: 'bucket2',
 			description: 'standard bucket',
-			cost: {
-				basic: 600,
-				medium: 1200,
-				heavy: 1800
-			}
+			cost: [600, 1200, 1800]
 		},
 		{
 			id: 'ba3',
 			icon: 'bucket3',
 			description: 'deluxe bucket',
-			cost: {
-				basic: 1000,
-				medium: 2000,
-				heavy: 3000
-			}
+			cost: [1000, 2000, 3000]
 		}
 		]
 	},

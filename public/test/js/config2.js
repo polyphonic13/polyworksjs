@@ -142,7 +142,8 @@ var GameConfig = (function() {
 							width: gameW,
 							height: (gameUnit * 2),
 							alpha: 0.33
-						}
+						},
+						input: gameLogic.sharedViews.overlayMenuItem.invisButton.input
 					},
 					icon: {
 						type: 'sprite',
@@ -176,10 +177,46 @@ var GameConfig = (function() {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.black
 						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'menu-item-invis-btn',
+						img: 'blockClear',
+						partId: -1,
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: (gameUnit * 2),
+							alpha: 0.33
+						},
+						input: gameLogic.sharedViews.overlayMenuItem.invisButton.input
 					}
+					
 				}
 			}
 		};
+
+		var equipmentEditorImages = {
+			wheels: {
+				x: (gameUnit * 1),
+				y: (gameUnit * 7.5),
+				width: gameUnit * 8,
+				height: gameUnit * 8
+			},
+			engine: {
+				x: (gameUnit * 2.5),
+				y: (gameUnit * 8.9),
+				width: gameUnit * 4.25,
+				height: gameUnit * 4.25
+			},
+			cab: {
+				x: (gameUnit * 4.5),
+				y: (gameUnit * 7.25),
+				width: gameUnit * 3,
+				height: gameUnit * 3
+			}
+		}
 
 		var config = {
 			gameEl: 'game_container',
@@ -297,7 +334,8 @@ var GameConfig = (function() {
 				firstPlay: false,
 				equipmentAction: '',
 				sharedViews: sharedViews,
-				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems
+				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems,
+				equipmentEditorImages: equipmentEditorImages
 			},
 			defaultScreen: 'equipment',
 			states: [
@@ -816,7 +854,7 @@ var GameConfig = (function() {
 				shutdown: gameLogic.states.equipmentEditor.shutdown,
 				methods: gameLogic.states.equipmentEditor.methods,
 				views: {
-					buildGroup: {
+					editor: {
 						type: 'group',
 						name: 'build-group',
 						attrs: {
@@ -852,12 +890,46 @@ var GameConfig = (function() {
 										    font: (fontSizes.md + 'px Arial'),
 									        fill: palette.white
 										},
-										x: 0,
+										x: gameUnit,
 										y: (gameUnit * 2),
 										position: {
 											centerX: true
 										}
+									},
+									wheels: {
+										type: 'text',
+										name: 'equipment-wheels',
+										text: 'wheels',
+										style: {
+										    font: (fontSizes.sm + 'px Arial'),
+									        fill: palette.darkRed
+										},
+										x: gameUnit,
+										y: (gameUnit * 5)
+									},
+									engine: {
+										type: 'text',
+										name: 'equipment-wheels',
+										text: 'engines',
+										style: {
+										    font: (fontSizes.sm + 'px Arial'),
+									        fill: palette.darkRed
+										},
+										x: gameUnit,
+										y: (gameUnit * 6)
+									},
+									cab: {
+										type: 'text',
+										name: 'equipment-wheels',
+										text: 'cabs',
+										style: {
+										    font: (fontSizes.sm + 'px Arial'),
+									        fill: palette.darkRed
+										},
+										x: gameUnit,
+										y: (gameUnit * 7)
 									}
+									
 								}
 							},
 							// buttons group
@@ -880,13 +952,28 @@ var GameConfig = (function() {
 											width: gameUnit * 1,
 											height: gameUnit * 1
 										},
-										callback: gameLogic.states.equipmentEditor.views.buildGroup.buttons.closeButton.callback,
+										callback: gameLogic.states.equipmentEditor.views.editor.buttons.closeButton.callback,
 										context: this,
 										frames: [0, 1, 1, 0]
+									},
+									saveButton: {
+										type: 'button',
+										name: 'save-button',
+										img: 'blockGreen',
+										x: (gameUnit * 5),
+										y: (gameH - (gameUnit * 2)),
+										attrs: {
+											width: gameUnit * 4,
+											height: gameUnit * 3,
+											alpha: 0.5
+										},
+										callback: gameLogic.states.equipmentEditor.views.editor.buttons.saveButton.callback,
+										context: this,
+										frames: [0, 0, 0, 0]
 									}
 								}
 							},
-							// icons group
+							// parts group
 							parts: {
 								type: 'group',
 								name: 'tractor-builder-state-icon-group',
@@ -896,37 +983,37 @@ var GameConfig = (function() {
 										type: 'sprite',
 										name: 'wheel-part',
 										img: 'wheelsGrey',
-										x: (gameUnit * 1),
-										y: (gameUnit * 7.5),
+										x: equipmentEditorImages.wheels.x,
+										y: equipmentEditorImages.wheels.y,
 										attrs: {
-											width: gameUnit * 8,
-											height: gameUnit * 8
+											width: equipmentEditorImages.wheels.width,
+											height: equipmentEditorImages.wheels.height
 										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.wheelIcon.input
+										input: gameLogic.states.equipmentEditor.views.editor.icons.wheelIcon.input
 									},
 									enginePart: {
 										type: 'sprite',
 										name: 'engine-part',
 										img: 'engineGrey',
-										x: (gameUnit * 2.5),
-										y: (gameUnit * 8.9),
+										x: equipmentEditorImages.engine.x,
+										y: equipmentEditorImages.engine.y,
 										attrs: {
-											width: gameUnit * 4.25,
-											height: gameUnit * 4.25
+											width: equipmentEditorImages.engine.width,
+											height: equipmentEditorImages.engine.height
 										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.engineIcon.input
+										input: gameLogic.states.equipmentEditor.views.editor.icons.engineIcon.input
 									},
 									cabIcon: {
 										type: 'sprite',
 										name: 'cab-part',
 										img: 'cabGrey',
-										x: (gameUnit * 4.5),
-										y: (gameUnit * 7.25),
+										x: equipmentEditorImages.cab.x,
+										y: equipmentEditorImages.cab.y,
 										attrs: {
-											width: gameUnit * 3,
-											height: gameUnit * 3
+											width: equipmentEditorImages.cab.width,
+											height: equipmentEditorImages.cab.height
 										},
-										input: gameLogic.states.equipmentEditor.views.buildGroup.icons.cabIcon.input
+										input: gameLogic.states.equipmentEditor.views.editor.icons.cabIcon.input
 									}
 								}
 							}

@@ -16,66 +16,7 @@ var playerData = {
 		location: 7
 	}
 	],
-	equipment: {
-		tractors: {
-			basic: [
-			{
-				body: 1,
-				chasis: 1,
-				frontWheels: 1,
-				rearWheels: 1,
-				cab: 1
-			}
-			],
-			medium: [
-			{
-				body: 1,
-				chasis: 2,
-				frontWheels: 1,
-				rearWheels: 4,
-				cab: 1
-			}
-			],
-			heavy: [
-			{
-				body: 3,
-				chasis: 3,
-				frontWheels: 2,
-				rearWheels: 2,
-				cab: 2
-			}
-			]
-		},
-		skidsteers: {
-			basic: [
-			{
-				body: 1,
-				chasis: 1,
-				frontWheels: 1,
-				rearWheels: 1,
-				cab: 1
-			}
-			],
-			medium: [
-			{
-				body: 2,
-				chasis: 2,
-				frontWheels: 2,
-				rearWheels: 2,
-				cab: 2
-			}
-			],
-			heavy: [
-			{
-				body: 3,
-				chasis: 3,
-				frontWheels: 3,
-				rearWheels: 3,
-				cab: 3
-			}
-			]
-		}
-	},
+	equipment: [],
 	tradeRoutes: [
 	{
 		name: 'asia',

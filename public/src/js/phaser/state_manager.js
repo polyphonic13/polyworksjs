@@ -56,7 +56,7 @@ Polyworks.StateManager = (function() {
 		}
 
 		if(this.config.methods) {
-			trace('there are methods');
+			// trace('there are methods');
 			this.methods = {};
 			Polyworks.Utils.each(
 				this.config.methods,
@@ -68,13 +68,13 @@ Polyworks.StateManager = (function() {
 			);
 		}
 
-		trace('post method add, this = ', this);
+		// trace('post method add, this = ', this);
 		if(this.config.listeners) {
-			trace('there are listeners');
+			// trace('there are listeners');
 			Polyworks.Utils.each(
 				this.config.listeners,
 				function(listener) {
-					trace('\tadding listener:', listener);
+					// trace('\tadding listener:', listener);
 					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this
