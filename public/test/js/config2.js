@@ -216,7 +216,7 @@ var GameConfig = (function() {
 				width: gameUnit * 3,
 				height: gameUnit * 3
 			}
-		}
+		};
 
 		var config = {
 			gameEl: 'game_container',
@@ -333,6 +333,7 @@ var GameConfig = (function() {
 			attrs: {
 				firstPlay: false,
 				equipmentAction: '',
+				activeMachineId: -1,
 				sharedViews: sharedViews,
 				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems,
 				equipmentEditorImages: equipmentEditorImages

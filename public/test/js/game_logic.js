@@ -22,7 +22,8 @@ var gameLogic = {
 			var itemY = 0;
 			var offset = itemConfig.offset;
 			var totalHeight = itemConfig.totalHeight;
-			var size = PhaserGame.newMachine.get('size');
+			// var size = PhaserGame.newMachine.get('size');
+			var size = playerData.equipment[PhaserGame.activeMachineId].get('size');
 
 			pwg.Utils.each(
 				partsData,
@@ -73,7 +74,8 @@ var gameLogic = {
 				input: {
 					inputDown: function(event) {
 						trace('invisButton inputDown, this = ', this);
-						PhaserGame.newMachine.setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
+						// PhaserGame.newMachine.setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
+						playerData.equipment[PhaserGame.activeMachineId].setPart(PhaserGame.currentPartType, this.controller.config.partIdx);
 						pwg.EventCenter.trigger({ type: pwg.Events.CLOSE_OVERLAY_MENU });
 					}
 				}
@@ -305,7 +307,7 @@ var gameLogic = {
 					skidsteer: {
 						input: {
 							inputDown: function() {
-								PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER
+								PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER;
 								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
 								pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'skidsteerBuilder' });
 							}
@@ -320,7 +322,8 @@ var gameLogic = {
 				event: pwg.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
 					trace('showBuildGroup, size = ' + event.size);
-					PhaserGame.newMachine.set('size', event.size);
+					// PhaserGame.newMachine.set('size', event.size);
+					playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
 					this.views[event.previousGroup].hide();
 					this.views['build-group'].show();
 				}
@@ -357,10 +360,14 @@ var gameLogic = {
 				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
 					this.views['create-group'].show();
-					PhaserGame.newMachine = new Machine({
-						id: String(new Date().getTime()),
-						type: PhaserGame.currentEquipmentType
-					});
+					var machine = new Machine({ type: PhaserGame.currentEquipmentType });
+					playerData.equipment[machine.id] = machine;
+					PhaserGame.activeMachineId = machine.id;
+
+					// PhaserGame.newMachine = new Machine(
+					// 	id: String(new Date().getTime()),
+					// 	type: PhaserGame.currentEquipmentType
+					// });
 					break;
 
 					case EquipmentActions.EDIT:
@@ -389,8 +396,10 @@ var gameLogic = {
 						},
 						saveButton: {
 							callback: function() {
-								PhaserGame.newMachine.save();
-								PhaserGame.newMachine = null;
+								// PhaserGame.newMachine.save();
+								playerData.equipment[PhaserGame.activeMachineId].save();
+								// PhaserGame.newMachine = null;
+								PhaserGame.activeMachineId = -1;
 								pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'equipment' });
 							}
 						}
@@ -432,7 +441,7 @@ var gameLogic = {
 							input: {
 								inputDown: function() {
 									trace('headlights icon input down');
-									pwg.EventCenter.trigger({ type: pwg.Events.OPEN_OVERLAY_MENU, value: 'headlights' });
+									pwg.EventCenter.trigger({ type: pwg.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
 								}
 							}
 						}

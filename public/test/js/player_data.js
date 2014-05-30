@@ -16,7 +16,7 @@ var playerData = {
 		location: 7
 	}
 	],
-	equipment: [],
+	equipment: {},
 	tradeRoutes: [
 	{
 		name: 'asia',

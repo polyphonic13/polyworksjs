@@ -2,7 +2,6 @@ var Machine = function() {
 	
 	var module = {};
 	var defaults = {
-		id: '',
 		type: -1,
 		size: -1,
 		cost: 0,
@@ -10,7 +9,11 @@ var Machine = function() {
 	};
 	
 	function Machine(config) {
-		this.config = pwg.Utils.extend(defaults, config);
+		// this.config = config;
+
+		this.id = Math.floor(Math.random() * 9999);
+
+		this.config = pwg.Utils.extend(pwg.Utils.clone(defaults), config);
 		// trace('Machine/constructor, config = ', config);
 	}
 
@@ -31,7 +34,7 @@ var Machine = function() {
 	
 	Machine.prototype.save = function() {
 		this.calculateCost();
-		playerData.equipment.push(this.config);
+		// playerData.equipment.push(this.config);
 	};
 	
 	Machine.prototype.calculateCost = function() {
