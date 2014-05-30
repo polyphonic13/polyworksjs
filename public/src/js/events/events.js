@@ -1,4 +1,4 @@
-Polyworks.Events = {
+pwg.Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
 	START_TURN: 'startTurn',

@@ -1,11 +1,11 @@
-Polyworks.SocialPanel = (function() {
+pwg.SocialPanel = (function() {
 
 	var _model = {};
 
 	var module = {
 		init: function(params) {
 			// // trace('SocialPanel/init, params = ', params);
-			_model = Polyworks.Utils.extend(_model, params);
+			_model = pwg.Utils.extend(_model, params);
 			_initViews();
 			_addListeners();
 		},
@@ -14,7 +14,7 @@ Polyworks.SocialPanel = (function() {
 			// trace('SocialPanel/show, params = ', params);
 			var elements = params.value;
 			_model.parentEl.style.display = 'block';
-			Polyworks.Utils.each(elements,
+			pwg.Utils.each(elements,
 				function(element) {
 					if(_model.buttons.hasOwnProperty(element)) {
 						_model.buttons[element].style.visibility = 'visible';
@@ -48,13 +48,13 @@ Polyworks.SocialPanel = (function() {
 					// trace('\tsocialAction = ', socialAction);
 					var url;
 					if(socialAction['params']) {
-						url = socialAction['url'] + Polyworks.Utils.parseMarkup(socialAction['params'], _model, true);
+						url = socialAction['url'] + pwg.Utils.parseMarkup(socialAction['params'], _model, true);
 					} else {
 						url = socialAction['url'];
 					}
 					// trace('\turl = ' + url);
 					if(url.indexOf('mailto') > -1) {
-						if(Polyworks.DeviceUtils.isIphone() || Polyworks.DeviceUtils.isAndroid()) {
+						if(pwg.DeviceUtils.isIphone() || pwg.DeviceUtils.isAndroid()) {
 							window.location.href = url;
 						} else {
 							window.open(url, '_blank');
@@ -96,7 +96,7 @@ Polyworks.SocialPanel = (function() {
 		var style; 
 		var length = _model.networks.length; 
 
-		Polyworks.Utils.each(_model.networks,
+		pwg.Utils.each(_model.networks,
 			function(network, idx) {
 				style = _calculateButtonStyle(buttonStyle, idx, length);
 				button = {
@@ -105,20 +105,20 @@ Polyworks.SocialPanel = (function() {
 					el: 'img',
 					attrs: {
 						src: _model.imagePath + network + '.png',
-						onclick: 'Polyworks.SocialPanel.buttonClick("'+network+'");'
+						onclick: 'pwg.SocialPanel.buttonClick("'+network+'");'
 					},
 					className: buttonClass,
 					style: style
 				};
-				_model.buttons[network] = Polyworks.Utils.addElement(button);
+				_model.buttons[network] = pwg.Utils.addElement(button);
 			},
 			this
 		);
 	}
 
 	function _calculateButtonStyle(attrs, idx, length) {
-		var winW = Polyworks.Stage.winW;
-		var winH = Polyworks.Stage.winH;
+		var winW = pwg.Stage.winW;
+		var winH = pwg.Stage.winH;
 		var horizontal = attrs.position.horizontal;
 		var vertical = attrs.position.vertical;
 		var spacer = attrs.spacer; 
@@ -178,18 +178,18 @@ Polyworks.SocialPanel = (function() {
 	}
 
 	function _addListeners() {
-		Polyworks.Utils.each(_model.listeners,
+		pwg.Utils.each(_model.listeners,
 			function(listener) {
-				Polyworks.EventCenter.bind(listener.type, _eventHandler, this);
+				pwg.EventCenter.bind(listener.type, _eventHandler, this);
 			},
 			this
 		);
 	}
 
 	function _removeListeners() {
-		Polyworks.Utils.each(_model.listeners,
+		pwg.Utils.each(_model.listeners,
 			function(listener) {
-				Polyworks.EventCenter.unbind(listener.type, _eventHandler, this);
+				pwg.EventCenter.unbind(listener.type, _eventHandler, this);
 			},
 			this
 		);
@@ -198,7 +198,7 @@ Polyworks.SocialPanel = (function() {
 	function _eventHandler(event) {
 		// trace('SocialPanel/_eventHandler event = ', event);
 		var listener;
-		Polyworks.Utils.each(_model.listeners,
+		pwg.Utils.each(_model.listeners,
 			function(l) {
 				if(l.type === event.type) {
 					listener = l;
@@ -223,10 +223,10 @@ Polyworks.SocialPanel = (function() {
 	
 	function _executeActions(actions) {
 		// trace('SocialPanel/_executeActions');
-		Polyworks.Utils.each(actions,
+		pwg.Utils.each(actions,
 			function(action) {
 				// trace('\tcalling: ' + action.method + ', passing: ', action.data);
-				Polyworks.SocialPanel[action.method](action.data);
+				pwg.SocialPanel[action.method](action.data);
 			},
 			this
 		);

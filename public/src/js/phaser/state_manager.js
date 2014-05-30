@@ -1,4 +1,4 @@
-Polyworks.StateManager = (function() {
+pwg.StateManager = (function() {
 
 	var module = {};
 	
@@ -7,7 +7,7 @@ Polyworks.StateManager = (function() {
 		this.config = config;
 		this.name = config.name;
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			config.attrs,
 			function(attr, key) {
 				this[key] = attr;
@@ -25,7 +25,7 @@ Polyworks.StateManager = (function() {
 	Controller.prototype.preload = function() {
 		// trace('StateController['+this.name+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
-			Polyworks.PhaserLoader.load(this.config.assets);
+			pwg.PhaserLoader.load(this.config.assets);
 			this.preloaded = true;
 		}
 	};
@@ -37,19 +37,19 @@ Polyworks.StateManager = (function() {
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
 		if(this.config.tilemaps) {
-			this.tileMaps = Polyworks.PhaserTileMap.build(this.config.tilemaps);
+			this.tileMaps = pwg.PhaserTileMap.build(this.config.tilemaps);
 		}
 
 		if(this.config.views) {
-			this.views = Polyworks.PhaserView.build(this.config.views);
+			this.views = pwg.PhaserView.build(this.config.views);
 		}
 
 		if(this.config.inputs) {
 			this.inputs = {};
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.config.inputs,
 				function(input) {
-					this.inputs[input.name] = new Polyworks.PhaserInput[input.type](input);
+					this.inputs[input.name] = new pwg.PhaserInput[input.type](input);
 				},
 				this
 			);
@@ -58,7 +58,7 @@ Polyworks.StateManager = (function() {
 		if(this.config.methods) {
 			// trace('there are methods');
 			this.methods = {};
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.config.methods,
 				function(method, key) {
 					// trace('adding ' + key + ' to prototype as method: ', method);
@@ -71,11 +71,11 @@ Polyworks.StateManager = (function() {
 		// trace('post method add, this = ', this);
 		if(this.config.listeners) {
 			// trace('there are listeners');
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.config.listeners,
 				function(listener) {
 					// trace('\tadding listener:', listener);
-					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
+					pwg.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this
 			);
@@ -92,7 +92,7 @@ Polyworks.StateManager = (function() {
 			this.config.update.call(this);
 		}
 		if(this.inputs) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.inputs,
 				function(input) {
 					if(input.update) {
@@ -103,12 +103,12 @@ Polyworks.StateManager = (function() {
 			);
 		}
 		// if(this.views) {
-		// 	Polyworks.PhaserView.update(this.views);
+		// 	pwg.PhaserView.update(this.views);
 		// }
 		// if(this.tilesMaps) {
-			Polyworks.PhaserTileMap.update(this.tileMaps);
+			pwg.PhaserTileMap.update(this.tileMaps);
 		// }
-		Polyworks.PhaserInput.updateKeyboard();
+		pwg.PhaserInput.updateKeyboard();
 	};
 	
 	Controller.prototype.getView = function(id) {
@@ -125,7 +125,7 @@ Polyworks.StateManager = (function() {
 			this.config.shutdown.call(this);
 		}
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.views,
 			function(view, key) {
 				view.destroy();
@@ -135,10 +135,10 @@ Polyworks.StateManager = (function() {
 		);
 
 		if(this.config.listeners) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.config.listeners,
 				function(listener) {
-					Polyworks.EventCenter.bind(listener.event, listener.handler, this);
+					pwg.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this
 			);
@@ -153,7 +153,7 @@ Polyworks.StateManager = (function() {
 		this.states = {};
 		this.currentId = '';
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			config,
 			function(state) {
 				// trace('\tadding state[' + state.name + ']');

@@ -1,4 +1,4 @@
-Polyworks.GridGenerator = (function() {
+pwg.GridGenerator = (function() {
 	var module = {};
 	
 	module.createSquare = function(cells, dimension) {

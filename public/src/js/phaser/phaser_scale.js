@@ -1,4 +1,4 @@
-Polyworks.PhaserScale = (function() {
+pwg.PhaserScale = (function() {
 	var module = {};
 	
 	module.init = function(config) {

@@ -80,8 +80,8 @@ var GameConfig = (function() {
 				world: {
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					width: pwg.Stage.gameW,
+					height: pwg.Stage.gameH
 				},
 				clearWorld: true,
 				clearCache: false,
@@ -95,13 +95,13 @@ var GameConfig = (function() {
 				},
 				listeners: [
 				{
-					event: Polyworks.Events.CLOSE_NOTIFICATION,
+					event: pwg.Events.CLOSE_NOTIFICATION,
 					handler: function(event) {
 						this.views['notification'].hide();
 					}
 				},
 				{
-					event: Polyworks.Events.SHOW_NOTIFICATION,
+					event: pwg.Events.SHOW_NOTIFICATION,
 					handler: function(event) {
 						this.views['notification'].show();
 					}
@@ -119,12 +119,12 @@ var GameConfig = (function() {
 						x: 0,
 						y: 0,
 						attrs: {
-							width: Polyworks.Stage.gameW,
-							height: Polyworks.Stage.gameH
+							width: pwg.Stage.gameW,
+							height: pwg.Stage.gameH
 						},
 						input: {
 							inputUp: function() {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.SHOW_NOTIFICATION });
+								pwg.EventCenter.trigger({ type: pwg.Events.SHOW_NOTIFICATION });
 							}
 						}
 					},
@@ -133,14 +133,14 @@ var GameConfig = (function() {
 						id: 'game-start-button',
 						img: 'gameStartButton',
 						x: 0,
-						y: (Polyworks.Stage.gameH * 0.7),
+						y: (pwg.Stage.gameH * 0.7),
 						attrs: {
-							width: Polyworks.Stage.gameW,
-							height: ((Polyworks.Stage.gameW)/5),
+							width: pwg.Stage.gameW,
+							height: ((pwg.Stage.gameW)/5),
 							alpha: 0.75
 						},
 						callback: function() {
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'play' });
+							pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'play' });
 						},
 						context: this,
 						frames: [0, 1, 1, 0]
@@ -158,16 +158,16 @@ var GameConfig = (function() {
 						type: 'PhaserSprite',
 						id: 'white-bg',
 						img: 'whiteBlock',
-						x: Polyworks.Stage.unit,
-						y: Polyworks.Stage.unit,
+						x: pwg.Stage.unit,
+						y: pwg.Stage.unit,
 						attrs: {
-							width: (Polyworks.Stage.gameW - (Polyworks.Stage.unit * 2)),
-							height: (Polyworks.Stage.gameH - (Polyworks.Stage.unit * 2)),
+							width: (pwg.Stage.gameW - (pwg.Stage.unit * 2)),
+							height: (pwg.Stage.gameH - (pwg.Stage.unit * 2)),
 							alpha: 0.95
 						},
 						input: {
 							inputUp: function() {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CLOSE_NOTIFICATION });
+								pwg.EventCenter.trigger({ type: pwg.Events.CLOSE_NOTIFICATION });
 							}
 						}
 					},
@@ -195,8 +195,8 @@ var GameConfig = (function() {
 				world: {
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					width: pwg.Stage.gameW,
+					height: pwg.Stage.gameH
 				},
 				clearWorld: true,
 				clearCache: false,
@@ -218,7 +218,7 @@ var GameConfig = (function() {
 				},
 				listeners: [
 				{
-					event: Polyworks.Events.PAUSE_GAME,
+					event: pwg.Events.PAUSE_GAME,
 					handler: function(event) {
 						this.turnTimer.pause();
 						this.views['pause-button'].hide();
@@ -226,7 +226,7 @@ var GameConfig = (function() {
 					}
 				},
 				{
-					event: Polyworks.Events.RESUME_GAME,
+					event: pwg.Events.RESUME_GAME,
 					handler: function(event) {
 						this.turnTimer.resume();
 						this.views['resume-button'].hide();
@@ -234,9 +234,9 @@ var GameConfig = (function() {
 					}
 				},
 				{
-					event: Polyworks.Events.TURN_ENDED,
+					event: pwg.Events.TURN_ENDED,
 					handler: function(event) {
-						Polyworks.PhaserTime.removeTimer('turnTime');
+						pwg.PhaserTime.removeTimer('turnTime');
 						this.views['turn-time'].setText('Turn ended');
 						this.views['pause-button'].hide();
 					}
@@ -244,13 +244,13 @@ var GameConfig = (function() {
 				],
 				create: function() {
 					this.timePerTurn = TIME_PER_TURN;
-					this.turnTimer = new Polyworks.PhaserTime.Controller('turnTime');
+					this.turnTimer = new pwg.PhaserTime.Controller('turnTime');
 					this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
 							// trace('\ttimePerTurn = ' + this.timePerTurn);
 							this.timePerTurn--;
 							this.views['turn-time'].setText('Turn time: ' + this.timePerTurn);
 							if(this.timePerTurn <= 0) {
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.TURN_ENDED });
+								pwg.EventCenter.trigger({ type: pwg.Events.TURN_ENDED });
 							}
 						},
 						this
@@ -258,7 +258,7 @@ var GameConfig = (function() {
 					// this.turnTimer.start();
 				},
 				shutdown: function() {
-					Polyworks.PhaserTime.removeTimer('turnTime');
+					pwg.PhaserTime.removeTimer('turnTime');
 				},
 				views: [
 				{
@@ -267,9 +267,9 @@ var GameConfig = (function() {
 					img: 'grassTiles',
 					attrs: {
 						x: 0,
-						y: (Polyworks.Stage.unit * 3)
+						y: (pwg.Stage.unit * 3)
 					},
-					cellSize: (Polyworks.Stage.unit),
+					cellSize: (pwg.Stage.unit),
 					layers: [
 					{
 						id: 'main',
@@ -288,13 +288,13 @@ var GameConfig = (function() {
 						x: 0,
 						y: 0,
 						attrs: {
-							width: Polyworks.Stage.gameW,
-							height: Polyworks.Stage.unit * 3
+							width: pwg.Stage.gameW,
+							height: pwg.Stage.unit * 3
 						},
 						input: {
 							inputUp: function() {
 								trace('start background input up function');
-								Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'gameOver' });
+								pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'gameOver' });
 							}
 						}
 					},
@@ -303,10 +303,10 @@ var GameConfig = (function() {
 						id: 'play-mask-bottom',
 						img: 'playBg',
 						x: 0,
-						y: Polyworks.Stage.unit * 13,
+						y: pwg.Stage.unit * 13,
 						attrs: {
-							width: Polyworks.Stage.gameW,
-							height: Polyworks.Stage.unit * 3
+							width: pwg.Stage.gameW,
+							height: pwg.Stage.unit * 3
 						}
 					}
 					]
@@ -320,22 +320,22 @@ var GameConfig = (function() {
 				        fill: "#ffffff"
 					},
 					x: 0,
-					y: (Polyworks.Stage.unit * 2),
+					y: (pwg.Stage.unit * 2),
 					centerX: true
 				},
 				{
 					type: 'PhaserButton',
 					id: 'pause-button',
 					img: 'pauseButton',
-					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 2.5),
-					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 2.5),
+					x: (pwg.Stage.gameW - pwg.Stage.unit * 2.5),
+					y: (pwg.Stage.gameH - pwg.Stage.unit * 2.5),
 					attrs: {
-						width: Polyworks.Stage.unit * 2,
-						height: Polyworks.Stage.unit * 2,
+						width: pwg.Stage.unit * 2,
+						height: pwg.Stage.unit * 2,
 						visible: true
 					},
 					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.PAUSE_GAME });
+						pwg.EventCenter.trigger({ type: pwg.Events.PAUSE_GAME });
 					},
 					context: this,
 					frames: [0, 1, 1, 0]
@@ -344,15 +344,15 @@ var GameConfig = (function() {
 					type: 'PhaserButton',
 					id: 'resume-button',
 					img: 'playButton',
-					x: (Polyworks.Stage.gameW - Polyworks.Stage.unit * 3),
-					y: (Polyworks.Stage.gameH - Polyworks.Stage.unit * 3),
+					x: (pwg.Stage.gameW - pwg.Stage.unit * 3),
+					y: (pwg.Stage.gameH - pwg.Stage.unit * 3),
 					attrs: {
-						width: Polyworks.Stage.unit * 2,
-						height: Polyworks.Stage.unit * 2,
+						width: pwg.Stage.unit * 2,
+						height: pwg.Stage.unit * 2,
 						visible: false
 					},
 					callback: function() {
-						Polyworks.EventCenter.trigger({ type: Polyworks.Events.RESUME_GAME });
+						pwg.EventCenter.trigger({ type: pwg.Events.RESUME_GAME });
 					},
 					context: this,
 					frames: [0, 1, 1, 0]
@@ -365,8 +365,8 @@ var GameConfig = (function() {
 				world: {
 					x: 0,
 					y: 0,
-					width: Polyworks.Stage.gameW,
-					height: Polyworks.Stage.gameH
+					width: pwg.Stage.gameW,
+					height: pwg.Stage.gameH
 				},
 				clearWorld: true,
 				clearCache: false,
@@ -383,13 +383,13 @@ var GameConfig = (function() {
 					x: 0,
 					y: 0,
 					attrs: {
-						width: Polyworks.Stage.gameW,
-						height: Polyworks.Stage.gameH
+						width: pwg.Stage.gameW,
+						height: pwg.Stage.gameH
 					},
 					input: {
 						inputUp: function() {
 							trace('start background input up function');
-							Polyworks.EventCenter.trigger({ type: Polyworks.Events.CHANGE_STATE, value: 'start' });
+							pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'start' });
 						}
 					}
 				},
@@ -402,7 +402,7 @@ var GameConfig = (function() {
 				        fill: "#ffffff"
 					},
 					x: 0,
-					y: (Polyworks.Stage.unit * 2),
+					y: (pwg.Stage.unit * 2),
 					centerX: true
 				}
 				]

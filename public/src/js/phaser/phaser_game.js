@@ -11,14 +11,14 @@ var PhaserGame = (function() {
 			sprites: {}
 		};
 
-		module.stage = Polyworks.Stage;
+		module.stage = pwg.Stage;
 		module.stage.init(aspectRatio, false, _onStageInitialized, module);
 	};
 	
 	module.destroy = function() {
 		// trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
 		if(_inPlay) {
-			Polyworks.StateManager.destroy();
+			pwg.StateManager.destroy();
 			module.phaser.destroy();
 			_inPlay = false;
 		}
@@ -41,7 +41,7 @@ var PhaserGame = (function() {
 		_inPlay = true;
 		_addListeners();
 
-		Polyworks.Utils.extend(module, config.attrs);
+		pwg.Utils.extend(module, config.attrs);
 
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
@@ -59,33 +59,33 @@ var PhaserGame = (function() {
 	
 	function _preload() {
 		// trace('PhaserGame/_preload');
-		Polyworks.PhaserLoader.init(module.config.assets, module.phaser);
+		pwg.PhaserLoader.init(module.config.assets, module.phaser);
 		if(module.config.preload) {
-			Polyworks.PhaserLoader.load(module.config.preload);
+			pwg.PhaserLoader.load(module.config.preload);
 		}
 	}
 	
 	function _create() {
 		// trace('PhaserGame/_create');
-		Polyworks.PhaserScale.init(module.config.stage);
-		Polyworks.PhaserPhysics.init();
+		pwg.PhaserScale.init(module.config.stage);
+		pwg.PhaserPhysics.init();
 
 		if(module.config.input) {
 			if(module.config.input.keys) {
-				module.keyboard = Polyworks.PhaserInput.initKeyboard(module.config.input.keys);
+				module.keyboard = pwg.PhaserInput.initKeyboard(module.config.input.keys);
 			}
 		}
 
-		Polyworks.StateManager.init(module.config.states, module.phaser);
+		pwg.StateManager.init(module.config.states, module.phaser);
 		if(module.config.defaultScreen) {
-			Polyworks.StateManager.changeState(module.config.defaultScreen);
+			pwg.StateManager.changeState(module.config.defaultScreen);
 		}
 	}
 	
 	function _update() {
 		// trace('PhaserGame/_update');
 		if(module.keyboard) {
-			Polyworks.PhaserInput.updateKeyboard(module.keyboard);
+			pwg.PhaserInput.updateKeyboard(module.keyboard);
 		}
 	}
 	
@@ -94,22 +94,22 @@ var PhaserGame = (function() {
 	}
 	
 	function _addListeners() {
-		Polyworks.EventCenter.bind(Polyworks.Events.CHANGE_STATE, _onChangeState, module);
+		pwg.EventCenter.bind(pwg.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _removeListeners() {
-		Polyworks.EventCenter.unbind(Polyworks.Events.CHANGE_STATE, _onChangeState, module);
+		pwg.EventCenter.unbind(pwg.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _onChangeState(event) {
 		// trace('PhaserGame/_onChangeState, event = ', event);
-		Polyworks.StateManager.changeState(event.value);
+		pwg.StateManager.changeState(event.value);
 	}
 	
 	function _quit() {
 		// trace('PhaserGame/_quit');
 		_isQuit = true;
-		Polyworks.StateManager.destroy();
+		pwg.StateManager.destroy();
 		_removeListeners();
 		module.phaser.destroy();
 	}

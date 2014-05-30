@@ -1,4 +1,4 @@
-Polyworks.PhaserSprite = (function() {
+pwg.PhaserSprite = (function() {
 
 	var module = {};
 
@@ -8,14 +8,14 @@ Polyworks.PhaserSprite = (function() {
 		this.config = config;
 		this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
 
-		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
+		pwg.Initializer.setViewAttributes(config.attrs, this.view);
 
 		if(config.input) {
-			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this.view, this.name);
+			this.inputController = new pwg.PhaserInput.InputController(config.input, this.view, this.name);
 		}
 	}
 
-	Polyworks.Initializer.addStandardMethods(Controller);
+	pwg.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller;
 	

@@ -1,4 +1,4 @@
-Polyworks.PhaserGroup = (function() {
+pwg.PhaserGroup = (function() {
 	var module = {};
 	
 	function Controller(config) {
@@ -7,14 +7,14 @@ Polyworks.PhaserGroup = (function() {
 		this.config = config;
 		this.view = PhaserGame.phaser.add.group();
 
-		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
+		pwg.Initializer.setViewAttributes(config.attrs, this.view);
 
 		// create children collection
-		this.children = Polyworks.DisplayFactory.createPhaserViews(config.views);
+		this.children = pwg.DisplayFactory.createPhaserViews(config.views);
 		// trace('\tchildren = ', this.children);
 
 		// loop through children collection and add to group
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.children,
 			function(child) {
 				// trace('\t\tchild = ', child);
@@ -32,7 +32,7 @@ Polyworks.PhaserGroup = (function() {
 	Controller.prototype.removeAll = function() {
 		// trace('GroupController['+this.name+']/remove, children = ', this.children);
 		this.view.removeAll();
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.children,
 			function(child) {
 				delete this.children[child];
@@ -40,7 +40,7 @@ Polyworks.PhaserGroup = (function() {
 		)
 	};
 
-	Polyworks.Initializer.addStandardMethods(Controller);
+	pwg.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller; 
 	

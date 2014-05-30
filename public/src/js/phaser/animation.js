@@ -1,4 +1,4 @@
-Polyworks.PhaserAnimation = (function() {
+pwg.PhaserAnimation = (function() {
 	
 	var module = {};
 
@@ -10,7 +10,7 @@ Polyworks.PhaserAnimation = (function() {
 		var animations = config.animations;
 		this.currentAnimation = config.defaultAnimation || '';
 
-		Polyworks.each(
+		pwg.each(
 			animations,
 			function(animation, key) {
 				controller.view.animations.add(key, animation.keyFrames, animation.frameRate);

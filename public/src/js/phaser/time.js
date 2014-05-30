@@ -1,4 +1,4 @@
-Polyworks.PhaserTime = (function() {
+pwg.PhaserTime = (function() {
 	var _timers = {};
 	module = {};
 	

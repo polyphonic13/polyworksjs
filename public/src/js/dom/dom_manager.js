@@ -1,11 +1,11 @@
-Polyworks.DOMManager = (function() {
+pwg.DOMManager = (function() {
 	var _bodyEl = document.getElementsByTagName('body')[0];
 	var _headEl = document.getElementsByTagName('head')[0];
 	
 	var module = {
 		addElements: function(elements, parentEl) {
 			var pops = parentEl || _bodyEl;
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				elements,
 				function(element) {
 					// trace('DOMManager/addElements, type = ' + element.type + ', element = ', element);
@@ -31,7 +31,7 @@ Polyworks.DOMManager = (function() {
 		},
 
 		addAttributes: function(attributes, el) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				attributes,
 				function(attribute, key) {
 					el.setAttribute(key, attribute);
@@ -42,7 +42,7 @@ Polyworks.DOMManager = (function() {
 		},
 
 		addStyle: function(styles, el) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				styles,
 				function(style, key) {
 					el.style[key] = style;
@@ -81,7 +81,7 @@ Polyworks.DOMManager = (function() {
 		this.callback = callback;
 		this.images = {};
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			images,
 			function(image) {
 				this.images[image.name] = new Image();

@@ -8,7 +8,7 @@
 		]
 	}
 */
-Polyworks.EventCenter = (function() {
+pwg.EventCenter = (function() {
 
 	var module = {};
 	var _listeners = {}; 
@@ -29,7 +29,7 @@ Polyworks.EventCenter = (function() {
 		var list = _listeners[params.type];
 		// trace('----- EventCenter/trigger, type = ' + params.type + ', list = ', list);
 		if(list) {
-			Polyworks.Utils.each(list,
+			pwg.Utils.each(list,
 				function(listener) {
 					// trace('\t\tl = ', l);
 					if(listener && listener.callback) { // in case callback is destroyed during course of trigger
@@ -44,7 +44,7 @@ Polyworks.EventCenter = (function() {
 	module.unbind = function(type, callback) {
 		var listeners = _listeners[type];
 		if(listeners) {
-			Polyworks.Utils.each(listeners,
+			pwg.Utils.each(listeners,
 				function(listener, idx) {
 					if(listener && listener.callback === callback) {
 						listeners.splice(idx, 1);
@@ -59,7 +59,7 @@ Polyworks.EventCenter = (function() {
 		// iterate thru _listeners object
 		// for each type, remove all array elements
 		// then delete type from _listeners
-		Polyworks.Utils.each(_listeners,
+		pwg.Utils.each(_listeners,
 			function(listener, key) {
 				listener = [];
 				delete _listeners[key];

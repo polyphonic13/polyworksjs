@@ -10,7 +10,7 @@ var Machine = function() {
 	};
 	
 	function Machine(config) {
-		this.config = Polyworks.Utils.extend(defaults, config);
+		this.config = pwg.Utils.extend(defaults, config);
 		// trace('Machine/constructor, config = ', config);
 	}
 
@@ -36,7 +36,7 @@ var Machine = function() {
 	
 	Machine.prototype.calculateCost = function() {
 		trace('Machine['+this.config.id+']/calculateCost, this = ', this);
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.config.parts,
 			function(val, key) {
 				trace('\tval = ' + val + ', key = ' + key);

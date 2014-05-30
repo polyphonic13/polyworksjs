@@ -1,4 +1,4 @@
-Polyworks.ScreenManager = (function() {
+pwg.ScreenManager = (function() {
 
 	var module = {};
 	
@@ -6,12 +6,12 @@ Polyworks.ScreenManager = (function() {
 		// trace('ScreenController/constructor, config = ', config);
 		this.config = config;
 		this.name = config.name;
-		this.views = Polyworks.DisplayFactory.createPhaserViews(config.views);
+		this.views = pwg.DisplayFactory.createPhaserViews(config.views);
 	};
 	
 	ScreenController.prototype.activate = function() {
 		// trace('ScreenController['+this.name+']/activate');
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.views,
 			function(view) {
 				view.show();
@@ -23,7 +23,7 @@ Polyworks.ScreenManager = (function() {
 	
 	ScreenController.prototype.update = function() {
 		// trace('ScreenController['+this.name+']/update');
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.views,
 			function(view) {
 				view.update();
@@ -34,7 +34,7 @@ Polyworks.ScreenManager = (function() {
 	
 	ScreenController.prototype.deactive = function() {
 		// trace('ScreenController['+this.name+']/deactivate');
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.views,
 			function(view) {
 				view.hide();
@@ -46,7 +46,7 @@ Polyworks.ScreenManager = (function() {
 	
 	ScreenController.prototype.destroy = function() {
 		// trace('ScreenController['+this.name+']/destroy');
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.views,
 			function(view, key) {
 				view.destroy();
@@ -64,7 +64,7 @@ Polyworks.ScreenManager = (function() {
 		this.states = {};
 		this.currentId = '';
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			config,
 			function(scr) {
 				// trace('\tadding state[' + scr.name + ']');
@@ -103,7 +103,7 @@ Polyworks.ScreenManager = (function() {
 	};
 	
 	module.deactivateAll = function() {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.states,
 			function(scr, id) {
 				this.scr(id).deactivate();

@@ -1,4 +1,4 @@
-Polyworks.PhaserInput = (function() {
+pwg.PhaserInput = (function() {
 	var module = {};
 	var _controllers = {};
 	
@@ -12,7 +12,7 @@ Polyworks.PhaserInput = (function() {
 
 		view.inputEnabled = true;
 
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			this.config.attrs,
 			function(attr, key) {
 				view.input[key] = attr;
@@ -90,7 +90,7 @@ Polyworks.PhaserInput = (function() {
 		// trace('--------- PhaserInput/initKeyboard, controls = ', controls);
 		module.keys = {};
 		
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			controls,
 			function(control) {
 				var key;
@@ -119,7 +119,7 @@ Polyworks.PhaserInput = (function() {
 	
 	module.updateKeyboard = function(controls) {
 		// trace('PhaserInput/updateKeyboard');
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			module.keys,
 			function(control, id) {
 				// trace('control['+id+']');

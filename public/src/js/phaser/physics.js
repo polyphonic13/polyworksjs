@@ -1,4 +1,4 @@
-Polyworks.PhaserPhysics = (function() {
+pwg.PhaserPhysics = (function() {
 	var module = {};
 
 	module.controllers = [];
@@ -10,7 +10,7 @@ Polyworks.PhaserPhysics = (function() {
 
 		var physics = config.physics;
 
-	 	Polyworks.Utils.each(
+	 	pwg.Utils.each(
 			config.physics,
 			function(attr, key) {
 				controller.view.body[key] = attr;
@@ -67,7 +67,7 @@ Polyworks.PhaserPhysics = (function() {
 	};
 	
 	module.checkAllCollisions = function(targets) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			module.controllers,
 			function(controller) {
 				module.checkCollisions(controller, targets);
@@ -81,7 +81,7 @@ Polyworks.PhaserPhysics = (function() {
 	};
 	
 	module.checkAllOverlaps = function(targets, callback, context) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			module.controllers,
 			function(controller) {
 				module.checkOverlaps(controller, targets, callback, context);
@@ -97,7 +97,7 @@ Polyworks.PhaserPhysics = (function() {
 	module.checkPhysics = function(method, controller, callback, context) {
 		context = context || controller;
 		if(targets instanceof Array) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				targets,
 				function(target) {
 					controller[method].call(context, target, callback, context);

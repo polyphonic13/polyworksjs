@@ -1,4 +1,4 @@
-Polyworks.PhaserNotification = (function() {
+pwg.PhaserNotification = (function() {
 	var module = {};
 	
 	function Controller(params) {

@@ -1,14 +1,14 @@
-Polyworks.DisplayFactory = (function() {
+pwg.DisplayFactory = (function() {
 	var module = {};
 	
 	module.createPhaserViews = function(views) {
 		// trace('DisplayFactory/createPhaserViews, views = ', views);
 		var collection = {};
 		
-		Polyworks.Utils.each(views,
+		pwg.Utils.each(views,
 			function(view) {
 				// trace('\tview.type = ' + view.type);
-				collection[view.name] = new Polyworks.PhaserView.ViewController(view);
+				collection[view.name] = new pwg.PhaserView.ViewController(view);
 			},
 			this
 		);

@@ -1,4 +1,4 @@
-Polyworks.Utils = (function() {
+pwg.Utils = (function() {
 	var module = {};
 
 	module.each = function(list, callback, context) {
@@ -29,7 +29,7 @@ Polyworks.Utils = (function() {
 	    if (obj instanceof Array) {
 	        var copy = [];
 	        for (var i = 0, len = obj.length; i < len; i++) {
-	            copy[i] = Polyworks.Utils.clone(obj[i]);
+	            copy[i] = pwg.Utils.clone(obj[i]);
 	        }
 	        return copy;
 	    }
@@ -38,7 +38,7 @@ Polyworks.Utils = (function() {
 	    if (obj instanceof Object) {
 	        var copy = {};
 	        for (var attr in obj) {
-	            if (obj.hasOwnProperty(attr)) copy[attr] = Polyworks.Utils.clone(obj[attr]);
+	            if (obj.hasOwnProperty(attr)) copy[attr] = pwg.Utils.clone(obj[attr]);
 	        }
 	        return copy;
 	    }
@@ -139,13 +139,13 @@ Polyworks.Utils = (function() {
             scriptTag.onreadystatechange = function() {
                 if(scriptTag.readyState == 'loaded' || scriptTag.readyState == 'complete') {
                     // callback.call(evt);
-					Polyworks.EventCenter.trigger(evt);
+					pwg.EventCenter.trigger(evt);
                 }
             };
         } else {
             scriptTag.onload = function() {
                 // callback.call(evt);
-				Polyworks.EventCenter.trigger(evt);
+				pwg.EventCenter.trigger(evt);
             };
         }
         scriptTag.setAttribute('src', url);

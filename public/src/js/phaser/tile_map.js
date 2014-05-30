@@ -1,4 +1,4 @@
-Polyworks.PhaserTileMap = (function() {
+pwg.PhaserTileMap = (function() {
 	var module = {};
 
 	var _map;
@@ -23,11 +23,11 @@ Polyworks.PhaserTileMap = (function() {
 
 		if (config.layers) {
 			var layerName;
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 			config.layers, function(layer) {
 				// trace('\tmaking layer['+layer.name+']: ', layer);
 				_layers[layer.name] = _map.createLayer(layer.name);
-				Polyworks.Initializer.setViewAttributes(layer.attrs, layer);
+				pwg.Initializer.setViewAttributes(layer.attrs, layer);
 				if (layer.resizeWorld) {
 					_layers[layer.name].resizeWorld();
 				}
@@ -43,10 +43,10 @@ Polyworks.PhaserTileMap = (function() {
 		this.view = _map;
 		this.view.name = this.name = config.name;
 
-		Polyworks.Initializer.setViewAttributes(config.attrs, this.view);
+		pwg.Initializer.setViewAttributes(config.attrs, this.view);
 
-		Polyworks.EventCenter.bind(Polyworks.Events.ZOOM_IN, this.onZoomIn, this);
-		Polyworks.EventCenter.bind(Polyworks.Events.ZOOM_OUT, this.onZoomOut, this);
+		pwg.EventCenter.bind(pwg.Events.ZOOM_IN, this.onZoomIn, this);
+		pwg.EventCenter.bind(pwg.Events.ZOOM_OUT, this.onZoomOut, this);
 
 /*
 		// this.view.inputEnabled = true;
@@ -82,7 +82,7 @@ Polyworks.PhaserTileMap = (function() {
 
 	TileMapController.prototype.zoomLayers = function(out, allLayers) {
 		if (allLayers) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 			_layers, function(layer) {
 				this.zoomLayer(layer, out);
 			}, this);
@@ -143,20 +143,20 @@ Polyworks.PhaserTileMap = (function() {
 	//     currentTile = PhaserGame.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
 	// 	// trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
 	// };
-	Polyworks.Initializer.addStandardMethods(TileMapController);
+	pwg.Initializer.addStandardMethods(TileMapController);
 
 	module.build = function(tilemaps) {
 		// trace('PhaserTileMap/build');
 		var collection = {};
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 		tilemaps, function(tilemap) {
-			collection[tilemap.name] = new Polyworks.PhaserTileMap.TileMapController(tilemap);
+			collection[tilemap.name] = new pwg.PhaserTileMap.TileMapController(tilemap);
 		}, this);
 		return collection;
 	};
 
 	module.update = function(controllers) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 		controllers, function(controller) {
 			controller.update();
 		}, this);

@@ -1,4 +1,4 @@
-Polyworks.PhaserView = (function() {
+pwg.PhaserView = (function() {
 	var viewTypes = {
 		SPRITE: 'sprite',
 		TEXT: 'text',
@@ -38,15 +38,15 @@ Polyworks.PhaserView = (function() {
 		this.set(config.attrs);
 
 		if(config.position) {
-			Polyworks.PhaserPositioner.set(config.position, this.view);
+			pwg.PhaserPositioner.set(config.position, this.view);
 		}
 
 		if(config.input) {
-			this.inputController = new Polyworks.PhaserInput.InputController(config.input, this);
+			this.inputController = new pwg.PhaserInput.InputController(config.input, this);
 		}
 
 		if(config.animation) {
-			this.animationController = new Polyworks.PhaserAnimation.AnimationController(config.animation, this);
+			this.animationController = new pwg.PhaserAnimation.AnimationController(config.animation, this);
 		}
 
 		if(config.physical && this.view.body) {
@@ -64,7 +64,7 @@ Polyworks.PhaserView = (function() {
 	
 	ViewController.prototype.set = function(params) {
 		// trace('ViewController/set, view = ', this.view);
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			params,
 			function(param, key) {
 				// trace('\tparam['+key+'] = ' + param);
@@ -85,7 +85,7 @@ Polyworks.PhaserView = (function() {
 	ViewController.prototype.hide = function() {
 		// trace('ViewController, hide, this = ', this);
 		if(this.children) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.children,
 				function(child) {
 					// trace('\thiding child: ', child);
@@ -99,7 +99,7 @@ Polyworks.PhaserView = (function() {
 	
 	ViewController.prototype.show = function() {
 		if(this.children) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.children,
 				function(child) {
 					// trace('\tshowing child: ', child);
@@ -125,7 +125,7 @@ Polyworks.PhaserView = (function() {
 	// groups only
 	ViewController.prototype.removeAll = function() {
 		if(this.type === viewTypes.GROUP) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				this.children,
 				function(child) {
 					this.view.remove(id);
@@ -148,13 +148,13 @@ Polyworks.PhaserView = (function() {
 		// trace('PhaserView/factory, views = ', views);
 		var collection = collection || {};
 
-		Polyworks.Utils.each(views,
+		pwg.Utils.each(views,
 			function(view, key) {
 				// trace('\tview.type = ' + view.type);
-				collection[view.name] = new Polyworks.PhaserView.ViewController(view, key);
+				collection[view.name] = new pwg.PhaserView.ViewController(view, key);
 				if(view.type === viewTypes.GROUP) {
-					collection[view.name].children = Polyworks.PhaserView.build(view.views);
-					Polyworks.PhaserView.initGroup(collection[view.name]);
+					collection[view.name].children = pwg.PhaserView.build(view.views);
+					pwg.PhaserView.initGroup(collection[view.name]);
 				}
 			},
 			this
@@ -165,7 +165,7 @@ Polyworks.PhaserView = (function() {
 	
 	module.initGroup = function(controller) {
 		// trace('PhaserView/initGroup, controller = ', controller);
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			controller.children,
 			function(child) {
 				// trace('\tchild = ', child);
@@ -178,7 +178,7 @@ Polyworks.PhaserView = (function() {
 	};
 
 	module.addToGroup = function(children, group) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			children,
 			function(child, key) {
 				group.view.add(child.view);
@@ -189,7 +189,7 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	module.removeFromGroup = function(children, group) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			children,
 			function(child, key) {
 				group.view.remove(child.view, true);
@@ -201,17 +201,17 @@ Polyworks.PhaserView = (function() {
 	
 	module.addView = function(view, collection) {
 		// trace('PhaserView/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
-		collection[view.name] = new Polyworks.PhaserView.ViewController(view, view.name);
+		collection[view.name] = new pwg.PhaserView.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
 			// trace('\tit is a group, going to call build on it');
-			collection[view.name].children = Polyworks.PhaserView.build(view.views);
-			Polyworks.PhaserView.initGroup(collection[view.name]);
+			collection[view.name].children = pwg.PhaserView.build(view.views);
+			pwg.PhaserView.initGroup(collection[view.name]);
 		}
 	};
 	
 	module.removeView = function(name, collection) {
 		trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			collection,
 			function(child, key) {
 				if(child.view.name === name) {
@@ -229,7 +229,7 @@ Polyworks.PhaserView = (function() {
 	};
 	
 	module.update = function(controllers) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			controllers,
 			function(controller) {
 				controller.update();

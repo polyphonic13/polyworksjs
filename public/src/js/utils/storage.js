@@ -1,4 +1,4 @@
-Polyworks.Storage = (function() {
+pwg.Storage = (function() {
 	var _listeners = [];
 	
 	var module = {};

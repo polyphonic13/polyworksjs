@@ -1,1 +1,1 @@
-var Polyworks = {};
+var pwg = {};

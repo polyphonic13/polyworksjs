@@ -1,4 +1,4 @@
-Polyworks.Initializer = (function(){
+pwg.Initializer = (function(){
 	
 	var standardMethods = {
 		hide: function() {
@@ -16,7 +16,7 @@ Polyworks.Initializer = (function(){
 	
 	module.setViewAttributes = function(attrs, view) {
 		if(attrs) {
-			Polyworks.Utils.each(
+			pwg.Utils.each(
 				attrs,
 				function(attr, key) {
 					view[key] = attr;
@@ -27,7 +27,7 @@ Polyworks.Initializer = (function(){
 	};
 	
 	module.addStandardMethods = function(controller) {
-		Polyworks.Utils.each(
+		pwg.Utils.each(
 			standardMethods,
 			function(method, key) {
 				controller.prototype[key] = method;
