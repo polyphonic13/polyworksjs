@@ -15,9 +15,9 @@ var EquipmentTypes = {
 };
 
 var EquipmentSizes = {
-	BASIC: 0,
-	MEDIUM: 1,
-	HEAVY: 2
+	STANDARD: 'standard',
+	MEDIUM: 'medium',
+	HEAVY: 'heavy'
 };
 
 var PartTypes = {

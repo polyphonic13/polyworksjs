@@ -1,4 +1,4 @@
-pwg.ScreenManager = (function() {
+PWG.ScreenManager = (function() {
 
 	var module = {};
 	
@@ -6,12 +6,12 @@ pwg.ScreenManager = (function() {
 		// trace('ScreenController/constructor, config = ', config);
 		this.config = config;
 		this.name = config.name;
-		this.views = pwg.DisplayFactory.createPhaserViews(config.views);
+		this.views = PWG.DisplayFactory.createPhaserViews(config.views);
 	};
 	
 	ScreenController.prototype.activate = function() {
 		// trace('ScreenController['+this.name+']/activate');
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.views,
 			function(view) {
 				view.show();
@@ -23,7 +23,7 @@ pwg.ScreenManager = (function() {
 	
 	ScreenController.prototype.update = function() {
 		// trace('ScreenController['+this.name+']/update');
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.views,
 			function(view) {
 				view.update();
@@ -34,7 +34,7 @@ pwg.ScreenManager = (function() {
 	
 	ScreenController.prototype.deactive = function() {
 		// trace('ScreenController['+this.name+']/deactivate');
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.views,
 			function(view) {
 				view.hide();
@@ -46,7 +46,7 @@ pwg.ScreenManager = (function() {
 	
 	ScreenController.prototype.destroy = function() {
 		// trace('ScreenController['+this.name+']/destroy');
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.views,
 			function(view, key) {
 				view.destroy();
@@ -64,7 +64,7 @@ pwg.ScreenManager = (function() {
 		this.states = {};
 		this.currentId = '';
 
-		pwg.Utils.each(
+		PWG.Utils.each(
 			config,
 			function(scr) {
 				// trace('\tadding state[' + scr.name + ']');
@@ -103,7 +103,7 @@ pwg.ScreenManager = (function() {
 	};
 	
 	module.deactivateAll = function() {
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.states,
 			function(scr, id) {
 				this.scr(id).deactivate();

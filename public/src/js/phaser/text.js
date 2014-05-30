@@ -1,4 +1,4 @@
-pwg.PhaserText = (function() {
+PWG.PhaserText = (function() {
 	var module = {};
 	
 	function Controller(config) {
@@ -10,14 +10,14 @@ pwg.PhaserText = (function() {
 		
 		this.view = phaser.add.text(config.x, config.y, config.text, config.style);
 
-		pwg.Initializer.setViewAttributes(config.attrs, this.view);
+		PWG.Initializer.setViewAttributes(config.attrs, this.view);
 
 		if(config.centerX) {
-			var newX = pwg.Stage.gameW/2 - this.view.width/2;
+			var newX = PWG.Stage.gameW/2 - this.view.width/2;
 			this.view.x = newX;
 		}
 		if(config.centerY) {
-			var newY = pwg.Stage.gameH/2 - this.view.height/2;
+			var newY = PWG.Stage.gameH/2 - this.view.height/2;
 			this.view.y = newY;
 		}
 	}
@@ -25,12 +25,12 @@ pwg.PhaserText = (function() {
 	Controller.prototype.setText = function(text) {
 		this.view.setText(text);
 		if(this.config.centerX) {
-			var newX = pwg.Stage.gameW/2 - this.view.width/2;
+			var newX = PWG.Stage.gameW/2 - this.view.width/2;
 			this.view.x = newX;
 		}
 	};
 	
-	pwg.Initializer.addStandardMethods(Controller);
+	PWG.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller;
 	return module;

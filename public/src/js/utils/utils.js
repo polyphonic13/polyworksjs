@@ -1,4 +1,4 @@
-pwg.Utils = (function() {
+PWG.Utils = (function() {
 	var module = {};
 
 	module.each = function(list, callback, context) {
@@ -29,7 +29,7 @@ pwg.Utils = (function() {
 	    if (obj instanceof Array) {
 	        var copy = [];
 	        for (var i = 0, len = obj.length; i < len; i++) {
-	            copy[i] = pwg.Utils.clone(obj[i]);
+	            copy[i] = PWG.Utils.clone(obj[i]);
 	        }
 	        return copy;
 	    }
@@ -38,7 +38,7 @@ pwg.Utils = (function() {
 	    if (obj instanceof Object) {
 	        var copy = {};
 	        for (var attr in obj) {
-	            if (obj.hasOwnProperty(attr)) copy[attr] = pwg.Utils.clone(obj[attr]);
+	            if (obj.hasOwnProperty(attr)) copy[attr] = PWG.Utils.clone(obj[attr]);
 	        }
 	        return copy;
 	    }
@@ -139,13 +139,13 @@ pwg.Utils = (function() {
             scriptTag.onreadystatechange = function() {
                 if(scriptTag.readyState == 'loaded' || scriptTag.readyState == 'complete') {
                     // callback.call(evt);
-					pwg.EventCenter.trigger(evt);
+					PWG.EventCenter.trigger(evt);
                 }
             };
         } else {
             scriptTag.onload = function() {
                 // callback.call(evt);
-				pwg.EventCenter.trigger(evt);
+				PWG.EventCenter.trigger(evt);
             };
         }
         scriptTag.setAttribute('src', url);

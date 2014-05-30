@@ -13,7 +13,7 @@ var Machine = function() {
 
 		this.id = Math.floor(Math.random() * 9999);
 
-		this.config = pwg.Utils.extend(pwg.Utils.clone(defaults), config);
+		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
 		// trace('Machine/constructor, config = ', config);
 	}
 
@@ -39,11 +39,11 @@ var Machine = function() {
 	
 	Machine.prototype.calculateCost = function() {
 		trace('Machine['+this.config.id+']/calculateCost, this = ', this);
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.config.parts,
 			function(val, key) {
 				trace('\tval = ' + val + ', key = ' + key);
-				this.config.cost += gameData.market[key][val].cost[this.config.size];
+				this.config.cost += gameData.parts[key][val].cost[this.config.size];
 			},
 			this
 		);

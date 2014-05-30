@@ -1,4 +1,4 @@
-pwg.StateManager = (function() {
+PWG.StateManager = (function() {
 
 	var module = {};
 	
@@ -7,7 +7,7 @@ pwg.StateManager = (function() {
 		this.config = config;
 		this.name = config.name;
 
-		pwg.Utils.each(
+		PWG.Utils.each(
 			config.attrs,
 			function(attr, key) {
 				this[key] = attr;
@@ -25,7 +25,7 @@ pwg.StateManager = (function() {
 	Controller.prototype.preload = function() {
 		// trace('StateController['+this.name+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
-			pwg.PhaserLoader.load(this.config.assets);
+			PWG.PhaserLoader.load(this.config.assets);
 			this.preloaded = true;
 		}
 	};
@@ -37,19 +37,19 @@ pwg.StateManager = (function() {
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
 		if(this.config.tilemaps) {
-			this.tileMaps = pwg.PhaserTileMap.build(this.config.tilemaps);
+			this.tileMaps = PWG.PhaserTileMap.build(this.config.tilemaps);
 		}
 
 		if(this.config.views) {
-			this.views = pwg.PhaserView.build(this.config.views);
+			this.views = PWG.PhaserView.build(this.config.views);
 		}
 
 		if(this.config.inputs) {
 			this.inputs = {};
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.config.inputs,
 				function(input) {
-					this.inputs[input.name] = new pwg.PhaserInput[input.type](input);
+					this.inputs[input.name] = new PWG.PhaserInput[input.type](input);
 				},
 				this
 			);
@@ -58,7 +58,7 @@ pwg.StateManager = (function() {
 		if(this.config.methods) {
 			// trace('there are methods');
 			this.methods = {};
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.config.methods,
 				function(method, key) {
 					// trace('adding ' + key + ' to prototype as method: ', method);
@@ -71,11 +71,11 @@ pwg.StateManager = (function() {
 		// trace('post method add, this = ', this);
 		if(this.config.listeners) {
 			// trace('there are listeners');
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.config.listeners,
 				function(listener) {
 					// trace('\tadding listener:', listener);
-					pwg.EventCenter.bind(listener.event, listener.handler, this);
+					PWG.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this
 			);
@@ -92,7 +92,7 @@ pwg.StateManager = (function() {
 			this.config.update.call(this);
 		}
 		if(this.inputs) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.inputs,
 				function(input) {
 					if(input.update) {
@@ -103,12 +103,12 @@ pwg.StateManager = (function() {
 			);
 		}
 		// if(this.views) {
-		// 	pwg.PhaserView.update(this.views);
+		// 	PWG.PhaserView.update(this.views);
 		// }
 		// if(this.tilesMaps) {
-			pwg.PhaserTileMap.update(this.tileMaps);
+			PWG.PhaserTileMap.update(this.tileMaps);
 		// }
-		pwg.PhaserInput.updateKeyboard();
+		PWG.PhaserInput.updateKeyboard();
 	};
 	
 	Controller.prototype.getView = function(id) {
@@ -125,7 +125,7 @@ pwg.StateManager = (function() {
 			this.config.shutdown.call(this);
 		}
 
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.views,
 			function(view, key) {
 				view.destroy();
@@ -135,10 +135,10 @@ pwg.StateManager = (function() {
 		);
 
 		if(this.config.listeners) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.config.listeners,
 				function(listener) {
-					pwg.EventCenter.bind(listener.event, listener.handler, this);
+					PWG.EventCenter.bind(listener.event, listener.handler, this);
 				},
 			this
 			);
@@ -153,7 +153,7 @@ pwg.StateManager = (function() {
 		this.states = {};
 		this.currentId = '';
 
-		pwg.Utils.each(
+		PWG.Utils.each(
 			config,
 			function(state) {
 				// trace('\tadding state[' + state.name + ']');

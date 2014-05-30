@@ -1,4 +1,4 @@
-pwg.PhaserLoader = (function() {
+PWG.PhaserLoader = (function() {
 	var _config;
 	var _phaser;
 	
@@ -28,7 +28,7 @@ pwg.PhaserLoader = (function() {
 		if(assets.images) {
 			var images = _config.images;
 			// trace('\timages = ', images);
-			pwg.Utils.each(
+			PWG.Utils.each(
 				assets.images,
 				function(image) {
 					if(!this.loaded.images[image]) {
@@ -44,7 +44,7 @@ pwg.PhaserLoader = (function() {
 		// SPRITES
 		if(assets.sprites) {
 			var sprites = _config.sprites;
-			pwg.Utils.each(
+			PWG.Utils.each(
 				assets.sprites,
 				function(sprite) {
 					if(!this.loaded.sprites[sprite]) {
@@ -59,7 +59,7 @@ pwg.PhaserLoader = (function() {
 		// TILEMAPS
 		if(assets.tilemaps) {
 			var tilemaps = _config.tilemaps;
-			pwg.Utils.each(
+			PWG.Utils.each(
 				assets.tilemaps,
 				function(tilemap) {
 					if(!this.loaded.tilemaps[tilemap]) {
@@ -74,7 +74,7 @@ pwg.PhaserLoader = (function() {
 	
 	function _initAssets(assets, type) {
 		// trace('Loader/_initAssets, this = ', this);
-		pwg.Utils.each(
+		PWG.Utils.each(
 			assets,
 			function(asset, key) {
 				module.loaded[type][key] = false;

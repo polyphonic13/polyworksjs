@@ -30,8 +30,8 @@
 
             },
          "spacing":0,
-         "tileheight":"pwg.Stage.unt",
-         "tilewidth":"pwg.Stage.unt"
+         "tileheight":"PWG.Stage.unt",
+         "tilewidth":"PWG.Stage.unt"
         }],
  "tilewidth":33,
  "version":1,

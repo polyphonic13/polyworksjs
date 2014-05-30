@@ -1,4 +1,4 @@
-pwg.PhaserScale = (function() {
+PWG.PhaserScale = (function() {
 	var module = {};
 	
 	module.init = function(config) {

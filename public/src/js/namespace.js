@@ -1,1 +1,1 @@
-var pwg = {};
+var PWG = {};

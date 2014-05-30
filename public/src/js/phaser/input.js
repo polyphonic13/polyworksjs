@@ -1,4 +1,4 @@
-pwg.PhaserInput = (function() {
+PWG.PhaserInput = (function() {
 	var module = {};
 	var _controllers = {};
 	
@@ -12,7 +12,7 @@ pwg.PhaserInput = (function() {
 
 		view.inputEnabled = true;
 
-		pwg.Utils.each(
+		PWG.Utils.each(
 			this.config.attrs,
 			function(attr, key) {
 				view.input[key] = attr;
@@ -90,7 +90,7 @@ pwg.PhaserInput = (function() {
 		// trace('--------- PhaserInput/initKeyboard, controls = ', controls);
 		module.keys = {};
 		
-		pwg.Utils.each(
+		PWG.Utils.each(
 			controls,
 			function(control) {
 				var key;
@@ -119,7 +119,7 @@ pwg.PhaserInput = (function() {
 	
 	module.updateKeyboard = function(controls) {
 		// trace('PhaserInput/updateKeyboard');
-		pwg.Utils.each(
+		PWG.Utils.each(
 			module.keys,
 			function(control, id) {
 				// trace('control['+id+']');

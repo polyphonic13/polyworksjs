@@ -1,11 +1,11 @@
-pwg.SocialPanel = (function() {
+PWG.SocialPanel = (function() {
 
 	var _model = {};
 
 	var module = {
 		init: function(params) {
 			// // trace('SocialPanel/init, params = ', params);
-			_model = pwg.Utils.extend(_model, params);
+			_model = PWG.Utils.extend(_model, params);
 			_initViews();
 			_addListeners();
 		},
@@ -14,7 +14,7 @@ pwg.SocialPanel = (function() {
 			// trace('SocialPanel/show, params = ', params);
 			var elements = params.value;
 			_model.parentEl.style.display = 'block';
-			pwg.Utils.each(elements,
+			PWG.Utils.each(elements,
 				function(element) {
 					if(_model.buttons.hasOwnProperty(element)) {
 						_model.buttons[element].style.visibility = 'visible';
@@ -48,13 +48,13 @@ pwg.SocialPanel = (function() {
 					// trace('\tsocialAction = ', socialAction);
 					var url;
 					if(socialAction['params']) {
-						url = socialAction['url'] + pwg.Utils.parseMarkup(socialAction['params'], _model, true);
+						url = socialAction['url'] + PWG.Utils.parseMarkup(socialAction['params'], _model, true);
 					} else {
 						url = socialAction['url'];
 					}
 					// trace('\turl = ' + url);
 					if(url.indexOf('mailto') > -1) {
-						if(pwg.DeviceUtils.isIphone() || pwg.DeviceUtils.isAndroid()) {
+						if(PWG.DeviceUtils.isIphone() || PWG.DeviceUtils.isAndroid()) {
 							window.location.href = url;
 						} else {
 							window.open(url, '_blank');
@@ -96,7 +96,7 @@ pwg.SocialPanel = (function() {
 		var style; 
 		var length = _model.networks.length; 
 
-		pwg.Utils.each(_model.networks,
+		PWG.Utils.each(_model.networks,
 			function(network, idx) {
 				style = _calculateButtonStyle(buttonStyle, idx, length);
 				button = {
@@ -105,20 +105,20 @@ pwg.SocialPanel = (function() {
 					el: 'img',
 					attrs: {
 						src: _model.imagePath + network + '.png',
-						onclick: 'pwg.SocialPanel.buttonClick("'+network+'");'
+						onclick: 'PWG.SocialPanel.buttonClick("'+network+'");'
 					},
 					className: buttonClass,
 					style: style
 				};
-				_model.buttons[network] = pwg.Utils.addElement(button);
+				_model.buttons[network] = PWG.Utils.addElement(button);
 			},
 			this
 		);
 	}
 
 	function _calculateButtonStyle(attrs, idx, length) {
-		var winW = pwg.Stage.winW;
-		var winH = pwg.Stage.winH;
+		var winW = PWG.Stage.winW;
+		var winH = PWG.Stage.winH;
 		var horizontal = attrs.position.horizontal;
 		var vertical = attrs.position.vertical;
 		var spacer = attrs.spacer; 
@@ -178,18 +178,18 @@ pwg.SocialPanel = (function() {
 	}
 
 	function _addListeners() {
-		pwg.Utils.each(_model.listeners,
+		PWG.Utils.each(_model.listeners,
 			function(listener) {
-				pwg.EventCenter.bind(listener.type, _eventHandler, this);
+				PWG.EventCenter.bind(listener.type, _eventHandler, this);
 			},
 			this
 		);
 	}
 
 	function _removeListeners() {
-		pwg.Utils.each(_model.listeners,
+		PWG.Utils.each(_model.listeners,
 			function(listener) {
-				pwg.EventCenter.unbind(listener.type, _eventHandler, this);
+				PWG.EventCenter.unbind(listener.type, _eventHandler, this);
 			},
 			this
 		);
@@ -198,7 +198,7 @@ pwg.SocialPanel = (function() {
 	function _eventHandler(event) {
 		// trace('SocialPanel/_eventHandler event = ', event);
 		var listener;
-		pwg.Utils.each(_model.listeners,
+		PWG.Utils.each(_model.listeners,
 			function(l) {
 				if(l.type === event.type) {
 					listener = l;
@@ -223,10 +223,10 @@ pwg.SocialPanel = (function() {
 	
 	function _executeActions(actions) {
 		// trace('SocialPanel/_executeActions');
-		pwg.Utils.each(actions,
+		PWG.Utils.each(actions,
 			function(action) {
 				// trace('\tcalling: ' + action.method + ', passing: ', action.data);
-				pwg.SocialPanel[action.method](action.data);
+				PWG.SocialPanel[action.method](action.data);
 			},
 			this
 		);

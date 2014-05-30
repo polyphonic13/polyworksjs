@@ -1,4 +1,4 @@
-pwg.PhaserView = (function() {
+PWG.PhaserView = (function() {
 	var viewTypes = {
 		SPRITE: 'sprite',
 		TEXT: 'text',
@@ -38,15 +38,15 @@ pwg.PhaserView = (function() {
 		this.set(config.attrs);
 
 		if(config.position) {
-			pwg.PhaserPositioner.set(config.position, this.view);
+			PWG.PhaserPositioner.set(config.position, this.view);
 		}
 
 		if(config.input) {
-			this.inputController = new pwg.PhaserInput.InputController(config.input, this);
+			this.inputController = new PWG.PhaserInput.InputController(config.input, this);
 		}
 
 		if(config.animation) {
-			this.animationController = new pwg.PhaserAnimation.AnimationController(config.animation, this);
+			this.animationController = new PWG.PhaserAnimation.AnimationController(config.animation, this);
 		}
 
 		if(config.physical && this.view.body) {
@@ -64,7 +64,7 @@ pwg.PhaserView = (function() {
 	
 	ViewController.prototype.set = function(params) {
 		// trace('ViewController/set, view = ', this.view);
-		pwg.Utils.each(
+		PWG.Utils.each(
 			params,
 			function(param, key) {
 				// trace('\tparam['+key+'] = ' + param);
@@ -85,7 +85,7 @@ pwg.PhaserView = (function() {
 	ViewController.prototype.hide = function() {
 		// trace('ViewController, hide, this = ', this);
 		if(this.children) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.children,
 				function(child) {
 					// trace('\thiding child: ', child);
@@ -99,7 +99,7 @@ pwg.PhaserView = (function() {
 	
 	ViewController.prototype.show = function() {
 		if(this.children) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.children,
 				function(child) {
 					// trace('\tshowing child: ', child);
@@ -125,7 +125,7 @@ pwg.PhaserView = (function() {
 	// groups only
 	ViewController.prototype.removeAll = function() {
 		if(this.type === viewTypes.GROUP) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				this.children,
 				function(child) {
 					this.view.remove(id);
@@ -148,13 +148,13 @@ pwg.PhaserView = (function() {
 		// trace('PhaserView/factory, views = ', views);
 		var collection = collection || {};
 
-		pwg.Utils.each(views,
+		PWG.Utils.each(views,
 			function(view, key) {
 				// trace('\tview.type = ' + view.type);
-				collection[view.name] = new pwg.PhaserView.ViewController(view, key);
+				collection[view.name] = new PWG.PhaserView.ViewController(view, key);
 				if(view.type === viewTypes.GROUP) {
-					collection[view.name].children = pwg.PhaserView.build(view.views);
-					pwg.PhaserView.initGroup(collection[view.name]);
+					collection[view.name].children = PWG.PhaserView.build(view.views);
+					PWG.PhaserView.initGroup(collection[view.name]);
 				}
 			},
 			this
@@ -165,7 +165,7 @@ pwg.PhaserView = (function() {
 	
 	module.initGroup = function(controller) {
 		// trace('PhaserView/initGroup, controller = ', controller);
-		pwg.Utils.each(
+		PWG.Utils.each(
 			controller.children,
 			function(child) {
 				// trace('\tchild = ', child);
@@ -178,7 +178,7 @@ pwg.PhaserView = (function() {
 	};
 
 	module.addToGroup = function(children, group) {
-		pwg.Utils.each(
+		PWG.Utils.each(
 			children,
 			function(child, key) {
 				group.view.add(child.view);
@@ -189,7 +189,7 @@ pwg.PhaserView = (function() {
 	};
 	
 	module.removeFromGroup = function(children, group) {
-		pwg.Utils.each(
+		PWG.Utils.each(
 			children,
 			function(child, key) {
 				group.view.remove(child.view, true);
@@ -201,17 +201,17 @@ pwg.PhaserView = (function() {
 	
 	module.addView = function(view, collection) {
 		// trace('PhaserView/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
-		collection[view.name] = new pwg.PhaserView.ViewController(view, view.name);
+		collection[view.name] = new PWG.PhaserView.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
 			// trace('\tit is a group, going to call build on it');
-			collection[view.name].children = pwg.PhaserView.build(view.views);
-			pwg.PhaserView.initGroup(collection[view.name]);
+			collection[view.name].children = PWG.PhaserView.build(view.views);
+			PWG.PhaserView.initGroup(collection[view.name]);
 		}
 	};
 	
 	module.removeView = function(name, collection) {
 		trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
-		pwg.Utils.each(
+		PWG.Utils.each(
 			collection,
 			function(child, key) {
 				if(child.view.name === name) {
@@ -229,7 +229,7 @@ pwg.PhaserView = (function() {
 	};
 	
 	module.update = function(controllers) {
-		pwg.Utils.each(
+		PWG.Utils.each(
 			controllers,
 			function(controller) {
 				controller.update();

@@ -11,14 +11,14 @@ var PhaserGame = (function() {
 			sprites: {}
 		};
 
-		module.stage = pwg.Stage;
+		module.stage = PWG.Stage;
 		module.stage.init(aspectRatio, false, _onStageInitialized, module);
 	};
 	
 	module.destroy = function() {
 		// trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
 		if(_inPlay) {
-			pwg.StateManager.destroy();
+			PWG.StateManager.destroy();
 			module.phaser.destroy();
 			_inPlay = false;
 		}
@@ -41,7 +41,7 @@ var PhaserGame = (function() {
 		_inPlay = true;
 		_addListeners();
 
-		pwg.Utils.extend(module, config.attrs);
+		PWG.Utils.extend(module, config.attrs);
 
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
@@ -59,33 +59,33 @@ var PhaserGame = (function() {
 	
 	function _preload() {
 		// trace('PhaserGame/_preload');
-		pwg.PhaserLoader.init(module.config.assets, module.phaser);
+		PWG.PhaserLoader.init(module.config.assets, module.phaser);
 		if(module.config.preload) {
-			pwg.PhaserLoader.load(module.config.preload);
+			PWG.PhaserLoader.load(module.config.preload);
 		}
 	}
 	
 	function _create() {
 		// trace('PhaserGame/_create');
-		pwg.PhaserScale.init(module.config.stage);
-		pwg.PhaserPhysics.init();
+		PWG.PhaserScale.init(module.config.stage);
+		PWG.PhaserPhysics.init();
 
 		if(module.config.input) {
 			if(module.config.input.keys) {
-				module.keyboard = pwg.PhaserInput.initKeyboard(module.config.input.keys);
+				module.keyboard = PWG.PhaserInput.initKeyboard(module.config.input.keys);
 			}
 		}
 
-		pwg.StateManager.init(module.config.states, module.phaser);
+		PWG.StateManager.init(module.config.states, module.phaser);
 		if(module.config.defaultScreen) {
-			pwg.StateManager.changeState(module.config.defaultScreen);
+			PWG.StateManager.changeState(module.config.defaultScreen);
 		}
 	}
 	
 	function _update() {
 		// trace('PhaserGame/_update');
 		if(module.keyboard) {
-			pwg.PhaserInput.updateKeyboard(module.keyboard);
+			PWG.PhaserInput.updateKeyboard(module.keyboard);
 		}
 	}
 	
@@ -94,22 +94,22 @@ var PhaserGame = (function() {
 	}
 	
 	function _addListeners() {
-		pwg.EventCenter.bind(pwg.Events.CHANGE_STATE, _onChangeState, module);
+		PWG.EventCenter.bind(PWG.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _removeListeners() {
-		pwg.EventCenter.unbind(pwg.Events.CHANGE_STATE, _onChangeState, module);
+		PWG.EventCenter.unbind(PWG.Events.CHANGE_STATE, _onChangeState, module);
 	}
 	
 	function _onChangeState(event) {
 		// trace('PhaserGame/_onChangeState, event = ', event);
-		pwg.StateManager.changeState(event.value);
+		PWG.StateManager.changeState(event.value);
 	}
 	
 	function _quit() {
 		// trace('PhaserGame/_quit');
 		_isQuit = true;
-		pwg.StateManager.destroy();
+		PWG.StateManager.destroy();
 		_removeListeners();
 		module.phaser.destroy();
 	}

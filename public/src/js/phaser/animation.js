@@ -1,4 +1,4 @@
-pwg.PhaserAnimation = (function() {
+PWG.PhaserAnimation = (function() {
 	
 	var module = {};
 
@@ -10,7 +10,7 @@ pwg.PhaserAnimation = (function() {
 		var animations = config.animations;
 		this.currentAnimation = config.defaultAnimation || '';
 
-		pwg.each(
+		PWG.each(
 			animations,
 			function(animation, key) {
 				controller.view.animations.add(key, animation.keyFrames, animation.frameRate);

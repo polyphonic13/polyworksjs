@@ -1,4 +1,4 @@
-pwg.Initializer = (function(){
+PWG.Initializer = (function(){
 	
 	var standardMethods = {
 		hide: function() {
@@ -16,7 +16,7 @@ pwg.Initializer = (function(){
 	
 	module.setViewAttributes = function(attrs, view) {
 		if(attrs) {
-			pwg.Utils.each(
+			PWG.Utils.each(
 				attrs,
 				function(attr, key) {
 					view[key] = attr;
@@ -27,7 +27,7 @@ pwg.Initializer = (function(){
 	};
 	
 	module.addStandardMethods = function(controller) {
-		pwg.Utils.each(
+		PWG.Utils.each(
 			standardMethods,
 			function(method, key) {
 				controller.prototype[key] = method;

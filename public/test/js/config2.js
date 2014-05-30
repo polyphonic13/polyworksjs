@@ -4,11 +4,11 @@ var GameConfig = (function() {
 	
 	module.init = function(callback, context) {
 		// stage sizes cached
-		var stateW = pwg.Stage.stateW;
-		var stateH = pwg.Stage.stateH;
-		var gameW = pwg.Stage.gameW;
-		var gameH = pwg.Stage.gameH;
-		var gameUnit = pwg.Stage.unit;
+		var stateW = PWG.Stage.stateW;
+		var stateH = PWG.Stage.stateH;
+		var gameW = PWG.Stage.gameW;
+		var gameH = PWG.Stage.gameH;
+		var gameUnit = PWG.Stage.unit;
 
 		var defaultWorld = {
 			x: 0,
@@ -419,7 +419,7 @@ var GameConfig = (function() {
 							alpha: 0.75
 						},
 						callback: function() {
-							pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'manual' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'manual' });
 						},
 						context: this,
 						frames: [0, 1, 1, 0]
@@ -466,7 +466,7 @@ var GameConfig = (function() {
 							height: gameUnit * 1
 						},
 						callback: function() {
-							pwg.EventCenter.trigger({ type: pwg.Events.CHANGE_STATE, value: 'start' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'start' });
 						},
 						context: this,
 						frames: [0, 1, 1, 0]
@@ -834,7 +834,7 @@ var GameConfig = (function() {
 							}
 						}
 					},
-					notification: pwg.Utils.clone(sharedViews.notification)
+					notification: PWG.Utils.clone(sharedViews.notification)
 				}
 			},
 			// equipment editor

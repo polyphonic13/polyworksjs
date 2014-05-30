@@ -1,4 +1,4 @@
-pwg.GridGenerator = (function() {
+PWG.GridGenerator = (function() {
 	var module = {};
 	
 	module.createSquare = function(cells, dimension) {

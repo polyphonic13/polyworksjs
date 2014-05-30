@@ -1,4 +1,4 @@
-pwg.Storage = (function() {
+PWG.Storage = (function() {
 	var _listeners = [];
 	
 	var module = {};

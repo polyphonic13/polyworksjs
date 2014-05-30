@@ -1,4 +1,4 @@
-pwg.PhaserTime = (function() {
+PWG.PhaserTime = (function() {
 	var _timers = {};
 	module = {};
 	

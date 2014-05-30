@@ -1,4 +1,4 @@
-pwg.PhaserButton = (function() {
+PWG.PhaserButton = (function() {
 
 	var module = {};
 
@@ -10,10 +10,10 @@ pwg.PhaserButton = (function() {
 		this.view.width = config.width;
 		this.view.height = config.height;
 
-		pwg.Initializer.setViewAttributes(config.attrs, this.view);
+		PWG.Initializer.setViewAttributes(config.attrs, this.view);
 	}
 
-	pwg.Initializer.addStandardMethods(Controller);
+	PWG.Initializer.addStandardMethods(Controller);
 	
 	module.Controller = Controller;
 	

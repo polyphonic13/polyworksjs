@@ -1,4 +1,4 @@
-pwg.Stage = (function() {
+PWG.Stage = (function() {
 	var _aspectRatio = [16, 9];
 	var _windowListeners = false;
 	var _center;
