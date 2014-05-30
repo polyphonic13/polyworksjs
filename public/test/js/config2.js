@@ -354,7 +354,6 @@ var GameConfig = (function() {
 				activeMachineId: -1,
 				sharedViews: sharedViews,
 				addOverlayMenuItems: gameLogic.methods.addOverlayMenuItems,
-				addPartToEditorView: gameLogic.methods.addPartToEditorView,
 				equipmentEditorImages: equipmentEditorImages
 			},
 			defaultScreen: 'equipment',

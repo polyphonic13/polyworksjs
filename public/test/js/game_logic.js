@@ -49,9 +49,6 @@ var gameLogic = {
 			);
 			pwg.PhaserView.addView(menuConfig, collection);
 			trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
-		},
-		addPartToEditorView: function(type) {
-
 		}
 	},
 	sharedViews: {
@@ -300,7 +297,6 @@ var gameLogic = {
 				event: pwg.Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
-					PhaserGame.addPartToEditorView(event.value);
 					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
 					var frame = gameData.market[this.overlayMenuType][event.value].frame;
 					trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
