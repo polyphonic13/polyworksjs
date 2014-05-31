@@ -9,7 +9,7 @@ PWG.PhaserView = (function() {
 	var module = {};
 	
 	function ViewController(config, name) {
-		// trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
+		trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
 		this.name = name;
 		this.config = config;
 
@@ -145,7 +145,7 @@ PWG.PhaserView = (function() {
 	module.ViewController = ViewController;
 	
 	module.build = function(views, collection) {
-		// trace('PhaserView/factory, views = ', views);
+		trace('PhaserView/factory, views = ', views);
 		var collection = collection || {};
 
 		PWG.Utils.each(views,
@@ -178,11 +178,12 @@ PWG.PhaserView = (function() {
 	};
 
 	module.addToGroup = function(children, group) {
+		trace('PhaserView/addToGroup, group = ', group, '\tchildren = ', children);
 		PWG.Utils.each(
 			children,
 			function(child, key) {
-				group.view.add(child.view);
-				group.children[key] = child;
+				group.add(child.view);
+				// group.children[key] = child;
 			},
 			this
 		);

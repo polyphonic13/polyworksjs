@@ -80,9 +80,14 @@ var PhaserGame = (function() {
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
+		_initGroups();
+
 		// add global views
 		if(module.config.views) {
 			module.views = PWG.PhaserView.build(module.config.views);
+			// PhaserGame.globalGroup.add(module.views['global-views'].view);
+			// trace('PhaserGame views = ', module.views);
+			module.globalGroup.add(module.views['global-views'].view);
 		}
 
 		if(module.config.input) {
@@ -92,9 +97,20 @@ var PhaserGame = (function() {
 		}
 
 		PWG.StateManager.init(module.config.states, module.phaser);
+		
+
 		if(module.config.defaultScreen) {
 			PWG.StateManager.changeState(module.config.defaultScreen);
 		}
+	}
+	
+	function _initGroups() {
+		module.gameGroup = module.phaser.add.group();
+		module.statesGroup = module.phaser.add.group();
+		module.globalGroup = module.phaser.add.group();
+		
+		module.gameGroup.add(module.statesGroup);
+		module.gameGroup.add(module.globalGroup);
 	}
 	
 	function _update() {

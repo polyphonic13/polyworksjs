@@ -315,7 +315,7 @@ var gameLogic = {
 					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
 					trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
 					var partView = this.overlayMenuType + '-part';
-					this.views['editor-group'].children['editor-parts'].children[partView].view.frame = frame;
+					this.views['state-group'].children['editor-group'].children['editor-parts'].children[partView].view.frame = frame;
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
 			},
@@ -325,8 +325,8 @@ var gameLogic = {
 					trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.newMachine.set('size', event.size);
 					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
-					this.views[event.previousGroup].hide();
-					this.views['editor-group'].show();
+					this.views['state-group'].children[event.previousGroup].hide();
+					this.views['state-group'].children['editor-group'].show();
 				}
 			},
 			{
@@ -360,7 +360,7 @@ var gameLogic = {
 				trace('create, views = ', this.views);
 				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
-					this.views['create-group'].show();
+					this.views['state-group'].children['create-group'].show();
 					var machine = new Machine({ type: PhaserGame.currentEquipmentType });
 					// playerData.equipment[machine.id] = machine;
 					// PhaserGame.activeMachineId = machine.id;
