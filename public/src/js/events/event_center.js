@@ -25,6 +25,16 @@ PWG.EventCenter = (function() {
 		// trace(_listeners[type]);
 	};
 	
+	module.batchBind = function(listeners, context) {
+		PWG.Utils.each(
+			listeners,
+			function(listener) {
+				PWG.EventCenter.bind(listener.event, listener.handler, context);
+			},
+			context
+		);
+	};
+	
 	module.trigger = function(params) {
 		var list = _listeners[params.type];
 		// trace('----- EventCenter/trigger, type = ' + params.type + ', list = ', list);
@@ -55,6 +65,16 @@ PWG.EventCenter = (function() {
 		}
 	};
 
+	module.batchUnbind = function(listeners, context) {
+		PWG.Utils.each(
+			listeners,
+			function(listener) {
+				PWG.EventCenter.unbind(listener.event, listener.handler, context);
+			},
+			context
+		);
+	};
+	
 	module.destroy = function() {
 		// iterate thru _listeners object
 		// for each type, remove all array elements

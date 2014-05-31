@@ -1,8 +1,3 @@
-// var EquipmentTypes = {
-// 	TRACTOR: 'tractor',
-// 	SKID_STEER: 'skidsteer'
-// };
-
 var EquipmentActions = {
 	CREATE: 'create',
 	EDIT: 'edit',

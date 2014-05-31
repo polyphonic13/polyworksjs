@@ -1,54 +1,124 @@
-var TIME_PER_TURN = 20;
+var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 
 var gameLogic = {
-	methods: {
-		addOverlayMenuItems: function(type, collection) {
-			PhaserGame.currentPartType = type;
-			var partsData = gameData.parts[type];
-			trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
-
-			// remove previously added items since different
-			if(collection['overlay-menu']) {
-				PWG.PhaserView.removeView('overlay-menu', collection);
+	global: {
+		listeners: [
+		// change state
+		{
+			event: PWG.Events.CHANGE_STATE,
+			handler: function(event) {
+				PWG.StateManager.changeState(event.value);
 			}
+		},
+		// start
+		{
+			event: PWG.Events.START_TURN,
+			handler: function(event) {
+				this.turnTimer.start();
+				this.views['start-state-buttons'].children['pause-button'].show();
+			}
+		},
+		// pause
+		{
+			event: PWG.Events.PAUSE_GAME,
+			handler: function(event) {
+				this.turnTimer.pause();
+				this.views['start-state-buttons'].children['pause-button'].hide();
+				this.views['start-state-buttons'].children['resume-button'].show();
+			}
+		},
+		// resume
+		{
+			event: PWG.Events.RESUME_GAME,
+			handler: function(event) {
+				this.turnTimer.resume();
+				this.views['start-state-buttons'].children['resume-button'].hide();
+				this.views['start-state-buttons'].children['pause-button'].show();
+			}
+		},
+		// game time updated
+		{
+			event: PWG.Events.GAME_TIME_UPDATED,
+			handler: function(event) {
+				var text = 'Turn time: ' + event.value;
+				this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
 
-			var menuConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenu);
-			var itemConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
-			var count = 0;
-			var itemY = 0;
-			var offset = itemConfig.offset;
-			var totalHeight = itemConfig.totalHeight;
-			var size = PhaserGame.newMachine.get('size');
+			}
+		},
+		// turn ended
+		{
+			event: PWG.Events.TURN_ENDED,
+			handler: function(event) {
+				PWG.PhaserTime.removeTimer('turnTime');
+				this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
+				this.views['start-state-buttons'].children['pause-button'].hide();
+			}
+		}
+		],
+		methods: {
+			update: function() {
 
-			PWG.Utils.each(
-				partsData,
-				function(part, p) {
-					trace('\tadding part[' + p + '] info to views');
-					var item = PWG.Utils.clone(itemConfig);
-					item.name = part.id;
-					item.views.icon.img = part.icon;
-					item.views.description.text = part.description;
-					item.views.cost.text = '$' + part.cost[size];
-					item.views.invisButton.partIdx = p;
+			},
+			addOverlayMenuItems: function(type, collection) {
+				PhaserGame.currentPartType = type;
+				var partsData = gameData.parts[type];
+				trace('this['+this.name+']/addOverlayMenuItems, type = ' + type + '\tparts data = ', partsData, ', collection = ', collection);
 
-					itemY = (totalHeight * count) + offset;
-					PWG.Utils.each(
-						item.views,
-						function(view) {
-							view.y += itemY;
-						},
-						this
-					);
+				// remove previously added items since different
+				if(collection['overlay-menu']) {
+					PWG.PhaserView.removeView('overlay-menu', collection);
+				}
 
-					menuConfig.views['items'].views[p] = item;
-					count++;
-				},
-				this
-			);
-			PWG.PhaserView.addView(menuConfig, collection);
-			trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
+				var menuConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenu);
+				var itemConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenuItem);
+				var count = 0;
+				var itemY = 0;
+				var offset = itemConfig.offset;
+				var totalHeight = itemConfig.totalHeight;
+				var size = PhaserGame.newMachine.get('size');
+
+				PWG.Utils.each(
+					partsData,
+					function(part, p) {
+						trace('\tadding part[' + p + '] info to views');
+						var item = PWG.Utils.clone(itemConfig);
+						item.name = part.id;
+						item.views.icon.img = part.icon;
+						item.views.description.text = part.description;
+						item.views.cost.text = '$' + part.cost[size];
+						item.views.invisButton.partIdx = p;
+
+						itemY = (totalHeight * count) + offset;
+						PWG.Utils.each(
+							item.views,
+							function(view) {
+								view.y += itemY;
+							},
+							this
+						);
+
+						menuConfig.views['items'].views[p] = item;
+						count++;
+					},
+					this
+				);
+				PWG.PhaserView.addView(menuConfig, collection);
+				trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
+			}
+		},
+		views: {
+			pauseButton: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
+				}
+			},
+			resumeButton: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
+				}
+			}
 		}
 	},
 	sharedViews: {
@@ -81,9 +151,9 @@ var gameLogic = {
 			views: {
 				startButton: {
 					callback: function() {
-						if(PhaserGame.firstPlay) {
+						if(PhaserGame.isFirstPlay) {
 							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'manual' });
-							PhaserGame.firstPlay = false;
+							PhaserGame.isFirstPlay = false;
 						} else {
 							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'play' });
 						}
@@ -92,52 +162,6 @@ var gameLogic = {
 			}
 		},
 		play: {
-			listeners: [
-			// start
-			{
-				event: PWG.Events.START_TURN,
-				handler: function(event) {
-					this.turnTimer.start();
-					this.views['start-state-buttons'].children['pause-button'].show();
-				}
-			},
-			// pause
-			{
-				event: PWG.Events.PAUSE_GAME,
-				handler: function(event) {
-					this.turnTimer.pause();
-					this.views['start-state-buttons'].children['pause-button'].hide();
-					this.views['start-state-buttons'].children['resume-button'].show();
-				}
-			},
-			// resume
-			{
-				event: PWG.Events.RESUME_GAME,
-				handler: function(event) {
-					this.turnTimer.resume();
-					this.views['start-state-buttons'].children['resume-button'].hide();
-					this.views['start-state-buttons'].children['pause-button'].show();
-				}
-			},
-			// game time updated
-			{
-				event: PWG.Events.GAME_TIME_UPDATED,
-				handler: function(event) {
-					var text = 'Turn time: ' + event.value;
-					this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
-
-				}
-			},
-			// turn ended
-			{
-				event: PWG.Events.TURN_ENDED,
-				handler: function(event) {
-					PWG.PhaserTime.removeTimer('turnTime');
-					this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
-					this.views['start-state-buttons'].children['pause-button'].hide();
-				}
-			}
-			],
 			create: function() {
 				this.timePerTurn = TIME_PER_TURN;
 				this.turnTimer = new PWG.PhaserTime.Controller('turnTime');
@@ -173,16 +197,6 @@ var gameLogic = {
 								// trace('plus pressed');
 								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
 							}
-						}
-					},
-					pauseButton: {
-						callback: function() {
-							PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
-						}
-					},
-					resumeButton: {
-						callback: function() {
-							PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 						}
 					},
 					startBuildingButton: {

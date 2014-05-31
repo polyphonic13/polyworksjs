@@ -58,27 +58,12 @@ PWG.StateManager = (function() {
 		if(this.config.methods) {
 			// trace('there are methods');
 			this.methods = {};
-			PWG.Utils.each(
-				this.config.methods,
-				function(method, key) {
-					// trace('adding ' + key + ' to prototype as method: ', method);
-					this.methods[key] = method;
-				},
-				this
-			);
+			PWG.Utils.extend(this.methods, this.config.methods);
 		}
 
 		// trace('post method add, this = ', this);
 		if(this.config.listeners) {
-			// trace('there are listeners');
-			PWG.Utils.each(
-				this.config.listeners,
-				function(listener) {
-					// trace('\tadding listener:', listener);
-					PWG.EventCenter.bind(listener.event, listener.handler, this);
-				},
-			this
-			);
+			PWG.EventCenter.batchBind(this.config.listeners, this);
 		}
 
 		if(this.config.create) {
@@ -135,13 +120,7 @@ PWG.StateManager = (function() {
 		);
 
 		if(this.config.listeners) {
-			PWG.Utils.each(
-				this.config.listeners,
-				function(listener) {
-					PWG.EventCenter.bind(listener.event, listener.handler, this);
-				},
-			this
-			);
+			PWG.EventCenter.batchUnbind(this.config.listeners, this);
 		}
 	};
 
@@ -166,12 +145,10 @@ PWG.StateManager = (function() {
 	};
 	
 	module.changeState = function(id) {
-		// trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId);
+		trace('StateManager/changeState, id = ' + id + ', currentId = ' + this.currentId + ', states = ', this.states);
 		if(this.currentId !== id) {
 			if(this.states.hasOwnProperty(id)) {
 				this.currentId = id;
-				// trace('\tstates['+id+'] = ', this.states[id]);
-				// this.states[id].activate();
 				PhaserGame.phaser.state.start(id, this.states[id].clearWorld, this.states[id].clearCache);
 			}
 		}

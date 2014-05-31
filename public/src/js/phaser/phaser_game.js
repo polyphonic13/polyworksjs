@@ -39,10 +39,20 @@ var PhaserGame = (function() {
 		module.config = config;
 		// trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
-		_addListeners();
 
-		PWG.Utils.extend(module, config.attrs);
-
+		// add global attributes
+		if(config.attrs) {
+			PWG.Utils.extend(module, config.attrs);
+		}
+		// add global methods
+		if(gameLogic.global.methods) {
+			PWG.Utils.extend(module, gameLogic.global.methods);
+		}
+		// add global listeners
+		if(gameLogic.global.listeners) {
+			PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
+		}
+	
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
 			module.stage.gameH, 
@@ -70,6 +80,11 @@ var PhaserGame = (function() {
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
+		// add global views
+		if(module.config.views) {
+			module.views = PWG.PhaserView.build(module.config.views);
+		}
+
 		if(module.config.input) {
 			if(module.config.input.keys) {
 				module.keyboard = PWG.PhaserInput.initKeyboard(module.config.input.keys);
@@ -93,24 +108,11 @@ var PhaserGame = (function() {
 		// trace('PhaserGame/_render');
 	}
 	
-	function _addListeners() {
-		PWG.EventCenter.bind(PWG.Events.CHANGE_STATE, _onChangeState, module);
-	}
-	
-	function _removeListeners() {
-		PWG.EventCenter.unbind(PWG.Events.CHANGE_STATE, _onChangeState, module);
-	}
-	
-	function _onChangeState(event) {
-		// trace('PhaserGame/_onChangeState, event = ', event);
-		PWG.StateManager.changeState(event.value);
-	}
-	
 	function _quit() {
 		// trace('PhaserGame/_quit');
 		_isQuit = true;
+		PWG.EventCenter.batchUnbind(gameLogic.global.listeners);
 		PWG.StateManager.destroy();
-		_removeListeners();
 		module.phaser.destroy();
 	}
 	
