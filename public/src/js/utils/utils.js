@@ -82,7 +82,7 @@ PWG.Utils = (function() {
 	    return function() { return f.apply(o, arguments); };
 	};
 
-	module.inherits = function(c, p) {
+	module.inherit = function(c, p) {
 	    this.mixin(c, p);
 	    function f() { this.constructor = c; };
 	    f.prototype = c._super = p.prototype;

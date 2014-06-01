@@ -38,7 +38,7 @@ var BuildingManager = function() {
 	{
 		Building.call(this, config);
 	}
-	PWG.Utils.inherits(Factory, Building);
+	PWG.Utils.inherit(Factory, Building);
 	
 	Factory.prototype.buildTime = 3;
 	Factory.prototype.typeCapacity = 10;
@@ -94,7 +94,7 @@ var BuildingManager = function() {
 	{
 		Building.call(this, config);
 	}
-	PWG.Utils.inherits(Showroom, Building);
+	PWG.Utils.inherit(Showroom, Building);
 
 	Showroom.prototype.buildTime = 3;
 	Showroom.prototype.capacity = 50;
