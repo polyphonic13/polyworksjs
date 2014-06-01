@@ -9,10 +9,7 @@ var Machine = function() {
 	};
 	
 	function Machine(config) {
-		// this.config = config;
-
 		this.id = Math.floor(Math.random() * 9999);
-
 		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
 		// trace('Machine/constructor, config = ', config);
 	}

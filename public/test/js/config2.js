@@ -350,8 +350,10 @@ var GameConfig = (function() {
 			},
 			attrs: {
 				firstPlay: false,
+				turnActive: false,
 				equipmentAction: '',
 				activeMachineId: -1,
+				bank: 1000000,
 				sharedViews: sharedViews
 			},
 			views: {
@@ -406,7 +408,7 @@ var GameConfig = (function() {
 					}
 				}
 			},
-			defaultScreen: 'start',
+			defaultScreen: 'play',
 			states: [
 			// start
 			{
@@ -608,31 +610,6 @@ var GameConfig = (function() {
 									width: gameW,
 									height: gameH,
 									fixedToCamera: true
-								}
-							},
-							// text group
-							text: {
-								type: 'group',
-								name: 'start-state-text',
-								attrs: {
-									fixedToCamera: true
-								},
-								views: 
-								{
-									timerText: {
-										type: 'text',
-										name: 'turn-time',
-										text: 'Turn time: ' + TIME_PER_TURN,
-										style: {
-										    font: (fontSizes.md + 'px Arial'),
-									        fill: palette.white
-										},
-										x: 0,
-										y: (gameUnit * 2),
-										position: {
-											centerX: true
-										}
-									}
 								}
 							},
 							// buttons group

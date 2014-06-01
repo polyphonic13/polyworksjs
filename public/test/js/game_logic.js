@@ -1,14 +1,25 @@
 var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
+var TIME_TO_MANUFACTOR = 5;
 
-var gameLogic = {
-	global: {
-		listeners: [
+var buildingCosts =
+{
+	factory: 100000,
+	showroom: 50000
+}
+
+var gameLogic = 
+{
+	global: 
+	{
+		listeners: 
+		[
 		// change state
 		{
 			event: PWG.Events.CHANGE_STATE,
-			handler: function(event) {
+			handler: function(event) 
+			{
 				PWG.StateManager.changeState(event.value);
 			}
 		},
@@ -16,7 +27,7 @@ var gameLogic = {
 		{
 			event: PWG.Events.START_TURN,
 			handler: function(event) {
-				this.turnTimer.start();
+				PhaserGame.turnTimer.start();
 				this.views['start-state-buttons'].children['pause-button'].show();
 			}
 		},
@@ -24,7 +35,7 @@ var gameLogic = {
 		{
 			event: PWG.Events.PAUSE_GAME,
 			handler: function(event) {
-				this.turnTimer.pause();
+				PhaserGame.turnTimer.pause();
 				this.views['start-state-buttons'].children['pause-button'].hide();
 				this.views['start-state-buttons'].children['resume-button'].show();
 			}
@@ -33,7 +44,7 @@ var gameLogic = {
 		{
 			event: PWG.Events.RESUME_GAME,
 			handler: function(event) {
-				this.turnTimer.resume();
+				PhaserGame.turnTimer.resume();
 				this.views['start-state-buttons'].children['resume-button'].hide();
 				this.views['start-state-buttons'].children['pause-button'].show();
 			}
@@ -43,7 +54,8 @@ var gameLogic = {
 			event: PWG.Events.GAME_TIME_UPDATED,
 			handler: function(event) {
 				var text = 'Turn time: ' + event.value;
-				this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
+				trace('turn time = ' + event.value);
+				// this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
 
 			}
 		},
@@ -52,14 +64,40 @@ var gameLogic = {
 			event: PWG.Events.TURN_ENDED,
 			handler: function(event) {
 				PWG.PhaserTime.removeTimer('turnTime');
-				this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
-				this.views['start-state-buttons'].children['pause-button'].hide();
+				trace('turn ended');
+				// this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
+				// this.views['start-state-buttons'].children['pause-button'].hide();
 			}
 		}
 		],
-		methods: {
-			update: function() {
+		methods: 
+		{
+			update: function() 
+			{
 
+			},
+			startTurn: function() 
+			{
+				PhaserGame.turnActive = true;
+				PhaserGame.timePerTurn = TIME_PER_TURN;
+				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
+				PhaserGame.turnTimer.loop(TURN_TIME_INTERVAL, function() 
+				{
+						// trace('\ttimePerTurn = ' + PhaserGame.timePerTurn + ', views = ', this.views);
+						PhaserGame.timePerTurn--;
+						if(PhaserGame.timePerTurn <= 0) 
+						{
+							PWG.EventCenter.trigger({ type: PWG.Events.TURN_ENDED });
+						} 
+						else 
+						{
+							BuildingManager.update();
+							PWG.EventCenter.trigger({ type: PWG.Events.GAME_TIME_UPDATED, value: PhaserGame.timePerTurn });
+						}
+					},
+					this
+				);
+				PhaserGame.turnTimer.start();
 			},
 			addOverlayMenuItems: function(type, collection) {
 				PhaserGame.currentPartType = type;
@@ -108,20 +146,26 @@ var gameLogic = {
 				trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
 			}
 		},
-		views: {
-			pauseButton: {
-				callback: function() {
+		views: 
+		{
+			pauseButton: 
+			{
+				callback: function() 
+				{
 					PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
 				}
 			},
-			resumeButton: {
-				callback: function() {
+			resumeButton: 
+			{
+				callback: function() 
+				{
 					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 				}
 			}
 		}
 	},
-	sharedViews: {
+	sharedViews: 
+	{
 		notification: {
 			closeButton: {
 				callback: function() {
@@ -146,8 +190,10 @@ var gameLogic = {
 			}
 		}
 	},
-	states: {
-		start: {
+	states: 
+	{
+		start: 
+		{
 			views: {
 				startButton: {
 					callback: function() {
@@ -161,56 +207,61 @@ var gameLogic = {
 				}
 			}
 		},
-		play: {
-			create: function() {
-				this.timePerTurn = TIME_PER_TURN;
-				this.turnTimer = new PWG.PhaserTime.Controller('turnTime');
-				this.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-						// trace('\ttimePerTurn = ' + this.timePerTurn + ', views = ', this.views);
-						this.timePerTurn--;
-						if(this.timePerTurn <= 0) {
-							PWG.EventCenter.trigger({ type: PWG.Events.TURN_ENDED });
-						} else {
-							PWG.EventCenter.trigger({ type: PWG.Events.GAME_TIME_UPDATED, value: this.timePerTurn });
-						}
-					},
-					this
-				);
-				// this.turnTimer.start();
+		play: 
+		{
+			create: function() 
+			{
+				if(!PhaserGame.turnActive) {
+					PhaserGame.startTurn();
+				}
 			},
-			shutdown: function() {
+			shutdown: function() 
+			{
 				PWG.PhaserTime.removeTimer('turnTime');
 			},
-			views: {
-				buttons: {
-					plusButton: {
-						input: {
-							inputUp: function() {
+			views: 
+			{
+				buttons: 
+				{
+					plusButton: 
+					{
+						input: 
+						{
+							inputUp: function() 
+							{
 								// trace('plus pressed');
 								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_IN });
 							}
 						}
 					},
-					minusButton: {
-						input: {
-							inputUp: function() {
+					minusButton: 
+					{
+						input: 
+						{
+							inputUp: function() 
+							{
 								// trace('plus pressed');
 								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
 							}
 						}
 					},
-					startBuildingButton: {
-						callback: function() {
+					startBuildingButton: 
+					{
+						callback: function() 
+						{
 							PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
 						}
 					},
-					equipmentButton: {
-						callback: function() {
+					equipmentButton: 
+					{
+						callback: function() 
+						{
 							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
 						}
 					}
 				},
-				icons: {
+				icons: 
+				{
 					input: {
 						inputDown: function() {
 							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
@@ -241,7 +292,8 @@ var gameLogic = {
 				}
 			}
 		},
-		equipment: {
+		equipment: 
+		{
 			listeners: [
 			// add notification
 			{
@@ -305,11 +357,13 @@ var gameLogic = {
 				}
 			}
 		},
-		equipmentEditor: {
+		equipmentEditor: 
+		{
 			listeners: [
 			{
 				event: PWG.Events.ADD_PART,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
 					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
 					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
@@ -321,7 +375,8 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.SHOW_BUILD_GROUP,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.newMachine.set('size', event.size);
 					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
@@ -331,10 +386,13 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.OPEN_OVERLAY_MENU,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
-					if(!this.overlayMenuOpen) {
-						if(this.overlayMenuType !== event.value) {
+					if(!this.overlayMenuOpen) 
+					{
+						if(this.overlayMenuType !== event.value) 
+						{
 							PhaserGame.addOverlayMenuItems.call(this, event.value, this.views);
 						}
 
@@ -346,9 +404,11 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.CLOSE_OVERLAY_MENU,
-				handler: function(event) {
+				handler: function(event) 
+				{
 					trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
-					if(this.overlayMenuOpen) {
+					if(this.overlayMenuOpen) 
+					{
 						trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						this.views['overlay-menu'].hide();
 						this.overlayMenuOpen = false;
@@ -356,9 +416,11 @@ var gameLogic = {
 				}
 			}
 			],
-			create: function() {
+			create: function() 
+			{
 				trace('create, views = ', this.views);
-				switch(PhaserGame.currentEquipmentAction) {
+				switch(PhaserGame.currentEquipmentAction) 
+				{
 					case EquipmentActions.CREATE:
 					this.views['state-group'].children['create-group'].show();
 					var machine = new Machine({ type: PhaserGame.currentEquipmentType });
@@ -382,20 +444,28 @@ var gameLogic = {
 				}
 				PhaserGame.currentEquipmentAction = '';
 			},
-			shutdown: function() {
+			shutdown: function() 
+			{
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
 			},
-			views: {
-				editor: {
-					buttons: {
-						closeButton: {
-							callback: function() {
+			views: 
+			{
+				editor: 
+				{
+					buttons: 
+					{
+						closeButton: 
+						{
+							callback: function() 
+							{
 								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
 							}
 						},
-						saveButton: {
-							callback: function() {
+						saveButton: 
+						{
+							callback: function() 
+							{
 								PhaserGame.newMachine.save();
 								PhaserGame.newMachine = null;
 								// playerData.equipment[PhaserGame.activeMachineId].save();
@@ -404,42 +474,58 @@ var gameLogic = {
 							}
 						}
 					},
-					icons: {
-						wheelIcon: {
-							input: {
-								inputDown: function() {
+					icons: 
+					{
+						wheelIcon: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									trace('wheel icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
 								}
 							}
 						},
-						engineIcon: {
-							input: {
-								inputDown: function() {
+						engineIcon: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									trace('engine icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
 								}
 							}
 						},
-						transmissionIcon: {
-							input: {
-								inputDown: function() {
+						transmissionIcon: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									trace('transmission icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
 								}
 							}
 						},
-						cabIcon: {
-							input: {
-								inputDown: function() {
+						cabIcon: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									trace('cab icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
 								}
 							}
 						},
-						headlightsIcon: {
-							input: {
-								inputDown: function() {
+						headlightsIcon: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									trace('headlights icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
 								}
@@ -447,27 +533,38 @@ var gameLogic = {
 						}
 					}
 				},
-				machineSize: {
-					icons: {
-						createBasic: {
-							input: {
-								inputDown: function() {
+				machineSize: 
+				{
+					icons: 
+					{
+						createBasic: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									// trace('createBasic icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.STANDARD, previousGroup: 'create-group' });
 								}
 							}
 						},
-						createMedium: {
-							input: {
-								inputDown: function() {
+						createMedium: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									// trace('createMedium icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.MEDIUM, previousGroup: 'create-group' });
 								}
 							}
 						},
-						createHeavy: {
-							input: {
-								inputDown: function() {
+						createHeavy: 
+						{
+							input: 
+							{
+								inputDown: function() 
+								{
 									// trace('createHeavy icon input down');
 									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.HEAVY, previousGroup: 'create-group' });
 								}
