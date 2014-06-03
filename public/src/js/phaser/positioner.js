@@ -1,4 +1,4 @@
-PWG.PhaserPositioner = (function() {
+PWG.PhaserPositioner = function() {
 	var module = {};
 	
 	module.set = function(params, view) {
@@ -18,4 +18,4 @@ PWG.PhaserPositioner = (function() {
 	};
 	
 	return module; 
-}());
+}();

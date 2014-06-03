@@ -1,4 +1,4 @@
-var PhaserGame = (function() {
+var PhaserGame = function() {
 	var _inPlay = false;
 	var _isQuit = false;
 	var module = {};
@@ -133,4 +133,4 @@ var PhaserGame = (function() {
 	}
 	
 	return module;
-}());
+}();

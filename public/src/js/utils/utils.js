@@ -1,4 +1,4 @@
-PWG.Utils = (function() {
+PWG.Utils = function() {
 	var module = {};
 
 	module.each = function(list, callback, context) {
@@ -153,4 +153,4 @@ PWG.Utils = (function() {
 	};
 
 	return module;
-}());
+}();

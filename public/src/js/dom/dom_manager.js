@@ -1,4 +1,4 @@
-PWG.DOMManager = (function() {
+PWG.DOMManager = function() {
 	var _bodyEl = document.getElementsByTagName('body')[0];
 	var _headEl = document.getElementsByTagName('head')[0];
 	
@@ -111,4 +111,4 @@ PWG.DOMManager = (function() {
 	module.ImageLoader = ImageLoader; 
 	
 	return module;
-}());
+}();

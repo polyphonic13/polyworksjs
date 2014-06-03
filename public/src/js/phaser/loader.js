@@ -1,4 +1,4 @@
-PWG.PhaserLoader = (function() {
+PWG.PhaserLoader = function() {
 	var _config;
 	var _phaser;
 	
@@ -84,4 +84,4 @@ PWG.PhaserLoader = (function() {
 	}
 	
 	return module;
-}());
+}();

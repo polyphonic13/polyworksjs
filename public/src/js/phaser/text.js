@@ -1,4 +1,4 @@
-PWG.PhaserText = (function() {
+PWG.PhaserText = function() {
 	var module = {};
 	
 	function Controller(config) {
@@ -34,4 +34,4 @@ PWG.PhaserText = (function() {
 	
 	module.Controller = Controller;
 	return module;
-}());
+}();

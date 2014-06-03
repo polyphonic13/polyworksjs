@@ -1,4 +1,4 @@
-PWG.PhaserAnimation = (function() {
+PWG.PhaserAnimation = function() {
 	
 	var module = {};
 
@@ -46,4 +46,4 @@ PWG.PhaserAnimation = (function() {
 	module.AnimationController = AnimationController;
 	
 	return module;
-}());
+}();

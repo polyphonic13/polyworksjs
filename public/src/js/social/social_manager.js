@@ -1,4 +1,4 @@
-PWG.SocialPanel = (function() {
+PWG.SocialPanel = function() {
 
 	var _model = {};
 
@@ -233,4 +233,4 @@ PWG.SocialPanel = (function() {
 	}
 
 	return module;
-}());
+}();

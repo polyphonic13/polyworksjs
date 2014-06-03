@@ -1,4 +1,4 @@
-PWG.PhaserButton = (function() {
+PWG.PhaserButton = function() {
 
 	var module = {};
 
@@ -18,4 +18,4 @@ PWG.PhaserButton = (function() {
 	module.Controller = Controller;
 	
 	return module;
-}());
+}();

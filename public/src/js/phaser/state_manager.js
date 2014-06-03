@@ -1,4 +1,4 @@
-PWG.StateManager = (function() {
+PWG.StateManager = function() {
 
 	var module = {};
 	
@@ -180,4 +180,4 @@ PWG.StateManager = (function() {
 	};
 	
 	return module;
-}());
+}();

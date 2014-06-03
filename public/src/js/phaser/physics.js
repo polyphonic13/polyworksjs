@@ -1,4 +1,4 @@
-PWG.PhaserPhysics = (function() {
+PWG.PhaserPhysics = function() {
 	var module = {};
 
 	module.controllers = [];
@@ -110,4 +110,4 @@ PWG.PhaserPhysics = (function() {
 	};
 	
 	return module;
-}());
+}();

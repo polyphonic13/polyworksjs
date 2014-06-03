@@ -1,4 +1,4 @@
-PWG.PhaserSprite = (function() {
+PWG.PhaserSprite = function() {
 
 	var module = {};
 
@@ -20,4 +20,4 @@ PWG.PhaserSprite = (function() {
 	module.Controller = Controller;
 	
 	return module;
-}());
+}();

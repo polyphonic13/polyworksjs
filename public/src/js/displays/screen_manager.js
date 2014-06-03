@@ -1,4 +1,4 @@
-PWG.ScreenManager = (function() {
+PWG.ScreenManager = function() {
 
 	var module = {};
 	
@@ -118,4 +118,4 @@ PWG.ScreenManager = (function() {
 	};
 	
 	return module;
-}());
+}();

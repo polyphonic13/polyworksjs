@@ -1,4 +1,4 @@
-PWG.Storage = (function() {
+PWG.Storage = function() {
 	var _listeners = [];
 	
 	var module = {};
@@ -85,4 +85,4 @@ PWG.Storage = (function() {
 	var _available = _supportsLocalStorage();
 	
 	return module;
-}());
+}();

@@ -1,4 +1,4 @@
-PWG.PhaserView = (function() {
+PWG.PhaserView = function() {
 	var viewTypes = {
 		SPRITE: 'sprite',
 		TEXT: 'text',
@@ -240,4 +240,4 @@ PWG.PhaserView = (function() {
 	};
 
 	return module;
-}());
+}();

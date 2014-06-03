@@ -1,4 +1,4 @@
-PWG.PhaserNotification = (function() {
+PWG.PhaserNotification = function() {
 	var module = {};
 	
 	function Controller(params) {
@@ -8,4 +8,4 @@ PWG.PhaserNotification = (function() {
 	module.Controller = Controller;
 	
 	return module;
-}());
+}();

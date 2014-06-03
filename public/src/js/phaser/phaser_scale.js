@@ -1,4 +1,4 @@
-PWG.PhaserScale = (function() {
+PWG.PhaserScale = function() {
 	var module = {};
 	
 	module.init = function(config) {
@@ -19,4 +19,4 @@ PWG.PhaserScale = (function() {
 	};
 	
 	return module;
-}());
+}();

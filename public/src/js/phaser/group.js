@@ -1,4 +1,4 @@
-PWG.PhaserGroup = (function() {
+PWG.PhaserGroup = function() {
 	var module = {};
 	
 	function Controller(config) {
@@ -45,4 +45,4 @@ PWG.PhaserGroup = (function() {
 	module.Controller = Controller; 
 	
 	return module;
-}());
+}();

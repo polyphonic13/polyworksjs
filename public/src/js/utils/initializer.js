@@ -1,4 +1,4 @@
-PWG.Initializer = (function(){
+PWG.Initializer = function(){
 	
 	var standardMethods = {
 		hide: function() {
@@ -37,4 +37,4 @@ PWG.Initializer = (function(){
 	};
 	
 	return module;
-}());
+}();

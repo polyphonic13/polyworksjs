@@ -1,4 +1,4 @@
-PWG.PhaserInput = (function() {
+PWG.PhaserInput = function() {
 	var module = {};
 	var _controllers = {};
 	
@@ -135,4 +135,4 @@ PWG.PhaserInput = (function() {
 		);
 	};
 	return module;
-}());
+}();

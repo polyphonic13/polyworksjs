@@ -1,4 +1,4 @@
-PWG.DisplayFactory = (function() {
+PWG.DisplayFactory = function() {
 	var module = {};
 	
 	module.createPhaserViews = function(views) {
@@ -17,4 +17,4 @@ PWG.DisplayFactory = (function() {
 	};
 	
 	return module;
-}());
+}();

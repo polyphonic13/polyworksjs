@@ -1,4 +1,4 @@
-var GameConfig = (function() {
+var GameConfig = function() {
 	
 	var module = {};
 	
@@ -1142,4 +1142,4 @@ var GameConfig = (function() {
 		callback.call(context, config);
 	};
 	return module;
-}());
+}();

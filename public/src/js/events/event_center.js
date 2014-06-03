@@ -8,7 +8,7 @@
 		]
 	}
 */
-PWG.EventCenter = (function() {
+PWG.EventCenter = function() {
 
 	var module = {};
 	var _listeners = {}; 
@@ -91,4 +91,4 @@ PWG.EventCenter = (function() {
 	};
 	
 	return module;
-}());
+}();

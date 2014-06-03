@@ -1,4 +1,4 @@
-PWG.PhaserTileMap = (function() {
+PWG.PhaserTileMap = function() {
 	var module = {};
 
 	var _map;
@@ -165,4 +165,4 @@ PWG.PhaserTileMap = (function() {
 	module.TileMapController = TileMapController;
 
 	return module;
-}());
+}();
