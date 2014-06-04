@@ -23,7 +23,7 @@ var BuildingManager = function() {
 	{
 		if(this.state === states.CONSTRUCTION && this.age >= this.buildTime) {
 			this.state = states.ACTIVE;
-			trace('building construction completed');
+			// trace('building construction completed');
 		}
 		this.age++;
 	};
@@ -113,7 +113,7 @@ var BuildingManager = function() {
 	
 	module.create = function(type, config) 
 	{
-		trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
 		if(PhaserGame.bank >= buildingCosts[type]) 
 		{
 			var building;
@@ -127,7 +127,7 @@ var BuildingManager = function() {
 			}
 			module.buildings[type].push(building);
 			PhaserGame.bank -= buildingCosts[type];
-			trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
+			// trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
 		}
 	};
 	

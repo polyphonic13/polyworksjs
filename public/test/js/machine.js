@@ -35,16 +35,16 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.calculateCost = function() {
-		trace('Machine['+this.config.id+']/calculateCost, this = ', this);
+		// trace('Machine['+this.config.id+']/calculateCost, this = ', this);
 		PWG.Utils.each(
 			this.config.parts,
 			function(val, key) {
-				trace('\tval = ' + val + ', key = ' + key);
+				// trace('\tval = ' + val + ', key = ' + key);
 				this.config.cost += gameData.parts[key][val].cost[this.config.size];
 			},
 			this
 		);
-		trace('post calculate cost, cost = ' + this.config.cost);
+		// trace('post calculate cost, cost = ' + this.config.cost);
 	};
 	
 	Machine.prototype.reset = function(part) {

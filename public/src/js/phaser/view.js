@@ -9,7 +9,7 @@ PWG.PhaserView = function() {
 	var module = {};
 	
 	function ViewController(config, name) {
-		trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
+		// trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
 		this.name = name;
 		this.config = config;
 
@@ -145,7 +145,7 @@ PWG.PhaserView = function() {
 	module.ViewController = ViewController;
 	
 	module.build = function(views, collection) {
-		trace('PhaserView/factory, views = ', views);
+		// trace('PhaserView/factory, views = ', views);
 		var collection = collection || {};
 
 		PWG.Utils.each(views,
@@ -178,7 +178,7 @@ PWG.PhaserView = function() {
 	};
 
 	module.addToGroup = function(children, group) {
-		trace('PhaserView/addToGroup, group = ', group, '\tchildren = ', children);
+		// trace('PhaserView/addToGroup, group = ', group, '\tchildren = ', children);
 		PWG.Utils.each(
 			children,
 			function(child, key) {
@@ -211,15 +211,15 @@ PWG.PhaserView = function() {
 	};
 	
 	module.removeView = function(name, collection) {
-		trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
+		// trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
 		PWG.Utils.each(
 			collection,
 			function(child, key) {
 				if(child.view.name === name) {
-					trace('\tremoving ', child);
+					// trace('\tremoving ', child);
 					child.view.destroy();
 					if(child.group) {
-						trace('\t\tcalling group destroy also');
+						// trace('\t\tcalling group destroy also');
 						child.group.view.destroy();
 					}
 					delete collection[key];

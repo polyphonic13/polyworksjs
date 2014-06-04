@@ -31,7 +31,7 @@ PWG.StateManager = function() {
 	};
 	
 	Controller.prototype.create = function() {
-		trace('StateController['+this.name+']/create, this.config = ', this.config);
+		// trace('StateController['+this.name+']/create, this.config = ', this.config);
 		var world = this.config.world;
 		// trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PhaserGame.phaser.world.setBounds(world.x, world.y, world.width, world.height);
@@ -42,7 +42,7 @@ PWG.StateManager = function() {
 
 		if(this.config.views) {
 			this.views = PWG.PhaserView.build(this.config.views);
-			trace('------------------ ', this.views);
+			// trace('------------------ ', this.views);
 			// PWG.PhaserView.addToGroup(this.views.group, PhaserGame.statesGroup);
 			// PhaserGame.statesGroup.add(this.views['state-group'].view);
 		}
@@ -161,12 +161,13 @@ PWG.StateManager = function() {
 	};
 
 	module.stateCreated = function(stateGroup) {
-		trace('STATE CREATED, statesGroup = ', PhaserGame.statesGroup, '\tstateGroup = ', stateGroup);
+		// trace('STATE CREATED, statesGroup = ', PhaserGame.statesGroup, '\tstateGroup = ', stateGroup);
 		// PhaserGame.statesGroup.add(stateGroup);
+		PhaserGame.stateCreated(this.currentId);
 	};
 	
 	module.getCurrentStateGroup = function() {
-		trace('StateManager/getCurrentStateGroup, currentId = ' + this.currentId + ', views = ', this.states[this.currentId].views);
+		// trace('StateManager/getCurrentStateGroup, currentId = ' + this.currentId + ', views = ', this.states[this.currentId].views);
 		return this.states[this.currentId].views['state-group'].view;
 	};
 	

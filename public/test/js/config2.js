@@ -88,7 +88,7 @@ var GameConfig = function() {
 			timerText: {
 				type: 'text',
 				name: 'timer-text',
-				text: TIME_PER_TURN,
+				text: PhaserGame.turnTime,
 				style: {
 				    font: (fontSizes.md + 'px Arial'),
 			        fill: palette.white
@@ -367,6 +367,7 @@ var GameConfig = function() {
 			attrs: {
 				firstPlay: false,
 				turnActive: false,
+				turnTime: TIME_PER_TURN,
 				equipmentAction: '',
 				activeMachineId: -1,
 				bank: 1000000,
@@ -654,7 +655,7 @@ var GameConfig = function() {
 							}
 						}
 					},
-					timerText: sharedViews.timerText
+					timerText: PWG.Utils.clone(sharedViews.timerText)
 				}
 			},
 			// usDetail
@@ -715,10 +716,12 @@ var GameConfig = function() {
 				// ],
 				views: 
 				{
-					stateGroup: {
+					stateGroup: 
+					{
 						type: 'group',
 						name: 'state-group',
-						views: {
+						views: 
+						{
 							// bg
 							stateBg: {
 								type: 'sprite',
@@ -808,7 +811,8 @@ var GameConfig = function() {
 								}
 							}
 						}
-					}
+					},
+					timerText: PWG.Utils.clone(sharedViews.timerText)
 				}
 			},
 			// equipment
@@ -817,7 +821,8 @@ var GameConfig = function() {
 				world: defaultWorld,
 				clearWorld: true,
 				clearCache: false,
-				assets: {
+				assets: 
+				{
 					images: [
 					'blockGreen',
 					'blockWhite',
@@ -829,13 +834,17 @@ var GameConfig = function() {
 					]
 				},
 				listeners: gameLogic.states.equipment.listeners,
-				views: {
-					stateGroup: {
+				views: 
+				{
+					stateGroup: 
+					{
 						type: 'group',
 						name: 'state-group',
-						views: {
+						views: 
+						{
 							// bg
-							bg: {
+							bg: 
+							{
 								type: 'sprite',
 								name: 'equipment-state-bg',
 								img: 'blockGreen',
@@ -949,7 +958,8 @@ var GameConfig = function() {
 								}
 							}
 						}
-					}
+					},
+					timerText: PWG.Utils.clone(sharedViews.timerText)
 				}
 			},
 			// equipment editor
@@ -958,8 +968,10 @@ var GameConfig = function() {
 				world: defaultWorld,
 				clearWorld: true,
 				clearCache: false,
-				assets: {
-					images: [
+				assets: 
+				{
+					images: 
+					[
 					'buildBg',
 					'equipmentPickerBg',
 					'blockWhite',
@@ -990,20 +1002,27 @@ var GameConfig = function() {
 				create: gameLogic.states.equipmentEditor.create,
 				shutdown: gameLogic.states.equipmentEditor.shutdown,
 				methods: gameLogic.states.equipmentEditor.methods,
-				views: {
-					stateGroup: {
+				views: 
+				{
+					stateGroup: 
+					{
 						type: 'group',
 						name: 'state-group',
-						views: {
-							editor: {
+						views: 
+						{
+							editor: 
+							{
 								type: 'group',
 								name: 'editor-group',
-								attrs: {
+								attrs: 
+								{
 									visible: false
 								},
-								views: {
+								views: 
+								{
 									// bg
-									bg: {
+									bg: 
+									{
 										type: 'sprite',
 										name: 'editor-bg',
 										img: 'buildBg',
@@ -1229,7 +1248,8 @@ var GameConfig = function() {
 								}
 							}
 						}
-					}
+					},
+					timerText: PWG.Utils.clone(sharedViews.timerText)
 				}
 			}
 			]
