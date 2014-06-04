@@ -9,6 +9,34 @@ var buildingCosts =
 	showroom: 50000
 }
 
+var sharedListeners =
+{
+	// game time updated
+	gameTimeUpdated: 
+	{
+		event: PWG.Events.GAME_TIME_UPDATED,
+		handler: function(event) {
+			
+			var text = (event.value >= 10) ? event.value : '0' + event.value;
+			trace('turn time = ' + event.value);
+			this.views['timer-text'].callMethod('setText', [text]);
+
+		}
+	},
+	// turn ended
+	turnEnded: 
+	{
+		event: PWG.Events.TURN_ENDED,
+		handler: function(event) {
+			PWG.PhaserTime.removeTimer('turnTime');
+			trace('turn ended');
+			this.views['timer-text'].callMethod('setText', [TIME_PER_TURN]);
+			// this.views['start-state-buttons'].children['pause-button'].hide();
+		}
+	}
+};
+
+
 var gameLogic = 
 {
 	global: 
@@ -47,26 +75,6 @@ var gameLogic =
 				PhaserGame.turnTimer.resume();
 				this.views['start-state-buttons'].children['resume-button'].hide();
 				this.views['start-state-buttons'].children['pause-button'].show();
-			}
-		},
-		// game time updated
-		{
-			event: PWG.Events.GAME_TIME_UPDATED,
-			handler: function(event) {
-				var text = 'Turn time: ' + event.value;
-				trace('turn time = ' + event.value);
-				// this.views['start-state-text'].children['turn-time'].callMethod('setText', [text]);
-
-			}
-		},
-		// turn ended
-		{
-			event: PWG.Events.TURN_ENDED,
-			handler: function(event) {
-				PWG.PhaserTime.removeTimer('turnTime');
-				trace('turn ended');
-				// this.views['start-state-text'].children['turn-time'].callMethod('setText', ['Turn ended']);
-				// this.views['start-state-buttons'].children['pause-button'].hide();
 			}
 		}
 		],
@@ -173,6 +181,9 @@ var gameLogic =
 				}
 			}
 		},
+		timerText: {
+			
+		},
 		overlayMenu: {
 			closeButton: {
 				callback: function() {
@@ -208,6 +219,97 @@ var gameLogic =
 			}
 		},
 		play: 
+		{
+			listeners: 
+			[
+				(sharedListeners.gameTimeUpdated),
+				(sharedListeners.turnEnded)
+			],
+			create: function() 
+			{
+				if(!PhaserGame.turnActive) {
+					PhaserGame.startTurn();
+				}
+			},
+			shutdown: function() 
+			{
+				// PWG.PhaserTime.removeTimer('turnTime');
+			},
+			views: 
+			{
+				buttons: 
+				{
+					plusButton: 
+					{
+						input: 
+						{
+							inputUp: function() 
+							{
+								// trace('plus pressed');
+								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_IN });
+							}
+						}
+					},
+					minusButton: 
+					{
+						input: 
+						{
+							inputUp: function() 
+							{
+								// trace('plus pressed');
+								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
+							}
+						}
+					},
+					usDetailButton: 
+					{
+						callback: function() 
+						{
+							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'usDetail' });
+						}
+					},
+					equipmentButton: 
+					{
+						callback: function() 
+						{
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
+						}
+					}
+				},
+				icons: 
+				{
+					input: {
+						inputDown: function() {
+							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
+							if(this.selected) {
+								PhaserGame.selectedIcon = '';
+								this.selected = false;
+							} else {
+								PhaserGame.selectedIcon = this.controller.id;
+								this.selected = true;
+								var input = this.controller.view.input;
+								var attrs = this.controller.config.attrs;
+								input.enableDrag();
+								// input.enableSnap(attrs.width, attrs.height, false, true);
+								input.enableSnap(32, 32, false, true);
+							}
+						},
+						onDragStop: function() {
+							var view = this.controller.view;
+							// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
+							if(view.y < (PWG.Stage.unit * 3.5)) {
+								view.y = PWG.Stage.unit * 3.5;
+							} else if(view.y > (PWG.Stage.unit * 10.5)) {
+								view.y = PWG.Stage.unit * 9.4;
+							}
+							// trace('view x/y is now: ' + view.x + '/' + view.y);
+						}
+					}
+				}
+			}
+		},
+		usDetail: 
 		{
 			create: function() 
 			{
@@ -245,11 +347,12 @@ var gameLogic =
 							}
 						}
 					},
-					startBuildingButton: 
+					usDetailButton: 
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
+							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'usDetail' });
 						}
 					},
 					equipmentButton: 

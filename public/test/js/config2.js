@@ -85,6 +85,20 @@ var GameConfig = function() {
 					}
 				}
 			},
+			timerText: {
+				type: 'text',
+				name: 'timer-text',
+				text: TIME_PER_TURN,
+				style: {
+				    font: (fontSizes.md + 'px Arial'),
+			        fill: palette.white
+				},
+				x: 0,
+				y: (gameUnit * 0.6),
+				position: {
+					centerX: true
+				}
+			},
 			overlayMenu: {
 				type: 'group',
 				name: 'overlay-menu',
@@ -221,14 +235,16 @@ var GameConfig = function() {
 		var config = {
 			gameEl: 'game_container',
 			gameType: 'phaser',
+			// assets
 			assets: {
 				images: {
 					startBg: 'images/screens/screen_mocks_start.gif',
 					manualBg: 'images/screens/screen_mocks_manual.gif',
 					briefBg: 'images/screens/screen_mocks_brief.gif',
+					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					worldBg: 'images/screens/screen_mocks_world.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
-					tractorPickerBg: 'images/screens/screen_mocks_tractor_picker.gif',
+					equipmentPickerBg: 'images/screens/screen_mocks_tractor_picker.gif',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -361,20 +377,6 @@ var GameConfig = function() {
 					type: 'group',
 					name: 'global-views',
 					views: {
-						timerText: {
-							type: 'text',
-							name: 'turn-time',
-							text: 'Turn time: ' + TIME_PER_TURN,
-							style: {
-							    font: (fontSizes.md + 'px Arial'),
-						        fill: palette.white
-							},
-							x: 0,
-							y: (gameUnit * 2),
-							position: {
-								centerX: true
-							}
-						},
 						pauseButton: {
 							type: 'button',
 							name: 'pause-button',
@@ -566,33 +568,6 @@ var GameConfig = function() {
 				listeners: gameLogic.states.play.listeners,
 				create: gameLogic.states.play.create,
 				shutdown: gameLogic.states.play.shutdown,
-				tilemaps: [
-				{
-					type: 'PhaserTileMap',
-					name: 'tile-map',
-					img: 'grassTiles',
-					attrs: {
-						x: 0,
-						y: (gameUnit * 3)
-					},
-					cellSize: (gameUnit),
-					deafultLayer: 'TileLayer1',
-					attrs: {
-						zoomFactor: 0.25,
-						zoomCeil: 2.5,
-						zoomFloor: .25
-					},
-					layers: [
-					{
-						name: 'layer1',
-						resizeWorld: true,
-						attrs: {
-							alpha: 0.75
-						}
-					}
-					]
-				}
-				],
 				views: 
 				{
 					stateGroup: {
@@ -645,18 +620,18 @@ var GameConfig = function() {
 										},
 										input: gameLogic.states.play.views.buttons.minusButton.input
 									},
-									startBuildingButton: {
+									usDetailButton: {
 										type: 'button',
 										name: 'start-build-button',
 										img: 'blockWhite',
 										x: gameUnit,
-										y: (gameH - gameUnit * 3),
+										y: (gameUnit * 7),
 										attrs: {
-											width: (gameW - gameUnit * 2),
-											height: (gameUnit * 1),
-											alpha: 0.5
+											width: gameW - (gameUnit * 2),
+											height: (gameUnit * 3),
+											alpha: 0.3
 										},
-										callback: gameLogic.states.play.views.buttons.startBuildingButton.callback,
+										callback: gameLogic.states.play.views.buttons.usDetailButton.callback,
 										context: this,
 										frames: [0, 0, 0, 0]
 									},
@@ -664,17 +639,137 @@ var GameConfig = function() {
 										type: 'button',
 										name: 'equipment-button',
 										img: 'blockWhite',
-										x: gameUnit * 0.5,
-										y: (gameH - gameUnit * 1.25),
+										x: gameUnit * 7.5,
+										y: (gameH - gameUnit * 2.5),
 										attrs: {
-											width: (gameUnit * 4.5),
-											height: (gameUnit * 1.25),
-											alpha: 0.5
+											width: (gameUnit * 2.5),
+											height: (gameUnit * 2.5),
+											alpha: 0.3
 										},
 										callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
 										context: this,
 										frames: [0, 0, 0, 0]
 									}
+								}
+							}
+						}
+					},
+					timerText: sharedViews.timerText
+				}
+			},
+			// usDetail
+			{
+				name: 'usDetail',
+				world: defaultWorld,
+				clearWorld: true,
+				clearCache: false,
+				assets: {
+					images: [
+					'usDetailBg',
+					'greyTiles',
+					'buttonPlus',
+					'buttonMinus',
+					'iconFactory',
+					'iconShowroom',
+					'blockWhite',
+					'blockClear'
+					],
+					sprites: [
+					'buttonPause',
+					'buttonPlay',
+					'buttonClose'
+					],
+					tilemaps: [
+					'greyTilesMap'
+					]
+				},
+				// listeners: gameLogic.states.usDetail.listeners,
+				// create: gameLogic.states.usDetail.create,
+				// shutdown: gameLogic.states.usDetail.shutdown,
+				// tilemaps: [
+				// {
+				// 	type: 'PhaserTileMap',
+				// 	name: 'tile-map',
+				// 	img: 'grassTiles',
+				// 	attrs: {
+				// 		x: 0,
+				// 		y: (gameUnit * 3)
+				// 	},
+				// 	cellSize: (gameUnit),
+				// 	deafultLayer: 'TileLayer1',
+				// 	attrs: {
+				// 		zoomFactor: 0.25,
+				// 		zoomCeil: 2.5,
+				// 		zoomFloor: .25
+				// 	},
+				// 	layers: [
+				// 	{
+				// 		name: 'layer1',
+				// 		resizeWorld: true,
+				// 		attrs: {
+				// 			alpha: 0.75
+				// 		}
+				// 	}
+				// 	]
+				// }
+				// ],
+				views: 
+				{
+					stateGroup: {
+						type: 'group',
+						name: 'state-group',
+						views: {
+							// bg
+							stateBg: {
+								type: 'sprite',
+								name: 'us-background',
+								img: 'usDetailBg',
+								x: 0,
+								y: 0,
+								attrs: {
+									width: gameW,
+									height: gameH,
+									fixedToCamera: true
+								}
+							},
+							// buttons group
+							buttons: {
+								type: 'group',
+								name: 'start-state-buttons',
+								attrs: {
+									fixedToCamera: true
+								},
+								views: {
+									// usDetailButton: {
+									// 	type: 'button',
+									// 	name: 'start-build-button',
+									// 	img: 'blockWhite',
+									// 	x: gameUnit * 0.5,
+									// 	y: (gameH - gameUnit * 2.5),
+									// 	attrs: {
+									// 		width: (gameUnit * 2.5),
+									// 		height: (gameUnit * 2.5),
+									// 		alpha: 0.3
+									// 	},
+									// 	callback: gameLogic.states.usDetail.views.buttons.usDetailButton.callback,
+									// 	context: this,
+									// 	frames: [0, 0, 0, 0]
+									// },
+									// equipmentButton: {
+									// 	type: 'button',
+									// 	name: 'equipment-button',
+									// 	img: 'blockWhite',
+									// 	x: gameUnit * 7.5,
+									// 	y: (gameH - gameUnit * 2.5),
+									// 	attrs: {
+									// 		width: (gameUnit * 2.5),
+									// 		height: (gameUnit * 2.5),
+									// 		alpha: 0.3
+									// 	},
+									// 	callback: gameLogic.states.usDetail.views.buttons.equipmentButton.callback,
+									// 	context: this,
+									// 	frames: [0, 0, 0, 0]
+									// }
 								}
 							},
 							// icons group
@@ -696,7 +791,7 @@ var GameConfig = function() {
 											width: gameUnit * 2,
 											height: gameUnit * 1
 										},
-										input: gameLogic.states.play.views.icons.input
+										input: gameLogic.states.usDetail.views.icons.input
 									},
 									showroomIcon: {
 										type: 'sprite',
@@ -708,7 +803,7 @@ var GameConfig = function() {
 											width: gameUnit * 2,
 											height: gameUnit * 1
 										},
-										input: gameLogic.states.play.views.icons.input
+										input: gameLogic.states.usDetail.views.icons.input
 									}
 								}
 							}
@@ -866,7 +961,7 @@ var GameConfig = function() {
 				assets: {
 					images: [
 					'buildBg',
-					'tractorPickerBg',
+					'equipmentPickerBg',
 					'blockWhite',
 					'blockRed',
 					'blockGreen',
@@ -1078,7 +1173,7 @@ var GameConfig = function() {
 									bg: {
 										type: 'sprite',
 										name: 'create-bg',
-										img: 'tractorPickerBg',
+										img: 'equipmentPickerBg',
 										x: 0,
 										y: 0,
 										attrs: {
