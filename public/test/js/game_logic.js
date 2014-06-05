@@ -215,48 +215,40 @@ var gameLogic = {
 				// trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
 			}
 		},
-		views: 
-		{
-			pauseButton: 
-			{
-				callback: function() 
-				{
+		input: {
+			
+		},
+		buttonCallbacks: {
+			pauseButton: {
+				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
 				}
 			},
-			resumeButton: 
-			{
-				callback: function() 
-				{
+			resumeButton: {
+				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 				}
-			}
-		}
-	},
-	sharedViews: 
-	{
-		notification: {
-			closeButton: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
+			},
+			notification: {
+				closeButton: {
+					callback: function() {
+						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
+					}
 				}
-			}
-		},
-		timerText: {
-			
-		},
-		overlayMenu: {
-			closeButton: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+			},
+			overlayMenu: {
+				closeButton: {
+					callback: function() {
+						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+					}
 				}
-			}
-		},
-		overlayMenuItem: {
-			invisButton: {
-				input: {
-					inputDown: function(event) {
-						PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
+			},
+			overlayMenuItem: {
+				invisButton: {
+					input: {
+						inputDown: function(event) {
+							PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
+						}
 					}
 				}
 			}
