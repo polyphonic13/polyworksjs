@@ -8,6 +8,13 @@ var buildingCosts = {
 	showroom: 50000
 }
 
+var turnGroups = [
+	'play',
+	'equipment',
+	'equipmentEditor',
+	'usDetail'
+];
+
 var sharedListeners = {
 	// game time updated
 	gameTimeUpdated: {
@@ -17,7 +24,6 @@ var sharedListeners = {
 			var text = (event.value >= 10) ? event.value : '0' + event.value;
 			// trace('turn time = ' + event.value);
 			this.views['timer-text'].callMethod('setText', [text]);
-
 		}
 	},
 	// turn ended
@@ -33,19 +39,20 @@ var sharedListeners = {
 };
 
 
-var gameLogic = 
-{
-	global: 
-	{
+var gameLogic = {
+	global: {
 		listeners: 
 		[
 		// change state
 		{
 			event: PWG.Events.SHOW_GROUP,
-			handler: function(event) 
-			{
+			handler: function(event) {
 				// PWG.StateManager.changeState(event.value);
 				PWG.ViewManager.switchGroup(event.value);
+				
+				if(turnGroups.indexOf(event.value) > -1) {
+					trace('this is a turn group!');
+				}
 			}
 		},
 		// start
@@ -55,48 +62,24 @@ var gameLogic =
 				PhaserGame.turnTimer.start();
 				this.views['start-state-buttons'].children['pause-button'].show();
 			}
-		},
-		// // pause
-		// {
-		// 	event: PWG.Events.PAUSE_GAME,
-		// 	handler: function(event) {
-		// 		PhaserGame.turnTimer.pause();
-		// 		this.views['start-state-buttons'].children['pause-button'].hide();
-		// 		this.views['start-state-buttons'].children['resume-button'].show();
-		// 	}
-		// },
-		// // resume
-		// {
-		// 	event: PWG.Events.RESUME_GAME,
-		// 	handler: function(event) {
-		// 		PhaserGame.turnTimer.resume();
-		// 		this.views['start-state-buttons'].children['resume-button'].hide();
-		// 		this.views['start-state-buttons'].children['pause-button'].show();
-		// 	}
-		// }
+		}
 		],
 		methods: 
 		{
-			update: function() 
-			{
+			update: function() {
 
 			},
-			startTurn: function() 
-			{
-				// trace('START TURN');
+			startTurn: function() {
+				trace('START TURN');
 				PhaserGame.turnActive = true;
 				PhaserGame.timePerTurn = TIME_PER_TURN;
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
-				PhaserGame.turnTimer.loop(TURN_TIME_INTERVAL, function() 
-				{
+				PhaserGame.turnTimer.loop(TURN_TIME_INTERVAL, function() {
 						// trace('\ttimePerTurn = ' + PhaserGame.timePerTurn + ', views = ', this.views);
 						PhaserGame.timePerTurn--;
-						if(PhaserGame.timePerTurn <= 0) 
-						{
+						if(PhaserGame.timePerTurn <= 0) {
 							PWG.EventCenter.trigger({ type: PWG.Events.TURN_ENDED });
-						} 
-						else 
-						{
+						} else {
 							BuildingManager.update();
 							PWG.EventCenter.trigger({ type: PWG.Events.GAME_TIME_UPDATED, value: PhaserGame.timePerTurn });
 						}

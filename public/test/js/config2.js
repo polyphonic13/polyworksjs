@@ -85,20 +85,6 @@ var GameConfig = function() {
 					}
 				}
 			},
-			timerText: {
-				type: 'text',
-				name: 'timer-text',
-				text: PhaserGame.turnTime,
-				style: {
-				    font: (fontSizes.md + 'px Arial'),
-			        fill: palette.white
-				},
-				x: 0,
-				y: (gameUnit * 0.6),
-				position: {
-					centerX: true
-				}
-			},
 			overlayMenu: {
 				type: 'group',
 				name: 'overlay-menu',
@@ -537,21 +523,6 @@ var GameConfig = function() {
 									callback: gameLogic.states.play.views.buttons.usDetailButton.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
-								},
-								equipmentButton: {
-									type: 'button',
-									name: 'equipment-button',
-									img: 'blockWhite',
-									x: gameUnit * 7.5,
-									y: (gameH - gameUnit * 2.5),
-									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 2.5),
-										alpha: 0.3
-									},
-									callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
-									context: this,
-									frames: [0, 0, 0, 0]
 								}
 							}
 						}
@@ -982,6 +953,20 @@ var GameConfig = function() {
 								fixedToCamera: true
 							},
 						},
+						timerText: {
+							type: 'text',
+							name: 'timer-text',
+							text: PhaserGame.turnTime,
+							style: {
+							    font: (fontSizes.md + 'px Arial'),
+						        fill: palette.white
+							},
+							x: 0,
+							y: (gameUnit * 0.6),
+							position: {
+								centerX: true
+							}
+						},
 						pauseButton: {
 							type: 'button',
 							name: 'pause-button',
@@ -1011,6 +996,21 @@ var GameConfig = function() {
 							callback: gameLogic.global.views.resumeButton.callback,
 							context: this,
 							frames: [0, 1, 1, 0]
+						},
+						equipmentButton: {
+							type: 'button',
+							name: 'equipment-button',
+							img: 'blockWhite',
+							x: gameUnit * 7.5,
+							y: (gameH - gameUnit * 2.5),
+							attrs: {
+								width: (gameUnit * 2.5),
+								height: (gameUnit * 2.5),
+								alpha: 0.3
+							},
+							callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
+							context: this,
+							frames: [0, 0, 0, 0]
 						}
 					}
 				}
