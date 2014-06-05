@@ -82,17 +82,7 @@ var PhaserGame = function() {
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
-		// _initGroups();
-
-		// add global views
-		PWG.PhaserView.init(module.config.views);
-		// if(module.config.views) 
-		// {
-		// 	module.views = PWG.PhaserView.build(module.config.views);
-		// 	PhaserGame.globalGroup.add(module.views['global-views'].view);
-		// 	trace('-------- PhaserGame views = ', module.views, '\tmodule.views.global-views.view = ', module.views['global-views'].view, '\tglobal group children = ', PhaserGame.globalGroup.children, '\tglobalGroup = ', PhaserGame.globalGroup);
-		// 	trace('-------- PhaserGame views = ', module.views);
-		// }
+		PWG.ViewManager.init(module.config.views);
 
 		if(module.config.input) 
 		{
@@ -102,28 +92,10 @@ var PhaserGame = function() {
 			}
 		}
 
-		// PWG.StateManager.init(module.config.states, module.phaser);
-
-		// if(module.config.defaultScreen) 
-		// {
-		// 	PWG.StateManager.changeState(module.config.defaultScreen);
-		// }
-		
 		if(module.config.defaultGroup) {
-			PWG.PhaserView.showGroup(module.config.defaultGroup);
-			// module.views[module.config.defaultGroup].visible = true;
+			// PWG.ViewManager.showGroup(module.config.defaultGroup);
+			PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: module.config.defaultGroup });
 		}
-	}
-	
-	function _initGroups() {
-		trace('PhaserGame/_initGroups');
-		PhaserGame.gameGroup = module.phaser.add.group();
-		PhaserGame.statesGroup = module.phaser.add.group();
-		PhaserGame.globalGroup = module.phaser.add.group();
-
-		PhaserGame.gameGroup.add(PhaserGame.statesGroup);
-		PhaserGame.gameGroup.add(PhaserGame.globalGroup);
-		trace('\tend of _initGroups, gameGroup children = ', PhaserGame.gameGroup.children);
 	}
 	
 	function _update() {

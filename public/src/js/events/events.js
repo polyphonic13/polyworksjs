@@ -1,6 +1,9 @@
 PWG.Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
+	SHOW_GROUP: 'showGroup',
+	HIDE_GROUP: 'hideGroup',
+	SWITCH_GROUP: 'switchGroup',
 	START_TURN: 'startTurn',
 	PAUSE_GAME: 'pauseGame',
 	RESUME_GAME: 'resumeGame',

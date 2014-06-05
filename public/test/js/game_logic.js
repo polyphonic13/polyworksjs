@@ -3,17 +3,14 @@ var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 var TIME_TO_MANUFACTOR = 5;
 
-var buildingCosts =
-{
+var buildingCosts = {
 	factory: 100000,
 	showroom: 50000
 }
 
-var sharedListeners =
-{
+var sharedListeners = {
 	// game time updated
-	gameTimeUpdated: 
-	{
+	gameTimeUpdated: {
 		event: PWG.Events.GAME_TIME_UPDATED,
 		handler: function(event) {
 			PhaserGame.turnTime = event.value;
@@ -24,8 +21,7 @@ var sharedListeners =
 		}
 	},
 	// turn ended
-	turnEnded: 
-	{
+	turnEnded: {
 		event: PWG.Events.TURN_ENDED,
 		handler: function(event) {
 			PWG.PhaserTime.removeTimer('turnTime');
@@ -45,10 +41,11 @@ var gameLogic =
 		[
 		// change state
 		{
-			event: PWG.Events.CHANGE_STATE,
+			event: PWG.Events.SHOW_GROUP,
 			handler: function(event) 
 			{
-				PWG.StateManager.changeState(event.value);
+				// PWG.StateManager.changeState(event.value);
+				PWG.ViewManager.switchGroup(event.value);
 			}
 		},
 		// start
@@ -115,7 +112,7 @@ var gameLogic =
 
 				// remove previously added items since different
 				if(collection['overlay-menu']) {
-					PWG.PhaserView.removeView('overlay-menu', collection);
+					PWG.ViewManager.removeView('overlay-menu', collection);
 				}
 
 				var menuConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenu);
@@ -151,7 +148,7 @@ var gameLogic =
 					},
 					this
 				);
-				PWG.PhaserView.addView(menuConfig, collection);
+				PWG.ViewManager.addView(menuConfig, collection);
 				// trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
 			}
 		},
@@ -210,10 +207,10 @@ var gameLogic =
 				startButton: {
 					callback: function() {
 						if(PhaserGame.isFirstPlay) {
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'manual' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
 							PhaserGame.isFirstPlay = false;
 						} else {
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'play' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
 						}
 					}
 				}
@@ -267,14 +264,14 @@ var gameLogic =
 						callback: function() 
 						{
 							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'usDetail' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 						}
 					},
 					equipmentButton: 
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 						}
 					}
 				},
@@ -358,14 +355,14 @@ var gameLogic =
 						callback: function() 
 						{
 							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'usDetail' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 						}
 					},
 					equipmentButton: 
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 						}
 					}
 				},
@@ -442,7 +439,7 @@ var gameLogic =
 				buttons: {
 					closeButton: {
 						callback: function() {
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'play' });
+							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
 						}
 					}
 				},
@@ -452,7 +449,7 @@ var gameLogic =
 							inputDown: function() {
 								PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
 								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentEditor' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentEditor' });
 							}
 						}
 					},
@@ -461,7 +458,7 @@ var gameLogic =
 							inputDown: function() {
 								PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER;
 								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'skidsteerBuilder' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'skidsteerBuilder' });
 							}
 						}
 					}
@@ -572,7 +569,7 @@ var gameLogic =
 						{
 							callback: function() 
 							{
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 							}
 						},
 						saveButton: 
@@ -583,7 +580,7 @@ var gameLogic =
 								PhaserGame.newMachine = null;
 								// playerData.equipment[PhaserGame.activeMachineId].save();
 								// PhaserGame.activeMachineId = -1;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipment' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 							}
 						}
 					},

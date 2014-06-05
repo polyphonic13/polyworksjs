@@ -374,7 +374,7 @@ var GameConfig = function() {
 				bank: 1000000,
 				sharedViews: sharedViews
 			},
-			defaultGroup: 'play',
+			defaultGroup: 'start',
 			views: {
 				// start
 				startGroup: {
@@ -425,7 +425,7 @@ var GameConfig = function() {
 								alpha: 0.75
 							},
 							callback: function() {
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'manual' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
 							},
 							context: this,
 							frames: [0, 1, 1, 0]
@@ -462,7 +462,7 @@ var GameConfig = function() {
 								height: gameUnit * 1
 							},
 							callback: function() {
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'start' });
+								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'start' });
 							},
 							context: this,
 							frames: [0, 1, 1, 0]
