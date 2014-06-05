@@ -75,9 +75,9 @@ PWG.ViewManager = function() {
 	};
 	
 	ViewController.prototype.callMethod = function(method, args) {
-		// trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
+		trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
 		if(this.view[method]) {
-			// trace('\tview has method, ', this.view);
+			trace('\tview has method, ', this.view);
 			this.view[method](args);
 		}
 	};
@@ -266,6 +266,23 @@ PWG.ViewManager = function() {
 			},
 			this
 		);
+	};
+	
+	module.callMethod = function(path, method, args) {
+		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
+		var chain = path.split(':');
+		var length = chain.length;
+		var controller = this.collection[chain[0]];
+
+		for(var i = 1; i < length; i++) {
+			controller = controller.children[chain[i]];
+		}
+
+		if(!controller) {
+			return;
+		}
+
+		controller.callMethod(method, args);
 	};
 	
 	module.update = function(controllers) {

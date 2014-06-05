@@ -155,7 +155,7 @@ PWG.StateManager = function() {
 				this.currentId = id;
 				PhaserGame.phaser.state.start(id, this.states[id].clearWorld, this.states[id].clearCache);
 				// trace('GLOBAL VIEWS = ', PhaserGame.views);
-				// PhaserGame.views['global-views'].view.bringToTop();
+				// PhaserGame.views['global'].view.bringToTop();
 			}
 		}
 	};

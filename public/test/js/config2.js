@@ -360,7 +360,7 @@ var GameConfig = function() {
 				bank: 1000000,
 				sharedViews: sharedViews
 			},
-			defaultGroup: 'start',
+			defaultGroup: 'play',
 			views: {
 				// start
 				startGroup: {
@@ -939,7 +939,7 @@ var GameConfig = function() {
 				// global
 				global: {
 					type: 'group',
-					name: 'global-views',
+					name: 'global',
 					views: {
 						dashboard: {
 							name: 'dashboard',
@@ -953,64 +953,76 @@ var GameConfig = function() {
 								fixedToCamera: true
 							},
 						},
-						timerText: {
-							type: 'text',
-							name: 'timer-text',
-							text: PhaserGame.turnTime,
-							style: {
-							    font: (fontSizes.md + 'px Arial'),
-						        fill: palette.white
-							},
-							x: 0,
-							y: (gameUnit * 0.6),
-							position: {
-								centerX: true
+						textGroup: {
+							type: 'group',
+							name: 'globalText',
+							views: {
+								timerText: {
+									type: 'text',
+									name: 'timerText',
+									text: TIME_PER_TURN,
+									style: {
+									    font: (fontSizes.md + 'px Arial'),
+								        fill: palette.white
+									},
+									x: 0,
+									y: (gameUnit * 0.4),
+									position: {
+										centerX: true
+									}
+								}
 							}
 						},
-						pauseButton: {
-							type: 'button',
-							name: 'pause-button',
-							img: 'buttonPause',
-							x: (gameW - gameUnit * 1.75),
-							y: (gameH - gameUnit * 4.75),
-							attrs: {
-								width: gameUnit * 1.5,
-								height: gameUnit * 1.5,
-								visible: false
-							},
-							callback: gameLogic.global.views.pauseButton.callback,
-							context: this,
-							frames: [0, 1, 1, 0]
-						},
-						resumeButton: {
-							type: 'button',
-							name: 'resume-button',
-							img: 'buttonPlay',
-							x: (gameW - gameUnit * 1.75),
-							y: (gameH - gameUnit * 4.75),
-							attrs: {
-								width: gameUnit * 1.5,
-								height: gameUnit * 1.5,
-								visible: false
-							},
-							callback: gameLogic.global.views.resumeButton.callback,
-							context: this,
-							frames: [0, 1, 1, 0]
-						},
-						equipmentButton: {
-							type: 'button',
-							name: 'equipment-button',
-							img: 'blockWhite',
-							x: gameUnit * 7.5,
-							y: (gameH - gameUnit * 2.5),
-							attrs: {
-								width: (gameUnit * 2.5),
-								height: (gameUnit * 2.5),
-								alpha: 0.3
-							},
-							callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
-							context: this,
-							frames: [0, 0, 0, 0]
+						buttonsGroup: {
+							type: 'group',
+							name: 'globalButtons',
+							views: {
+								pauseButton: {
+									type: 'button',
+									name: 'pauseButton',
+									img: 'buttonPause',
+									x: (gameW - gameUnit * 1.75),
+									y: (gameH - gameUnit * 4.75),
+									attrs: {
+										width: gameUnit * 1.5,
+										height: gameUnit * 1.5,
+										visible: false
+									},
+									callback: gameLogic.global.views.pauseButton.callback,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								resumeButton: {
+									type: 'button',
+									name: 'resumeButton',
+									img: 'buttonPlay',
+									x: (gameW - gameUnit * 1.75),
+									y: (gameH - gameUnit * 4.75),
+									attrs: {
+										width: gameUnit * 1.5,
+										height: gameUnit * 1.5,
+										visible: false
+									},
+									callback: gameLogic.global.views.resumeButton.callback,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								equipmentButton: {
+									type: 'button',
+									name: 'equipmentButton',
+									img: 'blockWhite',
+									x: gameUnit * 7.5,
+									y: (gameH - gameUnit * 2.5),
+									attrs: {
+										width: (gameUnit * 2.5),
+										height: (gameUnit * 2.5),
+										alpha: 0.3
+									},
+									callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
+									context: this,
+									frames: [0, 0, 0, 0]
+								}
+							}
 						}
 					}
 				}
