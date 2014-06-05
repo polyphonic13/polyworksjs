@@ -144,6 +144,11 @@ PWG.PhaserView = function() {
 	
 	module.ViewController = ViewController;
 	
+	module.init = function(views) {
+		this.collection = this.build(views);
+		trace('======== end of PhaserView/init, collection = ', this.collection);
+	};
+	
 	module.build = function(views, collection) {
 		// trace('PhaserView/factory, views = ', views);
 		var collection = collection || {};
@@ -177,8 +182,27 @@ PWG.PhaserView = function() {
 
 	};
 
+	module.showGroup = function(name) {
+		trace('PhaserView/showGroup, name = ' + name + ', collection = ', this.collection);
+		this.collection[name].show();
+	};
+	
+	module.hideGroup = function(name) {
+		this.collection[name].hide();
+	};
+	
+	module.hideAllGroups = function() {
+		PWG.Utils.each(
+			this.collection,
+			function(child) {
+				child.hide();
+			},
+			this
+		);
+	};
+	
 	module.addToGroup = function(children, group) {
-		// trace('PhaserView/addToGroup, group = ', group, '\tchildren = ', children);
+		trace('PhaserView/addToGroup, group = ', group, '\tchildren = ', children);
 		PWG.Utils.each(
 			children,
 			function(child, key) {

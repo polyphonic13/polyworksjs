@@ -26,15 +26,16 @@ PWG.PhaserLoader = function() {
 		
 		// IMAGES
 		if(assets.images) {
-			var images = _config.images;
+			// var images = _config.images;
+			var images = assets.images;
 			// trace('\timages = ', images);
 			PWG.Utils.each(
 				assets.images,
-				function(image) {
-					if(!this.loaded.images[image]) {
-						// trace('\t------- loading: image = ' + image + ', url = ' + images[image]);
-						_phaser.load.image(image, images[image]);
-						this.loaded.images[image] = true;
+				function(image, key) {
+					if(!this.loaded.images[key]) {
+						// trace('\t------- loading: image = ' + key + ', url = ' + image);
+						_phaser.load.image(key, image);
+						this.loaded.images[key] = true;
 					}
 				},
 				this
@@ -43,13 +44,16 @@ PWG.PhaserLoader = function() {
 		
 		// SPRITES
 		if(assets.sprites) {
-			var sprites = _config.sprites;
+			// var sprites = _config.sprites;
+			var sprites = assets.sprites;
+			
 			PWG.Utils.each(
 				assets.sprites,
-				function(sprite) {
-					if(!this.loaded.sprites[sprite]) {
-						// trace('\tloading: sprite[' + sprite + '] = ', sprites[sprite]);
-						_phaser.load.spritesheet(sprite, sprites[sprite].url, sprites[sprite].width, sprites[sprite].height);
+				function(sprite, key) {
+					if(!this.loaded.sprites[key]) {
+						// trace('\tloading: sprite = ' + key + ', url = ' + sprite.url);
+						_phaser.load.spritesheet(key, sprite.url, sprite.width, sprite.height);
+						this.loaded.sprites[key] = true;
 					}
 				},
 				this
@@ -57,19 +61,21 @@ PWG.PhaserLoader = function() {
 		}
 
 		// TILEMAPS
-		if(assets.tilemaps) {
-			var tilemaps = _config.tilemaps;
-			PWG.Utils.each(
-				assets.tilemaps,
-				function(tilemap) {
-					if(!this.loaded.tilemaps[tilemap]) {
-						// trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
-						_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, Phaser.Tilemap.TILED_JSON ); // Phaser.Tilemap.TILED_JSON = 1
-					}
-				},
-				this
-			);
-		}
+		// if(assets.tilemaps) {
+		// 	// var tilemaps = _config.tilemaps;
+		// 	var tilemaps = assets.tilemaps;
+		// 	
+		// 	PWG.Utils.each(
+		// 		assets.tilemaps,
+		// 		function(tilemap) {
+		// 			if(!this.loaded.tilemaps[tilemap]) {
+		// 				// trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
+		// 				_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, Phaser.Tilemap.TILED_JSON ); // Phaser.Tilemap.TILED_JSON = 1
+		// 			}
+		// 		},
+		// 		this
+		// 	);
+		// }
 	}
 	
 	function _initAssets(assets, type) {
