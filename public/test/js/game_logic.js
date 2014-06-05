@@ -216,9 +216,35 @@ var gameLogic = {
 			}
 		},
 		input: {
-			
+			plusButton: {
+				inputUp: function() {
+					// trace('plus pressed');
+					PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_IN });
+				}
+			},
+			minusButton: {
+				inputUp: function() {
+					// trace('plus pressed');
+					PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
+				}
+			},
+			overlayMenuItemButton: {
+				inputDown: function(event) {
+					PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
+				}
+			}
 		},
 		buttonCallbacks: {
+			startButton: {
+				callback: function() {
+					if(PhaserGame.isFirstPlay) {
+						PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
+						PhaserGame.isFirstPlay = false;
+					} else {
+						PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+					}
+				}
+			},
 			pauseButton: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
@@ -229,211 +255,39 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 				}
 			},
-			notification: {
-				closeButton: {
-					callback: function() {
-						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
-					}
+			notificationClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
 				}
 			},
-			overlayMenu: {
-				closeButton: {
-					callback: function() {
-						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
-					}
+			overlayMenuClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
 			},
-			overlayMenuItem: {
-				invisButton: {
-					input: {
-						inputDown: function(event) {
-							PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
-						}
-					}
+			equpimentClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+				}
+			}
+			usDetailButton: {
+				callback: function() {
+					// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
+				}
+			},
+			equipmentButton: {
+				callback: function() 
+				{
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 				}
 			}
 		}
 	},
 	states: {
-		start: {
-			views: {
-				startButton: {
-					callback: function() {
-						if(PhaserGame.isFirstPlay) {
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
-							PhaserGame.isFirstPlay = false;
-						} else {
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
-						}
-					}
-				}
-			}
-		},
-		play: {
-			views: {
-				buttons: 
-				{
-					plusButton: 
-					{
-						input: 
-						{
-							inputUp: function() 
-							{
-								// trace('plus pressed');
-								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_IN });
-							}
-						}
-					},
-					minusButton: 
-					{
-						input: 
-						{
-							inputUp: function() 
-							{
-								// trace('plus pressed');
-								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
-							}
-						}
-					},
-					usDetailButton: 
-					{
-						callback: function() 
-						{
-							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
-						}
-					},
-					equipmentButton: 
-					{
-						callback: function() 
-						{
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
-						}
-					}
-				},
-				icons: 
-				{
-					input: {
-						inputDown: function() {
-							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
-							if(this.selected) {
-								PhaserGame.selectedIcon = '';
-								this.selected = false;
-							} else {
-								PhaserGame.selectedIcon = this.controller.id;
-								this.selected = true;
-								var input = this.controller.view.input;
-								var attrs = this.controller.config.attrs;
-								input.enableDrag();
-								// input.enableSnap(attrs.width, attrs.height, false, true);
-								input.enableSnap(32, 32, false, true);
-							}
-						},
-						onDragStop: function() {
-							var view = this.controller.view;
-							// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
-							if(view.y < (PWG.Stage.unit * 3.5)) {
-								view.y = PWG.Stage.unit * 3.5;
-							} else if(view.y > (PWG.Stage.unit * 10.5)) {
-								view.y = PWG.Stage.unit * 9.4;
-							}
-							// trace('view x/y is now: ' + view.x + '/' + view.y);
-						}
-					}
-				}
-			}
-		},
-		usDetail: {
-			views: 
-			{
-				buttons: 
-				{
-					plusButton: 
-					{
-						input: 
-						{
-							inputUp: function() 
-							{
-								// trace('plus pressed');
-								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_IN });
-							}
-						}
-					},
-					minusButton: 
-					{
-						input: 
-						{
-							inputUp: function() 
-							{
-								// trace('plus pressed');
-								PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
-							}
-						}
-					},
-					usDetailButton: 
-					{
-						callback: function() 
-						{
-							// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
-						}
-					},
-					equipmentButton: 
-					{
-						callback: function() 
-						{
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
-						}
-					}
-				},
-				icons: 
-				{
-					input: {
-						inputDown: function() {
-							// trace('factory-icon/inputDown, this.selected = ' + this.selected + ', PhaserGame.selectedIcon = ' + PhaserGame.selectedIcon + ', this name = ' + this.controller.id);
-							if(this.selected) {
-								PhaserGame.selectedIcon = '';
-								this.selected = false;
-							} else {
-								PhaserGame.selectedIcon = this.controller.id;
-								this.selected = true;
-								var input = this.controller.view.input;
-								var attrs = this.controller.config.attrs;
-								input.enableDrag();
-								// input.enableSnap(attrs.width, attrs.height, false, true);
-								input.enableSnap(32, 32, false, true);
-							}
-						},
-						onDragStop: function() {
-							var view = this.controller.view;
-							// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
-							if(view.y < (PWG.Stage.unit * 3.5)) {
-								view.y = PWG.Stage.unit * 3.5;
-							} else if(view.y > (PWG.Stage.unit * 10.5)) {
-								view.y = PWG.Stage.unit * 9.4;
-							}
-							// trace('view x/y is now: ' + view.x + '/' + view.y);
-						}
-					}
-				}
-			}
-		},
 		equipment: {
 			views: {
-				bg: {
-					input:{
-						inputDown: function() {
-							// trace('equipment.views.bg.input.inputDown');
-							PWG.EventCenter.trigger({ type: PWG.Events.OPEN_NOTIFICATION, value: 'hello notification' });
-						}
-					}
-				},
 				buttons: {
-					closeButton: {
-						callback: function() {
-							PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
-						}
-					}
 				},
 				icons: {
 					tractor: {
