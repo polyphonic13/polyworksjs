@@ -52,6 +52,16 @@ var gameLogic = {
 				
 				if(turnGroups.indexOf(event.value) > -1) {
 					trace('this is a turn group!');
+					if(PhaserGame.turnActive) {
+						PhaserGame.turnTimer.start();
+						PhaserGame.turnActive = true;
+					}
+				} else {
+					if(PhaserGame.turnActive) {
+						trace('deactivating turn');
+						PhaserGame.turnTimer.stop();
+						PhaserGame.turnActive = false;
+					}
 				}
 			}
 		},
