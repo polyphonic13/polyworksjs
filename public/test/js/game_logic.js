@@ -354,12 +354,12 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 				}
 			},
-			equipementStart: {
+			equipmentStart: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 				}
 			},
-			equpimentClose: {
+			equipmentClose: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
 				}
@@ -378,7 +378,7 @@ var gameLogic = {
 			}
 		}
 	},
-	states: {
+	screens: {
 		equipmentEditor: {
 			create: function() {
 				// trace('create, views = ', this.views);
@@ -403,7 +403,7 @@ var gameLogic = {
 					break;
 				}
 				PhaserGame.currentEquipmentAction = '';
-			}
+			},
 			shutdown: function() {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;

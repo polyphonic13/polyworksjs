@@ -75,9 +75,9 @@ PWG.ViewManager = function() {
 	};
 	
 	ViewController.prototype.callMethod = function(method, args) {
-		trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
+		// trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
 		if(this.view[method]) {
-			trace('\tview has method, ', this.view);
+			// trace('\tview has method, ', this.view);
 			this.view[method](args);
 		}
 	};
@@ -268,16 +268,23 @@ PWG.ViewManager = function() {
 		);
 	};
 	
+	module.showView = function(path) {
+		var controller = this.getViewFromPath(path)
+		controller.show()
+	};
+	
+	module.hideView = function(path) {
+		var controller = this.getViewFromPath(path)
+		controller.hide()
+	};
+	
 	module.callMethod = function(path, method, args) {
 		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
-		var controller = this.getControllerFromPath(path);
-		
-		if(!controller) { return; }
-
+		var controller = this.getViewFromPath(path);
 		controller.callMethod(method, args);
 	};
 
-	module.getControllerFromPath = function(path) {
+	module.getViewFromPath = function(path) {
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];
@@ -285,6 +292,7 @@ PWG.ViewManager = function() {
 		for(var i = 1; i < length; i++) {
 			controller = controller.children[chain[i]];
 		}
+		return controller;
 	};
 	
 	module.update = function(controllers) {

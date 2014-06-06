@@ -335,7 +335,7 @@ var GameConfig = function() {
 				bank: 1000000,
 				sharedViews: sharedViews
 			},
-			defaultGroup: 'play',
+			defaultGroup: 'start',
 			views: {
 				// start
 				startGroup: {
@@ -361,12 +361,12 @@ var GameConfig = function() {
 						startButton: {
 							type: 'button',
 							name: 'gameStartButton',
-							img: 'buttonGameStart',
-							x: (gameW/2 - gameUnit),
-							y: (gameUnit * 7),
+							img: 'blockWhite',
+							x: (gameW/2 - (gameUnit * 2.5)),
+							y: (gameUnit * 2.5),
 							attrs: {
-								width: (gameUnit * 2),
-								height: (gameUnit * 2),
+								width: (gameUnit * 5),
+								height: (gameUnit * 5),
 								alpha: 0.5
 							},
 							callback: gameLogic.global.buttonCallbacks.playStart.callback,
@@ -420,7 +420,7 @@ var GameConfig = function() {
 								width: gameUnit * 1,
 								height: gameUnit * 1
 							},
-							callback: gameLogic.global.buttonCallbacks.manualClose.callback
+							callback: gameLogic.global.buttonCallbacks.manualClose.callback,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
@@ -833,7 +833,7 @@ var GameConfig = function() {
 												height: equipmentEditorImages.cab.height,
 												frame: 0
 											},
-											input: gameLogic.global.input.icons.cabIcon
+											input: gameLogic.global.input.cabIcon
 										}
 									}
 								}
