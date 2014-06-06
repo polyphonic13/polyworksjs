@@ -232,10 +232,88 @@ var gameLogic = {
 				inputDown: function(event) {
 					PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
 				}
+			},
+			tractor: {
+				inputDown: function() {
+					PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
+					PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentEditor' });
+				}
+			},
+			skidsteer: {
+				inputDown: function() {
+					PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER;
+					PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'skidsteerBuilder' });
+				}
+			},
+			createBasic: {
+				inputDown: function() {
+					// trace('createBasic icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.STANDARD, previousGroup: 'create-group' });
+				}
+			},
+			createMedium: {
+				inputDown: function() {
+					// trace('createMedium icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.MEDIUM, previousGroup: 'create-group' });
+				}
+			},
+			createHeavy: {
+				inputDown: function() {
+					// trace('createHeavy icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.HEAVY, previousGroup: 'create-group' });
+				}
+			},
+			wheelIcon: {
+				inputDown: function() {
+					// trace('wheel icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
+				}
+			},
+			engineIcon: {
+				inputDown: function() {
+					// trace('engine icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
+				}
+			},
+			transmissionIcon: {
+				inputDown: function() {
+					// trace('transmission icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
+				}
+			},
+			cabIcon: {
+				inputDown: function() {
+					// trace('cab icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
+				}
+			},
+			headlightsIcon: {
+				inputDown: function() {
+					// trace('headlights icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
+				}
+			},
+			bucketIcon: {
+				inputDown: function() {
+					// trace('bucket icon input down');
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.BUCKET });
+				}
 			}
 		},
 		buttonCallbacks: {
-			startButton: {
+			manualStart: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
+				}
+			},
+			manualClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'start' });
+				},
+			},
+			playStart: {
 				callback: function() {
 					if(PhaserGame.isFirstPlay) {
 						PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
@@ -255,6 +333,11 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 				}
 			},
+			usDetailStart: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
+				}
+			},
 			notificationClose: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
@@ -265,62 +348,44 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
 			},
-			equpimentClose: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
-				}
-			}
 			usDetailButton: {
 				callback: function() {
 					// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 				}
 			},
-			equipmentButton: {
-				callback: function() 
-				{
+			equipementStart: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
+				}
+			},
+			equpimentClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+				}
+			},
+			equipmentEditorClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
+				}
+			},
+			equipmentEditorSave: {
+				callback: function() {
+					PhaserGame.newMachine.save();
+					PhaserGame.newMachine = null;
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
 				}
 			}
 		}
 	},
 	states: {
-		equipment: {
-			views: {
-				buttons: {
-				},
-				icons: {
-					tractor: {
-						input: {
-							inputDown: function() {
-								PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
-								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentEditor' });
-							}
-						}
-					},
-					skidsteer: {
-						input: {
-							inputDown: function() {
-								PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER;
-								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'skidsteerBuilder' });
-							}
-						}
-					}
-				}
-			}
-		},
 		equipmentEditor: {
 			create: function() {
 				// trace('create, views = ', this.views);
-				switch(PhaserGame.currentEquipmentAction) 
-				{
+				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
 					this.views['state-group'].children['create-group'].show();
 					var machine = new Machine({ type: PhaserGame.currentEquipmentType });
-					// playerData.equipment[machine.id] = machine;
-					// PhaserGame.activeMachineId = machine.id;
 
 					PhaserGame.newMachine = new Machine({
 						type: PhaserGame.currentEquipmentType
@@ -338,134 +403,10 @@ var gameLogic = {
 					break;
 				}
 				PhaserGame.currentEquipmentAction = '';
-			},
+			}
 			shutdown: function() {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
-			},
-			views: 
-			{
-				editor: 
-				{
-					buttons: 
-					{
-						closeButton: 
-						{
-							callback: function() 
-							{
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
-							}
-						},
-						saveButton: 
-						{
-							callback: function() 
-							{
-								PhaserGame.newMachine.save();
-								PhaserGame.newMachine = null;
-								// playerData.equipment[PhaserGame.activeMachineId].save();
-								// PhaserGame.activeMachineId = -1;
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
-							}
-						}
-					},
-					icons: 
-					{
-						wheelIcon: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('wheel icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
-								}
-							}
-						},
-						engineIcon: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('engine icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
-								}
-							}
-						},
-						transmissionIcon: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('transmission icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
-								}
-							}
-						},
-						cabIcon: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('cab icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
-								}
-							}
-						},
-						headlightsIcon: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('headlights icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
-								}
-							}
-						}
-					}
-				},
-				machineSize: 
-				{
-					icons: 
-					{
-						createBasic: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('createBasic icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.STANDARD, previousGroup: 'create-group' });
-								}
-							}
-						},
-						createMedium: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('createMedium icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.MEDIUM, previousGroup: 'create-group' });
-								}
-							}
-						},
-						createHeavy: 
-						{
-							input: 
-							{
-								inputDown: function() 
-								{
-									// trace('createHeavy icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.SHOW_BUILD_GROUP, size: EquipmentSizes.HEAVY, previousGroup: 'create-group' });
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 	}

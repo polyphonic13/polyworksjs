@@ -44,7 +44,7 @@ var GameConfig = function() {
 				views: {
 					notificationBg: {
 						type: 'sprite',
-						name: 'notification-bg',
+						name: 'notificationBg',
 						img: 'blockWhite',
 						x: (gameUnit/2),
 						y: (gameUnit/2),
@@ -57,7 +57,7 @@ var GameConfig = function() {
 					},
 					notificationText: {
 						type: 'text',
-						name: 'notification-text',
+						name: 'notificationText',
 						text: '',
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
@@ -71,7 +71,7 @@ var GameConfig = function() {
 					},
 					closeButton: {
 						type: 'button',
-						name: 'close-button',
+						name: 'closeButton',
 						img: 'buttonClose',
 						x: (gameW - gameUnit * 1.25),
 						y: (gameUnit * 0.25),
@@ -79,7 +79,7 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.sharedViews.notification.closeButton.callback,
+						callback: gameLogic.global.buttonCallbacks.notificationClose.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
 					}
@@ -87,7 +87,7 @@ var GameConfig = function() {
 			},
 			overlayMenu: {
 				type: 'group',
-				name: 'overlay-menu',
+				name: 'overlayMenu',
 				attrs: {
 					visible: false
 				},
@@ -107,7 +107,7 @@ var GameConfig = function() {
 					},
 					closeButton: {
 						type: 'button',
-						name: 'close-button',
+						name: 'closeButton',
 						img: 'buttonClose',
 						x: (gameW - gameUnit * 1.25),
 						y: (gameUnit * 0.25),
@@ -115,26 +115,26 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.sharedViews.overlayMenu.closeButton.callback,
+						callback: gameLogic.global.buttonCallbacks.overlayMenuClose.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
 					},
 					items: {
 						type: 'group',
-						name: 'items-group',
+						name: 'itemsGroup',
 						views: {}
 					}
 				}
 			},
 			overlayMenuItem: {
 				type: 'group',
-				name: 'overlay-menu-item',
+				name: 'overlayMenuItem',
 				offset: (gameUnit * 3),
 				totalHeight: (gameUnit * 2.5),
 				views: {
 					bg: {
 						type: 'sprite',
-						name: 'menu-item-bg',
+						name: 'menuItemBg',
 						img: 'blockBlue',
 						x: 0,
 						y: 0,
@@ -143,11 +143,11 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.sharedViews.overlayMenuItem.invisButton.input
+						input: gameLogic.global.input.overlayMenuItem
 					},
 					icon: {
 						type: 'sprite',
-						name: 'menu-item-icon',
+						name: 'menuItemIcon',
 						img: '',
 						x: gameUnit,
 						y: gameUnit * 0.25,
@@ -158,7 +158,7 @@ var GameConfig = function() {
 					},
 					description: {
 						type: 'text',
-						name: 'menu-item-description',
+						name: 'menuItemDescription',
 						text: '',
 						x: gameUnit * 3,
 						y: gameUnit * 0.25,
@@ -169,7 +169,7 @@ var GameConfig = function() {
 					},
 					cost: {
 						type: 'text',
-						name: 'menu-item-cost',
+						name: 'menuItemCost',
 						text: '',
 						x: gameUnit * 3,
 						y: gameUnit * 1,
@@ -180,7 +180,7 @@ var GameConfig = function() {
 					},
 					invisButton: {
 						type: 'sprite',
-						name: 'menu-item-invis-btn',
+						name: 'menuItemInvisBtn',
 						img: 'blockClear',
 						partId: -1,
 						x: 0,
@@ -190,7 +190,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.sharedViews.overlayMenuItem.invisButton.input
+						input: gameLogic.global.input.overlayMenuItem
 					}
 					
 				}
@@ -322,31 +322,6 @@ var GameConfig = function() {
 					greyTilesMap: 'data/factory_world.json'
 				}
 			},
-			preload: {
-				images: [
-				'blockWhite',
-				'blockClear',
-				'wheels1',
-				'wheels2',
-				'wheels3',
-				'transmission1',
-				'transmission2',
-				'transmission3',
-				'engine1',
-				'engine2',
-				'engine3',
-				'cab1',
-				'cab2',
-				'cab3',
-				'headlights1',
-				'headlights2',
-				'headlights3'
-				],
-				sprites: [
-				'buttonClose'
-				],
-				tilemaps: []
-			},
 			stage: {
 				fullScreen: true,
 				scaleMode: Phaser.ScaleManager.SHOW_ALL
@@ -373,7 +348,7 @@ var GameConfig = function() {
 						// bg
 						stateBg: {
 							type: 'sprite',
-							name: 'start-background',
+							name: 'startBg',
 							img: 'startBg',
 							x: 0,
 							y: 0,
@@ -385,23 +360,23 @@ var GameConfig = function() {
 						// game start button
 						startButton: {
 							type: 'button',
-							name: 'game-start-button',
+							name: 'gameStartButton',
 							img: 'buttonGameStart',
-							x: 0,
-							y: (gameH * 0.7),
+							x: (gameW/2 - gameUnit),
+							y: (gameUnit * 7),
 							attrs: {
-								width: gameW,
-								height: ((gameW)/5),
-								alpha: 0.75
+								width: (gameUnit * 2),
+								height: (gameUnit * 2),
+								alpha: 0.5
 							},
-							callback: gameLogic.states.start.views.startButton.callback,
+							callback: gameLogic.global.buttonCallbacks.playStart.callback,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
 						// manual button
 						manualButton: {
 							type: 'button',
-							name: 'manual-button',
+							name: 'manualbutton',
 							img: 'blockClear',
 							x: 0,
 							y: (gameH - gameUnit * 2.5),
@@ -410,9 +385,7 @@ var GameConfig = function() {
 								height: gameUnit * 2.5,
 								alpha: 0.75
 							},
-							callback: function() {
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
-							},
+							callback: gameLogic.global.buttonCallbacks.manualStart.callback,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
@@ -428,7 +401,7 @@ var GameConfig = function() {
 					views: {
 						stateBg: {
 							type: 'sprite',
-							name: 'manual-background',
+							name: 'manualBg',
 							img: 'manualBg',
 							x: 0,
 							y: 0,
@@ -439,7 +412,7 @@ var GameConfig = function() {
 						},
 						closeButton: {
 							type: 'button',
-							name: 'close-button',
+							name: 'closeButton',
 							img: 'buttonClose',
 							x: (gameW - gameUnit * 1.5),
 							y: (gameUnit * 0.5),
@@ -447,9 +420,7 @@ var GameConfig = function() {
 								width: gameUnit * 1,
 								height: gameUnit * 1
 							},
-							callback: function() {
-								PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'start' });
-							},
+							callback: gameLogic.global.buttonCallbacks.manualClose.callback
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
@@ -466,7 +437,7 @@ var GameConfig = function() {
 						// bg
 						stateBg: {
 							type: 'sprite',
-							name: 'play-background',
+							name: 'playBg',
 							img: 'worldBg',
 							x: 0,
 							y: 0,
@@ -479,7 +450,7 @@ var GameConfig = function() {
 						// buttons group
 						buttons: {
 							type: 'group',
-							name: 'start-state-buttons',
+							name: 'startStateButtons',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -495,11 +466,11 @@ var GameConfig = function() {
 										height: gameUnit,
 										collideWorldBounds: true
 									},
-									input: gameLogic.states.play.views.buttons.plusButton.input
+									input: gameLogic.global.input.plusButton
 								},
 								minusButton: {
 									type: 'sprite',
-									name: 'minus-button',
+									name: 'minusButton',
 									img: 'buttonMinus',
 									x: gameUnit * 0.2,
 									y: gameUnit * 5.2,
@@ -507,11 +478,11 @@ var GameConfig = function() {
 										width: gameUnit,
 										height: gameUnit
 									},
-									input: gameLogic.states.play.views.buttons.minusButton.input
+									input: gameLogic.global.input.minusButton
 								},
 								usDetailButton: {
 									type: 'button',
-									name: 'start-build-button',
+									name: 'startBuildButton',
 									img: 'blockWhite',
 									x: gameUnit,
 									y: (gameUnit * 7),
@@ -520,7 +491,7 @@ var GameConfig = function() {
 										height: (gameUnit * 3),
 										alpha: 0.3
 									},
-									callback: gameLogic.states.play.views.buttons.usDetailButton.callback,
+									callback: gameLogic.global.buttonCallbacks.usDetailStart.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -539,7 +510,7 @@ var GameConfig = function() {
 						// bg
 						stateBg: {
 							type: 'sprite',
-							name: 'us-background',
+							name: 'usBg',
 							img: 'usDetailBg',
 							x: 0,
 							y: 0,
@@ -552,7 +523,7 @@ var GameConfig = function() {
 						// icons group
 						icons: {
 							type: 'group',
-							name: 'start-state-icons',
+							name: 'startStateIcons',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -560,7 +531,7 @@ var GameConfig = function() {
 							{
 								factoryIcon: {
 									type: 'sprite',
-									name: 'factory-icon',
+									name: 'factoryIcon',
 									img: 'iconFactory',
 									x: gameUnit,
 									y: gameUnit * 11,
@@ -568,11 +539,11 @@ var GameConfig = function() {
 										width: gameUnit * 2,
 										height: gameUnit * 1
 									},
-									input: gameLogic.states.usDetail.views.icons.input
+									// input: gameLogic.global.input.usDetail.views.icons.input
 								},
 								showroomIcon: {
 									type: 'sprite',
-									name: 'showroom-icon',
+									name: 'showroomIcon',
 									img: 'iconShowroom',
 									x: gameUnit * 4,
 									y: gameUnit * 11,
@@ -580,7 +551,7 @@ var GameConfig = function() {
 										width: gameUnit * 2,
 										height: gameUnit * 1
 									},
-									input: gameLogic.states.usDetail.views.icons.input
+									// input: gameLogic.global.input.usDetail.views.icons.input
 								}
 							}
 						}
@@ -599,7 +570,7 @@ var GameConfig = function() {
 						bg: 
 						{
 							type: 'sprite',
-							name: 'equipment-state-bg',
+							name: 'equipmentStateBg',
 							img: 'blockGreen',
 							x: 0,
 							y: 0,
@@ -607,13 +578,12 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH,
 								fixedToCamera: true
-							},
-							input: gameLogic.states.equipment.views.bg.input
+							}
 						},
 						// text group
 						text: {
 							type: 'group',
-							name: 'equipment-text-group',
+							name: 'equipmentTextGroup',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -621,7 +591,7 @@ var GameConfig = function() {
 							{
 								title: {
 									type: 'text',
-									name: 'equipment-title',
+									name: 'equipmentTitle',
 									text: 'Equipment Manager',
 									style: {
 									    font: (fontSizes.md + 'px Arial'),
@@ -635,7 +605,7 @@ var GameConfig = function() {
 								},
 								subtitle: {
 									type: 'text',
-									name: 'type-subtitle',
+									name: 'typeSubtitle',
 									text: 'Choose a machine type:',
 									style: {
 										font: (fontSizes.sm + 'px Arial'),
@@ -652,7 +622,7 @@ var GameConfig = function() {
 						// buttons group
 						buttons: {
 							type: 'group',
-							name: 'equipment-state-button-group',
+							name: 'equipmentStateButtonGroup',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -661,7 +631,7 @@ var GameConfig = function() {
 							{
 								closeButton: {
 									type: 'button',
-									name: 'close-button',
+									name: 'closeButton',
 									img: 'buttonClose',
 									x: (gameW - gameUnit * 1.25),
 									y: (gameUnit * 0.25),
@@ -669,7 +639,7 @@ var GameConfig = function() {
 										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									callback: gameLogic.states.equipment.views.buttons.closeButton.callback,
+									callback: gameLogic.global.buttonCallbacks.equipmentClose.callback,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -678,7 +648,7 @@ var GameConfig = function() {
 						// icons group
 						icons: {
 							type: 'group',
-							name: 'equipment-state-icon-group',
+							name: 'equipmentStateIconGroup',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -694,7 +664,7 @@ var GameConfig = function() {
 										width: gameUnit * 4,
 										height: gameUnit * 2
 									},
-									input: gameLogic.states.equipment.views.icons.tractor.input
+									input: gameLogic.global.input.tractor
 								},
 								skidsteerIcon: {
 									type: 'sprite',
@@ -706,7 +676,7 @@ var GameConfig = function() {
 										width: gameUnit * 4,
 										height: gameUnit * 2
 									},
-									input: gameLogic.states.equipment.views.icons.skidsteer.input
+									input: gameLogic.global.input.skidsteer
 								}
 							}
 						}
@@ -722,7 +692,7 @@ var GameConfig = function() {
 					views: {
 						editor: {
 							type: 'group',
-							name: 'editor-group',
+							name: 'editorGroup',
 							attrs: 
 							{
 								visible: false
@@ -733,7 +703,7 @@ var GameConfig = function() {
 								bg: 
 								{
 									type: 'sprite',
-									name: 'editor-bg',
+									name: 'editorBg',
 									img: 'buildBg',
 									x: 0,
 									y: 0,
@@ -745,7 +715,7 @@ var GameConfig = function() {
 								// text group
 								text: {
 									type: 'group',
-									name: 'editor-text',
+									name: 'editorText',
 									attrs: {
 										fixedToCamera: true
 									},
@@ -753,7 +723,7 @@ var GameConfig = function() {
 									{
 										title: {
 											type: 'text',
-											name: 'equipment-title',
+											name: 'equipmentTitle',
 											text: 'Build tractor',
 											style: {
 											    font: (fontSizes.md + 'px Arial'),
@@ -767,7 +737,7 @@ var GameConfig = function() {
 										},
 										cab: {
 											type: 'text',
-											name: 'equipment-wheels',
+											name: 'equipmentWheels',
 											text: 'cabs',
 											style: {
 											    font: (fontSizes.sm + 'px Arial'),
@@ -782,7 +752,7 @@ var GameConfig = function() {
 								// buttons group
 								buttons: {
 									type: 'group',
-									name: 'editor-buttons',
+									name: 'editorButtons',
 									attrs: {
 										fixedToCamera: true
 									},
@@ -791,7 +761,7 @@ var GameConfig = function() {
 									{
 										closeButton: {
 											type: 'button',
-											name: 'close-button',
+											name: 'closeButton',
 											img: 'buttonClose',
 											x: (gameW - gameUnit * 1.25),
 											y: (gameUnit * 0.25),
@@ -799,13 +769,13 @@ var GameConfig = function() {
 												width: gameUnit * 1,
 												height: gameUnit * 1
 											},
-											callback: gameLogic.states.equipmentEditor.views.editor.buttons.closeButton.callback,
+											callback: gameLogic.global.buttonCallbacks.equipmentEditorClose.callback,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
 										saveButton: {
 											type: 'button',
-											name: 'save-button',
+											name: 'saveButton',
 											img: 'blockGreen',
 											x: (gameUnit * 5),
 											y: (gameH - (gameUnit * 2)),
@@ -814,7 +784,7 @@ var GameConfig = function() {
 												height: gameUnit * 3,
 												alpha: 0.5
 											},
-											callback: gameLogic.states.equipmentEditor.views.editor.buttons.saveButton.callback,
+											callback: gameLogic.global.buttonCallbacks.equipmentEditorSave.callback,
 											context: this,
 											frames: [0, 0, 0, 0]
 										}
@@ -828,7 +798,7 @@ var GameConfig = function() {
 									{
 										wheelsPart: {
 											type: 'sprite',
-											name: 'wheels-part',
+											name: 'wheelsPart',
 											img: 'wheelsSprites',
 											x: equipmentEditorImages.wheels.x,
 											y: equipmentEditorImages.wheels.y,
@@ -837,11 +807,11 @@ var GameConfig = function() {
 												height: equipmentEditorImages.wheels.height,
 												frame: 0
 											},
-											input: gameLogic.states.equipmentEditor.views.editor.icons.wheelIcon.input
+											input: gameLogic.global.input.wheelIcon
 										},
 										enginePart: {
 											type: 'sprite',
-											name: 'engine-part',
+											name: 'enginePart',
 											img: 'engineSprites',
 											x: equipmentEditorImages.engine.x,
 											y: equipmentEditorImages.engine.y,
@@ -850,11 +820,11 @@ var GameConfig = function() {
 												height: equipmentEditorImages.engine.height,
 												frame: 0
 											},
-											input: gameLogic.states.equipmentEditor.views.editor.icons.engineIcon.input
+											input: gameLogic.global.input.engineIcon
 										},
 										cabIcon: {
 											type: 'sprite',
-											name: 'cab-part',
+											name: 'cabPart',
 											img: 'cabSprites',
 											x: equipmentEditorImages.cab.x,
 											y: equipmentEditorImages.cab.y,
@@ -863,7 +833,7 @@ var GameConfig = function() {
 												height: equipmentEditorImages.cab.height,
 												frame: 0
 											},
-											input: gameLogic.states.equipmentEditor.views.editor.icons.cabIcon.input
+											input: gameLogic.global.input.icons.cabIcon
 										}
 									}
 								}
@@ -871,14 +841,14 @@ var GameConfig = function() {
 						},
 						machineSize: {
 							type: 'group',
-							name: 'create-group',
+							name: 'createGroup',
 							attrs: {
 								visible: false
 							},
 							views: {
 								bg: {
 									type: 'sprite',
-									name: 'create-bg',
+									name: 'createBg',
 									img: 'equipmentPickerBg',
 									x: 0,
 									y: 0,
@@ -889,11 +859,11 @@ var GameConfig = function() {
 								},
 								icons: {
 									type: 'group',
-									name: 'create-icons',
+									name: 'createIcons',
 									views: {
 										basic: {
 											type: 'sprite',
-											name: 'create-basic-tractor',
+											name: 'createBasicTractor',
 											img: 'blockBlue',
 											x: 0,
 											y: gameUnit * 2,
@@ -902,11 +872,11 @@ var GameConfig = function() {
 												height: gameUnit * 4,
 												alpha: 0.5
 											},
-											input: gameLogic.states.equipmentEditor.views.machineSize.icons.createBasic.input
+											input: gameLogic.global.input.createBasic
 										},
 										medium: {
 											type: 'sprite',
-											name: 'create-medium-tractor',
+											name: 'createMediumTractor',
 											img: 'blockGreen',
 											x: 0,
 											y: gameUnit * 6,
@@ -915,11 +885,11 @@ var GameConfig = function() {
 												height: gameUnit * 4.5,
 												alpha: 0.5
 											},
-											input: gameLogic.states.equipmentEditor.views.machineSize.icons.createMedium.input
+											input: gameLogic.global.input.createMedium
 										},
 										heavy: {
 											type: 'sprite',
-											name: 'create-heavy-tractor',
+											name: 'createHeavyTractor',
 											img: 'blockRed',
 											x: 0,
 											y: gameUnit * 10.5,
@@ -928,7 +898,7 @@ var GameConfig = function() {
 												height: gameUnit * 5,
 												alpha: 0.5
 											},
-											input: gameLogic.states.equipmentEditor.views.machineSize.icons.createHeavy.input
+											input: gameLogic.global.input.createHeavy
 										}
 									}
 								}
@@ -988,7 +958,7 @@ var GameConfig = function() {
 										height: gameUnit * 1.5,
 										visible: false
 									},
-									callback: gameLogic.global.views.pauseButton.callback,
+									callback: gameLogic.global.buttonCallbacks.pauseButton.callback,
 									context: this,
 									frames: [0, 1, 1, 0]
 								},
@@ -1003,7 +973,7 @@ var GameConfig = function() {
 										height: gameUnit * 1.5,
 										visible: false
 									},
-									callback: gameLogic.global.views.resumeButton.callback,
+									callback: gameLogic.global.buttonCallbacks.resumeButton.callback,
 									context: this,
 									frames: [0, 1, 1, 0]
 								},
@@ -1018,7 +988,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2.5),
 										alpha: 0.3
 									},
-									callback: gameLogic.states.play.views.buttons.equipmentButton.callback,
+									callback: gameLogic.global.buttonCallbacks.equipmentStart.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}

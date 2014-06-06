@@ -270,6 +270,14 @@ PWG.ViewManager = function() {
 	
 	module.callMethod = function(path, method, args) {
 		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
+		var controller = this.getControllerFromPath(path);
+		
+		if(!controller) { return; }
+
+		controller.callMethod(method, args);
+	};
+
+	module.getControllerFromPath = function(path) {
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];
@@ -277,12 +285,6 @@ PWG.ViewManager = function() {
 		for(var i = 1; i < length; i++) {
 			controller = controller.children[chain[i]];
 		}
-
-		if(!controller) {
-			return;
-		}
-
-		controller.callMethod(method, args);
 	};
 	
 	module.update = function(controllers) {
