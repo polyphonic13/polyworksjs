@@ -54,7 +54,11 @@ var PhaserGame = function() {
 		if(gameLogic.global.listeners) {
 			PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
 		}
-	
+		
+		// init screen manager
+		PWG.ScreenManager.init(gameLogic.screens);
+		
+		// create phaser game
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
 			module.stage.gameH, 

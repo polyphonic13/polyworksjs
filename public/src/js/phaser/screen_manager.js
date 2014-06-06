@@ -36,9 +36,11 @@ PWG.ScreenManager = function() {
 	module.screens = {};
 	
 	module.init = function(screens) {
+		trace('ScreenManager/init');
 		PWG.Utils.each(
 			screens,
 			function(value, key) {
+				trace('\tcreating screen['+key+']')
 				this.screens[key] = new ScreenController(key, value);
 			},
 			this
