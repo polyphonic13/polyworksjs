@@ -10,7 +10,7 @@ var buildingCosts = {
 
 var turnGroups = [
 	'play',
-	'equipmentList',
+	'inventoryList',
 	'equipmentEditor',
 	'usDetail'
 ];
@@ -19,6 +19,26 @@ var gameLogic = {
 	global: {
 		listeners: 
 		[
+		// change state
+		{
+			event: PWG.Events.SHOW_GROUP,
+			handler: function(event) {
+				PWG.ScreenManager.changeScreen(event.value);
+				PWG.ViewManager.switchGroup(event.value);
+
+				if(turnGroups.indexOf(event.value) > -1) {
+					// trace('this is a turn group!');
+					if(!PhaserGame.turnActive) {
+						PhaserGame.startTurn();
+					}
+				} else {
+					if(PhaserGame.turnActive) {
+						// trace('deactivating turn');
+						PhaserGame.stopTurn();
+					}
+				}
+			}
+		},
 		// add notification
 		{
 			event: PWG.Events.OPEN_NOTIFICATION,
@@ -42,33 +62,13 @@ var gameLogic = {
 				this.views['notification'].hide();
 			}
 		},
-		// change state
-		{
-			event: PWG.Events.SHOW_GROUP,
-			handler: function(event) {
-				// PWG.StateManager.changeState(event.value);
-				PWG.ViewManager.switchGroup(event.value);
-
-				if(turnGroups.indexOf(event.value) > -1) {
-					// trace('this is a turn group!');
-					if(!PhaserGame.turnActive) {
-						PhaserGame.startTurn();
-					}
-				} else {
-					if(PhaserGame.turnActive) {
-						// trace('deactivating turn');
-						PhaserGame.stopTurn();
-					}
-				}
-			}
-		},
 		// game time updated
 		{
 			event: PWG.Events.GAME_TIME_UPDATED,
 			handler: function(event) {
 				PhaserGame.turnTime = event.value;
 				var text = (event.value >= 10) ? event.value : '0' + event.value;
-				trace('turn time = ' + event.value);
+				// trace('turn time = ' + event.value);
 				PWG.ViewManager.callMethod('global:globalText:timerText', 'setText', [text], this);
 			}
 		},
@@ -338,6 +338,11 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 				}
 			},
+			usDetailClose: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+				}
+			},
 			notificationClose: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
@@ -354,26 +359,36 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
 				}
 			},
-			equipmentStart: {
+			addBuilding: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
+					trace('add building button clicked');
 				}
 			},
-			equipmentClose: {
+			inventoryStart: {
+				callback: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
+				}
+			},
+			inventoryClose: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
 				}
 			},
+			addEquipment: {
+				callback: function() {
+					trace('add equipment button clicked');
+				}
+			},
 			equipmentEditorClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
 				}
 			},
 			equipmentEditorSave: {
 				callback: function() {
 					PhaserGame.newMachine.save();
 					PhaserGame.newMachine = null;
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
 				}
 			}
 		}
@@ -386,10 +401,25 @@ var gameLogic = {
 			
 		},
 		usDetail: {
-			
+			create: function() {
+				// show add building button
+				trace('show add building button');
+				PWG.ViewManager.showView('global:globalButtons:addBuilding');
+			},
+			shutdown: function() {
+				// hide add building button
+				PWG.ViewManager.hideView('global:globalButtons:addBuilding');
+			}
 		},
-		equipmentList: {
-			
+		inventoryList: {
+			create: function() {
+				// show add equipment button
+				PWG.ViewManager.showView('global:globalButtons:addEquipment');
+			},
+			shutdown: function() {
+				// hide add building button
+				PWG.ViewManager.hideView('global:globalButtons:addEquipment');
+			}
 		},
 		equipmentEditor: {
 			listeners: [
@@ -453,7 +483,7 @@ var gameLogic = {
 				// trace('create, views = ', this.views);
 				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
-					this.views['state-group'].children['create-group'].show();
+					// this.views['state-group'].children['create-group'].show();
 					var machine = new Machine({ type: PhaserGame.currentEquipmentType });
 
 					PhaserGame.newMachine = new Machine({

@@ -817,7 +817,7 @@ var GameConfig = function() {
 			},
 			// equipment
 			{
-				name: 'equipmentList',
+				name: 'inventoryList',
 				world: defaultWorld,
 				clearWorld: true,
 				clearCache: false,

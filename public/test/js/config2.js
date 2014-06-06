@@ -230,8 +230,9 @@ var GameConfig = function() {
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					worldBg: 'images/screens/screen_mocks_world.gif',
+					inventoryBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
-					equipmentPickerBg: 'images/screens/screen_mocks_tractor_picker.gif',
+					equipmentPickerBg: 'images/screens/screen_mocks_machine_picker.gif',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -338,7 +339,7 @@ var GameConfig = function() {
 			defaultGroup: 'start',
 			views: {
 				// start
-				startGroup: {
+				startScreen: {
 					name: 'start',
 					type: 'group',
 					attrs: {
@@ -392,7 +393,7 @@ var GameConfig = function() {
 					}
 				},
 				// manual
-				manualGroup: {
+				manualScreen: {
 					name: 'manual',
 					type: 'group',
 					attrs: {
@@ -427,7 +428,7 @@ var GameConfig = function() {
 					}
 				},
 				// play
-				playGroup: {
+				playScreen: {
 					name: 'play',
 					type: 'group',
 					attrs: {
@@ -463,8 +464,7 @@ var GameConfig = function() {
 									y: gameUnit * 4,
 									attrs: {
 										width: gameUnit,
-										height: gameUnit,
-										collideWorldBounds: true
+										height: gameUnit
 									},
 									input: gameLogic.global.input.plusButton
 								},
@@ -500,7 +500,7 @@ var GameConfig = function() {
 					}
 				},
 				// usDetail
-				usDetailGroup: {
+				usDetailScreen: {
 					name: 'usDetail',
 					type: 'group',
 					attrs: {
@@ -520,10 +520,32 @@ var GameConfig = function() {
 								fixedToCamera: true
 							}
 						},
+						// buttons group
+						buttons: {
+							type: 'group',
+							name: 'usDetailButtons',
+							views: {
+								closeButton: {
+									type: 'button',
+									name: 'closeButton',
+									img: 'buttonClose',
+									x: (gameW - gameUnit * 1.5),
+									y: (gameUnit * 0.5),
+									attrs: {
+										width: gameUnit * 1,
+										height: gameUnit * 1
+									},
+									callback: gameLogic.global.buttonCallbacks.usDetailClose.callback,
+									context: this,
+									frames: [0, 1, 1, 0]
+								}
+
+							}
+						},
 						// icons group
 						icons: {
 							type: 'group',
-							name: 'startStateIcons',
+							name: 'usDetailIcons',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -557,9 +579,9 @@ var GameConfig = function() {
 						}
 					}
 				},
-				// equipment
-				equipmentGroup: {
-					name: 'equipmentList',
+				// inventroy
+				inventoryScreen: {
+					name: 'inventoryList',
 					type: 'group',
 					attrs: {
 						visible: false
@@ -570,8 +592,8 @@ var GameConfig = function() {
 						bg: 
 						{
 							type: 'sprite',
-							name: 'equipmentStateBg',
-							img: 'blockGreen',
+							name: 'background',
+							img: 'inventoryBg',
 							x: 0,
 							y: 0,
 							attrs: {
@@ -580,49 +602,10 @@ var GameConfig = function() {
 								fixedToCamera: true
 							}
 						},
-						// text group
-						text: {
-							type: 'group',
-							name: 'equipmentTextGroup',
-							attrs: {
-								fixedToCamera: true
-							},
-							views: 
-							{
-								title: {
-									type: 'text',
-									name: 'equipmentTitle',
-									text: 'Equipment Manager',
-									style: {
-									    font: (fontSizes.md + 'px Arial'),
-								        fill: palette.white
-									},
-									x: 0,
-									y: (gameUnit * 2),
-									position: {
-										centerX: true
-									}
-								},
-								subtitle: {
-									type: 'text',
-									name: 'typeSubtitle',
-									text: 'Choose a machine type:',
-									style: {
-										font: (fontSizes.sm + 'px Arial'),
-										fill: palette.white
-									},
-									x: 0,
-									y: (gameUnit * 4),
-									position: {
-										centerX: true
-									}
-								}
-							}
-						},
 						// buttons group
 						buttons: {
 							type: 'group',
-							name: 'equipmentStateButtonGroup',
+							name: 'inventoryScreenButtonGroup',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -639,51 +622,51 @@ var GameConfig = function() {
 										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentClose.callback,
+									callback: gameLogic.global.buttonCallbacks.inventoryClose.callback,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
 							}
 						},
 						// icons group
-						icons: {
-							type: 'group',
-							name: 'equipmentStateIconGroup',
-							attrs: {
-								fixedToCamera: true
-							},
-							views: 
-							{
-								tractorIcon: {
-									type: 'sprite',
-									name: 'tractor',
-									img: 'iconTractor',
-									x: gameUnit * 3,
-									y: gameUnit * 7,
-									attrs: {
-										width: gameUnit * 4,
-										height: gameUnit * 2
-									},
-									input: gameLogic.global.input.tractor
-								},
-								skidsteerIcon: {
-									type: 'sprite',
-									name: 'skidsteer',
-									img: 'iconSkidsteer',
-									x: gameUnit * 3,
-									y: gameUnit * 11,
-									attrs: {
-										width: gameUnit * 4,
-										height: gameUnit * 2
-									},
-									input: gameLogic.global.input.skidsteer
-								}
-							}
-						}
+						// icons: {
+						// 	type: 'group',
+						// 	name: 'inventoryScreenIconGroup',
+						// 	attrs: {
+						// 		fixedToCamera: true
+						// 	},
+						// 	views: 
+						// 	{
+						// 		tractorIcon: {
+						// 			type: 'sprite',
+						// 			name: 'tractor',
+						// 			img: 'iconTractor',
+						// 			x: gameUnit * 3,
+						// 			y: gameUnit * 7,
+						// 			attrs: {
+						// 				width: gameUnit * 4,
+						// 				height: gameUnit * 2
+						// 			},
+						// 			input: gameLogic.global.input.tractor
+						// 		},
+						// 		skidsteerIcon: {
+						// 			type: 'sprite',
+						// 			name: 'skidsteer',
+						// 			img: 'iconSkidsteer',
+						// 			x: gameUnit * 3,
+						// 			y: gameUnit * 11,
+						// 			attrs: {
+						// 				width: gameUnit * 4,
+						// 				height: gameUnit * 2
+						// 			},
+						// 			input: gameLogic.global.input.skidsteer
+						// 		}
+						// 	}
+						// }
 					}
 				},
 				// equipment editor
-				equipmentEditorGroup: {
+				equipmentEditorScreen: {
 					name: 'equipmentEditor',
 					type: 'group',
 					attrs: {
@@ -986,9 +969,40 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
-										alpha: 0.3
+										alpha: 0.3,
+										// visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentStart.callback,
+									callback: gameLogic.global.buttonCallbacks.inventoryStart.callback,
+									context: this,
+									frames: [0, 0, 0, 0]
+								},
+								addEquipmentButton: {
+									type: 'button',
+									name: 'addEquipment',
+									img: 'buttonPlus',
+									x: (gameW/2 - gameUnit/2),
+									y: (gameH - gameUnit * 1.5),
+									attrs: {
+										width: (gameUnit),
+										height: (gameUnit),
+										visible: false
+									},
+									callback: gameLogic.global.buttonCallbacks.addEquipment.callback,
+									context: this,
+									frames: [0, 0, 0, 0]
+								},
+								addBuildingButton: {
+									type: 'button',
+									name: 'addBuilding',
+									img: 'buttonPlus',
+									x: (gameW/2 - gameUnit/2),
+									y: (gameH - gameUnit * 1.5),
+									attrs: {
+										width: (gameUnit),
+										height: (gameUnit),
+										visible: false
+									},
+									callback: gameLogic.global.buttonCallbacks.addBuilding.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}

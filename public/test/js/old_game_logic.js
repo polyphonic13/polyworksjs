@@ -274,7 +274,7 @@ var gameLogic =
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
 						}
 					}
 				},
@@ -365,7 +365,7 @@ var gameLogic =
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
 						}
 					}
 				},
@@ -572,7 +572,7 @@ var gameLogic =
 						{
 							callback: function() 
 							{
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
+								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
 							}
 						},
 						saveButton: 
@@ -583,7 +583,7 @@ var gameLogic =
 								PhaserGame.newMachine = null;
 								// playerData.equipment[PhaserGame.activeMachineId].save();
 								// PhaserGame.activeMachineId = -1;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
+								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
 							}
 						}
 					},
