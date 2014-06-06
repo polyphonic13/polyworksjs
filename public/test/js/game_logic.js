@@ -10,7 +10,7 @@ var buildingCosts = {
 
 var turnGroups = [
 	'play',
-	'equipment',
+	'equipmentList',
 	'equipmentEditor',
 	'usDetail'
 ];
@@ -356,7 +356,7 @@ var gameLogic = {
 			},
 			equipmentStart: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
 				}
 			},
 			equipmentClose: {
@@ -366,20 +366,89 @@ var gameLogic = {
 			},
 			equipmentEditorClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
 				}
 			},
 			equipmentEditorSave: {
 				callback: function() {
 					PhaserGame.newMachine.save();
 					PhaserGame.newMachine = null;
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipment' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentList' });
 				}
 			}
 		}
 	},
 	screens: {
+		start: {
+			
+		},
+		play: {
+			
+		},
+		usDetail: {
+			
+		},
+		equipmentList: {
+			
+		},
 		equipmentEditor: {
+			listeners: [
+			{
+				event: PWG.Events.ADD_PART,
+				handler: function(event) 
+				{
+					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
+					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
+					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
+					// trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
+					var partView = this.overlayMenuType + '-part';
+					this.views['state-group'].children['editor-group'].children['editor-parts'].children[partView].view.frame = frame;
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+				}
+			},
+			{
+				event: PWG.Events.SHOW_BUILD_GROUP,
+				handler: function(event) 
+				{
+					// trace('showBuildGroup, size = ' + event.size);
+					PhaserGame.newMachine.set('size', event.size);
+					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
+					this.views['state-group'].children[event.previousGroup].hide();
+					this.views['state-group'].children['editor-group'].show();
+				}
+			},
+			{
+				event: PWG.Events.OPEN_OVERLAY_MENU,
+				handler: function(event) 
+				{
+					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
+					if(!this.overlayMenuOpen) 
+					{
+						if(this.overlayMenuType !== event.value) 
+						{
+							PhaserGame.addOverlayMenuItems.call(this, event.value, this.views);
+						}
+
+						this.views['overlay-menu'].show();
+						this.overlayMenuType = event.value;
+						this.overlayMenuOpen = true;
+					}
+				}
+			},
+			{
+				event: PWG.Events.CLOSE_OVERLAY_MENU,
+				handler: function(event) 
+				{
+					// trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
+					if(this.overlayMenuOpen) 
+					{
+						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
+						this.views['overlay-menu'].hide();
+						this.overlayMenuOpen = false;
+					}
+				}
+			}
+			],
 			create: function() {
 				// trace('create, views = ', this.views);
 				switch(PhaserGame.currentEquipmentAction) {

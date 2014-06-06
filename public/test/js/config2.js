@@ -559,7 +559,7 @@ var GameConfig = function() {
 				},
 				// equipment
 				equipmentGroup: {
-					name: 'equipment',
+					name: 'equipmentList',
 					type: 'group',
 					attrs: {
 						visible: false
