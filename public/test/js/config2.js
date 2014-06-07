@@ -893,9 +893,12 @@ var GameConfig = function() {
 				global: {
 					type: 'group',
 					name: 'global',
+					attrs: {
+						visible: false
+					},
 					views: {
-						dashboard: {
-							name: 'dashboard',
+						dashboardBg: {
+							name: 'dashboardBg',
 							type: 'sprite',
 							img: 'dashboard',
 							x: 0,
@@ -906,9 +909,9 @@ var GameConfig = function() {
 								fixedToCamera: true
 							},
 						},
-						textGroup: {
+						turnGroup: {
 							type: 'group',
-							name: 'globalText',
+							name: 'turnGroup',
 							views: {
 								timerText: {
 									type: 'text',
@@ -923,19 +926,13 @@ var GameConfig = function() {
 									position: {
 										centerX: true
 									}
-								}
-							}
-						},
-						buttonsGroup: {
-							type: 'group',
-							name: 'globalButtons',
-							views: {
+								},
 								pauseButton: {
 									type: 'button',
 									name: 'pauseButton',
 									img: 'buttonPause',
-									x: (gameW - gameUnit * 1.75),
-									y: (gameH - gameUnit * 4.75),
+									x: (gameUnit * 0.25),
+									y: (gameH - gameUnit * 1.75),
 									attrs: {
 										width: gameUnit * 1.5,
 										height: gameUnit * 1.5,
@@ -949,8 +946,8 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'resumeButton',
 									img: 'buttonPlay',
-									x: (gameW - gameUnit * 1.75),
-									y: (gameH - gameUnit * 4.75),
+									x: (gameUnit * 0.25),
+									y: (gameH - gameUnit * 1.75),
 									attrs: {
 										width: gameUnit * 1.5,
 										height: gameUnit * 1.5,
@@ -970,7 +967,7 @@ var GameConfig = function() {
 										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
 										alpha: 0.3,
-										// visible: false
+										visible: false
 									},
 									callback: gameLogic.global.buttonCallbacks.inventoryStart.callback,
 									context: this,
@@ -981,7 +978,7 @@ var GameConfig = function() {
 									name: 'addEquipment',
 									img: 'buttonPlus',
 									x: (gameW/2 - gameUnit/2),
-									y: (gameH - gameUnit * 1.5),
+									y: (gameH - gameUnit * 1.25),
 									attrs: {
 										width: (gameUnit),
 										height: (gameUnit),
@@ -996,7 +993,7 @@ var GameConfig = function() {
 									name: 'addBuilding',
 									img: 'buttonPlus',
 									x: (gameW/2 - gameUnit/2),
-									y: (gameH - gameUnit * 1.5),
+									y: (gameH - gameUnit * 1.25),
 									attrs: {
 										width: (gameUnit),
 										height: (gameUnit),

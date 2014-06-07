@@ -69,7 +69,7 @@ var gameLogic = {
 				PhaserGame.turnTime = event.value;
 				var text = (event.value >= 10) ? event.value : '0' + event.value;
 				// trace('turn time = ' + event.value);
-				PWG.ViewManager.callMethod('global:globalText:timerText', 'setText', [text], this);
+				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [text], this);
 			}
 		},
 		// turn ended
@@ -78,7 +78,25 @@ var gameLogic = {
 			handler: function(event) {
 				PWG.PhaserTime.removeTimer('turnTime');
 				trace('turn ended');
-				PWG.ViewManager.callMethod('global:globalText:timerText', 'setText', [TIME_PER_TURN], this);
+				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
+			}
+		},
+		// pause
+		{
+			event: PWG.Events.PAUSE_GAME,
+			handler: function(event) {
+				PhaserGame.turnTimer.pause();
+				PWG.ViewManager.hideView('global:turnGroup:pauseButton');
+				PWG.ViewManager.showView('global:turnGroup:resumeButton');
+			}
+		},
+		// resume
+		{
+			event: PWG.Events.RESUME_GAME,
+			handler: function(event) {
+				PhaserGame.turnTimer.resume();
+				PWG.ViewManager.showView('global:turnGroup:pauseButton');
+				PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 			}
 		},
 		// add part
@@ -163,6 +181,10 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
+				PWG.ViewManager.showView('global');
+				PWG.ViewManager.hideView('global:turnGroup:resumeButton');
+				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
+				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			},
 			stopTurn: function() {
 				PhaserGame.removeTimer('turnTimer');
@@ -404,21 +426,21 @@ var gameLogic = {
 			create: function() {
 				// show add building button
 				trace('show add building button');
-				PWG.ViewManager.showView('global:globalButtons:addBuilding');
+				PWG.ViewManager.showView('global:turnGroup:addBuilding');
 			},
 			shutdown: function() {
 				// hide add building button
-				PWG.ViewManager.hideView('global:globalButtons:addBuilding');
+				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 			}
 		},
 		inventoryList: {
 			create: function() {
 				// show add equipment button
-				PWG.ViewManager.showView('global:globalButtons:addEquipment');
+				PWG.ViewManager.showView('global:turnGroup:addEquipment');
 			},
 			shutdown: function() {
 				// hide add building button
-				PWG.ViewManager.hideView('global:globalButtons:addEquipment');
+				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			}
 		},
 		equipmentEditor: {

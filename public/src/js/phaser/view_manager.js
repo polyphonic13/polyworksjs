@@ -285,11 +285,13 @@ PWG.ViewManager = function() {
 	};
 
 	module.getViewFromPath = function(path) {
+		// trace('ViewManager/getViewFromPath, path = ' + path);
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];
-
+		// trace('\tcontroller = ', controller);
 		for(var i = 1; i < length; i++) {
+			// trace('\tchain['+i+'] = ' + chain[i] + ', controller now = ', controller);
 			controller = controller.children[chain[i]];
 		}
 		return controller;
