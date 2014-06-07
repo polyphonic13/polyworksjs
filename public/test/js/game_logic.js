@@ -166,10 +166,15 @@ var gameLogic = {
 			},
 			preload: function() {
 				PWG.PhaserLoader.load(PhaserGame.config.assets);
+				// PWG.ScreenManager.preload();
 			},
 			create: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
+				// PWG.ScreenManager.create();
 			},
+			// update: function() {
+			// 	PWG.ScreenManager.update();
+			// },
 			getSavedData: function() {
 				PhaserGame.gameData = PWG.Storage.get(GAME_NAME);
 				trace('post get saved data, gameData = ', PhaserGame.gameData);
@@ -416,6 +421,7 @@ var gameLogic = {
 			addEquipment: {
 				callback: function() {
 					trace('add equipment button clicked');
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEditor' });
 				}
 			},
 			equipmentEditorClose: {

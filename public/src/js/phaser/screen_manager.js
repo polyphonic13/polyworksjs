@@ -55,6 +55,10 @@ PWG.ScreenManager = function() {
 		this.create();
 	};
 	
+	module.preload = function() {
+		
+	};
+	
 	module.create = function() {
 		if(this.currentId !== '') {
 			this.screens[this.currentId].create();
@@ -65,6 +69,10 @@ PWG.ScreenManager = function() {
 		if(this.currentId !== '') {
 			this.screens[this.currentId].update();
 		}
+	};
+	
+	module.render = function() {
+		
 	};
 	
 	module.shutdown = function() {

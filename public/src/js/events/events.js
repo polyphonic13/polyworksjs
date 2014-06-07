@@ -15,7 +15,6 @@ PWG.Events = {
 	UPDATE_AND_OPEN_NOTIFICATION: 'updateAndOpenNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
-	HIDE_GROUP: 'hideGroup',
 	ADD_PART: 'addPart',
 	ZOOM_IN: 'zoomIn',
 	ZOOM_OUT: 'zoomOut',

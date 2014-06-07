@@ -676,15 +676,12 @@ var GameConfig = function() {
 						editor: {
 							type: 'group',
 							name: 'editorGroup',
-							attrs: 
-							{
+							attrs: {
 								visible: false
 							},
-							views: 
-							{
+							views: {
 								// bg
-								bg: 
-								{
+								bg: {
 									type: 'sprite',
 									name: 'editorBg',
 									img: 'buildBg',
@@ -739,9 +736,7 @@ var GameConfig = function() {
 									attrs: {
 										fixedToCamera: true
 									},
-									views: 
-									// close button
-									{
+									views: {
 										closeButton: {
 											type: 'button',
 											name: 'closeButton',
