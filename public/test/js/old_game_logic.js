@@ -274,7 +274,7 @@ var gameLogic =
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
 						}
 					}
 				},
@@ -365,7 +365,7 @@ var gameLogic =
 					{
 						callback: function() 
 						{
-							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
+							PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
 						}
 					}
 				},
@@ -452,7 +452,7 @@ var gameLogic =
 							inputDown: function() {
 								PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
 								PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentEditor' });
+								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentCreate' });
 							}
 						}
 					},
@@ -468,7 +468,7 @@ var gameLogic =
 				}
 			}
 		},
-		equipmentEditor: 
+		equipmentCreate: 
 		{
 			listeners: [
 			PWG.Utils.clone(sharedListeners.gameTimeUpdated),
@@ -572,7 +572,7 @@ var gameLogic =
 						{
 							callback: function() 
 							{
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
+								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
 							}
 						},
 						saveButton: 
@@ -583,7 +583,7 @@ var gameLogic =
 								PhaserGame.newMachine = null;
 								// playerData.equipment[PhaserGame.activeMachineId].save();
 								// PhaserGame.activeMachineId = -1;
-								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'inventoryList' });
+								PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'equipmentList' });
 							}
 						}
 					},

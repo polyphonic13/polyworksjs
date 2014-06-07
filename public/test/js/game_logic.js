@@ -11,8 +11,8 @@ var buildingCosts = {
 
 var turnGroups = [
 	'play',
-	'inventoryList',
-	'equipmentEditor',
+	'equipmentList',
+	'equipmentCreate',
 	'usDetail'
 ];
 
@@ -281,7 +281,7 @@ var gameLogic = {
 				inputDown: function() {
 					PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
 					PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEditor' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
 				}
 			},
 			skidsteer: {
@@ -410,7 +410,7 @@ var gameLogic = {
 			},
 			inventoryStart: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			},
 			inventoryClose: {
@@ -421,19 +421,19 @@ var gameLogic = {
 			addEquipment: {
 				callback: function() {
 					trace('add equipment button clicked');
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEditor' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
 				}
 			},
-			equipmentEditorClose: {
+			equipmentCreateClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			},
-			equipmentEditorSave: {
+			equipmentCreateSave: {
 				callback: function() {
 					PhaserGame.newMachine.save();
 					PhaserGame.newMachine = null;
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			}
 		}
@@ -456,7 +456,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 			}
 		},
-		inventoryList: {
+		equipmentList: {
 			create: function() {
 				// show add equipment button
 				PWG.ViewManager.showView('global:turnGroup:addEquipment');
@@ -466,12 +466,11 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			}
 		},
-		equipmentEditor: {
+		equipmentCreate: {
 			listeners: [
 			{
 				event: PWG.Events.ADD_PART,
-				handler: function(event) 
-				{
+				handler: function(event) {
 					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
 					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
 					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
@@ -483,8 +482,7 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.SHOW_BUILD_GROUP,
-				handler: function(event) 
-				{
+				handler: function(event) {
 					// trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.newMachine.set('size', event.size);
 					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
@@ -494,8 +492,7 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.OPEN_OVERLAY_MENU,
-				handler: function(event) 
-				{
+				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
 					if(!this.overlayMenuOpen) 
 					{
@@ -512,11 +509,9 @@ var gameLogic = {
 			},
 			{
 				event: PWG.Events.CLOSE_OVERLAY_MENU,
-				handler: function(event) 
-				{
+				handler: function(event) {
 					// trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
-					if(this.overlayMenuOpen) 
-					{
+					if(this.overlayMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						this.views['overlay-menu'].hide();
 						this.overlayMenuOpen = false;
@@ -552,6 +547,10 @@ var gameLogic = {
 				this.overlayMenuType = '';
 				this.overlayMenuOpen = false;
 			}
+		},
+		equipmentEdit: {
+			listeners: [
+			]
 		}
 	}
 };

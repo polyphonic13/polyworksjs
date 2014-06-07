@@ -197,7 +197,7 @@ var GameConfig = function() {
 			}
 		};
 
-		var equipmentEditorImages = {
+		var equipmentCreateImages = {
 			wheels: {
 				x: (gameUnit * 1),
 				y: (gameUnit * 5.5),
@@ -232,7 +232,8 @@ var GameConfig = function() {
 					worldBg: 'images/screens/screen_mocks_world.gif',
 					inventoryBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
-					equipmentPickerBg: 'images/screens/screen_mocks_machine_picker.gif',
+					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
+					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -581,7 +582,7 @@ var GameConfig = function() {
 				},
 				// inventroy
 				inventoryScreen: {
-					name: 'inventoryList',
+					name: 'equipmentList',
 					type: 'group',
 					attrs: {
 						visible: false
@@ -666,8 +667,8 @@ var GameConfig = function() {
 					}
 				},
 				// equipment editor
-				equipmentEditorScreen: {
-					name: 'equipmentEditor',
+				equipmentCreateScreen: {
+					name: 'equipmentCreate',
 					type: 'group',
 					attrs: {
 						visible: false
@@ -747,7 +748,7 @@ var GameConfig = function() {
 												width: gameUnit * 1,
 												height: gameUnit * 1
 											},
-											callback: gameLogic.global.buttonCallbacks.equipmentEditorClose.callback,
+											callback: gameLogic.global.buttonCallbacks.equipmentCreateClose.callback,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -762,7 +763,7 @@ var GameConfig = function() {
 												height: gameUnit * 3,
 												alpha: 0.5
 											},
-											callback: gameLogic.global.buttonCallbacks.equipmentEditorSave.callback,
+											callback: gameLogic.global.buttonCallbacks.equipmentCreateSave.callback,
 											context: this,
 											frames: [0, 0, 0, 0]
 										}
@@ -778,11 +779,11 @@ var GameConfig = function() {
 											type: 'sprite',
 											name: 'wheelsPart',
 											img: 'wheelsSprites',
-											x: equipmentEditorImages.wheels.x,
-											y: equipmentEditorImages.wheels.y,
+											x: equipmentCreateImages.wheels.x,
+											y: equipmentCreateImages.wheels.y,
 											attrs: {
-												width: equipmentEditorImages.wheels.width,
-												height: equipmentEditorImages.wheels.height,
+												width: equipmentCreateImages.wheels.width,
+												height: equipmentCreateImages.wheels.height,
 												frame: 0
 											},
 											input: gameLogic.global.input.wheelIcon
@@ -791,11 +792,11 @@ var GameConfig = function() {
 											type: 'sprite',
 											name: 'enginePart',
 											img: 'engineSprites',
-											x: equipmentEditorImages.engine.x,
-											y: equipmentEditorImages.engine.y,
+											x: equipmentCreateImages.engine.x,
+											y: equipmentCreateImages.engine.y,
 											attrs: {
-												width: equipmentEditorImages.engine.width,
-												height: equipmentEditorImages.engine.height,
+												width: equipmentCreateImages.engine.width,
+												height: equipmentCreateImages.engine.height,
 												frame: 0
 											},
 											input: gameLogic.global.input.engineIcon
@@ -804,11 +805,11 @@ var GameConfig = function() {
 											type: 'sprite',
 											name: 'cabPart',
 											img: 'cabSprites',
-											x: equipmentEditorImages.cab.x,
-											y: equipmentEditorImages.cab.y,
+											x: equipmentCreateImages.cab.x,
+											y: equipmentCreateImages.cab.y,
 											attrs: {
-												width: equipmentEditorImages.cab.width,
-												height: equipmentEditorImages.cab.height,
+												width: equipmentCreateImages.cab.width,
+												height: equipmentCreateImages.cab.height,
 												frame: 0
 											},
 											input: gameLogic.global.input.cabIcon
@@ -827,7 +828,7 @@ var GameConfig = function() {
 								bg: {
 									type: 'sprite',
 									name: 'createBg',
-									img: 'equipmentPickerBg',
+									img: 'equipmentCreateBg',
 									x: 0,
 									y: 0,
 									attrs: {

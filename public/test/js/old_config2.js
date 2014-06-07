@@ -211,7 +211,7 @@ var GameConfig = function() {
 			}
 		};
 
-		var equipmentEditorImages = {
+		var equipmentCreateImages = {
 			wheels: {
 				x: (gameUnit * 1),
 				y: (gameUnit * 5.5),
@@ -817,7 +817,7 @@ var GameConfig = function() {
 			},
 			// equipment
 			{
-				name: 'inventoryList',
+				name: 'equipmentList',
 				world: defaultWorld,
 				clearWorld: true,
 				clearCache: false,
@@ -964,7 +964,7 @@ var GameConfig = function() {
 			},
 			// equipment editor
 			{
-				name: 'equipmentEditor',
+				name: 'equipmentCreate',
 				world: defaultWorld,
 				clearWorld: true,
 				clearCache: false,
@@ -998,10 +998,10 @@ var GameConfig = function() {
 					'cabSprites'
 					]
 				},
-				listeners: gameLogic.states.equipmentEditor.listeners,
-				create: gameLogic.states.equipmentEditor.create,
-				shutdown: gameLogic.states.equipmentEditor.shutdown,
-				methods: gameLogic.states.equipmentEditor.methods,
+				listeners: gameLogic.states.equipmentCreate.listeners,
+				create: gameLogic.states.equipmentCreate.create,
+				shutdown: gameLogic.states.equipmentCreate.shutdown,
+				methods: gameLogic.states.equipmentCreate.methods,
 				views: 
 				{
 					stateGroup: 
@@ -1112,7 +1112,7 @@ var GameConfig = function() {
 													width: gameUnit * 1,
 													height: gameUnit * 1
 												},
-												callback: gameLogic.states.equipmentEditor.views.editor.buttons.closeButton.callback,
+												callback: gameLogic.states.equipmentCreate.views.editor.buttons.closeButton.callback,
 												context: this,
 												frames: [0, 1, 1, 0]
 											},
@@ -1127,7 +1127,7 @@ var GameConfig = function() {
 													height: gameUnit * 3,
 													alpha: 0.5
 												},
-												callback: gameLogic.states.equipmentEditor.views.editor.buttons.saveButton.callback,
+												callback: gameLogic.states.equipmentCreate.views.editor.buttons.saveButton.callback,
 												context: this,
 												frames: [0, 0, 0, 0]
 											}
@@ -1143,40 +1143,40 @@ var GameConfig = function() {
 												type: 'sprite',
 												name: 'wheels-part',
 												img: 'wheelsSprites',
-												x: equipmentEditorImages.wheels.x,
-												y: equipmentEditorImages.wheels.y,
+												x: equipmentCreateImages.wheels.x,
+												y: equipmentCreateImages.wheels.y,
 												attrs: {
-													width: equipmentEditorImages.wheels.width,
-													height: equipmentEditorImages.wheels.height,
+													width: equipmentCreateImages.wheels.width,
+													height: equipmentCreateImages.wheels.height,
 													frame: 0
 												},
-												input: gameLogic.states.equipmentEditor.views.editor.icons.wheelIcon.input
+												input: gameLogic.states.equipmentCreate.views.editor.icons.wheelIcon.input
 											},
 											enginePart: {
 												type: 'sprite',
 												name: 'engine-part',
 												img: 'engineSprites',
-												x: equipmentEditorImages.engine.x,
-												y: equipmentEditorImages.engine.y,
+												x: equipmentCreateImages.engine.x,
+												y: equipmentCreateImages.engine.y,
 												attrs: {
-													width: equipmentEditorImages.engine.width,
-													height: equipmentEditorImages.engine.height,
+													width: equipmentCreateImages.engine.width,
+													height: equipmentCreateImages.engine.height,
 													frame: 0
 												},
-												input: gameLogic.states.equipmentEditor.views.editor.icons.engineIcon.input
+												input: gameLogic.states.equipmentCreate.views.editor.icons.engineIcon.input
 											},
 											cabIcon: {
 												type: 'sprite',
 												name: 'cab-part',
 												img: 'cabSprites',
-												x: equipmentEditorImages.cab.x,
-												y: equipmentEditorImages.cab.y,
+												x: equipmentCreateImages.cab.x,
+												y: equipmentCreateImages.cab.y,
 												attrs: {
-													width: equipmentEditorImages.cab.width,
-													height: equipmentEditorImages.cab.height,
+													width: equipmentCreateImages.cab.width,
+													height: equipmentCreateImages.cab.height,
 													frame: 0
 												},
-												input: gameLogic.states.equipmentEditor.views.editor.icons.cabIcon.input
+												input: gameLogic.states.equipmentCreate.views.editor.icons.cabIcon.input
 											}
 										}
 									}
@@ -1215,7 +1215,7 @@ var GameConfig = function() {
 													height: gameUnit * 4,
 													alpha: 0.5
 												},
-												input: gameLogic.states.equipmentEditor.views.machineSize.icons.createBasic.input
+												input: gameLogic.states.equipmentCreate.views.machineSize.icons.createBasic.input
 											},
 											medium: {
 												type: 'sprite',
@@ -1228,7 +1228,7 @@ var GameConfig = function() {
 													height: gameUnit * 4.5,
 													alpha: 0.5
 												},
-												input: gameLogic.states.equipmentEditor.views.machineSize.icons.createMedium.input
+												input: gameLogic.states.equipmentCreate.views.machineSize.icons.createMedium.input
 											},
 											heavy: {
 												type: 'sprite',
@@ -1241,7 +1241,7 @@ var GameConfig = function() {
 													height: gameUnit * 5,
 													alpha: 0.5
 												},
-												input: gameLogic.states.equipmentEditor.views.machineSize.icons.createHeavy.input
+												input: gameLogic.states.equipmentCreate.views.machineSize.icons.createHeavy.input
 											}
 										}
 									}
