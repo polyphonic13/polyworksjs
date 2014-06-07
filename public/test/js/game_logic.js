@@ -1,3 +1,4 @@
+var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
@@ -21,7 +22,7 @@ var gameLogic = {
 		[
 		// change state
 		{
-			event: PWG.Events.SHOW_GROUP,
+			event: PWG.Events.CHANGE_SCREEN,
 			handler: function(event) {
 				PWG.ScreenManager.changeScreen(event.value);
 				PWG.ViewManager.switchGroup(event.value);
@@ -160,6 +161,22 @@ var gameLogic = {
 		}
 		],
 		methods: {
+			init: function() {
+				PhaserGame.getSavedData();
+			},
+			preload: function() {
+				PWG.PhaserLoader.load(PhaserGame.config.assets);
+			},
+			create: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
+			},
+			getSavedData: function() {
+				PhaserGame.gameData = PWG.Storage.get(GAME_NAME);
+				trace('post get saved data, gameData = ', PhaserGame.gameData);
+			},
+			setSavedData: function(data) {
+				PWG.Storage.set(GAME_NAME, PhaserGame.gameData);
+			},
 			update: function() {
 
 			},
@@ -259,14 +276,14 @@ var gameLogic = {
 				inputDown: function() {
 					PhaserGame.currentEquipmentType = EquipmentTypes.TRACTOR;
 					PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'equipmentEditor' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEditor' });
 				}
 			},
 			skidsteer: {
 				inputDown: function() {
 					PhaserGame.currentEquipmentType = EquipmentTypes.SKIDSTEER;
 					PhaserGame.currentEquipmentAction = EquipmentActions.CREATE;
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'skidsteerBuilder' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'skidsteerBuilder' });
 				}
 			},
 			createBasic: {
@@ -327,21 +344,21 @@ var gameLogic = {
 		buttonCallbacks: {
 			manualStart: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
 				}
 			},
 			manualClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'start' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'start' });
 				},
 			},
 			playStart: {
 				callback: function() {
 					if(PhaserGame.isFirstPlay) {
-						PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'manual' });
+						PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
 						PhaserGame.isFirstPlay = false;
 					} else {
-						PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+						PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 					}
 				}
 			},
@@ -357,12 +374,12 @@ var gameLogic = {
 			},
 			usDetailStart: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			usDetailClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 				}
 			},
 			notificationClose: {
@@ -378,7 +395,7 @@ var gameLogic = {
 			usDetailButton: {
 				callback: function() {
 					// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'usDetail' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			addBuilding: {
@@ -388,12 +405,12 @@ var gameLogic = {
 			},
 			inventoryStart: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
 				}
 			},
 			inventoryClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'play' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 				}
 			},
 			addEquipment: {
@@ -403,14 +420,14 @@ var gameLogic = {
 			},
 			equipmentEditorClose: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
 				}
 			},
 			equipmentEditorSave: {
 				callback: function() {
 					PhaserGame.newMachine.save();
 					PhaserGame.newMachine = null;
-					PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: 'inventoryList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'inventoryList' });
 				}
 			}
 		}

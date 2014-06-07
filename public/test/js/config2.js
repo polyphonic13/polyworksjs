@@ -336,7 +336,7 @@ var GameConfig = function() {
 				bank: 1000000,
 				sharedViews: sharedViews
 			},
-			defaultGroup: 'start',
+			defaultScreen: 'start',
 			views: {
 				// start
 				startScreen: {

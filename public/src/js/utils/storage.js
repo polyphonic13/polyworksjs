@@ -3,21 +3,16 @@ PWG.Storage = function() {
 	
 	var module = {};
 	
-	module.get = function(prop) {
+	module.get = function(key) {
 		if(_available) {
-			return localStorage[prop];
+			return localStorage[key];
 		}
 	};
 	
-	module.set = function(params) {
+	module.set = function(key, data) {
 		if(_available) {
-			for(var key in params) {
-				if(params[key] instanceof Object || params[key] instanceof Array) {
-					params[key] = JSON.stringify(params[key]);
-				}
-				// trace('Storage, about to set ' + key + ', to value ' + params[key]);
-				localStorage[key] = params[key];
-			}
+			trace('Storage, about to set ' + key + ' with: ', data);
+			localStorage[key] = data;
 		}
 	};
 	

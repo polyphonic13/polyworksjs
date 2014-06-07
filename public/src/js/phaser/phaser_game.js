@@ -42,22 +42,23 @@ var PhaserGame = function() {
 		// trace('PhaserGame/onConfigInitalized, config = ', config);
 		_inPlay = true;
 
-		// add global attributes
-		if(config.attrs) {
-			PWG.Utils.extend(module, config.attrs);
+		if(gameLogic.init) {
+			gameLogic.init.call(this);
 		}
+		
 		// add global methods
-		if(gameLogic.global.methods) {
-			PWG.Utils.extend(module, gameLogic.global.methods);
-		}
+		PWG.Utils.extend(module, gameLogic.global.methods);
+
 		// add global listeners
-		if(gameLogic.global.listeners) {
-			PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
-		}
+		PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
 		
 		// init screen manager
 		PWG.ScreenManager.init(gameLogic.screens);
 		
+		if(module.init) {
+			module.init.call(this);
+		}
+
 		// create phaser game
 		module.phaser = new Phaser.Game(
 			module.stage.gameW, 
@@ -76,8 +77,8 @@ var PhaserGame = function() {
 	function _preload() {
 		// trace('PhaserGame/_preload');
 		PWG.PhaserLoader.init(module.config.assets, module.phaser);
-		if(module.config.assets) {
-			PWG.PhaserLoader.load(module.config.assets);
+		if(module.preload) {
+			module.preload.call(this);
 		}
 	}
 	
@@ -95,10 +96,9 @@ var PhaserGame = function() {
 				module.keyboard = PWG.PhaserInput.initKeyboard(module.config.input.keys);
 			}
 		}
-
-		if(module.config.defaultGroup) {
-			// PWG.ViewManager.showGroup(module.config.defaultGroup);
-			PWG.EventCenter.trigger({ type: PWG.Events.SHOW_GROUP, value: module.config.defaultGroup });
+		
+		if(module.create) {
+			module.create.call(this);
 		}
 	}
 	
@@ -108,17 +108,23 @@ var PhaserGame = function() {
 		{
 			PWG.PhaserInput.updateKeyboard(module.keyboard);
 		}
+		if(module.update) {
+			module.update.call(this);
+		}
 	}
 	
 	function _render() {
 		// trace('PhaserGame/_render');
+		if(module.render) {
+			module.render.call(this);
+		}
 	}
 	
 	function _quit() {
 		// trace('PhaserGame/_quit');
 		_isQuit = true;
 		PWG.EventCenter.batchUnbind(gameLogic.global.listeners);
-		PWG.StateManager.destroy();
+		PWG.ScreenManager.destroy();
 		module.phaser.destroy();
 	}
 	
