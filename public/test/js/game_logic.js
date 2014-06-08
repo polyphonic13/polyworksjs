@@ -471,9 +471,7 @@ var gameLogic = {
 					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
 					var partView = this.overlayMenuType + 'Part';
-					var controller = PWG.ViewManager.getViewFromPath('equipmentEdit:editorParts:'+partView);
-					trace('CONTROLLER = ' + controller);
-					controller.view.frame = frame;
+					PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
 			},
@@ -517,14 +515,8 @@ var gameLogic = {
 			],
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup:equipmentSaveButton');
-				var controller = PWG.ViewManager.getViewFromPath('equipmentEdit:editorParts');
-				PWG.Utils.each(
-					controller.children,
-					function(part) {
-						part.view.frame = 0;
-					},
-					this
-				);
+				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
+
 				// trace('create, views = ', this.views);
 				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:

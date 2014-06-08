@@ -277,25 +277,41 @@ PWG.ViewManager = function() {
 	};
 	
 	module.showView = function(path) {
-		var controller = this.getViewFromPath(path);
+		var controller = this.getControllerFromPath(path);
 		// trace('show view, controller is: ', controller);
 		controller.show()
 	};
 	
 	module.hideView = function(path) {
-		var controller = this.getViewFromPath(path);
+		var controller = this.getControllerFromPath(path);
 		trace('hiding: ', controller);
 		controller.hide()
 	};
 	
 	module.callMethod = function(path, method, args) {
 		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
-		var controller = this.getViewFromPath(path);
+		var controller = this.getControllerFromPath(path);
 		controller.callMethod(method, args);
 	};
 
-	module.getViewFromPath = function(path) {
-		// trace('ViewManager/getViewFromPath, path = ' + path + ', collection = ', this.collection);
+	module.setChildFrames = function(parentPath, frame) {
+		var parent = this.getControllerFromPath(parentPath);
+		PWG.Utils.each(
+			parent.children,
+			function(child) {
+				child.view.frame = frame;
+			},
+			this
+		);
+	};
+	
+	module.setFrame = function(path, frame) {
+		var controller = this.getControllerFromPath(path);
+		controller.view.frame = frame;
+	};
+	
+	module.getControllerFromPath = function(path) {
+		// trace('ViewManager/getControllerFromPath, path = ' + path + ', collection = ', this.collection);
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];
