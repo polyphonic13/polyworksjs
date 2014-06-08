@@ -16,7 +16,12 @@ var playerData = {
 		location: 7
 	}
 	],
-	equipment: {},
+	equipment: {
+		tractor: [
+		],
+		skidsteer: [
+		]
+	},
 	tradeRoutes: [
 	{
 		name: 'asia',
@@ -34,13 +39,6 @@ var playerData = {
 				
 			}
 		}
-	}
-	],
-	suppliers: [
-	{
-		idx: 0,
-		lifetime: 3,
-		discount: 0.1
 	}
 	]
 }

@@ -335,9 +335,9 @@ var GameConfig = function() {
 				equipmentAction: '',
 				activeMachineId: -1,
 				bank: 1000000,
-				sharedViews: sharedViews
 			},
-			defaultScreen: 'start',
+			defaultScreen: 'play',
+			sharedViews: sharedViews,
 			views: {
 				// start
 				startScreen: {
@@ -666,7 +666,7 @@ var GameConfig = function() {
 						// }
 					}
 				},
-				// equipment editor
+				// equipment create
 				equipmentCreateScreen: {
 					name: 'equipmentCreate',
 					type: 'group',
@@ -674,212 +674,293 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						editor: {
-							type: 'group',
-							name: 'editorGroup',
+						bg: {
+							type: 'sprite',
+							name: 'createBg',
+							img: 'equipmentCreateBg',
+							x: 0,
+							y: 0,
 							attrs: {
-								visible: false
-							},
+								width: gameW,
+								height: gameH
+							}
+						},
+						icons: {
+							type: 'group',
+							name: 'createIcons',
 							views: {
-								// bg
-								bg: {
-									type: 'sprite',
-									name: 'editorBg',
-									img: 'buildBg',
-									x: 0,
-									y: 0,
-									attrs: {
-										width: gameW,
-										height: gameH
-									}
-								},
-								// text group
-								text: {
+								machineType: {
 									type: 'group',
-									name: 'editorText',
-									attrs: {
-										fixedToCamera: true
-									},
-									views: 
-									{
-										title: {
-											type: 'text',
-											name: 'equipmentTitle',
-											text: 'Build tractor',
-											style: {
-											    font: (fontSizes.md + 'px Arial'),
-										        fill: palette.white
+									name: 'machineTypeGroup',
+									views: {
+										tractor: {
+											type: 'sprite',
+											name: 'newTractor',
+											img: 'blockWhite',
+											x: gameUnit * 0.5,
+											y: gameUnit * 4,
+											attrs: {
+												width: gameUnit * 3,
+												height: gameUnit * 3,
+												alpha: 0.3
 											},
-											x: gameUnit,
-											y: (gameUnit * 2),
-											position: {
-												centerX: true
-											}
+											input: gameLogic.global.input.newTractor
 										},
-										cab: {
-											type: 'text',
-											name: 'equipmentWheels',
-											text: 'cabs',
-											style: {
-											    font: (fontSizes.sm + 'px Arial'),
-										        fill: palette.darkRed
+										skidsteer: {
+											type: 'sprite',
+											name: 'newSkidsteer',
+											img: 'blockWhite',
+											x: gameW - (gameUnit * 3.5),
+											y: gameUnit * 9,
+											attrs: {
+												width: gameUnit * 3,
+												height: gameUnit * 3,
+												alpha: 0.3
 											},
-											x: gameUnit,
-											y: (gameUnit * 7)
+											input: gameLogic.global.input.newSkidsteer
 										}
-
 									}
 								},
-								// buttons group
-								buttons: {
+								tractorSize: {
 									type: 'group',
-									name: 'editorButtons',
+									name: 'tractorSize',
 									attrs: {
-										fixedToCamera: true
+										visible: false
 									},
 									views: {
-										closeButton: {
-											type: 'button',
-											name: 'closeButton',
-											img: 'buttonClose',
-											x: (gameW - gameUnit * 1.25),
-											y: (gameUnit * 0.25),
-											attrs: {
-												width: gameUnit * 1,
-												height: gameUnit * 1
-											},
-											callback: gameLogic.global.buttonCallbacks.equipmentCreateClose.callback,
-											context: this,
-											frames: [0, 1, 1, 0]
-										},
-										saveButton: {
-											type: 'button',
-											name: 'saveButton',
-											img: 'blockGreen',
-											x: (gameUnit * 5),
-											y: (gameH - (gameUnit * 2)),
+										basic: {
+											type: 'sprite',
+											name: 'basicSize',
+											img: 'blockBlue',
+											x: gameUnit * 5.5,
+											y: gameUnit * 3.8,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
+												height: gameUnit * 1,
 												alpha: 0.5
 											},
-											callback: gameLogic.global.buttonCallbacks.equipmentCreateSave.callback,
-											context: this,
-											frames: [0, 0, 0, 0]
+											input: gameLogic.global.input.basicSize
+										},
+										medium: {
+											type: 'sprite',
+											name: 'mediumSize',
+											img: 'blockGreen',
+											x: gameUnit * 5.5,
+											y: gameUnit * 5,
+											attrs: {
+												width: gameUnit * 4,
+												height: gameUnit * 1,
+												alpha: 0.5
+											},
+											input: gameLogic.global.input.mediumSize
+										},
+										heavy: {
+											type: 'sprite',
+											name: 'heavySize',
+											img: 'blockRed',
+											x: gameUnit * 5.5,
+											y: gameUnit * 6.3,
+											attrs: {
+												width: gameUnit * 4,
+												height: gameUnit * 1,
+												alpha: 0.5
+											},
+											input: gameLogic.global.input.heavySize
 										}
 									}
 								},
-								// parts group
-								parts: {
+								skidsteerSize: {
 									type: 'group',
-									name: 'editor-parts',
-									views: 
-									{
-										wheelsPart: {
+									name: 'skidsteerSize',
+									attrs: {
+										visible: false
+									},
+									views: {
+										basic: {
 											type: 'sprite',
-											name: 'wheelsPart',
-											img: 'wheelsSprites',
-											x: equipmentCreateImages.wheels.x,
-											y: equipmentCreateImages.wheels.y,
+											name: 'basicSize',
+											img: 'blockBlue',
+											x: gameUnit * 0.25,
+											y: gameUnit * 8.8,
 											attrs: {
-												width: equipmentCreateImages.wheels.width,
-												height: equipmentCreateImages.wheels.height,
-												frame: 0
+												width: gameUnit * 4,
+												height: gameUnit * 1,
+												alpha: 0.5
 											},
-											input: gameLogic.global.input.wheelIcon
+											input: gameLogic.global.input.basicSize
 										},
-										enginePart: {
+										medium: {
 											type: 'sprite',
-											name: 'enginePart',
-											img: 'engineSprites',
-											x: equipmentCreateImages.engine.x,
-											y: equipmentCreateImages.engine.y,
+											name: 'mediumSize',
+											img: 'blockGreen',
+											x: gameUnit * 0.25,
+											y: gameUnit * 10,
 											attrs: {
-												width: equipmentCreateImages.engine.width,
-												height: equipmentCreateImages.engine.height,
-												frame: 0
+												width: gameUnit * 4,
+												height: gameUnit * 1,
+												alpha: 0.5
 											},
-											input: gameLogic.global.input.engineIcon
+											input: gameLogic.global.input.mediumSize
 										},
-										cabIcon: {
+										heavy: {
 											type: 'sprite',
-											name: 'cabPart',
-											img: 'cabSprites',
-											x: equipmentCreateImages.cab.x,
-											y: equipmentCreateImages.cab.y,
+											name: 'heavySize',
+											img: 'blockRed',
+											x: gameUnit * 0.25,
+											y: gameUnit * 11.2,
 											attrs: {
-												width: equipmentCreateImages.cab.width,
-												height: equipmentCreateImages.cab.height,
-												frame: 0
+												width: gameUnit * 4,
+												height: gameUnit * 1,
+												alpha: 0.5
 											},
-											input: gameLogic.global.input.cabIcon
+											input: gameLogic.global.input.heavySize
 										}
 									}
 								}
 							}
-						},
-						machineSize: {
-							type: 'group',
-							name: 'createGroup',
+						}
+					}
+				},
+				// equipment edit
+				equipmentEditScreen: {
+					type: 'group',
+					name: 'equipmentEdit',
+					attrs: {
+						visible: false
+					},
+					views: {
+						// bg
+						bg: {
+							type: 'sprite',
+							name: 'editorBg',
+							img: 'equipmentEditBg',
+							x: 0,
+							y: 0,
 							attrs: {
-								visible: false
+								width: gameW,
+								height: gameH
+							}
+						},
+						// text group
+						text: {
+							type: 'group',
+							name: 'editorText',
+							attrs: {
+								fixedToCamera: true
 							},
-							views: {
-								bg: {
-									type: 'sprite',
-									name: 'createBg',
-									img: 'equipmentCreateBg',
-									x: 0,
-									y: 0,
-									attrs: {
-										width: gameW,
-										height: gameH
+							views: 
+							{
+								title: {
+									type: 'text',
+									name: 'equipmentTitle',
+									text: 'Build tractor',
+									style: {
+									    font: (fontSizes.md + 'px Arial'),
+								        fill: palette.white
+									},
+									x: gameUnit,
+									y: (gameUnit * 2),
+									position: {
+										centerX: true
 									}
 								},
-								icons: {
-									type: 'group',
-									name: 'createIcons',
-									views: {
-										basic: {
-											type: 'sprite',
-											name: 'createBasicTractor',
-											img: 'blockBlue',
-											x: 0,
-											y: gameUnit * 2,
-											attrs: {
-												width: gameW,
-												height: gameUnit * 4,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.createBasic
-										},
-										medium: {
-											type: 'sprite',
-											name: 'createMediumTractor',
-											img: 'blockGreen',
-											x: 0,
-											y: gameUnit * 6,
-											attrs: {
-												width: gameW,
-												height: gameUnit * 4.5,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.createMedium
-										},
-										heavy: {
-											type: 'sprite',
-											name: 'createHeavyTractor',
-											img: 'blockRed',
-											x: 0,
-											y: gameUnit * 10.5,
-											attrs: {
-												width: gameW,
-												height: gameUnit * 5,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.createHeavy
-										}
-									}
+								cab: {
+									type: 'text',
+									name: 'equipmentWheels',
+									text: 'cabs',
+									style: {
+									    font: (fontSizes.sm + 'px Arial'),
+								        fill: palette.darkRed
+									},
+									x: gameUnit,
+									y: (gameUnit * 7)
+								}
+
+							}
+						},
+						// buttons group
+						buttons: {
+							type: 'group',
+							name: 'editorButtons',
+							attrs: {
+								fixedToCamera: true
+							},
+							views: {
+								closeButton: {
+									type: 'button',
+									name: 'closeButton',
+									img: 'buttonClose',
+									x: (gameW - gameUnit * 1.25),
+									y: (gameUnit * 0.25),
+									attrs: {
+										width: gameUnit * 1,
+										height: gameUnit * 1
+									},
+									callback: gameLogic.global.buttonCallbacks.equipmentCreateClose.callback,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								saveButton: {
+									type: 'button',
+									name: 'saveButton',
+									img: 'blockGreen',
+									x: (gameUnit * 5),
+									y: (gameH - (gameUnit * 2)),
+									attrs: {
+										width: gameUnit * 4,
+										height: gameUnit * 3,
+										alpha: 0.5
+									},
+									callback: gameLogic.global.buttonCallbacks.equipmentCreateSave.callback,
+									context: this,
+									frames: [0, 0, 0, 0]
+								}
+							}
+						},
+						// parts group
+						parts: {
+							type: 'group',
+							name: 'editor-parts',
+							views: 
+							{
+								wheelsPart: {
+									type: 'sprite',
+									name: 'wheelsPart',
+									img: 'wheelsSprites',
+									x: equipmentCreateImages.wheels.x,
+									y: equipmentCreateImages.wheels.y,
+									attrs: {
+										width: equipmentCreateImages.wheels.width,
+										height: equipmentCreateImages.wheels.height,
+										frame: 0
+									},
+									input: gameLogic.global.input.wheelIcon
+								},
+								enginePart: {
+									type: 'sprite',
+									name: 'enginePart',
+									img: 'engineSprites',
+									x: equipmentCreateImages.engine.x,
+									y: equipmentCreateImages.engine.y,
+									attrs: {
+										width: equipmentCreateImages.engine.width,
+										height: equipmentCreateImages.engine.height,
+										frame: 0
+									},
+									input: gameLogic.global.input.engineIcon
+								},
+								cabIcon: {
+									type: 'sprite',
+									name: 'cabPart',
+									img: 'cabSprites',
+									x: equipmentCreateImages.cab.x,
+									y: equipmentCreateImages.cab.y,
+									attrs: {
+										width: equipmentCreateImages.cab.width,
+										height: equipmentCreateImages.cab.height,
+										frame: 0
+									},
+									input: gameLogic.global.input.cabIcon
 								}
 							}
 						}

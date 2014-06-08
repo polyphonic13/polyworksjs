@@ -10,7 +10,7 @@ var EquipmentTypes = {
 };
 
 var EquipmentSizes = {
-	STANDARD: 'standard',
+	BASIC: 'basic',
 	MEDIUM: 'medium',
 	HEAVY: 'heavy'
 };

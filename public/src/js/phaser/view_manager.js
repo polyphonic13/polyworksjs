@@ -239,18 +239,25 @@ PWG.ViewManager = function() {
 		);
 	};
 	
-	module.addView = function(view, collection) {
+	module.addView = function(view, parent) {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
+		var collection = parent || this.collection;
 		collection[view.name] = new PWG.ViewManager.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
 			// trace('\tit is a group, going to call build on it');
 			collection[view.name].children = PWG.ViewManager.build(view.views);
 			PWG.ViewManager.initGroup(collection[view.name]);
 		}
+		trace('POST ADD, collection = ', collection);
 	};
 	
 	module.removeView = function(name, collection) {
 		// trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
+		if(collection.children.indexOf(name) > -1) {
+			collection.children[name].view.destroy();
+			delete collection.children[name];
+		}
+/*
 		PWG.Utils.each(
 			collection,
 			function(child, key) {
@@ -266,15 +273,18 @@ PWG.ViewManager = function() {
 			},
 			this
 		);
+*/
 	};
 	
 	module.showView = function(path) {
-		var controller = this.getViewFromPath(path)
+		var controller = this.getViewFromPath(path);
+		// trace('show view, controller is: ', controller);
 		controller.show()
 	};
 	
 	module.hideView = function(path) {
-		var controller = this.getViewFromPath(path)
+		var controller = this.getViewFromPath(path);
+		trace('hiding: ', controller);
 		controller.hide()
 	};
 	
@@ -285,7 +295,7 @@ PWG.ViewManager = function() {
 	};
 
 	module.getViewFromPath = function(path) {
-		// trace('ViewManager/getViewFromPath, path = ' + path);
+		// trace('ViewManager/getViewFromPath, path = ' + path + ', collection = ', this.collection);
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];

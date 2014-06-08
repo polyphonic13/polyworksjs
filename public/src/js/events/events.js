@@ -15,6 +15,8 @@ PWG.Events = {
 	UPDATE_AND_OPEN_NOTIFICATION: 'updateAndOpenNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
+	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
+	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
 	ADD_PART: 'addPart',
 	ZOOM_IN: 'zoomIn',
 	ZOOM_OUT: 'zoomOut',
