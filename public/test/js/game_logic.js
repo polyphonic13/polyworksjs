@@ -119,7 +119,6 @@ var gameLogic = {
 			// },
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
-				trace('got saved data: ', savedData);
 				if(!savedData) {
 					savedData = playerData;
 				}
@@ -447,8 +446,8 @@ var gameLogic = {
 				handler: function(event) {
 					// 
 					var type = PhaserGame.currentMachineType;
-					trace('type = ' + type);
-					var letter = alphabet.UPPER[playerData.equipment[type].length];
+					trace('type = ' + type + ' length = ' + PhaserGame.playerData.equipment[type].length);
+					var letter = alphabet.UPPER[PhaserGame.playerData.equipment[type].length];
 					var id = type + letter;
 					var name = type.toUpperCase() + ' ' + letter;
 					PhaserGame.currentMachineSize = event.value;
@@ -518,6 +517,14 @@ var gameLogic = {
 			],
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup:equipmentSaveButton');
+				var controller = PWG.ViewManager.getViewFromPath('equipmentEdit:editorParts');
+				PWG.Utils.each(
+					controller.children,
+					function(part) {
+						part.view.frame = 0;
+					},
+					this
+				);
 				// trace('create, views = ', this.views);
 				switch(PhaserGame.currentEquipmentAction) {
 					case EquipmentActions.CREATE:
