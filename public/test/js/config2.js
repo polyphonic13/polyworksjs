@@ -126,9 +126,9 @@ var GameConfig = function() {
 					}
 				}
 			},
-			overlayMenuItem: {
+			partSectionButton: {
 				type: 'group',
-				name: 'overlayMenuItem',
+				name: 'partSectionButton',
 				offset: (gameUnit * 3),
 				totalHeight: (gameUnit * 2.5),
 				views: {
@@ -143,7 +143,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.overlayMenuItem
+						input: gameLogic.global.input.partSectionButton
 					},
 					icon: {
 						type: 'sprite',
@@ -190,7 +190,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.overlayMenuItem
+						input: gameLogic.global.input.partSectionButton
 					}
 					
 				}
@@ -246,6 +246,8 @@ var GameConfig = function() {
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonPlus: 'images/button_plus.png',
 					buttonMinus: 'images/button_minus.png',
+					buttonEquipment: 'images/button_equipment.gif',
+					buttonEquipmentSave: 'images/button_red_check.gif',
 					// parts icons
 					wheels1: 'images/parts_icons/wheels1.gif',
 					wheels2: 'images/parts_icons/wheels2.gif',
@@ -911,7 +913,7 @@ var GameConfig = function() {
 										height: gameUnit * 3,
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentCreateSave.callback,
+									callback: gameLogic.global.buttonCallbacks.equipmentSave.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -920,7 +922,7 @@ var GameConfig = function() {
 						// parts group
 						parts: {
 							type: 'group',
-							name: 'editor-parts',
+							name: 'editorParts',
 							views: 
 							{
 								wheelsPart: {
@@ -1037,16 +1039,30 @@ var GameConfig = function() {
 								equipmentButton: {
 									type: 'button',
 									name: 'equipmentButton',
-									img: 'blockWhite',
-									x: gameUnit * 7.5,
-									y: (gameH - gameUnit * 2.5),
+									img: 'buttonEquipment',
+									x: gameUnit * 8,
+									y: (gameH - gameUnit * 2),
 									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 2.5),
-										alpha: 0.3,
+										width: (gameUnit * 2),
+										height: (gameUnit * 2),
 										visible: false
 									},
 									callback: gameLogic.global.buttonCallbacks.inventoryStart.callback,
+									context: this,
+									frames: [0, 0, 0, 0]
+								},
+								equipmentSaveButton: {
+									type: 'button',
+									name: 'equipmentSaveButton',
+									img: 'buttonEquipmentSave',
+									x: gameUnit * 8,
+									y: (gameH - gameUnit * 2),
+									attrs: {
+										width: (gameUnit * 2),
+										height: (gameUnit * 2),
+										visible: false
+									},
+									callback: gameLogic.global.buttonCallbacks.equipmentSave.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},

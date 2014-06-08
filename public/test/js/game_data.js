@@ -7,7 +7,7 @@ var gameData = {
 			frame: 1,
 			description: 'basic wheels',
 			cost: {
-				standard: 350, 
+				basic: 350, 
 				medium: 700, 
 				heavy: 1050
 			}
@@ -18,7 +18,7 @@ var gameData = {
 			frame: 2,
 			description: 'standard wheels',
 			cost: {
-				standard: 500, 
+				basic: 500, 
 				medium: 1000, 
 				heavy: 1500
 			}
@@ -29,7 +29,7 @@ var gameData = {
 			frame: 3,
 			description: 'deluxe wheels',
 			cost: {
-				standard: 1000, 
+				basic: 1000, 
 				medium: 2000, 
 				heavy: 3000
 			}
@@ -42,7 +42,7 @@ var gameData = {
 			frame: 1,
 			description: 'basic engine',
 			cost: {
-				standard: 2000, 
+				basic: 2000, 
 				medium: 4000, 
 				heavy: 6000
 			}
@@ -53,7 +53,7 @@ var gameData = {
 			frame: 2,
 			description: 'standard engine',
 			cost: {
-				standard: 3000, 
+				basic: 3000, 
 				medium: 6000, 
 				heavy: 9000
 			}
@@ -64,7 +64,7 @@ var gameData = {
 			frame: 3,
 			description: 'deluxe engine',
 			cost: {
-				standard: 5000, 
+				basic: 5000, 
 				medium: 10000, 
 				heavy: 15000
 			}
@@ -77,7 +77,7 @@ var gameData = {
 			frame: 1,
 			description: 'basic cab',
 			cost: {
-				standard: 300, 
+				basic: 300, 
 				medium: 600, 
 				heavy: 900
 			}
@@ -88,7 +88,7 @@ var gameData = {
 			frame: 2,
 			description: 'standard cab',
 			cost: {
-				standard: 400, 
+				basic: 400, 
 				medium: 800, 
 				heavy: 1200
 			}
@@ -99,7 +99,7 @@ var gameData = {
 			frame: 3,
 			description: 'deluxe cab',
 			cost: {
-				standard: 1000, 
+				basic: 1000, 
 				medium: 2000, 
 				heavy: 3000
 			}
