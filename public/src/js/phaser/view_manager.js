@@ -241,7 +241,7 @@ PWG.ViewManager = function() {
 	
 	module.addView = function(view, parent) {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
-		var collection = parent || this.collection;
+		var collection = parent.children || this.collection;
 		collection[view.name] = new PWG.ViewManager.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
 			// trace('\tit is a group, going to call build on it');
@@ -283,8 +283,9 @@ PWG.ViewManager = function() {
 	};
 	
 	module.hideView = function(path) {
+		trace('hideView: ' + path);
 		var controller = this.getControllerFromPath(path);
-		trace('hiding: ', controller);
+		trace('\thiding: ', controller);
 		controller.hide()
 	};
 	

@@ -88,8 +88,8 @@ var gameLogic = {
 			event: PWG.Events.PAUSE_GAME,
 			handler: function(event) {
 				PhaserGame.turnTimer.pause();
-				PWG.ViewManager.hideView('global:turnGroup:pauseButton');
-				PWG.ViewManager.showView('global:turnGroup:resumeButton');
+				// PWG.ViewManager.hideView('global:turnGroup:pauseButton');
+				// PWG.ViewManager.showView('global:turnGroup:resumeButton');
 			}
 		},
 		// resume
@@ -97,8 +97,8 @@ var gameLogic = {
 			event: PWG.Events.RESUME_GAME,
 			handler: function(event) {
 				PhaserGame.turnTimer.resume();
-				PWG.ViewManager.showView('global:turnGroup:pauseButton');
-				PWG.ViewManager.hideView('global:turnGroup:resumeButton');
+				// PWG.ViewManager.showView('global:turnGroup:pauseButton');
+				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 			}
 		}
 		],
@@ -114,9 +114,6 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 				// PWG.ScreenManager.create();
 			},
-			// update: function() {
-			// 	PWG.ScreenManager.update();
-			// },
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
 				if(!savedData) {
@@ -153,7 +150,7 @@ var gameLogic = {
 				// PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentSaveButton');
-				PWG.ViewManager.hideView('global:turnGroup:resumeButton');
+				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			},
@@ -165,19 +162,13 @@ var gameLogic = {
 				PhaserGame.currentPartType = type;
 				var partsData = gameData.parts[type];
 				trace('addPartItemsOverlay, type = ' + type + '\tparts data = ', partsData);
-
-				// remove previously added items since different
-				// if(collection['overlay-menu']) {
-				// 	PWG.ViewManager.removeView('overlay-menu', collection);
-				// }
-
-				var menuConfig = PWG.Utils.clone(PhaserGame.config.sharedViews.overlayMenu);
-				var itemConfig = PWG.Utils.clone(PhaserGame.config.sharedViews.partSectionButton);
-				var count = 0;
-				var itemY = 0;
+				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
+				var itemConfig = PhaserGame.config.dynamicViews.partSelectionButton;
 				var offset = itemConfig.offset;
 				var totalHeight = itemConfig.totalHeight;
 				var size = PhaserGame.currentMachineSize;
+				var count = 0;
+				var itemY = 0;
 
 				PWG.Utils.each(
 					partsData,
@@ -199,15 +190,14 @@ var gameLogic = {
 							this
 						);
 
-						menuConfig.views['items'].views[p] = item;
+						partsMenuConfig.views['items'].views[p] = item;
 						count++;
 					},
 					this
 				);
-				trace('menuConfig = ', menuConfig);
-				PWG.ViewManager.addView(menuConfig);
-				// trace('\tcreated overlay-menu from: ', menuConfig, '\tcollection now = ', collection);
-
+				trace('partsMenuConfig = ', partsMenuConfig);
+				PWG.ViewManager.addView(partsMenuConfig);
+				// trace('\tcreated partsMenu from: ', partsMenuConfig, '\tcollection now = ', collection);
 			}
 		},
 		input: {
@@ -223,9 +213,72 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.ZOOM_OUT });
 				}
 			},
-			partSectionButtonButton: {
-				inputDown: function(event) {
-					PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
+			newFactory: {
+				inputDown: function() {
+					trace('factoryIcon/inputDown, this = ', this);
+					if(this.selected) {
+						PhaserGame.selectedIcon = '';
+						this.selected = false;
+					} else {
+						PhaserGame.selectedIcon = this.controller.id;
+						this.selected = true;
+						var input = this.controller.view.input;
+						var attrs = this.controller.config.attrs;
+						input.enableDrag();
+						input.enableSnap(attrs.width, attrs.height, false, true);
+						// input.enableSnap(32, 32, false, true);
+					}
+				},
+				onDragStop: function() {
+					var view = this.controller.view;
+					// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
+					if(view.y < (PWG.Stage.unit * 3.5)) {
+						view.y = PWG.Stage.unit * 3.5;
+					} else if(view.y > (PWG.Stage.unit * 10.5)) {
+						view.y = PWG.Stage.unit * 9.4;
+					}
+					
+					var maxX = (PWG.Stage.gameW + view.width);
+					if(view.x > maxX) {
+						view.x = maxX;
+					} else if(view.x < 0) {
+						view.x = 0;
+					}
+					// trace('view x/y is now: ' + view.x + '/' + view.y);
+				}
+			},
+			newShowroom: {
+				inputDown: function() {
+					trace('showroomIcon/inputDown, this = ', this);
+					if(this.selected) {
+						PhaserGame.selectedIcon = '';
+						this.selected = false;
+					} else {
+						PhaserGame.selectedIcon = this.controller.id;
+						this.selected = true;
+						var input = this.controller.view.input;
+						var attrs = this.controller.config.attrs;
+						input.enableDrag();
+						input.enableSnap(attrs.width, attrs.height, false, true);
+						// input.enableSnap(32, 32, false, true);
+					}
+				},
+				onDragStop: function() {
+					var view = this.controller.view;
+					// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
+					if(view.y < (PWG.Stage.unit * 3.5)) {
+						view.y = PWG.Stage.unit * 3.5;
+					} else if(view.y > (PWG.Stage.unit * 10.5)) {
+						view.y = PWG.Stage.unit * 9.4;
+					}
+					
+					var maxX = (PWG.Stage.gameW + view.width);
+					if(view.x > maxX) {
+						view.x = maxX;
+					} else if(view.x < 0) {
+						view.x = 0;
+					}
+					// trace('view x/y is now: ' + view.x + '/' + view.y);
 				}
 			},
 			newTractor: {
@@ -290,14 +343,14 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.BUCKET });
 				}
 			},
-			overlayMenu: {
+			partsMenu: {
 				closeButton: {
 					callback: function() {
 						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 					}
 				}
 			},
-			partSectionButton: {
+			partSelectionButton: {
 				inputDown: function(event) {
 					PWG.EventCenter.trigger({ type: PWG.Events.ADD_PART, value: this.controller.config.partIdx });
 				}
@@ -349,7 +402,7 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
 				}
 			},
-			overlayMenuClose: {
+			partsMenuClose: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
@@ -420,6 +473,75 @@ var gameLogic = {
 				// show add equipment button
 				PWG.ViewManager.showView('global:turnGroup:addEquipment');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
+				
+				var equipment = PhaserGame.playerData.equipment;
+
+				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
+				var machineIcon = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineIcon);
+
+				var offset = machineIcon.offset;
+				var totalHeight = machineIcon.totalHeight;
+
+				var count = 0;
+				var itemY = 0;
+				var tractorX = machineList.tractorX; 
+				
+				// PWG.Utils.each(
+				// 	equipment.tractor,
+				// 	function(tractor, idx) {
+				// 		trace('\tadding tractor['+idx+']: ', tractor);
+				// 		var item = PWG.Utils.clone(machineIcon);
+				// 		trace('\titem = ', item);
+				// 		item.name = 'tractor' + idx;
+				// 		item.views.name.text = tractor.name;
+				// 		item.views.cost.text = '$' + tractor.cost;
+				// 
+				// 		itemY = (totalHeight * count) + offset;
+				// 		PWG.Utils.each(
+				// 			item.views,
+				// 			function(view) {
+				// 				view.x += tractorX;
+				// 				view.y += itemY;
+				// 			},
+				// 			this
+				// 		);
+				// 
+				// 		machineList.views.tractors.views[item.name] = item;
+				// 		count++;
+				// 	},
+				// 	this
+				// );
+	
+				var skidsteerX = machineList.skidsteerX; 
+
+				PWG.Utils.each(
+					equipment.skidsteer,
+					function(skidsteer, idx) {
+						trace('\tadding skidsteer['+idx+']: ', skidsteer);
+						var item = PWG.Utils.clone(machineIcon);
+						trace('\titem = ', item);
+						item.name = 'tractor' + idx;
+						item.views.name.text = skidsteer.name;
+						item.views.cost.text = '$' + skidsteer.cost;
+
+						itemY = (totalHeight * count) + offset;
+						PWG.Utils.each(
+							item.views,
+							function(view) {
+								view.x += skidsteerX;
+								view.y += itemY;
+							},
+							this
+						);
+
+						machineList.views.skidsteers.views[item.name] = item;
+						count++;
+					},
+					this
+				);
+				trace('machineList = ', machineList);
+				PWG.ViewManager.addView(machineList, PWG.ViewManager.getControllerFromPath('equipmentList'));
+				
 			},
 			shutdown: function() {
 				// hide add building button
@@ -467,10 +589,10 @@ var gameLogic = {
 				event: PWG.Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.currentMachine.setPart(PhaserGame.currentPartType, event.value);
-					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
-					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
-					// trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
-					var partView = this.overlayMenuType + 'Part';
+					// trace('show part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
+					var frame = gameData.parts[this.partsMenuType][event.value].frame;
+					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
+					var partView = this.partsMenuType + 'Part';
 					PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
@@ -488,27 +610,27 @@ var gameLogic = {
 			{
 				event: PWG.Events.OPEN_OVERLAY_MENU,
 				handler: function(event) {
-					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
-					if(!this.overlayMenuOpen) 
+					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
+					if(!this.partsMenuOpen) 
 					{
-						if(this.overlayMenuType !== event.value) 
+						if(this.partsMenuType !== event.value) 
 						{
 							PhaserGame.addPartItemsOverlay.call(this, event.value, this.views);
 						}
-						PWG.ViewManager.showView('overlayMenu');
-						this.overlayMenuType = event.value;
-						this.overlayMenuOpen = true;
+						PWG.ViewManager.showView('partsMenu');
+						this.partsMenuType = event.value;
+						this.partsMenuOpen = true;
 					}
 				}
 			},
 			{
 				event: PWG.Events.CLOSE_OVERLAY_MENU,
 				handler: function(event) {
-					// trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
-					if(this.overlayMenuOpen) {
+					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
+					if(this.partsMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
-						PWG.ViewManager.hideView('overlayMenu');
-						this.overlayMenuOpen = false;
+						PWG.ViewManager.hideView('partsMenu');
+						this.partsMenuOpen = false;
 					}
 				}
 			}
@@ -542,8 +664,8 @@ var gameLogic = {
 				
 			},
 			shutdown: function() {
-				this.overlayMenuType = '';
-				this.overlayMenuOpen = false;
+				this.partsMenuType = '';
+				this.partsMenuOpen = false;
 			}
 		}
 	}

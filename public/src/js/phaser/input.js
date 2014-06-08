@@ -25,11 +25,16 @@ PWG.PhaserInput = function() {
 		if(this.config.inputUp) view.events.onInputUp.add(this.inputUp, this);
 		if(this.config.onDragStop) view.events.onDragStop.add(this.onDragStop, this);
 
+		this.input = view.input;
 	}
 	
-	InputController.prototype.enableDrag = function(params) {
-		var drag = params || this.config.enableDrag;
-		this.controller.view.input.enableDrag();
+	InputController.prototype.enableDrag = function() {
+		this.input.enableDrag();
+	};
+	
+	InputController.prototype.enableSnap = function(args) {
+		this.input.enableSnap(args);
+		//	http://docs.phaser.io/Phaser.InputHandler.html#enableSnap
 	};
 	
 	InputController.prototype.inputDown = function(event) {
@@ -83,7 +88,6 @@ PWG.PhaserInput = function() {
 	};
 	
 	module.InputController = InputController; 
-
 	module.CameraDragger = CameraDragger;
 
 	module.initKeyboard = function(controls) {

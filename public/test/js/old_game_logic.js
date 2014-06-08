@@ -118,8 +118,8 @@ var gameLogic =
 					PWG.PhaserView.removeView('overlay-menu', collection);
 				}
 
-				var menuConfig = PWG.Utils.clone(PhaserGame.sharedViews.overlayMenu);
-				var itemConfig = PWG.Utils.clone(PhaserGame.sharedViews.partSectionButton);
+				var menuConfig = PWG.Utils.clone(PhaserGame.dynamicViews.partsMenu);
+				var itemConfig = PWG.Utils.clone(PhaserGame.dynamicViews.partSelectionButton);
 				var count = 0;
 				var itemY = 0;
 				var offset = itemConfig.offset;
@@ -173,7 +173,7 @@ var gameLogic =
 			}
 		}
 	},
-	sharedViews: 
+	dynamicViews: 
 	{
 		notification: {
 			closeButton: {
@@ -185,14 +185,14 @@ var gameLogic =
 		timerText: {
 			
 		},
-		overlayMenu: {
+		partsMenu: {
 			closeButton: {
 				callback: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
 			}
 		},
-		partSectionButton: {
+		partSelectionButton: {
 			invisButton: {
 				input: {
 					inputDown: function(event) {
@@ -478,10 +478,10 @@ var gameLogic =
 				handler: function(event) 
 				{
 					PhaserGame.newMachine.setPart(PhaserGame.currentPartType, event.value);
-					// trace('show part, type = ' + event.value + ', part type = ' + this.overlayMenuType + ', view collection = ', this.views);
-					var frame = gameData.parts[this.overlayMenuType][event.value].frame;
-					// trace('frame = ' + frame + ', type = ' + this.overlayMenuType + ', collection = ', this.views);
-					var partView = this.overlayMenuType + '-part';
+					// trace('show part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
+					var frame = gameData.parts[this.partsMenuType][event.value].frame;
+					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
+					var partView = this.partsMenuType + '-part';
 					this.views['state-group'].children['editor-group'].children['editorParts'].children[partView].view.frame = frame;
 					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
 				}
@@ -501,17 +501,17 @@ var gameLogic =
 				event: PWG.Events.OPEN_OVERLAY_MENU,
 				handler: function(event) 
 				{
-					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.overlayMenuOpen + ', overlayMenuType = ' + this.overlayMenuType);
-					if(!this.overlayMenuOpen) 
+					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
+					if(!this.partsMenuOpen) 
 					{
-						if(this.overlayMenuType !== event.value) 
+						if(this.partsMenuType !== event.value) 
 						{
 							PhaserGame.addOverlayMenuItems.call(this, event.value, this.views);
 						}
 
 						this.views['overlay-menu'].show();
-						this.overlayMenuType = event.value;
-						this.overlayMenuOpen = true;
+						this.partsMenuType = event.value;
+						this.partsMenuOpen = true;
 					}
 				}
 			},
@@ -519,12 +519,12 @@ var gameLogic =
 				event: PWG.Events.CLOSE_OVERLAY_MENU,
 				handler: function(event) 
 				{
-					// trace('close overlay handler, overlay open = ' + this.overlayMenuOpen);
-					if(this.overlayMenuOpen) 
+					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
+					if(this.partsMenuOpen) 
 					{
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						this.views['overlay-menu'].hide();
-						this.overlayMenuOpen = false;
+						this.partsMenuOpen = false;
 					}
 				}
 			}
@@ -559,8 +559,8 @@ var gameLogic =
 			},
 			shutdown: function() 
 			{
-				this.overlayMenuType = '';
-				this.overlayMenuOpen = false;
+				this.partsMenuType = '';
+				this.partsMenuOpen = false;
 			},
 			views: 
 			{

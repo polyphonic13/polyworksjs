@@ -18,6 +18,7 @@ var GameConfig = function() {
 		};
 
 		var fontSizes = {
+			xxs: (gameUnit * 0.25),
 			xs: (gameUnit * 0.5),
 			sm: (gameUnit * 0.6),
 			md: (gameUnit * 0.75),
@@ -33,7 +34,7 @@ var GameConfig = function() {
 			white: '#ffffff'
 		};
 
-		var sharedViews = {
+		var dynamicViews = {
 			notification: {
 				type: 'group',
 				name: 'notification',
@@ -85,9 +86,71 @@ var GameConfig = function() {
 					}
 				}
 			},
-			overlayMenu: {
+			machineList: {
 				type: 'group',
-				name: 'overlayMenu',
+				name: 'machineList',
+				tractorX: gameUnit,
+				skidsteerX: gameUnit * 5,
+				views: {
+					tractors: {
+						type: 'group',
+						name: 'tractors',
+						views: {}
+					},
+					skidsteers: {
+						type: 'group',
+						name: 'skidsteers',
+						views: {}
+					},
+				}
+			},	
+			machineIcon: {
+				type: 'group',
+				name: 'machineIcon',
+				offset: 0,
+				totalHeight: (gameUnit * 5),
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'machineIconBg',
+						img: 'machineListIcon',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: (gameUnit * 4),
+							height: (gameUnit * 5)
+						}
+					},
+					name: {
+						type: 'text',
+						name: 'name',
+						text: '',
+						x: (gameUnit * 0.3),
+						y: gameUnit * 4,
+						style: {
+						    font: (fontSizes.xs + 'px Arial'),
+					        fill: palette.lightRed
+						}
+					},
+					cost: {
+						type: 'text',
+						name: 'machineCost',
+						text: '$',
+						x: 0,
+						y: gameUnit * 1,
+						style: {
+						    font: (fontSizes.xxs + 'px Arial'),
+					        fill: palette.black
+						},
+						attrs: {
+							angle: -45
+						}
+					}
+				}
+			},
+			partsMenu: {
+				type: 'group',
+				name: 'partsMenu',
 				attrs: {
 					visible: false
 				},
@@ -115,7 +178,7 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.global.buttonCallbacks.overlayMenuClose.callback,
+						callback: gameLogic.global.buttonCallbacks.partsMenuClose.callback,
 						context: this,
 						frames: [0, 1, 1, 0]
 					},
@@ -126,9 +189,9 @@ var GameConfig = function() {
 					}
 				}
 			},
-			partSectionButton: {
+			partSelectionButton: {
 				type: 'group',
-				name: 'partSectionButton',
+				name: 'partSelectionButton',
 				offset: (gameUnit * 3),
 				totalHeight: (gameUnit * 2.5),
 				views: {
@@ -143,7 +206,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.partSectionButton
+						input: gameLogic.global.input.partSelectionButton
 					},
 					icon: {
 						type: 'sprite',
@@ -190,7 +253,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.partSectionButton
+						input: gameLogic.global.input.partSelectionButton
 					}
 					
 				}
@@ -234,6 +297,7 @@ var GameConfig = function() {
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
 					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
+					machineListIcon: 'images/machine_list_icon.gif',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -339,7 +403,7 @@ var GameConfig = function() {
 				bank: 1000000,
 			},
 			defaultScreen: 'play',
-			sharedViews: sharedViews,
+			dynamicViews: dynamicViews,
 			views: {
 				// start
 				startScreen: {
@@ -550,7 +614,8 @@ var GameConfig = function() {
 							type: 'group',
 							name: 'usDetailIcons',
 							attrs: {
-								fixedToCamera: true
+								fixedToCamera: true,
+								visible: false
 							},
 							views: 
 							{
@@ -561,10 +626,10 @@ var GameConfig = function() {
 									x: gameUnit,
 									y: gameUnit * 11,
 									attrs: {
-										width: gameUnit * 2,
+										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									// input: gameLogic.global.input.usDetail.views.icons.input
+									input: gameLogic.global.input.newFactory
 								},
 								showroomIcon: {
 									type: 'sprite',
@@ -573,10 +638,10 @@ var GameConfig = function() {
 									x: gameUnit * 4,
 									y: gameUnit * 11,
 									attrs: {
-										width: gameUnit * 2,
+										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									// input: gameLogic.global.input.usDetail.views.icons.input
+									input: gameLogic.global.input.newShowroom
 								}
 							}
 						}
@@ -864,7 +929,11 @@ var GameConfig = function() {
 									y: (gameUnit * 2),
 									position: {
 										centerX: true
+									},
+									attrs: {
+										angle: 45
 									}
+									
 								},
 								cab: {
 									type: 'text',
@@ -1006,36 +1075,36 @@ var GameConfig = function() {
 										centerX: true
 									}
 								},
-								pauseButton: {
-									type: 'button',
-									name: 'pauseButton',
-									img: 'buttonPause',
-									x: (gameUnit * 0.25),
-									y: (gameH - gameUnit * 1.75),
-									attrs: {
-										width: gameUnit * 1.5,
-										height: gameUnit * 1.5,
-										visible: false
-									},
-									callback: gameLogic.global.buttonCallbacks.pauseButton.callback,
-									context: this,
-									frames: [0, 1, 1, 0]
-								},
-								resumeButton: {
-									type: 'button',
-									name: 'resumeButton',
-									img: 'buttonPlay',
-									x: (gameUnit * 0.25),
-									y: (gameH - gameUnit * 1.75),
-									attrs: {
-										width: gameUnit * 1.5,
-										height: gameUnit * 1.5,
-										visible: false
-									},
-									callback: gameLogic.global.buttonCallbacks.resumeButton.callback,
-									context: this,
-									frames: [0, 1, 1, 0]
-								},
+								// pauseButton: {
+								// 	type: 'button',
+								// 	name: 'pauseButton',
+								// 	img: 'buttonPause',
+								// 	x: (gameUnit * 0.25),
+								// 	y: (gameH - gameUnit * 1.75),
+								// 	attrs: {
+								// 		width: gameUnit * 1.5,
+								// 		height: gameUnit * 1.5,
+								// 		visible: false
+								// 	},
+								// 	callback: gameLogic.global.buttonCallbacks.pauseButton.callback,
+								// 	context: this,
+								// 	frames: [0, 1, 1, 0]
+								// },
+								// resumeButton: {
+								// 	type: 'button',
+								// 	name: 'resumeButton',
+								// 	img: 'buttonPlay',
+								// 	x: (gameUnit * 0.25),
+								// 	y: (gameH - gameUnit * 1.75),
+								// 	attrs: {
+								// 		width: gameUnit * 1.5,
+								// 		height: gameUnit * 1.5,
+								// 		visible: false
+								// 	},
+								// 	callback: gameLogic.global.buttonCallbacks.resumeButton.callback,
+								// 	context: this,
+								// 	frames: [0, 1, 1, 0]
+								// },
 								equipmentButton: {
 									type: 'button',
 									name: 'equipmentButton',
