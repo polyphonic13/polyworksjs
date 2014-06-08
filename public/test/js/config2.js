@@ -19,8 +19,8 @@ var GameConfig = function() {
 
 		var fontSizes = {
 			xxs: (gameUnit * 0.25),
-			xs: (gameUnit * 0.5),
-			sm: (gameUnit * 0.6),
+			xs: (gameUnit * 0.33),
+			sm: (gameUnit * 0.5),
 			md: (gameUnit * 0.75),
 			lg: (gameUnit * 1.0),
 			xl: (gameUnit * 1.5)
@@ -89,26 +89,15 @@ var GameConfig = function() {
 			machineList: {
 				type: 'group',
 				name: 'machineList',
-				tractorX: gameUnit,
-				skidsteerX: gameUnit * 5,
-				views: {
-					tractors: {
-						type: 'group',
-						name: 'tractors',
-						views: {}
-					},
-					skidsteers: {
-						type: 'group',
-						name: 'skidsteers',
-						views: {}
-					},
-				}
+				views: {}
 			},	
 			machineIcon: {
 				type: 'group',
 				name: 'machineIcon',
-				offset: 0,
-				totalHeight: (gameUnit * 5),
+				offsetY: (gameUnit * 2),
+				offsetX: (gameUnit * 0.15),
+				iconW: (gameUnit * 5),
+				iconH: (gameUnit * 5.15),
 				views: {
 					bg: {
 						type: 'sprite',
@@ -117,7 +106,7 @@ var GameConfig = function() {
 						x: 0,
 						y: 0,
 						attrs: {
-							width: (gameUnit * 4),
+							width: (gameUnit * 5),
 							height: (gameUnit * 5)
 						}
 					},
@@ -125,19 +114,20 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'name',
 						text: '',
-						x: (gameUnit * 0.3),
-						y: gameUnit * 4,
+						x: (gameUnit * 0.9),
+						y: gameUnit * 4.2,
 						style: {
-						    font: (fontSizes.xs + 'px Arial'),
-					        fill: palette.lightRed
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.lightRed,
+							'text-align': 'center'
 						}
 					},
 					cost: {
 						type: 'text',
 						name: 'machineCost',
 						text: '$',
-						x: 0,
-						y: gameUnit * 1,
+						x: (gameUnit * 0.3),
+						y: gameUnit * 0.9,
 						style: {
 						    font: (fontSizes.xxs + 'px Arial'),
 					        fill: palette.black
@@ -145,6 +135,19 @@ var GameConfig = function() {
 						attrs: {
 							angle: -45
 						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'machineIconInvisButton',
+						img: 'blockClear',
+						machineIdx: -1,
+						x: 0,
+						y: 0,
+						attrs: {
+							width: (gameUnit * 5),
+							height: (gameUnit * 5)
+						},
+						input: gameLogic.global.input.editMachine
 					}
 				}
 			},
@@ -193,7 +196,7 @@ var GameConfig = function() {
 				type: 'group',
 				name: 'partSelectionButton',
 				offset: (gameUnit * 3),
-				totalHeight: (gameUnit * 2.5),
+				iconH: (gameUnit * 2.5),
 				views: {
 					bg: {
 						type: 'sprite',
@@ -400,6 +403,7 @@ var GameConfig = function() {
 				turnTime: TIME_PER_TURN,
 				equipmentAction: '',
 				activeMachineId: -1,
+				newMachine: false,
 				bank: 1000000,
 			},
 			defaultScreen: 'play',
@@ -908,47 +912,6 @@ var GameConfig = function() {
 								height: gameH
 							}
 						},
-						// text group
-						text: {
-							type: 'group',
-							name: 'editorText',
-							attrs: {
-								fixedToCamera: true
-							},
-							views: 
-							{
-								title: {
-									type: 'text',
-									name: 'equipmentTitle',
-									text: 'Build tractor',
-									style: {
-									    font: (fontSizes.md + 'px Arial'),
-								        fill: palette.white
-									},
-									x: gameUnit,
-									y: (gameUnit * 2),
-									position: {
-										centerX: true
-									},
-									attrs: {
-										angle: 45
-									}
-									
-								},
-								cab: {
-									type: 'text',
-									name: 'equipmentWheels',
-									text: 'cabs',
-									style: {
-									    font: (fontSizes.sm + 'px Arial'),
-								        fill: palette.darkRed
-									},
-									x: gameUnit,
-									y: (gameUnit * 7)
-								}
-
-							}
-						},
 						// buttons group
 						buttons: {
 							type: 'group',
@@ -982,7 +945,7 @@ var GameConfig = function() {
 										height: gameUnit * 3,
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentSave.callback,
+									callback: gameLogic.global.buttonCallbacks.saveMachine.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -1120,9 +1083,9 @@ var GameConfig = function() {
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
-								equipmentSaveButton: {
+								saveMachineButton: {
 									type: 'button',
-									name: 'equipmentSaveButton',
+									name: 'saveMachineButton',
 									img: 'buttonEquipmentSave',
 									x: gameUnit * 8,
 									y: (gameH - gameUnit * 2),
@@ -1131,7 +1094,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2),
 										visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentSave.callback,
+									callback: gameLogic.global.buttonCallbacks.saveMachine.callback,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},

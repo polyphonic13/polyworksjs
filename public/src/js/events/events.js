@@ -18,6 +18,8 @@ PWG.Events = {
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
 	ADD_PART: 'addPart',
+	SAVE_MACHINE: 'saveMachine',
+	EDIT_MACHINE: 'editMachine',
 	ZOOM_IN: 'zoomIn',
 	ZOOM_OUT: 'zoomOut',
 	QUIT: 'quit'

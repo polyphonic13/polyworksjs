@@ -123,7 +123,7 @@ var gameLogic =
 				var count = 0;
 				var itemY = 0;
 				var offset = itemConfig.offset;
-				var totalHeight = itemConfig.totalHeight;
+				var iconH = itemConfig.iconH;
 				var size = PhaserGame.newMachine.get('size');
 
 				PWG.Utils.each(
@@ -137,7 +137,7 @@ var gameLogic =
 						item.views.cost.text = '$' + part.cost[size];
 						item.views.invisButton.partIdx = p;
 
-						itemY = (totalHeight * count) + offset;
+						itemY = (iconH * count) + offset;
 						PWG.Utils.each(
 							item.views,
 							function(view) {

@@ -16,11 +16,11 @@ var playerData = {
 		location: 7
 	}
 	],
-	equipment: {
-		tractor: [
-		],
-		skidsteer: [
-		]
+	equipment: [
+	],
+	machineCount: {
+		tractor: 0,
+		skidsteer: 0
 	},
 	tradeRoutes: [
 	{

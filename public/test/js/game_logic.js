@@ -3,6 +3,7 @@ var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var GRID_CELLS = 9;
 var TIME_TO_MANUFACTOR = 5;
+var MACHINE_LIST_COLUMNS = 2; 
 
 var buildingCosts = {
 	factory: 100000,
@@ -149,7 +150,7 @@ var gameLogic = {
 				);
 				// PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
-				PWG.ViewManager.hideView('global:turnGroup:equipmentSaveButton');
+				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
@@ -165,23 +166,23 @@ var gameLogic = {
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partSelectionButton;
 				var offset = itemConfig.offset;
-				var totalHeight = itemConfig.totalHeight;
+				var iconH = itemConfig.iconH;
 				var size = PhaserGame.currentMachineSize;
 				var count = 0;
 				var itemY = 0;
 
 				PWG.Utils.each(
 					partsData,
-					function(part, p) {
+					function(part, idx) {
 						// trace('\tadding part[' + p + '] info to views');
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id;
 						item.views.icon.img = part.icon;
 						item.views.description.text = part.description;
 						item.views.cost.text = '$' + part.cost[size];
-						item.views.invisButton.partIdx = p;
+						item.views.invisButton.partIdx = idx;
 
-						itemY = (totalHeight * count) + offset;
+						itemY = (iconH * count) + offset;
 						PWG.Utils.each(
 							item.views,
 							function(view) {
@@ -190,7 +191,7 @@ var gameLogic = {
 							this
 						);
 
-						partsMenuConfig.views['items'].views[p] = item;
+						partsMenuConfig.views['items'].views[idx] = item;
 						count++;
 					},
 					this
@@ -290,6 +291,11 @@ var gameLogic = {
 			newSkidsteer: {
 				inputDown: function() {
 					PWG.EventCenter.trigger({ type: PWG.Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER });
+				}
+			},
+			editMachine: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: PWG.Events.EDIT_MACHINE, value: this.controller.config.machineIdx });
 				}
 			},
 			basicSize: {
@@ -439,13 +445,9 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			},
-			equipmentSave: {
+			saveMachine: {
 				callback: function() {
-					PhaserGame.currentMachine.save();
-					PhaserGame.playerData.equipment[PhaserGame.currentMachineType].push(PhaserGame.currentMachine.config);
-					PhaserGame.setSavedData();
-					PhaserGame.currentMachine = null;
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+					PWG.EventCenter.trigger({ type: PWG.Events.SAVE_MACHINE });
 				}
 			}
 		}
@@ -469,6 +471,20 @@ var gameLogic = {
 			}
 		},
 		equipmentList: {
+			listeners: [
+			{
+				event: PWG.Events.EDIT_MACHINE,
+				handler: function(event) {
+					var config = PhaserGame.playerData.equipment[event.value];
+					trace('edit machine: event = ', event, 'config = ', config);
+					PhaserGame.currentMachineType = config.type;
+					PhaserGame.currentMachineSize = config.size;
+					PhaserGame.currentMachine = new Machine(config);
+					PhaserGame.newMachine = false;
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
+				}
+			}
+			],
 			create: function() {
 				// show add equipment button
 				PWG.ViewManager.showView('global:turnGroup:addEquipment');
@@ -479,69 +495,50 @@ var gameLogic = {
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineIcon);
 
-				var offset = machineIcon.offset;
-				var totalHeight = machineIcon.totalHeight;
-
+				var offsetX = machineIcon.offsetX;
+				var offsetY = machineIcon.offsetY;
+				var iconW = machineIcon.iconW;
+				var iconH = machineIcon.iconH;
+				var columnW = PWG.Stage.gameW/MACHINE_LIST_COLUMNS;
+				
+				var column = 0;
 				var count = 0;
 				var itemY = 0;
-				var tractorX = machineList.tractorX; 
-				
-				// PWG.Utils.each(
-				// 	equipment.tractor,
-				// 	function(tractor, idx) {
-				// 		trace('\tadding tractor['+idx+']: ', tractor);
-				// 		var item = PWG.Utils.clone(machineIcon);
-				// 		trace('\titem = ', item);
-				// 		item.name = 'tractor' + idx;
-				// 		item.views.name.text = tractor.name;
-				// 		item.views.cost.text = '$' + tractor.cost;
-				// 
-				// 		itemY = (totalHeight * count) + offset;
-				// 		PWG.Utils.each(
-				// 			item.views,
-				// 			function(view) {
-				// 				view.x += tractorX;
-				// 				view.y += itemY;
-				// 			},
-				// 			this
-				// 		);
-				// 
-				// 		machineList.views.tractors.views[item.name] = item;
-				// 		count++;
-				// 	},
-				// 	this
-				// );
-	
-				var skidsteerX = machineList.skidsteerX; 
-
+			
 				PWG.Utils.each(
-					equipment.skidsteer,
-					function(skidsteer, idx) {
-						trace('\tadding skidsteer['+idx+']: ', skidsteer);
+					equipment,
+					function(machine, idx) {
+						// trace('\tadding machine['+idx+']: ', machine);
 						var item = PWG.Utils.clone(machineIcon);
-						trace('\titem = ', item);
-						item.name = 'tractor' + idx;
-						item.views.name.text = skidsteer.name;
-						item.views.cost.text = '$' + skidsteer.cost;
+						// trace('\titem = ', item);
+						item.name = 'machine' + idx;
+						item.views.name.text = machine.name;
+						item.views.cost.text = '$' + machine.cost;
+						item.views.invisButton.machineIdx = idx;
+						// increment y to next row:
+						if(count % MACHINE_LIST_COLUMNS === 0) {
+							itemY = (iconH * (count/MACHINE_LIST_COLUMNS)) + offsetY;
+						}
+						
+						var columnX = offsetX + ((PWG.Stage.gameW/2) * (count % MACHINE_LIST_COLUMNS));
 
-						itemY = (totalHeight * count) + offset;
 						PWG.Utils.each(
 							item.views,
 							function(view) {
-								view.x += skidsteerX;
+								view.x += columnX;
 								view.y += itemY;
 							},
 							this
 						);
-
-						machineList.views.skidsteers.views[item.name] = item;
+				
+						machineList.views[item.name] = item;
 						count++;
 					},
 					this
 				);
-				trace('machineList = ', machineList);
-				PWG.ViewManager.addView(machineList, PWG.ViewManager.getControllerFromPath('equipmentList'));
-				
+				// trace('machineList = ', machineList);
+				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
+				PWG.ViewManager.addView(machineList, equipmentListView, true);
 			},
 			shutdown: function() {
 				// hide add building button
@@ -568,12 +565,12 @@ var gameLogic = {
 				handler: function(event) {
 					// 
 					var type = PhaserGame.currentMachineType;
-					trace('type = ' + type + ' length = ' + PhaserGame.playerData.equipment[type].length);
-					var letter = alphabet.UPPER[PhaserGame.playerData.equipment[type].length];
+					var letter = alphabet.UPPER[PhaserGame.playerData.machineCount[type]];
 					var id = type + letter;
 					var name = type.toUpperCase() + ' ' + letter;
 					PhaserGame.currentMachineSize = event.value;
-					PhaserGame.currentMachine = new Machine(id, { type: PhaserGame.currentMachineType, size: event.value, name: name });
+					PhaserGame.currentMachine = new Machine({ type: PhaserGame.currentMachineType, size: event.value, name: name });
+					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
 			}
@@ -633,39 +630,33 @@ var gameLogic = {
 						this.partsMenuOpen = false;
 					}
 				}
+			},
+			{
+				event: PWG.Events.SAVE_MACHINE, 
+				handler: function(event) {
+					trace('time to save currentMachine: ', PhaserGame.currentMachine);
+					PhaserGame.currentMachine.save();
+					if(PhaserGame.newMachine) {
+						PhaserGame.playerData.equipment.push(PhaserGame.currentMachine.config);
+						PhaserGame.playerData.machineCount[PhaserGame.currentMachineType]++;
+						PhaserGame.newMachine = false;
+					}
+					PhaserGame.setSavedData();
+					PhaserGame.currentMachine = null;
+					PhaserGame.machineDirty = false;
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+				}
 			}
 			],
 			create: function() {
-				PWG.ViewManager.showView('global:turnGroup:equipmentSaveButton');
+				PWG.ViewManager.showView('global:turnGroup:saveMachineButton');
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
-
-				// trace('create, views = ', this.views);
-				switch(PhaserGame.currentEquipmentAction) {
-					case EquipmentActions.CREATE:
-					// this.views['state-group'].children['create-group'].show();
-					// var machine = new Machine({ type: PhaserGame.currentEquipmentType });
-
-					// PhaserGame.currentMachine = new Machine({
-					// 	type: PhaserGame.currentEquipmentType
-					// });
-					break;
-
-					case EquipmentActions.EDIT:
-					break;
-
-					case EquipmentActions.DELETE:
-					break;
-
-					default: 
-					// trace('error: unknown equipment action: ' + PhaserGame.currentEquipmentAction);
-					break;
-				}
-				PhaserGame.currentEquipmentAction = '';
-				
+				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
 				this.partsMenuType = '';
 				this.partsMenuOpen = false;
+				PhaserGame.machineDirty = false;
 			}
 		}
 	}

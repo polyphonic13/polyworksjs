@@ -9,8 +9,7 @@ var Machine = function() {
 		parts: {}
 	};
 	
-	function Machine(id, config) {
-		this.id = id;
+	function Machine(config) {
 		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
 		trace('Machine/constructor, config = ', config);
 	}

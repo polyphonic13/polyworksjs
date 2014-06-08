@@ -159,11 +159,12 @@ PWG.ViewManager = function() {
 		PWG.Utils.each(views,
 			function(view, key) {
 				// trace('\tview.type = ' + view.type);
-				collection[view.name] = new PWG.ViewManager.ViewController(view, key);
+				var child = new PWG.ViewManager.ViewController(view, key);
 				if(view.type === viewTypes.GROUP) {
-					collection[view.name].children = PWG.ViewManager.build(view.views);
-					PWG.ViewManager.initGroup(collection[view.name]);
+					child.children = PWG.ViewManager.build(view.views);
+					PWG.ViewManager.initGroup(child);
 				}
+				collection[view.name] = child
 			},
 			this
 		);
@@ -239,16 +240,24 @@ PWG.ViewManager = function() {
 		);
 	};
 	
-	module.addView = function(view, parent) {
-		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'collection = ', collection);
-		var collection = parent.children || this.collection;
-		collection[view.name] = new PWG.ViewManager.ViewController(view, view.name);
+	module.addView = function(view, parent, addToGroup) {
+		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'parent = ', parent);
+		var collection = (parent) ? parent.children : this.collection;
+
+		var child = new PWG.ViewManager.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
-			// trace('\tit is a group, going to call build on it');
-			collection[view.name].children = PWG.ViewManager.build(view.views);
-			PWG.ViewManager.initGroup(collection[view.name]);
+			child.children = PWG.ViewManager.build(view.views);
+			PWG.ViewManager.initGroup(child);
 		}
-		trace('POST ADD, collection = ', collection);
+		collection[view.name] = child;
+
+		// trace('POST ADD, collection = ', collection);
+		if(addToGroup) {
+			PWG.ViewManager.initGroup(parent);
+			// parent.view.add(child.view);
+			// the parent was passed and is a group type view controller
+			// PWG.ViewManager.addToGroup(view, parent.view);
+		}
 	};
 	
 	module.removeView = function(name, collection) {
@@ -295,8 +304,13 @@ PWG.ViewManager = function() {
 		controller.callMethod(method, args);
 	};
 
-	module.setChildFrames = function(parentPath, frame) {
-		var parent = this.getControllerFromPath(parentPath);
+	module.swapDepths = function(path, child1, child2) {
+		var parent = this.getControllerFromPath(path);
+		trace('parent = ' + parent);
+	};
+	
+	module.setChildFrames = function(path, frame) {
+		var parent = this.getControllerFromPath(path);
 		PWG.Utils.each(
 			parent.children,
 			function(child) {
