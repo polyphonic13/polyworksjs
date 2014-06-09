@@ -19,8 +19,8 @@ var GameConfig = function() {
 
 		var fontSizes = {
 			xxs: (gameUnit * 0.25),
-			xs: (gameUnit * 0.33),
-			sm: (gameUnit * 0.5),
+			xs: (gameUnit * 0.30),
+			sm: (gameUnit * 0.45),
 			md: (gameUnit * 0.75),
 			lg: (gameUnit * 1.0),
 			xl: (gameUnit * 1.5)
@@ -94,10 +94,10 @@ var GameConfig = function() {
 			machineIcon: {
 				type: 'group',
 				name: 'machineIcon',
-				offsetY: (gameUnit * 2),
-				offsetX: (gameUnit * 0.15),
+				offsetY: (gameUnit * 3.5),
+				offsetX: 0,
 				iconW: (gameUnit * 5),
-				iconH: (gameUnit * 5.15),
+				iconH: (gameUnit * 5),
 				views: {
 					bg: {
 						type: 'sprite',
@@ -126,10 +126,10 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'machineCost',
 						text: '$',
-						x: (gameUnit * 0.3),
-						y: gameUnit * 0.9,
+						x: (gameUnit * 0.25),
+						y: gameUnit * 1.1,
 						style: {
-						    font: (fontSizes.xxs + 'px Arial'),
+						    font: (fontSizes.xs + 'px Arial'),
 					        fill: palette.black
 						},
 						attrs: {

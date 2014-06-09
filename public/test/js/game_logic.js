@@ -113,7 +113,6 @@ var gameLogic = {
 			},
 			create: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
-				// PWG.ScreenManager.create();
 			},
 			render: function() {
 				PWG.ScreenManager.render();
@@ -157,6 +156,7 @@ var gameLogic = {
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
+				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -184,7 +184,7 @@ var gameLogic = {
 						item.name = part.id;
 						item.views.icon.img = part.icon;
 						item.views.description.text = part.description;
-						item.views.cost.text = '$' + part.cost[size];
+						item.views.cost.text = '$' + part[size].cost;
 						item.views.invisButton.partIdx = idx;
 
 						itemY = (iconH * count) + offset;
@@ -462,8 +462,8 @@ var gameLogic = {
 		},
 		play: {
 			create: function() {
-				PWG.ViewManager.hideView('global:turnGroup:closeButton');
-				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.showView('global:turnGroup:closeButton');
 			}
 		},
 		usDetail: {
@@ -471,6 +471,7 @@ var gameLogic = {
 				// show add building button
 				trace('show add building button');
 				PWG.ViewManager.showView('global:turnGroup:addBuilding');
+				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 			},
 			shutdown: function() {

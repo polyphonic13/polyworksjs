@@ -6,6 +6,7 @@ var Machine = function() {
 		type: '',
 		size: '',
 		cost: 0,
+		points: 0,
 		parts: {}
 	};
 	
@@ -30,16 +31,17 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.save = function() {
-		this.calculateCost();
+		this.calculateCostAndPoints();
 	};
 	
-	Machine.prototype.calculateCost = function() {
+	Machine.prototype.calculateCostAndPoints = function() {
 		// trace('Machine['+this.config.id+']/calculateCost, this = ', this);
 		PWG.Utils.each(
 			this.config.parts,
 			function(val, key) {
 				// trace('\tval = ' + val + ', key = ' + key);
-				this.config.cost += gameData.parts[key][val].cost[this.config.size];
+				this.config.cost += gameData.parts[key][val][this.config.size].cost;
+				this.config.points += gameData.parts[key][val][this.config.size].sell;
 			},
 			this
 		);

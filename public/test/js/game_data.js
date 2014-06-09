@@ -6,10 +6,20 @@ var gameData = {
 			icon: 'wheels2',
 			frame: 1,
 			description: 'basic wheels',
-			cost: {
-				basic: 350, 
-				medium: 700, 
-				heavy: 1050
+			basic: {
+				cost: 350,
+				build: 50,
+				sell: 100
+			},
+			medium: {
+				cost: 700,
+				build: 100,
+				sell: 200
+			},
+			heavy: {
+				cost: 1000,
+				build: 150,
+				sell: 300
 			}
 		},
 		{
@@ -17,10 +27,20 @@ var gameData = {
 			icon: 'wheels1',
 			frame: 2,
 			description: 'standard wheels',
-			cost: {
-				basic: 500, 
-				medium: 1000, 
-				heavy: 1500
+			basic: {
+				cost: 500,
+				build: 100,
+				sell: 200
+			},
+			medium: {
+				cost: 1000,
+				build: 200,
+				sell: 400
+			},
+			heavy: {
+				cost: 1500,
+				build: 250,
+				sell: 500
 			}
 		},
 		{
@@ -28,10 +48,20 @@ var gameData = {
 			icon: 'wheels3',
 			frame: 3,
 			description: 'deluxe wheels',
-			cost: {
-				basic: 1000, 
-				medium: 2000, 
-				heavy: 3000
+			basic: {
+				cost: 1000,
+				build: 250,
+				sell: 500
+			},
+			medium: {
+				cost: 2000,
+				build: 500,
+				sell: 1000
+			},
+			heavy: {
+				cost: 4000,
+				build: 1000,
+				sell: 2000
 			}
 		}
 		],
@@ -41,10 +71,20 @@ var gameData = {
 			icon: 'engine1',
 			frame: 1,
 			description: 'basic engine',
-			cost: {
-				basic: 2000, 
-				medium: 4000, 
-				heavy: 6000
+			basic: {
+				cost: 2000,
+				build: 500,
+				sell: 1000
+			},
+			medium: {
+				cost: 4000,
+				build: 1000,
+				sell: 2000
+			},
+			heavy: {
+				cost: 6000,
+				build: 1500,
+				sell: 3000
 			}
 		},
 		{
@@ -52,10 +92,20 @@ var gameData = {
 			icon: 'engine2',
 			frame: 2,
 			description: 'standard engine',
-			cost: {
-				basic: 3000, 
-				medium: 6000, 
-				heavy: 9000
+			basic: {
+				cost: 3000,
+				build: 750,
+				sell: 1500
+			},
+			medium: {
+				cost: 6000,
+				build: 1500,
+				sell: 3000
+			},
+			heavy: {
+				cost: 9000,
+				build: 2000,
+				sell: 4000
 			}
 		},
 		{
@@ -63,10 +113,20 @@ var gameData = {
 			icon: 'engine3',
 			frame: 3,
 			description: 'deluxe engine',
-			cost: {
-				basic: 5000, 
-				medium: 10000, 
-				heavy: 15000
+			basic: {
+				cost: 5000,
+				build: 500,
+				sell: 1000
+			},
+			medium: {
+				cost: 10000,
+				build: 1000,
+				sell: 2000
+			},
+			heavy: {
+				cost: 15000,
+				build: 1500,
+				sell: 3000
 			}
 		}
 		],
@@ -76,10 +136,20 @@ var gameData = {
 			icon: 'cab1',
 			frame: 1,
 			description: 'basic cab',
-			cost: {
-				basic: 300, 
-				medium: 600, 
-				heavy: 900
+			basic: {
+				cost: 300,
+				build: 50,
+				sell: 100
+			},
+			medium: {
+				cost: 600,
+				build: 100,
+				sell: 200
+			},
+			heavy: {
+				cost: 900,
+				build: 150,
+				sell: 300
 			}
 		},
 		{
@@ -87,10 +157,20 @@ var gameData = {
 			icon: 'cab2',
 			frame: 2,
 			description: 'standard cab',
-			cost: {
-				basic: 400, 
-				medium: 800, 
-				heavy: 1200
+			basic: {
+				cost: 400,
+				build: 75,
+				sell: 150
+			},
+			medium: {
+				cost: 800,
+				build: 150,
+				sell: 300
+			},
+			heavy: {
+				cost: 1200,
+				build: 225,
+				sell: 450
 			}
 		},
 		{
@@ -98,10 +178,20 @@ var gameData = {
 			icon: 'cab3',
 			frame: 3,
 			description: 'deluxe cab',
-			cost: {
-				basic: 1000, 
-				medium: 2000, 
-				heavy: 3000
+			basic: {
+				cost: 1000,
+				build: 250,
+				sell: 500
+			},
+			medium: {
+				cost: 2000,
+				build: 500,
+				sell: 1000
+			},
+			heavy: {
+				cost: 3000,
+				build: 1000,
+				sell: 2000
 			}
 		}
 		]
