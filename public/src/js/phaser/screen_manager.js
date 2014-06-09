@@ -16,6 +16,12 @@ PWG.ScreenManager = function() {
 		}
 	};
 	
+	ScreenController.prototype.render = function() {
+		if(this.config.render) {
+			this.config.render.apply(this, arguments);
+		}
+	};
+	
 	ScreenController.prototype.update = function() {
 		if(this.config.update) {
 			this.config.update.apply(this, arguments);
@@ -72,7 +78,9 @@ PWG.ScreenManager = function() {
 	};
 	
 	module.render = function() {
-		
+		if(this.currentId !== '') {
+			this.screens[this.currentId].render();
+		}
 	};
 	
 	module.shutdown = function() {

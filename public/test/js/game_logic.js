@@ -26,8 +26,8 @@ var gameLogic = {
 		{
 			event: PWG.Events.CHANGE_SCREEN,
 			handler: function(event) {
-				PWG.ScreenManager.changeScreen(event.value);
 				PWG.ViewManager.switchGroup(event.value);
+				PWG.ScreenManager.changeScreen(event.value);
 
 				if(turnGroups.indexOf(event.value) > -1) {
 					// trace('this is a turn group!');
@@ -115,6 +115,9 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 				// PWG.ScreenManager.create();
 			},
+			render: function() {
+				PWG.ScreenManager.render();
+			},
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
 				if(!savedData) {
@@ -154,6 +157,7 @@ var gameLogic = {
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
+				PWG.ViewManager.hideView('global:turnGroup:closeButton');
 			},
 			stopTurn: function() {
 				PhaserGame.removeTimer('turnTimer');
@@ -363,92 +367,87 @@ var gameLogic = {
 			}
 		},
 		buttonCallbacks: {
-			manualStart: {
-				callback: function() {
+			manualStart: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
+			},
+			manualClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'start' });
+			},
+			playStart: function() {
+				if(PhaserGame.isFirstPlay) {
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
-				}
-			},
-			manualClose: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'start' });
-				},
-			},
-			playStart: {
-				callback: function() {
-					if(PhaserGame.isFirstPlay) {
-						PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
-						PhaserGame.isFirstPlay = false;
-					} else {
-						PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
-					}
-				}
-			},
-			pauseButton: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
-				}
-			},
-			resumeButton: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
-				}
-			},
-			usDetailStart: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
-				}
-			},
-			usDetailClose: {
-				callback: function() {
+					PhaserGame.isFirstPlay = false;
+				} else {
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 				}
 			},
-			notificationClose: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
-				}
+			pauseButton: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
 			},
-			partsMenuClose: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
-				}
+			resumeButton: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 			},
-			usDetailButton: {
-				callback: function() {
+			usDetailStart: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
+			},
+			usDetailClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
+			},
+			notificationClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
+			},
+			partsMenuClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+			},
+			usDetailButton: function() {
 					// PWG.EventCenter.trigger({ type: PWG.Events.START_TURN });
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
-				}
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
-			addBuilding: {
-				callback: function() {
-					trace('add building button clicked');
-				}
+			addBuilding: function() {
+				trace('add building button clicked');
 			},
-			inventoryStart: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
-				}
+			equipmentListStart: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 			},
-			inventoryClose: {
-				callback: function() {
+			equipmentListClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
+			},
+			addEquipment: function() {
+				trace('add equipment button clicked');
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
+			},
+			equipmentCreateClose: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+			},
+			saveMachine: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.SAVE_MACHINE });
+			},
+			closeButton: function() {
+				switch(PWG.ScreenManager.currentId) {
+					case 'usDetail':
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
-				}
-			},
-			addEquipment: {
-				callback: function() {
-					trace('add equipment button clicked');
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
-				}
-			},
-			equipmentCreateClose: {
-				callback: function() {
+					break;
+					
+					case 'equipmentCreate':
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+					break;
+					
+					case 'equipmentList':
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
+					break;
+					
+					case 'equipmentEdit':
+					if(PhaserGame.machineDirty) {
+						// notify of unsaved changes
+					}
+					PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+					break;
+					
+					default:
+					break;
 				}
-			},
-			saveMachine: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.SAVE_MACHINE });
-				}
+				// PWG.ViewManager.hideView('global:turnGroup:closeButton');
 			}
 		}
 	},
@@ -457,13 +456,17 @@ var gameLogic = {
 			
 		},
 		play: {
-			
+			create: function() {
+				PWG.ViewManager.hideView('global:turnGroup:closeButton');
+				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
+			}
 		},
 		usDetail: {
 			create: function() {
 				// show add building button
 				trace('show add building button');
 				PWG.ViewManager.showView('global:turnGroup:addBuilding');
+				PWG.ViewManager.showView('global:turnGroup:closeButton');
 			},
 			shutdown: function() {
 				// hide add building button
@@ -489,6 +492,7 @@ var gameLogic = {
 				// show add equipment button
 				PWG.ViewManager.showView('global:turnGroup:addEquipment');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				var equipment = PhaserGame.playerData.equipment;
 
@@ -553,10 +557,13 @@ var gameLogic = {
 					// activate size category buttons
 					trace('machine type selection, event = ', event);
 					PhaserGame.currentMachineType = event.value;
+					PWG.ViewManager.hideView('equipmentCreate:createIcons:machineType');
 					if(event.value === EquipmentTypes.TRACTOR) {
 						PWG.ViewManager.showView('equipmentCreate:createIcons:tractorSize');
+						PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
 					} else {
 						PWG.ViewManager.showView('equipmentCreate:createIcons:skidsteerSize');
+						PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
 					}
 				}
 			},
@@ -576,8 +583,10 @@ var gameLogic = {
 			}
 			],
 			create: function() {
+				trace('EQUIPMENT CREATE CREATE METHOD');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
+				PWG.ViewManager.showView('global:turnGroup:closeButton');
 			}
 		},
 		equipmentEdit: {
@@ -644,12 +653,19 @@ var gameLogic = {
 					PhaserGame.setSavedData();
 					PhaserGame.currentMachine = null;
 					PhaserGame.machineDirty = false;
+					PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			}
 			],
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup:saveMachineButton');
+				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				
+				var currentMachineParts = PhaserGame.currentMachine.parts;
+				if(currentMachineParts) {
+
+				}
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
 				PhaserGame.machineDirty = true;
 			},

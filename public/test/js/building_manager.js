@@ -18,7 +18,7 @@ var BuildingManager = function() {
 	};
 	
 	Building.prototype.capacity = 0;
-	Building.prototype.inventory = [];
+	Building.prototype.equipment = [];
 	Building.prototype.update = function() 
 	{
 		if(this.state === states.CONSTRUCTION && this.age >= this.buildTime) {
@@ -62,9 +62,9 @@ var BuildingManager = function() {
 						{
 							if(PhaserGame.bank > 0) 
 							{
-								if(this.inventory.length < this.outputCapacity) {
+								if(this.equipment.length < this.outputCapacity) {
 									PhaserGame.bank -= machine.get('cost');
-									this.inventory.push(machine.id);
+									this.equipment.push(machine.id);
 								}
 								else
 								{
@@ -102,7 +102,7 @@ var BuildingManager = function() {
 	{
 		Showroom._super.update.apply(this, arguments);
 		if(this.state === states.ACTIVE) {
-			if(this.inventory.length > 0) 
+			if(this.equipment.length > 0) 
 			{
 
 			}
@@ -138,23 +138,23 @@ var BuildingManager = function() {
 	
 	module.addInventoryToShowroom = function(factoryIdx, showroomIdx) 
 	{
-		var inventory = module.buildings.factories[factoryIdx].inventory;
+		var equipment = module.buildings.factories[factoryIdx].equipment;
 		var showroom = module.buildings.showrooms[showroomIdx];
 
-		if(inventory.length > 0) 
+		if(equipment.length > 0) 
 		{
 			PWG.Utils.each(
-				inventory,
+				equipment,
 				function(machine) 
 				{
-					showroom.inventory.push(machine);
+					showroom.equipment.push(machine);
 				},
 				this
 			)
 		}
 		else 
 		{
-			// notify factory has no inventory
+			// notify factory has no equipment
 		}
 	};
 	

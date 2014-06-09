@@ -80,7 +80,7 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.global.buttonCallbacks.notificationClose.callback,
+						callback: gameLogic.global.buttonCallbacks.notificationClose,
 						context: this,
 						frames: [0, 1, 1, 0]
 					}
@@ -181,7 +181,7 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.global.buttonCallbacks.partsMenuClose.callback,
+						callback: gameLogic.global.buttonCallbacks.partsMenuClose,
 						context: this,
 						frames: [0, 1, 1, 0]
 					},
@@ -296,7 +296,7 @@ var GameConfig = function() {
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					worldBg: 'images/screens/screen_mocks_world.gif',
-					inventoryBg: 'images/screens/screen_mocks_inventory.gif',
+					equipmentListBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
 					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
@@ -441,7 +441,7 @@ var GameConfig = function() {
 								height: (gameUnit * 5),
 								alpha: 0.5
 							},
-							callback: gameLogic.global.buttonCallbacks.playStart.callback,
+							callback: gameLogic.global.buttonCallbacks.playStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -457,7 +457,7 @@ var GameConfig = function() {
 								height: gameUnit * 2.5,
 								alpha: 0.75
 							},
-							callback: gameLogic.global.buttonCallbacks.manualStart.callback,
+							callback: gameLogic.global.buttonCallbacks.manualStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
@@ -481,20 +481,6 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH
 							}
-						},
-						closeButton: {
-							type: 'button',
-							name: 'closeButton',
-							img: 'buttonClose',
-							x: (gameW - gameUnit * 1.5),
-							y: (gameUnit * 0.5),
-							attrs: {
-								width: gameUnit * 1,
-								height: gameUnit * 1
-							},
-							callback: gameLogic.global.buttonCallbacks.manualClose.callback,
-							context: this,
-							frames: [0, 1, 1, 0]
 						}
 					}
 				},
@@ -562,7 +548,7 @@ var GameConfig = function() {
 										height: (gameUnit * 3),
 										alpha: 0.3
 									},
-									callback: gameLogic.global.buttonCallbacks.usDetailStart.callback,
+									callback: gameLogic.global.buttonCallbacks.usDetailStart,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -606,7 +592,7 @@ var GameConfig = function() {
 										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									callback: gameLogic.global.buttonCallbacks.usDetailClose.callback,
+									callback: gameLogic.global.buttonCallbacks.usDetailClose,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -651,8 +637,8 @@ var GameConfig = function() {
 						}
 					}
 				},
-				// inventroy
-				inventoryScreen: {
+				// equipment list
+				equipmentListScreen: {
 					name: 'equipmentList',
 					type: 'group',
 					attrs: {
@@ -665,7 +651,7 @@ var GameConfig = function() {
 						{
 							type: 'sprite',
 							name: 'background',
-							img: 'inventoryBg',
+							img: 'equipmentListBg',
 							x: 0,
 							y: 0,
 							attrs: {
@@ -677,7 +663,7 @@ var GameConfig = function() {
 						// buttons group
 						buttons: {
 							type: 'group',
-							name: 'inventoryScreenButtonGroup',
+							name: 'equipmentListScreenButtonGroup',
 							attrs: {
 								fixedToCamera: true
 							},
@@ -694,7 +680,7 @@ var GameConfig = function() {
 										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									callback: gameLogic.global.buttonCallbacks.inventoryClose.callback,
+									callback: gameLogic.global.buttonCallbacks.equipmentListClose,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -703,7 +689,7 @@ var GameConfig = function() {
 						// icons group
 						// icons: {
 						// 	type: 'group',
-						// 	name: 'inventoryScreenIconGroup',
+						// 	name: 'equipmentListScreenIconGroup',
 						// 	attrs: {
 						// 		fixedToCamera: true
 						// 	},
@@ -762,7 +748,7 @@ var GameConfig = function() {
 							views: {
 								machineType: {
 									type: 'group',
-									name: 'machineTypeGroup',
+									name: 'machineType',
 									views: {
 										tractor: {
 											type: 'sprite',
@@ -912,45 +898,6 @@ var GameConfig = function() {
 								height: gameH
 							}
 						},
-						// buttons group
-						buttons: {
-							type: 'group',
-							name: 'editorButtons',
-							attrs: {
-								fixedToCamera: true
-							},
-							views: {
-								closeButton: {
-									type: 'button',
-									name: 'closeButton',
-									img: 'buttonClose',
-									x: (gameW - gameUnit * 1.25),
-									y: (gameUnit * 0.25),
-									attrs: {
-										width: gameUnit * 1,
-										height: gameUnit * 1
-									},
-									callback: gameLogic.global.buttonCallbacks.equipmentCreateClose.callback,
-									context: this,
-									frames: [0, 1, 1, 0]
-								},
-								saveButton: {
-									type: 'button',
-									name: 'saveButton',
-									img: 'blockGreen',
-									x: (gameUnit * 5),
-									y: (gameH - (gameUnit * 2)),
-									attrs: {
-										width: gameUnit * 4,
-										height: gameUnit * 3,
-										alpha: 0.5
-									},
-									callback: gameLogic.global.buttonCallbacks.saveMachine.callback,
-									context: this,
-									frames: [0, 0, 0, 0]
-								}
-							}
-						},
 						// parts group
 						parts: {
 							type: 'group',
@@ -1049,7 +996,7 @@ var GameConfig = function() {
 								// 		height: gameUnit * 1.5,
 								// 		visible: false
 								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.pauseButton.callback,
+								// 	callback: gameLogic.global.buttonCallbacks.pauseButton,
 								// 	context: this,
 								// 	frames: [0, 1, 1, 0]
 								// },
@@ -1064,7 +1011,7 @@ var GameConfig = function() {
 								// 		height: gameUnit * 1.5,
 								// 		visible: false
 								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.resumeButton.callback,
+								// 	callback: gameLogic.global.buttonCallbacks.resumeButton,
 								// 	context: this,
 								// 	frames: [0, 1, 1, 0]
 								// },
@@ -1079,7 +1026,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2),
 										visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.inventoryStart.callback,
+									callback: gameLogic.global.buttonCallbacks.equipmentListStart,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -1094,7 +1041,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2),
 										visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.saveMachine.callback,
+									callback: gameLogic.global.buttonCallbacks.saveMachine,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -1109,7 +1056,7 @@ var GameConfig = function() {
 										height: (gameUnit),
 										visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.addEquipment.callback,
+									callback: gameLogic.global.buttonCallbacks.addEquipment,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -1124,9 +1071,23 @@ var GameConfig = function() {
 										height: (gameUnit),
 										visible: false
 									},
-									callback: gameLogic.global.buttonCallbacks.addBuilding.callback,
+									callback: gameLogic.global.buttonCallbacks.addBuilding,
 									context: this,
 									frames: [0, 0, 0, 0]
+								},
+								closeButton: {
+									type: 'button',
+									name: 'closeButton',
+									img: 'buttonClose',
+									x: gameUnit * 0.5,
+									y: gameH - (gameUnit * 1.5),
+									attrs: {
+										width: gameUnit * 1,
+										height: gameUnit * 1
+									},
+									callback: gameLogic.global.buttonCallbacks.closeButton,
+									context: this,
+									frames: [0, 1, 1, 0]
 								}
 							}
 						}
