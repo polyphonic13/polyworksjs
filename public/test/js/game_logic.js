@@ -662,11 +662,21 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:turnGroup:saveMachineButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
-				var currentMachineParts = PhaserGame.currentMachine.parts;
-				if(currentMachineParts) {
-
-				}
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
+				var currentMachineParts = PhaserGame.currentMachine.config.parts;
+				if(currentMachineParts) {
+					// TODO: show the views/frames of the machine as it currently exists
+					trace('--------- currentMachineParts = ', currentMachineParts);
+					PWG.Utils.each(
+						currentMachineParts,
+						function(value, key) {
+							var partView = key + 'Part';
+							var frame = gameData.parts[key][value].frame;
+							PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
+						},
+						this
+					);
+				}
 				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
