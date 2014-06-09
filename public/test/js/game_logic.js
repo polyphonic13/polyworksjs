@@ -157,11 +157,12 @@ var gameLogic = {
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
-				PWG.ViewManager.hideView('global:turnGroup:closeButton');
 			},
 			stopTurn: function() {
-				PhaserGame.removeTimer('turnTimer');
+				PWG.PhaserTime.removeTimer('turnTime');
 				PhaserGame.turnActive = false;
+				PWG.ViewManager.hideView('global:turnGroup:closeButton');
+				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			addPartItemsOverlay: function(type, collection) {
 				PhaserGame.currentPartType = type;
@@ -424,6 +425,10 @@ var gameLogic = {
 			},
 			closeButton: function() {
 				switch(PWG.ScreenManager.currentId) {
+					case 'play':
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'start' });
+					break; 
+					
 					case 'usDetail':
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 					break;

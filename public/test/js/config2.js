@@ -599,6 +599,18 @@ var GameConfig = function() {
 
 							}
 						},
+						temp: {
+							type: 'sprite',
+							name: 'white',
+							img: 'blockWhite',
+							x: 0,
+							y: gameUnit * 3.5,
+							attrs: {
+								width: gameW,
+								height: (gameUnit * 10),
+								alpha: 0.3
+							}
+						},
 						// icons group
 						icons: {
 							type: 'group',
