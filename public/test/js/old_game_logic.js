@@ -119,7 +119,7 @@ var gameLogic =
 				}
 
 				var menuConfig = PWG.Utils.clone(PhaserGame.dynamicViews.partsMenu);
-				var itemConfig = PWG.Utils.clone(PhaserGame.dynamicViews.partSelectionButton);
+				var itemConfig = PWG.Utils.clone(PhaserGame.dynamicViews.partSelectionIcon);
 				var count = 0;
 				var itemY = 0;
 				var offset = itemConfig.offset;
@@ -192,7 +192,7 @@ var gameLogic =
 				}
 			}
 		},
-		partSelectionButton: {
+		partSelectionIcon: {
 			invisButton: {
 				input: {
 					inputDown: function(event) {

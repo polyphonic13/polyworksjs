@@ -86,6 +86,39 @@ var GameConfig = function() {
 					}
 				}
 			},
+			usDetailGrid: {
+				type: 'group',
+				name: 'usDetailGrid',
+				views: {}
+			},
+			usDetailGridItem: {
+				type: 'sprite',
+				name: 'usDetailGridItem',
+				img: 'usDetailTiles',
+				x: 0,
+				y: (gameUnit * 3.5),
+				attrs: {
+					width: gameUnit * 0.95,
+					height: gameUnit * 0.95,
+					frame: 0
+				}
+			},
+			buildingTypeList: {
+				type: 'group',
+				name: 'buildingTypeList',
+				views: {}
+			},
+			buildingSelectionIcon: {
+				type: 'sprite',
+				name: '',
+				x: 0,
+				y: 0,
+				attrs: {
+					width: gameUnit,
+					height: gameUnit,
+					frame: 0
+				}
+			},
 			machineList: {
 				type: 'group',
 				name: 'machineList',
@@ -126,7 +159,7 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'machineCost',
 						text: '$',
-						x: (gameUnit * 0.25),
+						x: gameUnit * 0.25,
 						y: gameUnit * 1.1,
 						style: {
 						    font: (fontSizes.xs + 'px Arial'),
@@ -134,6 +167,17 @@ var GameConfig = function() {
 						},
 						attrs: {
 							angle: -45
+						}
+					},
+					points: {
+						type: 'text',
+						name: 'machinePoints',
+						text: '',
+						x: gameUnit * 4,
+						y: gameUnit * 0.6,
+						style: {
+						    font: (fontSizes.xs + 'px Arial'),
+					        fill: palette.black
 						}
 					},
 					invisButton: {
@@ -192,9 +236,9 @@ var GameConfig = function() {
 					}
 				}
 			},
-			partSelectionButton: {
+			partSelectionIcon: {
 				type: 'group',
-				name: 'partSelectionButton',
+				name: 'partSelectionIcon',
 				offset: (gameUnit * 3),
 				iconH: (gameUnit * 2.5),
 				views: {
@@ -209,7 +253,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.partSelectionButton
+						input: gameLogic.global.input.partSelectionIcon
 					},
 					icon: {
 						type: 'sprite',
@@ -256,7 +300,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.partSelectionButton
+						input: gameLogic.global.input.partSelectionIcon
 					}
 					
 				}
@@ -369,6 +413,12 @@ var GameConfig = function() {
 						width: 50,
 						height: 50,
 						frames: 2
+					},
+					usDetailTiles: {
+						url: 'images/us_detail_tiles.png',
+						width: 64,
+						height: 64,
+						frames: 8
 					},
 					wheelsSprites: {
 						url: 'images/parts/wheels_spritesheet.gif',
@@ -577,76 +627,42 @@ var GameConfig = function() {
 								fixedToCamera: true
 							}
 						},
-						// buttons group
-						buttons: {
-							type: 'group',
-							name: 'usDetailButtons',
-							views: {
-								closeButton: {
-									type: 'button',
-									name: 'closeButton',
-									img: 'buttonClose',
-									x: (gameW - gameUnit * 1.5),
-									y: (gameUnit * 0.5),
-									attrs: {
-										width: gameUnit * 1,
-										height: gameUnit * 1
-									},
-									callback: gameLogic.global.buttonCallbacks.usDetailClose,
-									context: this,
-									frames: [0, 1, 1, 0]
-								}
-
-							}
-						},
-						temp: {
-							type: 'sprite',
-							name: 'white',
-							img: 'blockWhite',
-							x: 0,
-							y: gameUnit * 3.5,
-							attrs: {
-								width: gameW,
-								height: (gameUnit * 10),
-								alpha: 0.3
-							}
-						},
 						// icons group
-						icons: {
-							type: 'group',
-							name: 'usDetailIcons',
-							attrs: {
-								fixedToCamera: true,
-								visible: false
-							},
-							views: 
-							{
-								factoryIcon: {
-									type: 'sprite',
-									name: 'factoryIcon',
-									img: 'iconFactory',
-									x: gameUnit,
-									y: gameUnit * 11,
-									attrs: {
-										width: gameUnit * 1,
-										height: gameUnit * 1
-									},
-									input: gameLogic.global.input.newFactory
-								},
-								showroomIcon: {
-									type: 'sprite',
-									name: 'showroomIcon',
-									img: 'iconShowroom',
-									x: gameUnit * 4,
-									y: gameUnit * 11,
-									attrs: {
-										width: gameUnit * 1,
-										height: gameUnit * 1
-									},
-									input: gameLogic.global.input.newShowroom
-								}
-							}
-						}
+						// icons: {
+						// 	type: 'group',
+						// 	name: 'usDetailIcons',
+						// 	attrs: {
+						// 		fixedToCamera: true,
+						// 		visible: false
+						// 	},
+						// 	views: 
+						// 	{
+						// 		factoryIcon: {
+						// 			type: 'sprite',
+						// 			name: 'factoryIcon',
+						// 			img: 'iconFactory',
+						// 			x: gameUnit,
+						// 			y: gameUnit * 11,
+						// 			attrs: {
+						// 				width: gameUnit * 1,
+						// 				height: gameUnit * 1
+						// 			},
+						// 			input: gameLogic.global.input.newFactory
+						// 		},
+						// 		showroomIcon: {
+						// 			type: 'sprite',
+						// 			name: 'showroomIcon',
+						// 			img: 'iconShowroom',
+						// 			x: gameUnit * 4,
+						// 			y: gameUnit * 11,
+						// 			attrs: {
+						// 				width: gameUnit * 1,
+						// 				height: gameUnit * 1
+						// 			},
+						// 			input: gameLogic.global.input.newShowroom
+						// 		}
+						// 	}
+						// }
 					}
 				},
 				// equipment list

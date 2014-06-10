@@ -266,23 +266,6 @@ PWG.ViewManager = function() {
 			collection.children[name].view.destroy();
 			delete collection.children[name];
 		}
-/*
-		PWG.Utils.each(
-			collection,
-			function(child, key) {
-				if(child.view.name === name) {
-					// trace('\tremoving ', child);
-					child.view.destroy();
-					if(child.group) {
-						// trace('\t\tcalling group destroy also');
-						child.group.view.destroy();
-					}
-					delete collection[key];
-				}
-			},
-			this
-		);
-*/
 	};
 	
 	module.showView = function(path) {

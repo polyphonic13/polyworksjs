@@ -1,21 +1,11 @@
 var playerData = {
 	money: 1000000,
-	factories: [
-	{
-		location: 3
-	},
-	{
-		location: 10
-	}
+	buildings: [
 	],
-	showrooms: [
-	{
-		location: 5
+	buildingCount: {
+		factories: 1,
+		showrooms: 1
 	},
-	{
-		location: 7
-	}
-	],
 	equipment: [
 	],
 	machineCount: {

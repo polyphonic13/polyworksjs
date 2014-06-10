@@ -7,6 +7,7 @@ var Machine = function() {
 		size: '',
 		cost: 0,
 		points: 0,
+		factoryId: -1,
 		parts: {}
 	};
 	
