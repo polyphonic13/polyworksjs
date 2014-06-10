@@ -15,6 +15,8 @@ var BuildingManager = function() {
 		this.config = config;
 		this.state = states.CONSTRUCTION;
 		this.age = 0;
+		this.sector = -1; 
+		this.cell = -1;
 		this.location = config.location;
 	};
 	
@@ -44,26 +46,19 @@ var BuildingManager = function() {
 	Factory.prototype.machineTypes = [];
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
-		if(this.state === states.ACTIVE)
-		{
-			if(this.machineTypes.length > 0)
-			{ 
+		if(this.state === states.ACTIVE) {
+			if(this.machineTypes.length > 0) { 
 				this.buildTime++;
 				
-				if(this.buildTime === TIME_TO_BUILD) 
-				{
+				if(this.buildTime === TIME_TO_BUILD) {
 					PWG.Utils.each(
 						this.machineTypes,
-						function(machine) 
-						{
-							if(PhaserGame.bank > 0) 
-							{
+						function(machine) {
+							if(PhaserGame.bank > 0) {
 								if(this.equipment.length < this.outputCapacity) {
 									PhaserGame.bank -= machine.get('cost');
 									this.equipment.push(machine.id);
-								}
-								else
-								{
+								} elsem {
 									// notify output capacity reached
 								}
 							} 
@@ -96,8 +91,7 @@ var BuildingManager = function() {
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);
 		if(this.state === states.ACTIVE) {
-			if(this.equipment.length > 0) 
-			{
+			if(this.equipment.length > 0) {
 
 			}
 		}
