@@ -1,7 +1,13 @@
 var playerData = {
 	money: 1000000,
-	buildings: [
-	],
+	buildings: {
+		factory: {
+		
+		},
+		showroom: {
+		
+		}
+	},
 	buildingCount: {
 		factories: 1,
 		showrooms: 1
