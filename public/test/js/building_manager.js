@@ -3,7 +3,6 @@ var BuildingManager = function() {
 	
 	var states = {
 		CONSTRUCTION: 'construction',
-		BUILT: 'built',
 		ACTIVE: 'active',
 		INACTIVE: 'inactive'
 	};
@@ -26,7 +25,7 @@ var BuildingManager = function() {
 		if(this.state === states.CONSTRUCTION && this.age >= this.buildTime) {
 			this.state = states.ACTIVE;
 			// trace('building construction completed');
-			module.onBuildingStateUpdate.call(this, { id: this.id, type: this.type, state: this.state });
+			module.onBuildingStateUpdated.call(this, { id: this.id, type: this.type, state: this.state });
 		}
 		this.age++;
 	};
@@ -58,7 +57,7 @@ var BuildingManager = function() {
 								if(this.equipment.length < this.outputCapacity) {
 									PhaserGame.bank -= machine.get('cost');
 									this.equipment.push(machine.id);
-								} elsem {
+								} else {
 									// notify output capacity reached
 								}
 							} 
@@ -97,9 +96,7 @@ var BuildingManager = function() {
 		}
 	};
 	
-	module.buildings = { factory: [], showroom: [] };
-	module.factorCount = 0;
-	madule.showroomCount = 0;
+	module.buildings = [];
 	
 	module.create = function(type, config) {
 		// trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
@@ -108,15 +105,13 @@ var BuildingManager = function() {
 			var building;
 			if(type === 'factory') {
 				building = new Factory(module.factoryCount, config);
-				module.factoryCount++;
 			} else {
-				module.showroomCount++;
 				building = new Showroom(module.showroomCount, config);
 			}
-			module.buildings[type].push(building);
-			PhaserGame.playerData.buildings[type].push(building);
 			PhaserGame.bank -= buildingCosts[type];
+			PhaserGame.playerData.buildings.push(building);
 			module.saveBuildingData(building);
+			module.buildings.push(building);
 			// trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
 		}
 	};
@@ -160,18 +155,16 @@ var BuildingManager = function() {
 		);
 	};
 	
-	module.onBuildingStatusUpdated = function(event) {
+	module.onBuildingStateUpdated = function(event) {
 		module.saveBuildingData(event);
 	};
 	
 	module.saveBuildingData = function(params) {
-		var idx = params.idx;
-		var type = params.type;
-		
+		var idx = params.idx;		
 		PWG.Utils.each(
 			params,
 			function(param, key) {
-				PlayerGame.playerData.buildings[type][idx][key] = param;
+				PlayerGame.playerData.buildings[idx][key] = param;
 			},
 			this
 		);
