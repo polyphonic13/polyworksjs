@@ -80,6 +80,9 @@ PWG.ViewManager = function() {
 			// trace('\tview has method, ', this.view);
 			this.view[method](args);
 		}
+		if(method === 'setText' && this.config.position) {
+			PWG.PhaserPositioner.set(this.config.position, this.view);
+		}	
 	};
 	
 	ViewController.prototype.hide = function() {
@@ -229,7 +232,7 @@ PWG.ViewManager = function() {
 		);
 	};
 	
-	module.removeFromGroup = function(children, group) {
+	module.removeFromGroup = function(children, controller) {
 		PWG.Utils.each(
 			children,
 			function(child, key) {
@@ -238,6 +241,12 @@ PWG.ViewManager = function() {
 			},
 			this
 		);
+	};
+	
+	module.removeGroupChildren = function(path) {
+		var controller = module.getControllerFromPath(path);
+		trace('view manager removeGroupChild, group = ', group);
+		module.removeFromGroup(group.children, children);
 	};
 	
 	module.addView = function(view, parent, addToGroup) {
@@ -284,6 +293,7 @@ PWG.ViewManager = function() {
 	module.callMethod = function(path, method, args) {
 		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
 		var controller = this.getControllerFromPath(path);
+		trace('calling method ' + method + 'with args: ', args, ' on ', controller);
 		controller.callMethod(method, args);
 	};
 

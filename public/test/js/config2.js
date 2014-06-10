@@ -591,7 +591,7 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'southWestDetail',
 									img: 'blockBlue',
-									x: gameUnit * 1,
+									x: gameUnit * 1.5,
 									y: (gameUnit * 7),
 									attrs: {
 										width: (gameUnit * 2.5),
@@ -606,7 +606,7 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'northEastDetail',
 									img: 'blockGreen',
-									x: gameUnit * 1,
+									x: gameUnit * 1.5,
 									y: (gameUnit * 8.5),
 									attrs: {
 										width: (gameUnit * 2.5),
@@ -621,7 +621,7 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'midWestDetail',
 									img: 'blockRed',
-									x: gameUnit * 3.5,
+									x: gameUnit * 4,
 									y: (gameUnit * 7),
 									attrs: {
 										width: (gameUnit * 3),
@@ -636,7 +636,7 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'northEastDetail',
 									img: 'blockWhite',
-									x: gameUnit * 6.5,
+									x: gameUnit * 7,
 									y: (gameUnit * 7),
 									attrs: {
 										width: (gameUnit * 2.5),
@@ -651,7 +651,7 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'southEastDetail',
 									img: 'blockBlue',
-									x: gameUnit * 6.5,
+									x: gameUnit * 7,
 									y: (gameUnit * 8.5),
 									attrs: {
 										width: (gameUnit * 2.5),
@@ -687,42 +687,20 @@ var GameConfig = function() {
 								fixedToCamera: true
 							}
 						},
-						// icons group
-						// icons: {
-						// 	type: 'group',
-						// 	name: 'usDetailIcons',
-						// 	attrs: {
-						// 		fixedToCamera: true,
-						// 		visible: false
-						// 	},
-						// 	views: 
-						// 	{
-						// 		factoryIcon: {
-						// 			type: 'sprite',
-						// 			name: 'factoryIcon',
-						// 			img: 'iconFactory',
-						// 			x: gameUnit,
-						// 			y: gameUnit * 11,
-						// 			attrs: {
-						// 				width: gameUnit * 1,
-						// 				height: gameUnit * 1
-						// 			},
-						// 			input: gameLogic.global.input.newFactory
-						// 		},
-						// 		showroomIcon: {
-						// 			type: 'sprite',
-						// 			name: 'showroomIcon',
-						// 			img: 'iconShowroom',
-						// 			x: gameUnit * 4,
-						// 			y: gameUnit * 11,
-						// 			attrs: {
-						// 				width: gameUnit * 1,
-						// 				height: gameUnit * 1
-						// 			},
-						// 			input: gameLogic.global.input.newShowroom
-						// 		}
-						// 	}
-						// }
+						sectorTitle: {
+							type: 'text',
+							name: 'sectorTitle',
+							text: '',
+							x: 0,
+							y: gameUnit * 2,
+							style: {
+							    font: (fontSizes.lg + 'px Arial'),
+						        fill: palette.white
+							},
+							position: {
+								centerX: true
+							}
+						}
 					}
 				},
 				// equipment list

@@ -6,6 +6,14 @@ var usSectors = {
 	SOUTH_WEST: 4
 };
 
+var sectorTitles = [
+	'Northeast',
+	'Southeast',
+	'Midwest',
+	'Northwest',
+	'Southwest'
+];
+
 var tileCellFrames = {
 	EMPTY: 0,
 	FACTORY_CONSTRUCTION: 2,

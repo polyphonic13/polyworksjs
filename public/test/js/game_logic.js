@@ -184,6 +184,8 @@ var gameLogic = {
 
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
+				trace('CURRENT US SECTOR = ' + PhaserGame.currentSector);
+				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.currentSector]], this);
 			},
 			buildEquipmentList: function() {
 				var equipment = PhaserGame.playerData.equipment;
@@ -472,23 +474,23 @@ var gameLogic = {
 			},
 			// us detail
 			northEastDetail: function() {
-				PhaserGame.currentUsSector = usSectors.NORTH_EAST;
+				PhaserGame.currentSector = usSectors.NORTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			southEastDetail: function() {
-				PhaserGame.currentUsSector = usSectors.SOUTH_EAST;
+				PhaserGame.currentSector = usSectors.SOUTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			midWestDetail: function() {
-				PhaserGame.currentUsSector = usSectors.MID_WEST;
+				PhaserGame.currentSector = usSectors.MID_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			northWestDetail: function() {
-				PhaserGame.currentUsSector = usSectors.NORTH_WEST;
+				PhaserGame.currentSector = usSectors.NORTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			southWestDetail: function() {
-				PhaserGame.currentUsSector = usSectors.SOUTH_WEST;
+				PhaserGame.currentSector = usSectors.SOUTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			addBuilding: function() {
@@ -570,6 +572,7 @@ var gameLogic = {
 			},
 			shutdown: function() {
 				// hide add building button
+				PWG.ViewManager.removeGroupChildren('usDetail:usDetailGrid');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 			}
 		},
