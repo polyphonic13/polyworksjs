@@ -1,19 +1,32 @@
 var playerData = {
 	money: 1000000,
-	buildings: {
-		factory: {
-		
+	buildings: [
+		// ne
+		{
+			
 		},
-		showroom: {
-		
+		// se
+		{
+			
+		},
+		// mw
+		{
+			
+		},
+		// nw
+		{
+			
+		},
+		// sw
+		{
+			
 		}
-	},
-	buildingCount: {
-		factories: 1,
-		showrooms: 1
-	},
-	equipment: [
 	],
+	buildingCount: {
+		factory: 0,
+		showroom: 0
+	},
+	equipment: [],
 	machineCount: {
 		tractor: 0,
 		skidsteer: 0

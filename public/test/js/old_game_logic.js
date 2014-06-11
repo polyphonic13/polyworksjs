@@ -188,7 +188,7 @@ var gameLogic =
 		partsMenu: {
 			closeButton: {
 				callback: function() {
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_LIST });
 				}
 			}
 		},
@@ -483,7 +483,7 @@ var gameLogic =
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
 					var partView = this.partsMenuType + '-part';
 					this.views['state-group'].children['editor-group'].children['editorParts'].children[partView].view.frame = frame;
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_LIST });
 				}
 			},
 			{
@@ -498,7 +498,7 @@ var gameLogic =
 				}
 			},
 			{
-				event: PWG.Events.OPEN_OVERLAY_MENU,
+				event: PWG.Events.OPEN_PARTS_LIST,
 				handler: function(event) 
 				{
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
@@ -516,7 +516,7 @@ var gameLogic =
 				}
 			},
 			{
-				event: PWG.Events.CLOSE_OVERLAY_MENU,
+				event: PWG.Events.CLOSE_PARTS_LIST,
 				handler: function(event) 
 				{
 					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
@@ -596,7 +596,7 @@ var gameLogic =
 								inputDown: function() 
 								{
 									// trace('wheel icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
+									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.WHEELS });
 								}
 							}
 						},
@@ -607,7 +607,7 @@ var gameLogic =
 								inputDown: function() 
 								{
 									// trace('engine icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
+									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.ENGINE });
 								}
 							}
 						},
@@ -618,7 +618,7 @@ var gameLogic =
 								inputDown: function() 
 								{
 									// trace('transmission icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
+									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.TRANSMISSION });
 								}
 							}
 						},
@@ -629,7 +629,7 @@ var gameLogic =
 								inputDown: function() 
 								{
 									// trace('cab icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
+									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.CAB });
 								}
 							}
 						},
@@ -640,7 +640,7 @@ var gameLogic =
 								inputDown: function() 
 								{
 									// trace('headlights icon input down');
-									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
+									PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.HEADLIGHTS });
 								}
 							}
 						}

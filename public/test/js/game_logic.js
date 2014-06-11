@@ -112,7 +112,8 @@ var gameLogic = {
 				// PWG.ScreenManager.preload();
 			},
 			create: function() {
-				PhaserGame.gridCoordinates = PWG.GridGenerator.createSquare(US_DETAIL_GRID_CELLS, (PWG.Stage.unit));
+				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.unit);
+
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
 			render: function() {
@@ -396,43 +397,43 @@ var gameLogic = {
 			wheelIcon: {
 				inputDown: function() {
 					// trace('wheel icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.WHEELS });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.WHEELS });
 				}
 			},
 			engineIcon: {
 				inputDown: function() {
 					// trace('engine icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.ENGINE });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.ENGINE });
 				}
 			},
 			transmissionIcon: {
 				inputDown: function() {
 					// trace('transmission icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.TRANSMISSION });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.TRANSMISSION });
 				}
 			},
 			cabIcon: {
 				inputDown: function() {
 					// trace('cab icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.CAB });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.CAB });
 				}
 			},
 			headlightsIcon: {
 				inputDown: function() {
 					// trace('headlights icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.HEADLIGHTS });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.HEADLIGHTS });
 				}
 			},
 			bucketIcon: {
 				inputDown: function() {
 					// trace('bucket icon input down');
-					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_OVERLAY_MENU, value: PartTypes.BUCKET });
+					PWG.EventCenter.trigger({ type: PWG.Events.OPEN_PARTS_LIST, value: PartTypes.BUCKET });
 				}
 			},
 			partsMenu: {
 				closeButton: {
 					callback: function() {
-						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+						PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_LIST });
 					}
 				}
 			},
@@ -505,7 +506,7 @@ var gameLogic = {
 			},
 			// equipment edit
 			partsMenuClose: function() {
-				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_LIST });
 			},
 			addEquipment: function() {
 				trace('add equipment button clicked');
@@ -655,7 +656,7 @@ var gameLogic = {
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
 					var partView = this.partsMenuType + 'Part';
 					PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_OVERLAY_MENU });
+					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_LIST });
 				}
 			},
 			{
@@ -669,7 +670,7 @@ var gameLogic = {
 				}
 			},
 			{
-				event: PWG.Events.OPEN_OVERLAY_MENU,
+				event: PWG.Events.OPEN_PARTS_LIST,
 				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!this.partsMenuOpen) 
@@ -685,7 +686,7 @@ var gameLogic = {
 				}
 			},
 			{
-				event: PWG.Events.CLOSE_OVERLAY_MENU,
+				event: PWG.Events.CLOSE_PARTS_LIST,
 				handler: function(event) {
 					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
 					if(this.partsMenuOpen) {

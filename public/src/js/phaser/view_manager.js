@@ -236,8 +236,8 @@ PWG.ViewManager = function() {
 		PWG.Utils.each(
 			children,
 			function(child, key) {
-				group.view.remove(child.view, true);
-				delete group.children[key];
+				controller.view.remove(child.view, true);
+				delete controller.children[key];
 			},
 			this
 		);
@@ -245,8 +245,8 @@ PWG.ViewManager = function() {
 	
 	module.removeGroupChildren = function(path) {
 		var controller = module.getControllerFromPath(path);
-		trace('view manager removeGroupChild, group = ', group);
-		module.removeFromGroup(group.children, children);
+		trace('view manager removeGroupChild, group = ', controller);
+		module.removeFromGroup(controller.children, controller);
 	};
 	
 	module.addView = function(view, parent, addToGroup) {

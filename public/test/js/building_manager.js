@@ -8,26 +8,26 @@ var BuildingManager = function() {
 	};
 
 	// BUILDING BASE CLASS
-	function Building(idx, config) {
-		this.idx = idx;
-		this.type = config.type;
+	function Building(config) {
+		trace('Building/constructor, config = ', config);
 		this.config = config;
-		this.state = states.CONSTRUCTION;
-		this.age = 0;
-		this.sector = -1; 
-		this.cell = -1;
-		this.location = config.location;
+		this.config.state = states.CONSTRUCTION;
+		
+		this.id = config.id;
+		this.config.type = config.type;
+		this.config.state = states.CONSTRUCTION;
+		this.config.age = 0;
 	};
 	
 	Building.prototype.capacity = 0;
 	Building.prototype.equipment = [];
 	Building.prototype.update = function() {
-		if(this.state === states.CONSTRUCTION && this.age >= this.buildTime) {
-			this.state = states.ACTIVE;
+		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
+			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
-			module.onBuildingStateUpdated.call(this, { id: this.id, type: this.type, state: this.state });
+			module.saveBuildingData.call(this, this.config);
 		}
-		this.age++;
+		this.config.age++;
 	};
 	Building.prototype.move = function(position) {
 		this.location = position;
@@ -35,17 +35,18 @@ var BuildingManager = function() {
 	
 	// FACTORY
 	function Factory(config) {
+		
 		Building.call(this, config);
+		this.machineTypes = [];
 	}
 	PWG.Utils.inherit(Factory, Building);
 	
 	Factory.prototype.buildTime = 3;
 	Factory.prototype.typeCapacity = 10;
 	Factory.prototype.outputCapacity = 100;
-	Factory.prototype.machineTypes = [];
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
-		if(this.state === states.ACTIVE) {
+		if(this.config.state === states.ACTIVE) {
 			if(this.machineTypes.length > 0) { 
 				this.buildTime++;
 				
@@ -82,6 +83,7 @@ var BuildingManager = function() {
 	// SHOWROOM
 	function Showroom(config) {
 		Building.call(this, config);
+		this.inventory = [];
 	}
 	PWG.Utils.inherit(Showroom, Building);
 
@@ -89,8 +91,8 @@ var BuildingManager = function() {
 	Showroom.prototype.capacity = 50;
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);
-		if(this.state === states.ACTIVE) {
-			if(this.equipment.length > 0) {
+		if(this.config.state === states.ACTIVE) {
+			if(this.inventory.length > 0) {
 
 			}
 		}
@@ -99,20 +101,26 @@ var BuildingManager = function() {
 	module.buildings = [];
 	
 	module.create = function(type, config) {
-		// trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
+		trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
 		config.type = type;
+		config.sector = PhaserGame.currentSector;
+		config.id = type + PhaserGame.playerData.buildingCount[type];
+		
 		if(PhaserGame.bank >= buildingCosts[type]) {
 			var building;
 			if(type === 'factory') {
-				building = new Factory(module.factoryCount, config);
+				building = new Factory(config);
 			} else {
-				building = new Showroom(module.showroomCount, config);
+				building = new Showroom(config);
 			}
+			trace('\tbuilding made');
+			PhaserGame.playerData.buildingCount[type]++;
+			trace('\tremoving money from bank');
 			PhaserGame.bank -= buildingCosts[type];
-			PhaserGame.playerData.buildings.push(building);
-			module.saveBuildingData(building);
+			trace('\tabout to save building data');
+			module.saveBuildingData(building.config);
 			module.buildings.push(building);
-			// trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
+			trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
 		}
 	};
 	
@@ -128,7 +136,7 @@ var BuildingManager = function() {
 			PWG.Utils.each(
 				equipment,
 				function(machine) {
-					showroom.equipment.push(machine);
+					showroom.inventory.push(machine);
 				},
 				this
 			)
@@ -155,19 +163,10 @@ var BuildingManager = function() {
 		);
 	};
 	
-	module.onBuildingStateUpdated = function(event) {
-		module.saveBuildingData(event);
-	};
-	
-	module.saveBuildingData = function(params) {
-		var idx = params.idx;		
-		PWG.Utils.each(
-			params,
-			function(param, key) {
-				PlayerGame.playerData.buildings[idx][key] = param;
-			},
-			this
-		);
+	module.saveBuildingData = function(config) {
+		trace('BuildingManager/saveBuildingData, config = ', config);
+		PhaserGame.playerData.buildings[PhaserGame.currentSector][config.id] = config;
+		trace('\tabout to save data to local storage');
 		PhaserGame.setSavedData();
 	};
 	
