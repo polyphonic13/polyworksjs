@@ -1,25 +1,30 @@
 var playerData = {
-	money: 1000000,
+	bank: 1000000,
 	buildings: [
 		// ne
 		{
-			
+			factory: {},
+			showroom: {}
 		},
 		// se
 		{
-			
+			factory: {},
+			showroom: {}
 		},
 		// mw
 		{
-			
+			factory: {},
+			showroom: {}
 		},
 		// nw
 		{
-			
+			factory: {},
+			showroom: {}
 		},
 		// sw
 		{
-			
+			factory: {},
+			showroom: {}
 		}
 	],
 	buildingCount: {

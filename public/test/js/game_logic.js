@@ -125,6 +125,7 @@ var gameLogic = {
 					savedData = playerData;
 				}
 				PhaserGame.playerData = savedData;
+				BuildingManager.init();
 				trace('============ post get saved data, playerData = ', PhaserGame.playerData);
 			},
 			setSavedData: function() {

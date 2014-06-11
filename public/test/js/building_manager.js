@@ -37,7 +37,7 @@ var BuildingManager = function() {
 	function Factory(config) {
 		
 		Building.call(this, config);
-		this.machineTypes = [];
+		this.config.machineTypes = [];
 	}
 	PWG.Utils.inherit(Factory, Building);
 	
@@ -47,16 +47,16 @@ var BuildingManager = function() {
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
-			if(this.machineTypes.length > 0) { 
+			if(this.config.machineTypes.length > 0) { 
 				this.buildTime++;
 				
 				if(this.buildTime === TIME_TO_BUILD) {
 					PWG.Utils.each(
-						this.machineTypes,
+						this.config.machineTypes,
 						function(machine) {
-							if(PhaserGame.bank > 0) {
+							if(PhaserGame.playerData.bank > 0) {
 								if(this.equipment.length < this.outputCapacity) {
-									PhaserGame.bank -= machine.get('cost');
+									PhaserGame.playerData.bank -= machine.get('cost');
 									this.equipment.push(machine.id);
 								} else {
 									// notify output capacity reached
@@ -64,7 +64,7 @@ var BuildingManager = function() {
 							} 
 							else 
 							{
-								// notifiy out of money
+								// notifiy out of bank
 							}
 						},
 						this
@@ -83,7 +83,7 @@ var BuildingManager = function() {
 	// SHOWROOM
 	function Showroom(config) {
 		Building.call(this, config);
-		this.inventory = [];
+		this.config.inventory = [];
 	}
 	PWG.Utils.inherit(Showroom, Building);
 
@@ -92,21 +92,44 @@ var BuildingManager = function() {
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
-			if(this.inventory.length > 0) {
+			if(this.config.inventory.length > 0) {
 
 			}
 		}
 	};
 	
-	module.buildings = [];
+	module.buildings = { factory: {}, showroom: {} };
+	
+	module.init = function() {
+		PWG.Utils.each(
+			PhaserGame.playerData.buildings,
+			function(sector) {
+				PWG.Utils.each(
+					sector.factory,
+					function(factory) {
+						module.buildings['factory'][factory.id] = new Factory(factory);
+					},
+					this
+				);
+				PWG.Utils.each(
+					sector.showroom,
+					function(showroom) {
+						module.buildings['showroom'][showroom.id] = new Showroom(showroom);
+					},
+					this
+				);
+			},
+			this
+		);
+	};
 	
 	module.create = function(type, config) {
-		trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.bank);
+		trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.playerData.bank);
 		config.type = type;
 		config.sector = PhaserGame.currentSector;
 		config.id = type + PhaserGame.playerData.buildingCount[type];
 		
-		if(PhaserGame.bank >= buildingCosts[type]) {
+		if(PhaserGame.playerData.bank >= buildingCosts[type]) {
 			var building;
 			if(type === 'factory') {
 				building = new Factory(config);
@@ -115,12 +138,12 @@ var BuildingManager = function() {
 			}
 			trace('\tbuilding made');
 			PhaserGame.playerData.buildingCount[type]++;
-			trace('\tremoving money from bank');
-			PhaserGame.bank -= buildingCosts[type];
+			trace('\tremoving bank from bank');
+			PhaserGame.playerData.bank -= buildingCosts[type];
 			trace('\tabout to save building data');
 			module.saveBuildingData(building.config);
-			module.buildings.push(building);
-			trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.bank);
+			module.buildings[type][config.id] = building;
+			trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.playerData.bank);
 		}
 	};
 	
@@ -165,7 +188,7 @@ var BuildingManager = function() {
 	
 	module.saveBuildingData = function(config) {
 		trace('BuildingManager/saveBuildingData, config = ', config);
-		PhaserGame.playerData.buildings[PhaserGame.currentSector][config.id] = config;
+		PhaserGame.playerData.buildings[PhaserGame.currentSector][config.type][config.id] = config;
 		trace('\tabout to save data to local storage');
 		PhaserGame.setSavedData();
 	};
