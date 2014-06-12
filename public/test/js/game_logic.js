@@ -467,9 +467,6 @@ var gameLogic = {
 			resumeButton: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 			},
-			northEastDetailStart: function() {
-				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
-			},
 			usDetailClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 			},
@@ -477,23 +474,26 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_NOTIFICATION });
 			},
 			// us detail
-			northEastDetail: function() {
+			usDetailStart: function(param) {
+				trace('usDetailStart callback, this = ', this, '\tparam = ', param);
+			}, 
+			northeastDetail: function() {
 				PhaserGame.currentSector = usSectors.NORTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
-			southEastDetail: function() {
+			southeastDetail: function() {
 				PhaserGame.currentSector = usSectors.SOUTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
-			midWestDetail: function() {
+			midwestDetail: function() {
 				PhaserGame.currentSector = usSectors.MID_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
-			northWestDetail: function() {
+			northwestDetail: function() {
 				PhaserGame.currentSector = usSectors.NORTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
-			southWestDetail: function() {
+			southwestDetail: function() {
 				PhaserGame.currentSector = usSectors.SOUTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},

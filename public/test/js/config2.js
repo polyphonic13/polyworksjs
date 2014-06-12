@@ -587,9 +587,9 @@ var GameConfig = function() {
 									},
 									input: gameLogic.global.input.minusButton
 								},
-								northWestDetail: {
+								northwestDetail: {
 									type: 'button',
-									name: 'southWestDetail',
+									name: 'northwestDetail',
 									img: 'blockBlue',
 									x: gameUnit * 1.5,
 									y: (gameUnit * 7),
@@ -598,13 +598,13 @@ var GameConfig = function() {
 										height: (gameUnit * 1.5),
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.northWestDetail,
+									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
-								southWestDetail: {
+								southwestDetail: {
 									type: 'button',
-									name: 'northEastDetail',
+									name: 'southwestDetail',
 									img: 'blockGreen',
 									x: gameUnit * 1.5,
 									y: (gameUnit * 8.5),
@@ -613,13 +613,13 @@ var GameConfig = function() {
 										height: (gameUnit * 1.5),
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.southWestDetail,
+									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
-								midWestDetail: {
+								midwestDetail: {
 									type: 'button',
-									name: 'midWestDetail',
+									name: 'midwestDetail',
 									img: 'blockRed',
 									x: gameUnit * 4,
 									y: (gameUnit * 7),
@@ -628,13 +628,13 @@ var GameConfig = function() {
 										height: (gameUnit * 3),
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.midWestDetail,
+									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
-								northEastDetail: {
+								northeastDetail: {
 									type: 'button',
-									name: 'northEastDetail',
+									name: 'northeastDetail',
 									img: 'blockWhite',
 									x: gameUnit * 7,
 									y: (gameUnit * 7),
@@ -643,13 +643,14 @@ var GameConfig = function() {
 										height: (gameUnit * 1.5),
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.northEastDetail,
+									sector: usSectors.NORTH_EAST,
+									callback: gameLogic.global.buttonCallbacks.northeastDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
-								southEastDetail: {
+								southeastDetail: {
 									type: 'button',
-									name: 'southEastDetail',
+									name: 'southeastDetail',
 									img: 'blockBlue',
 									x: gameUnit * 7,
 									y: (gameUnit * 8.5),
@@ -658,7 +659,7 @@ var GameConfig = function() {
 										height: (gameUnit * 1.5),
 										alpha: 0.5
 									},
-									callback: gameLogic.global.buttonCallbacks.southEastDetail,
+									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
