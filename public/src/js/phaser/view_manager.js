@@ -152,7 +152,7 @@ PWG.ViewManager = function() {
 	
 	module.init = function(views) {
 		this.collection = this.build(views);
-		trace('======== end of ViewManager/init, collection = ', this.collection);
+		// trace('ViewManager/init, collection = ', this.collection);
 	};
 	
 	module.build = function(views, collection) {

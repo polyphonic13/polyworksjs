@@ -10,8 +10,8 @@ PWG.GridGenerator = function() {
 		var grid = [];
 		var cell;
 
-		for(var x = 0; x < xLength; x++) {
-			for(var y = 0; y < yLength; y++) {
+		for(var y = 0; y < yLength; y++) {
+			for(var x = 0; x < xLength; x++) {
 				cell = {
 					start:{
 						x: (x * xDimension),

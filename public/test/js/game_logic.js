@@ -168,17 +168,19 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			buildUSDetailGrid: function() {
+				var gridCoordinates = GridManager.grids[PhaserGame.currentSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
 				var gridConfig = {};
 				PWG.Utils.each(
-					PhaserGame.gridCoordinates,
+					gridCoordinates,
 					function(coordinate, idx) {
+						// trace('\tcoordinate = ', coordinate);
 						var item = PWG.Utils.clone(gridItem);
 						item.name += idx;
-						item.x += coordinate.start.x;
-						item.y += coordinate.start.y;
-						
+						item.x += coordinate.x;
+						item.y += coordinate.y;
+						item.attrs.frame = coordinate.frame;
 						usDetailGrid.views[idx] = item;
 					},
 					this
