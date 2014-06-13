@@ -176,6 +176,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			buildUSDetailGrid: function() {
+				trace('BUILD DETAIL GRID, this = ', this);
 				var gridCoordinates = GridManager.grids[PhaserGame.currentSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
@@ -196,7 +197,7 @@ var gameLogic = {
 
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
-				trace('CURRENT US SECTOR = ' + PhaserGame.currentSector);
+				// trace('CURRENT US SECTOR = ' + PhaserGame.currentSector);
 				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.currentSector]], this);
 			},
 			buildEquipmentList: function() {
@@ -564,12 +565,16 @@ var gameLogic = {
 	},
 	screens: {
 		start: {
-			
+			create: function() {
+				PWG.ViewManager.hideView('global');
+			}
 		},
 		play: {
 			create: function() {
+				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				PhaserGame.currentSector = -1;
 			}
 		},
 		usDetail: {

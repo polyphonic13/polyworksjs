@@ -94,7 +94,9 @@ var BuildingManager = function() {
 		Showroom._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
 			if(this.config.inventory.length > 0) {
-
+				// notify user inventory should be added
+			} else {
+				// begin random update interval sales calculations
 			}
 		}
 	};
@@ -188,8 +190,8 @@ var BuildingManager = function() {
 	};
 	
 	module.saveBuildingData = function(config) {
-		trace('BuildingManager/saveBuildingData, config = ', config);
-		PhaserGame.playerData.buildings[PhaserGame.currentSector][config.type][config.id] = config;
+		trace('BuildingManager/saveBuildingData, config = ', config, PhaserGame.playerData.buildings[config.sector][config.type][config.id]);
+		PhaserGame.playerData.buildings[config.sector][config.type][config.id] = config;
 		trace('\tabout to save data to local storage');
 		PhaserGame.setSavedData();
 	};

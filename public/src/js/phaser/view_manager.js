@@ -190,7 +190,7 @@ PWG.ViewManager = function() {
 	};
 
 	module.showGroup = function(name) {
-		trace('ViewManager/showGroup, name = ' + name + ', collection = ', this.collection);
+		// trace('ViewManager/showGroup, name = ' + name + ', collection = ', this.collection);
 		this.collection[name].show();
 		this.currentGroup = name;
 	};
@@ -221,7 +221,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addToGroup = function(children, group) {
-		trace('ViewManager/addToGroup, group = ', group, '\tchildren = ', children);
+		// trace('ViewManager/addToGroup, group = ', group, '\tchildren = ', children);
 		PWG.Utils.each(
 			children,
 			function(child, key) {
@@ -245,12 +245,12 @@ PWG.ViewManager = function() {
 	
 	module.removeGroupChildren = function(path) {
 		var controller = module.getControllerFromPath(path);
-		trace('view manager removeGroupChild, group = ', controller);
+		// trace('view manager removeGroupChild, group = ', controller);
 		module.removeFromGroup(controller.children, controller);
 	};
 	
 	module.addView = function(view, parent, addToGroup) {
-		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'parent = ', parent);
+		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'parent = ', parent);
 		var collection = (parent) ? parent.children : this.collection;
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
@@ -284,9 +284,9 @@ PWG.ViewManager = function() {
 	};
 	
 	module.hideView = function(path) {
-		trace('hideView: ' + path);
+		// trace('hideView: ' + path);
 		var controller = this.getControllerFromPath(path);
-		trace('\thiding: ', controller);
+		// trace('\thiding: ', controller);
 		controller.hide()
 	};
 	
