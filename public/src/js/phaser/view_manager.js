@@ -314,7 +314,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.setFrame = function(path, frame) {
-		trace('ViewManager/setFrame, path = ' + path + ', frame = ' + frame);
+		// trace('ViewManager/setFrame, path = ' + path + ', frame = ' + frame);
 		var controller = this.getControllerFromPath(path);
 		controller.view.frame = frame;
 	};

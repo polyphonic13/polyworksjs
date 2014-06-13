@@ -1053,36 +1053,6 @@ var GameConfig = function() {
 										centerX: true
 									}
 								},
-								// pauseButton: {
-								// 	type: 'button',
-								// 	name: 'pauseButton',
-								// 	img: 'buttonPause',
-								// 	x: (gameUnit * 0.25),
-								// 	y: (gameH - gameUnit * 1.75),
-								// 	attrs: {
-								// 		width: gameUnit * 1.5,
-								// 		height: gameUnit * 1.5,
-								// 		visible: false
-								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.pauseButton,
-								// 	context: this,
-								// 	frames: [0, 1, 1, 0]
-								// },
-								// resumeButton: {
-								// 	type: 'button',
-								// 	name: 'resumeButton',
-								// 	img: 'buttonPlay',
-								// 	x: (gameUnit * 0.25),
-								// 	y: (gameH - gameUnit * 1.75),
-								// 	attrs: {
-								// 		width: gameUnit * 1.5,
-								// 		height: gameUnit * 1.5,
-								// 		visible: false
-								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.resumeButton,
-								// 	context: this,
-								// 	frames: [0, 1, 1, 0]
-								// },
 								equipmentButton: {
 									type: 'button',
 									name: 'equipmentButton',
@@ -1125,21 +1095,6 @@ var GameConfig = function() {
 										visible: false
 									},
 									callback: gameLogic.global.buttonCallbacks.addEquipment,
-									context: this,
-									frames: [0, 0, 0, 0]
-								},
-								addBuildingButton: {
-									type: 'button',
-									name: 'addBuilding',
-									img: 'buttonPlus',
-									x: (gameW/2 - gameUnit/2),
-									y: (gameH - gameUnit * 1.25),
-									attrs: {
-										width: (gameUnit),
-										height: (gameUnit),
-										visible: false
-									},
-									callback: gameLogic.global.buttonCallbacks.addBuilding,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},

@@ -92,33 +92,21 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
 			}
 		},
-		// pause
-		{
-			event: PWG.Events.PAUSE_GAME,
-			handler: function(event) {
-				PhaserGame.turnTimer.pause();
-				// PWG.ViewManager.hideView('global:turnGroup:pauseButton');
-				// PWG.ViewManager.showView('global:turnGroup:resumeButton');
-			}
-		},
-		// resume
-		{
-			event: PWG.Events.RESUME_GAME,
-			handler: function(event) {
-				PhaserGame.turnTimer.resume();
-				// PWG.ViewManager.showView('global:turnGroup:pauseButton');
-				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
-			}
-		},
 		// building state updated
 		{
 			event: PWG.Events.BUILDING_STATE_UPDATED,
 			handler: function(event) {
 				var config = event.config;
-				trace('BUILDING STATE UPDATED, config = ', config);
+				// trace('BUILDING_STATE_UPDATED, config = ', config);
 				if(config.sector === PhaserGame.activeSector) {
+					var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
+					var view = PWG.ViewManager.getControllerFromPath(viewPath);
 					var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-					PWG.ViewManager.setFrame('usDetail:usDetailGrid:usDetailGridItem'+config.cell, tileCellFrames[frameKey]);
+					var frame = tileCellFrames[frameKey];
+					// trace('\tviewPath = ' + viewPath + ', view = ', view);
+
+					PWG.ViewManager.setFrame(viewPath, frame);
+					view.config.attrs.frame = frame;
 				}
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
@@ -527,12 +515,6 @@ var gameLogic = {
 				} else {
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 				}
-			},
-			pauseButton: function() {
-				PWG.EventCenter.trigger({ type: PWG.Events.PAUSE_GAME });
-			},
-			resumeButton: function() {
-				PWG.EventCenter.trigger({ type: PWG.Events.RESUME_GAME });
 			},
 			usDetailClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
