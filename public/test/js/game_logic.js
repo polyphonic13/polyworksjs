@@ -4,6 +4,14 @@ var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 10;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
+var tileCellFrames = {
+	EMPTY: 0,
+	ACTIVE: 1,
+	FACTORY_CONSTRUCTION: 2,
+	FACTORY_ACTIVE: 3,
+	SHOWROOM_CONSTRUCTION: 5,
+	SHOWROOM_ACTIVE: 6
+};
 
 var buildingCosts = {
 	factory: 100000,
@@ -161,7 +169,7 @@ var gameLogic = {
 					},
 					this
 				);
-				PhaserGame.turnTimer.start();
+				// PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
@@ -177,7 +185,7 @@ var gameLogic = {
 			},
 			buildUSDetailGrid: function() {
 				trace('BUILD DETAIL GRID, this = ', this);
-				var gridCoordinates = GridManager.grids[PhaserGame.currentSector];
+				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
 				var gridConfig = {};
@@ -190,6 +198,15 @@ var gameLogic = {
 						item.x += coordinate.x;
 						item.y += coordinate.y;
 						item.attrs.frame = coordinate.frame;
+						item.cell = idx;
+						item.sector = PhaserGame.activeSector;
+						item.input = {
+							inputDown: function() {
+								return function(item) {
+									PhaserGame.tileClicked(item);
+								}(item);
+							}
+						};
 						usDetailGrid.views[idx] = item;
 					},
 					this
@@ -197,8 +214,45 @@ var gameLogic = {
 
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
-				// trace('CURRENT US SECTOR = ' + PhaserGame.currentSector);
-				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.currentSector]], this);
+				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
+				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
+			},
+			tileClicked: function(tile) {
+				var view = PWG.ViewManager.getControllerFromPath('usDetail:usDetailGrid:'+tile.name);
+				// trace('tile click: ' + tile.cell + ' in ' + tile.sector, tile, '\tview = ', view);
+				var frame = tile.attrs.frame;
+				switch(frame) {
+					case tileCellFrames.EMPTY:
+					tile.attrs.frame = 1;
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.ACTIVE);
+					PhaserGame.activeCell = tile.cell;
+					break;
+
+					case tileCellFrames.ACTIVE:
+					tile.attrs.frame = 0;
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.EMPTY);
+					PhaserGame.activeCell = -1;
+					break; 
+
+					case tileCellFrames.FACTORY_CONSTRUCTION:
+					trace('factory construction'); 
+					break;
+
+					case tileCellFrames.FACTORY_ACTIVE:
+					trace('factory active'); 
+					break;
+
+					case tileCellFrames.SHOWROOM_CONSTRUCTION: 
+					trace('showroom construction'); 
+					break;
+
+					case tileCellFrames.SHOWROOM_ACTIVE: 
+					trace('showroom active'); 
+					break;
+
+					default:
+					break;
+				}
 			},
 			buildEquipmentList: function() {
 				var equipment = PhaserGame.playerData.equipment;
@@ -487,23 +541,23 @@ var gameLogic = {
 				trace('usDetailStart callback, this = ', this, '\tparam = ', param);
 			}, 
 			northeastDetail: function() {
-				PhaserGame.currentSector = usSectors.NORTH_EAST;
+				PhaserGame.activeSector = usSectors.NORTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			southeastDetail: function() {
-				PhaserGame.currentSector = usSectors.SOUTH_EAST;
+				PhaserGame.activeSector = usSectors.SOUTH_EAST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			midwestDetail: function() {
-				PhaserGame.currentSector = usSectors.MID_WEST;
+				PhaserGame.activeSector = usSectors.MID_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			northwestDetail: function() {
-				PhaserGame.currentSector = usSectors.NORTH_WEST;
+				PhaserGame.activeSector = usSectors.NORTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			southwestDetail: function() {
-				PhaserGame.currentSector = usSectors.SOUTH_WEST;
+				PhaserGame.activeSector = usSectors.SOUTH_WEST;
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 			},
 			addBuilding: function() {
@@ -574,7 +628,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
-				PhaserGame.currentSector = -1;
+				PhaserGame.activeSector = -1;
 			}
 		},
 		usDetail: {

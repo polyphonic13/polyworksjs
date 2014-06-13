@@ -1,10 +1,4 @@
-var tileCellFrames = {
-	EMPTY: 0,
-	FACTORY_CONSTRUCTION: 2,
-	FACTORY_ACTIVE: 3,
-	SHOWROOM_CONSTRUCTION: 5,
-	SHOWROOM_ACTIVE: 6
-};
+
 
 var GridManager = function() {
 	var module = {};
