@@ -101,6 +101,14 @@ var gameLogic = {
 				// PWG.ViewManager.showView('global:turnGroup:pauseButton');
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 			}
+		},
+		// building state updated
+		{
+			event: PWG.Events.BUILDING_STATE_UPDATED,
+			handler: function(event) {
+				var config = event.buildingConfig;
+				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
+			}
 		}
 		],
 		methods: {
@@ -153,7 +161,7 @@ var gameLogic = {
 					},
 					this
 				);
-				// PhaserGame.turnTimer.start();
+				PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');

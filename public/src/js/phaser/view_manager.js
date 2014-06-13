@@ -293,7 +293,7 @@ PWG.ViewManager = function() {
 	module.callMethod = function(path, method, args) {
 		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
 		var controller = this.getControllerFromPath(path);
-		trace('calling method ' + method + 'with args: ', args, ' on ', controller);
+		// trace('calling method ' + method + 'with args: ', args, ' on ', controller);
 		controller.callMethod(method, args);
 	};
 

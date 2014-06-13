@@ -11,6 +11,7 @@ PWG.Events = {
 	TURN_ENDED: 'turnEnded',
 	OPEN_NOTIFICATION: 'openNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
+	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',

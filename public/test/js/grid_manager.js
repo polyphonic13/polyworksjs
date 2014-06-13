@@ -62,8 +62,13 @@ var GridManager = function() {
 		trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
 	};
 	
+	module.updateBuildingState = function(sector, cell, type, state) {
+		var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
+		module.grids[sector][cell].frame = tileCellFrames[frameKey];
+	};
+	
 	module.update = function(sector, cell, value) {
-
+		
 	};
 	
 	return module;

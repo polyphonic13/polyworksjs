@@ -25,6 +25,7 @@ var BuildingManager = function() {
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
+			PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, buildingConfig: this.config });
 			module.saveBuildingData.call(this, this.config);
 		}
 		this.config.age++;
