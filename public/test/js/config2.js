@@ -34,6 +34,220 @@ var GameConfig = function() {
 			white: '#ffffff'
 		};
 
+		var gameData = {
+			buildings: {
+				factory: {
+					id: 'Factory',
+					icon: 'iconFactory',
+					description: 'Build your machines',
+					cost: 100000
+				},
+				showroom: {
+					id: 'Showroom',
+					icon: 'iconShowroom',
+					description: 'Sell your machines',
+					cost: 50000
+				}
+			},
+			parts: {
+				wheels: [
+				{
+					id: 'w3',
+					icon: 'wheels2',
+					frame: 1,
+					description: 'basic wheels',
+					basic: {
+						cost: 350,
+						build: 50,
+						sell: 100
+					},
+					medium: {
+						cost: 700,
+						build: 100,
+						sell: 200
+					},
+					heavy: {
+						cost: 1000,
+						build: 150,
+						sell: 300
+					}
+				},
+				{
+					id: 'w1',
+					icon: 'wheels1',
+					frame: 2,
+					description: 'standard wheels',
+					basic: {
+						cost: 500,
+						build: 100,
+						sell: 200
+					},
+					medium: {
+						cost: 1000,
+						build: 200,
+						sell: 400
+					},
+					heavy: {
+						cost: 1500,
+						build: 250,
+						sell: 500
+					}
+				},
+				{
+					id: 'w4',
+					icon: 'wheels3',
+					frame: 3,
+					description: 'deluxe wheels',
+					basic: {
+						cost: 1000,
+						build: 250,
+						sell: 500
+					},
+					medium: {
+						cost: 2000,
+						build: 500,
+						sell: 1000
+					},
+					heavy: {
+						cost: 4000,
+						build: 1000,
+						sell: 2000
+					}
+				}
+				],
+				engine: [
+				{
+					id: 'e1',
+					icon: 'engine1',
+					frame: 1,
+					description: 'basic engine',
+					basic: {
+						cost: 2000,
+						build: 500,
+						sell: 1000
+					},
+					medium: {
+						cost: 4000,
+						build: 1000,
+						sell: 2000
+					},
+					heavy: {
+						cost: 6000,
+						build: 1500,
+						sell: 3000
+					}
+				},
+				{
+					id: 'e2',
+					icon: 'engine2',
+					frame: 2,
+					description: 'standard engine',
+					basic: {
+						cost: 3000,
+						build: 750,
+						sell: 1500
+					},
+					medium: {
+						cost: 6000,
+						build: 1500,
+						sell: 3000
+					},
+					heavy: {
+						cost: 9000,
+						build: 2000,
+						sell: 4000
+					}
+				},
+				{
+					id: 'e3',
+					icon: 'engine3',
+					frame: 3,
+					description: 'deluxe engine',
+					basic: {
+						cost: 5000,
+						build: 500,
+						sell: 1000
+					},
+					medium: {
+						cost: 10000,
+						build: 1000,
+						sell: 2000
+					},
+					heavy: {
+						cost: 15000,
+						build: 1500,
+						sell: 3000
+					}
+				}
+				],
+				cab: [
+				{
+					id: 'c1',
+					icon: 'cab1',
+					frame: 1,
+					description: 'basic cab',
+					basic: {
+						cost: 300,
+						build: 50,
+						sell: 100
+					},
+					medium: {
+						cost: 600,
+						build: 100,
+						sell: 200
+					},
+					heavy: {
+						cost: 900,
+						build: 150,
+						sell: 300
+					}
+				},
+				{
+					id: 'c2',
+					icon: 'cab2',
+					frame: 2,
+					description: 'standard cab',
+					basic: {
+						cost: 400,
+						build: 75,
+						sell: 150
+					},
+					medium: {
+						cost: 800,
+						build: 150,
+						sell: 300
+					},
+					heavy: {
+						cost: 1200,
+						build: 225,
+						sell: 450
+					}
+				},
+				{
+					id: 'c3',
+					icon: 'cab3',
+					frame: 3,
+					description: 'deluxe cab',
+					basic: {
+						cost: 1000,
+						build: 250,
+						sell: 500
+					},
+					medium: {
+						cost: 2000,
+						build: 500,
+						sell: 1000
+					},
+					heavy: {
+						cost: 3000,
+						build: 1000,
+						sell: 2000
+					}
+				}
+				]
+			}
+		};
+
 		var dynamicViews = {
 			notification: {
 				type: 'group',
@@ -103,20 +317,114 @@ var GameConfig = function() {
 					frame: 0
 				}
 			},
-			buildingTypeList: {
+			buildingMenu: {
 				type: 'group',
 				name: 'buildingTypeList',
-				views: {}
+				attrs: {
+					visible: false
+				},
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menu-bg',
+						img: 'blockWhite',
+						x: (gameUnit/2),
+						y: (gameUnit/2),
+						attrs: {
+							width: (gameW - gameUnit),
+							height: (gameH - gameUnit),
+							alpha: 0.75,
+							fixedToCamera: true
+						}
+					},
+					closeButton: {
+						type: 'button',
+						name: 'closeButton',
+						img: 'buttonClose',
+						x: (gameW - gameUnit * 1.25),
+						y: (gameUnit * 0.25),
+						attrs: {
+							width: gameUnit * 1,
+							height: gameUnit * 1
+						},
+						callback: gameLogic.global.buttonCallbacks.buildingMenuClose,
+						context: this,
+						frames: [0, 1, 1, 0]
+					},
+					items: {
+						type: 'group',
+						name: 'itemsGroup',
+						views: {}
+					}
+				}
 			},
 			buildingSelectionIcon: {
 				type: 'sprite',
 				name: '',
 				x: 0,
 				y: 0,
-				attrs: {
-					width: gameUnit,
-					height: gameUnit,
-					frame: 0
+				offset: (gameUnit * 3),
+				iconH: (gameUnit * 3),
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'menuItemBg',
+						img: 'blockBlue',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: (gameUnit * 3),
+							alpha: 0.33
+						}
+					},
+					icon: {
+						type: 'sprite',
+						name: 'menuItemIcon',
+						img: '',
+						x: gameUnit,
+						y: gameUnit * 0.5,
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 2
+						}
+					},
+					description: {
+						type: 'text',
+						name: 'menuItemDescription',
+						text: '',
+						x: gameUnit * 3,
+						y: gameUnit * 0.25,
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.black
+						}
+					},
+					cost: {
+						type: 'text',
+						name: 'menuItemCost',
+						text: '',
+						x: gameUnit * 3,
+						y: gameUnit * 1,
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.black
+						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'menuItemInvisBtn',
+						img: 'blockClear',
+						partId: -1,
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: (gameUnit * 3),
+							alpha: 0.33
+						},
+						input: gameLogic.global.input.buildingSelectionIcon
+					}
 				}
 			},
 			machineList: {
@@ -454,6 +762,7 @@ var GameConfig = function() {
 				activeSector: -1,
 				activeTile: -1,
 				activeMachineId: -1,
+				activePartType: '',
 				newMachine: false,
 				bank: 1000000,
 			},
