@@ -114,7 +114,12 @@ var gameLogic = {
 		{
 			event: PWG.Events.BUILDING_STATE_UPDATED,
 			handler: function(event) {
-				var config = event.buildingConfig;
+				var config = event.config;
+				trace('BUILDING STATE UPDATED, config = ', config);
+				if(config.sector === PhaserGame.activeSector) {
+					var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:usDetailGridItem'+config.cell, tileCellFrames[frameKey]);
+				}
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		}
@@ -169,10 +174,9 @@ var gameLogic = {
 					},
 					this
 				);
-				// PhaserGame.turnTimer.start();
+				PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
-				// PWG.ViewManager.hideView('global:turnGroup:resumeButton');
 				PWG.ViewManager.hideView('global:turnGroup:addBuilding');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');

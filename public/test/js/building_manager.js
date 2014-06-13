@@ -9,7 +9,7 @@ var BuildingManager = function() {
 
 	// BUILDING BASE CLASS
 	function Building(config) {
-		trace('Building/constructor, config = ', config);
+		// trace('Building/constructor, config = ', config);
 		this.config = config;
 		this.config.state = states.CONSTRUCTION;
 		
@@ -124,9 +124,8 @@ var BuildingManager = function() {
 	};
 	
 	module.create = function(type, config) {
-		trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.playerData.bank);
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.playerData.bank);
 		config.type = type;
-		config.sector = PhaserGame.activeSector;
 		config.id = type + PhaserGame.playerData.buildingCount[type];
 		
 		if(PhaserGame.playerData.bank >= buildingCosts[type]) {
@@ -136,14 +135,14 @@ var BuildingManager = function() {
 			} else {
 				building = new Showroom(config);
 			}
-			trace('\tbuilding made');
+			// trace('\tbuilding made');
 			PhaserGame.playerData.buildingCount[type]++;
-			trace('\tremoving bank from bank');
+			// trace('\tremoving bank from bank');
 			PhaserGame.playerData.bank -= buildingCosts[type];
-			trace('\tabout to save building data');
+			// trace('\tabout to save building data');
 			module.saveBuildingData(building.config);
 			module.buildings[type][config.id] = building;
-			trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.playerData.bank);
+			// trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.playerData.bank);
 		}
 	};
 	
@@ -162,10 +161,8 @@ var BuildingManager = function() {
 					showroom.inventory.push(machine);
 				},
 				this
-			)
-		}
-		else 
-		{
+			);
+		} else {
 			// notify factory has no equipment
 		}
 	};
@@ -188,8 +185,9 @@ var BuildingManager = function() {
 	
 	module.saveBuildingData = function(config) {
 		trace('BuildingManager/saveBuildingData, config = ', config);
-		PhaserGame.playerData.buildings[PhaserGame.activeSector][config.type][config.id] = config;
-		trace('\tabout to save data to local storage');
+		PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: config });
+		PhaserGame.playerData.buildings[config.sector][config.type][config.id] = config;
+		// trace('\tabout to save data to local storage');
 		PhaserGame.setSavedData();
 	};
 	

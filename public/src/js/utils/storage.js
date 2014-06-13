@@ -12,7 +12,7 @@ PWG.Storage = function() {
 	
 	module.set = function(params) {
 		if(_available) {
-			trace('Storage, about to set with: ', params);
+			// trace('Storage, about to set saved data with: ', params);
 			for(var key in params) {
 				if(params[key] instanceof Object || params[key] instanceof Array) {
 					params[key] = JSON.stringify(params[key]);
