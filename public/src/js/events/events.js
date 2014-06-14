@@ -13,6 +13,7 @@ PWG.Events = {
 	CLOSE_NOTIFICATION: 'closeNotification',
 	OPEN_BUILDINGS_MENU: 'openBuildingsMenu',
 	CLOSE_BUILDINGS_MENU: 'closeBuildingsMenu',
+	ADD_BUILDING: 'addBuilding',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',

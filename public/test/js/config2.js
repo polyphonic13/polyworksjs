@@ -336,26 +336,97 @@ var GameConfig = function() {
 							fixedToCamera: true
 						}
 					},
-					closeButton: {
+					confirmButton: {
 						type: 'button',
-						name: 'closeButton',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.25),
-						y: (gameUnit * 0.25),
+						name: 'confirmButton',
+						img: 'buttonConfirm',
+						x: (gameW - (gameUnit * 1.5)),
+						y: (gameH - (gameUnit  * 1.5)),
 						attrs: {
-							width: gameUnit * 1,
+							width: gameUnit * 2,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.global.buttonCallbacks.buildingMenuClose,
+						callback: gameLogic.global.buttonCallbacks.buildingAddConfirm,
 						context: this,
 						frames: [0, 1, 1, 0]
 					},
-					items: {
+					cancelButton: {
+						type: 'button',
+						name: 'cancelButton',
+						img: 'buttonCancel',
+						x: (gameUnit * 0.5),
+						y: (gameH - (gameUnit  * 1.5)),
+						attrs: {
+							width: gameUnit * 2,
+							height: gameUnit * 1
+						},
+						callback: gameLogic.global.buttonCallbacks.buildingAddCancel,
+						context: this,
+						frames: [0, 1, 1, 0]
+					},
+					icon: {
 						type: 'group',
 						name: 'itemsGroup',
 						views: {
-							factory: {},
-							showroom: {}
+							bg: {
+								type: 'sprite',
+								name: 'menuItemBg',
+								img: 'blockBlue',
+								x: 0,
+								y: 0,
+								attrs: {
+									width: gameW,
+									height: (gameUnit * 3),
+									alpha: 0.33
+								}
+							},
+							icon: {
+								type: 'sprite',
+								name: 'menuItemIcon',
+								img: '',
+								x: gameUnit,
+								y: gameUnit * 0.5,
+								attrs: {
+									width: gameUnit * 4,
+									height: gameUnit * 2
+								}
+							},
+							description: {
+								type: 'text',
+								name: 'menuItemDescription',
+								text: '',
+								x: gameUnit * 3,
+								y: gameUnit * 0.25,
+								style: {
+								    font: (fontSizes.sm + 'px Arial'),
+							        fill: palette.black
+								}
+							},
+							cost: {
+								type: 'text',
+								name: 'menuItemCost',
+								text: '',
+								x: gameUnit * 3,
+								y: gameUnit * 1,
+								style: {
+								    font: (fontSizes.sm + 'px Arial'),
+							        fill: palette.black
+								}
+							},
+							invisButton: {
+								type: 'sprite',
+								name: 'menuItemInvisBtn',
+								img: 'blockClear',
+								partId: -1,
+								x: 0,
+								y: 0,
+								attrs: {
+									width: gameW,
+									height: (gameUnit * 3),
+									alpha: 0.33
+								},
+								input: gameLogic.global.input.buildingSelectionIcon
+							}
 						}
 					}
 				}
@@ -724,6 +795,18 @@ var GameConfig = function() {
 						height: 50,
 						frames: 2
 					},
+					buttonCheck: {
+						url: 'images/controls/check.png',
+						width: 100,
+						height: 50,
+						frames: 2
+					},
+					buttonCancel: {
+						url: 'images/controls/cancel.png',
+						width: 100,
+						height: 50,
+						frames: 2
+					},
 					usDetailTiles: {
 						url: 'images/us_detail_tiles.png',
 						width: 64,
@@ -762,7 +845,7 @@ var GameConfig = function() {
 				turnActive: false,
 				turnTime: TIME_PER_TURN,
 				activeSector: -1,
-				activeTile: -1,
+				activeTile: null,
 				activeMachineId: -1,
 				activePartType: '',
 				newMachine: false,
