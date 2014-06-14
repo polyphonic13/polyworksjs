@@ -128,7 +128,7 @@ var BuildingManager = function() {
 		config.type = type;
 		config.id = type + PhaserGame.playerData.buildingCount[type];
 		
-		if(PhaserGame.playerData.bank >= buildingCosts[type]) {
+		if(PhaserGame.playerData.bank >= gameData.buildings[type].cost) {
 			var building;
 			if(type === 'factory') {
 				building = new Factory(config);
@@ -138,7 +138,7 @@ var BuildingManager = function() {
 			// trace('\tbuilding made');
 			PhaserGame.playerData.buildingCount[type]++;
 			// trace('\tremoving bank from bank');
-			PhaserGame.playerData.bank -= buildingCosts[type];
+			PhaserGame.playerData.bank -= gameData.buildings[type].cost;
 			// trace('\tabout to save building data');
 			module.saveBuildingData(building.config);
 			module.buildings[type][config.id] = building;
