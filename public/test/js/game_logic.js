@@ -256,9 +256,11 @@ var gameLogic = {
 			addBuilding: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
-				tile.attrs.frame = 1;
-				PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
-				BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
+				var added = BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
+				if(added) {
+					tile.attrs.frame = 1;
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
+				}
 			},
 			cancelAddBuilding: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });

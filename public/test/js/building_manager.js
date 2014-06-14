@@ -145,6 +145,10 @@ var BuildingManager = function() {
 			module.saveBuildingData(building.config);
 			module.buildings[type][config.id] = building;
 			// trace('created a new ' + type + ' for ' + buildingCosts[type] + ', bank now = ' + PhaserGame.playerData.bank);
+			return true;
+		} else {
+			trace('no more money');
+			return false;
 		}
 	};
 	

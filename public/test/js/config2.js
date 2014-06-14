@@ -337,11 +337,11 @@ var GameConfig = function() {
 						type: 'button',
 						name: 'confirmButton',
 						img: 'buttonCheck',
-						x: (gameW - (gameUnit * 1.5)),
-						y: (gameH - (gameUnit  * 1.5)),
+						x: (gameW - (gameUnit * 2.5)),
+						y: (gameH - (gameUnit  * 2.5)),
 						attrs: {
 							width: gameUnit * 2,
-							height: gameUnit * 1
+							height: gameUnit * 2
 						},
 						callback: gameLogic.global.buttonCallbacks.buildingAddConfirm,
 						context: this,
@@ -352,10 +352,10 @@ var GameConfig = function() {
 						name: 'cancelButton',
 						img: 'buttonCancel',
 						x: (gameUnit * 0.5),
-						y: (gameH - (gameUnit  * 1.5)),
+						y: (gameH - (gameUnit  * 2.5)),
 						attrs: {
 							width: gameUnit * 2,
-							height: gameUnit * 1
+							height: gameUnit * 2
 						},
 						callback: gameLogic.global.buttonCallbacks.buildingAddCancel,
 						context: this,
@@ -380,34 +380,40 @@ var GameConfig = function() {
 							icon: {
 								type: 'sprite',
 								name: 'menuItemIcon',
-								img: '',
-								x: gameUnit,
-								y: gameUnit * 0.5,
+								img: 'iconFactory',
+								x: gameUnit * 2,
+								y: gameUnit * 6,
 								attrs: {
-									width: gameUnit * 4,
-									height: gameUnit * 2
+									width: gameUnit * 6,
+									height: gameUnit * 3
 								}
 							},
-							description: {
+							title: {
 								type: 'text',
-								name: 'menuItemDescription',
-								text: '',
-								x: gameUnit * 3,
-								y: gameUnit * 0.25,
+								name: 'factoryTitle',
+								text: 'Add New Factory?',
+								x: 0,
+								y: gameUnit * 3,
 								style: {
-								    font: (fontSizes.sm + 'px Arial'),
-							        fill: palette.black
+									font: (fontSizes.lg + 'px Arial'),
+									fill: palette.black
+								},
+								position: {
+									centerX: true
 								}
 							},
 							cost: {
 								type: 'text',
 								name: 'menuItemCost',
-								text: '',
-								x: gameUnit * 3,
-								y: gameUnit * 1,
+								text: 'Cost: $' + gameData.buildings.factory.cost,
+								x: 0,
+								y: gameUnit * 10,
 								style: {
-								    font: (fontSizes.sm + 'px Arial'),
+								    font: (fontSizes.md + 'px Arial'),
 							        fill: palette.black
+								},
+								position: {
+									centerX: true
 								}
 							},
 							invisButton: {
@@ -794,13 +800,13 @@ var GameConfig = function() {
 					},
 					buttonCheck: {
 						url: 'images/controls/check.png',
-						width: 100,
+						width: 50,
 						height: 50,
 						frames: 2
 					},
 					buttonCancel: {
 						url: 'images/controls/cancel.png',
-						width: 100,
+						width: 50,
 						height: 50,
 						frames: 2
 					},
