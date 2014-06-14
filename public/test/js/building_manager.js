@@ -98,7 +98,7 @@ var BuildingManager = function() {
 		}
 	};
 	
-	module.buildings = { factory: {}, showroom: {} };
+	module.buildings = { factory: {} };
 	
 	module.init = function() {
 		PWG.Utils.each(
