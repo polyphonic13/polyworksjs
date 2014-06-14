@@ -20,10 +20,11 @@ var tileCellFrames = {
 
 var turnGroups = [
 	'play',
+	'usDetail',
+	'buildingEdit',
 	'equipmentList',
 	'equipmentCreate',
-	'equipmentEdit',
-	'usDetail'
+	'equipmentEdit'
 ];
 
 var gameLogic = {
@@ -98,16 +99,6 @@ var gameLogic = {
 			handler: function(event) {
 				var config = event.config;
 				// trace('BUILDING_STATE_UPDATED, config = ', config);
-				if(config.sector === PhaserGame.activeSector) {
-					var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
-					var view = PWG.ViewManager.getControllerFromPath(viewPath);
-					var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-					var frame = tileCellFrames[frameKey];
-					// trace('\tviewPath = ' + viewPath + ', view = ', view);
-
-					PWG.ViewManager.setFrame(viewPath, frame);
-					view.config.attrs.frame = frame;
-				}
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		}
@@ -165,7 +156,6 @@ var gameLogic = {
 				PhaserGame.turnTimer.start();
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
-				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			stopTurn: function() {
@@ -232,6 +222,9 @@ var gameLogic = {
 					case tileCellFrames.FACTORY_ACTIVE:
 					// trace('factory active'); 
 					// show factory detail
+					PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell, 'factory');
+					trace('active factory = ', PhaserGame.activeFactory);
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'buildingEdit' });
 					break;
 
 					// case tileCellFrames.SHOWROOM_CONSTRUCTION: 
@@ -266,58 +259,6 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
 				trace('cancel add building');
 				PhaserGame.activeTile = null;
-			},
-			buildEquipmentList: function() {
-				var equipment = PhaserGame.playerData.equipment;
-
-				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
-				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
-
-				var offsetX = machineIcon.offsetX;
-				var offsetY = machineIcon.offsetY;
-				var iconW = machineIcon.iconW;
-				var iconH = machineIcon.iconH;
-				var columnW = PWG.Stage.gameW/MACHINE_LIST_COLUMNS;
-				
-				var column = 0;
-				var count = 0;
-				var itemY = 0;
-			
-				PWG.Utils.each(
-					equipment,
-					function(machine, idx) {
-						// trace('\tadding machine['+idx+']: ', machine);
-						var item = PWG.Utils.clone(machineIcon);
-						// trace('\titem = ', item);
-						item.name = 'machine' + idx;
-						item.views.name.text = machine.name;
-						item.views.cost.text = '$' + machine.cost;
-						item.views.points.text = machine.points;
-						item.views.invisButton.machineIdx = idx;
-						// increment y to next row:
-						if(count % MACHINE_LIST_COLUMNS === 0) {
-							itemY = (iconH * (count/MACHINE_LIST_COLUMNS)) + offsetY;
-						}
-						
-						var columnX = offsetX + ((PWG.Stage.gameW/2) * (count % MACHINE_LIST_COLUMNS));
-
-						PWG.Utils.each(
-							item.views,
-							function(view) {
-								view.x += columnX;
-								view.y += itemY;
-							},
-							this
-						);
-				
-						machineList.views[item.name] = item;
-						count++;
-					},
-					this
-				);
-				// trace('machineList = ', machineList);
-				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
-				PWG.ViewManager.addView(machineList, equipmentListView, true);
 			},
 			addPartItemsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
@@ -584,10 +525,6 @@ var gameLogic = {
 			partsMenuClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_MENU });
 			},
-			addEquipment: function() {
-				// trace('add equipment button clicked');
-				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
-			},
 			equipmentCreateClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 			},
@@ -602,6 +539,10 @@ var gameLogic = {
 					
 					case 'usDetail':
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
+					break;
+					
+					case 'buildingEdit':
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 					break;
 					
 					case 'equipmentCreate':
@@ -654,15 +595,28 @@ var gameLogic = {
 					}
 				}
 			},
+			// building state updated
+			{
+				event: PWG.Events.BUILDING_STATE_UPDATED,
+				handler: function(event) {
+					var config = event.config;
+					if(config.sector === PhaserGame.activeSector) {
+						var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
+						var view = PWG.ViewManager.getControllerFromPath(viewPath);
+						var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
+						var frame = tileCellFrames[frameKey];
+						// trace('\tviewPath = ' + viewPath + ', view = ', view);
+
+						PWG.ViewManager.setFrame(viewPath, frame);
+						view.config.attrs.frame = frame;
+					}
+				}
+			},
 			// add building
 			{
 				event: PWG.Events.ADD_BUILDING,
 				handler: function(event) {
 					PhaserGame.addBuilding();
-					// tile.attrs.frame = 1;
-					// PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
-					// BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
-					// PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
 				}
 			},
 			// close building menu
@@ -691,6 +645,14 @@ var gameLogic = {
 				PWG.ViewManager.removeGroupChildren('usDetail:usDetailGrid');
 			}
 		},
+		buildingEdit: {
+			create: function() {
+				var screenView = PWG.ViewManager.getControllerFromPath('buildingEdit');
+				var building = PhaserGame.activeFactory;
+				
+				trace('screen view = ', screenView, '\tactive factory = ', building);
+			}
+		},
 		equipmentList: {
 			listeners: [
 			{
@@ -708,15 +670,60 @@ var gameLogic = {
 			],
 			create: function() {
 				// show add equipment button
-				PWG.ViewManager.showView('global:turnGroup:addEquipment');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
-				PhaserGame.buildEquipmentList.call(this);
-			},
-			shutdown: function() {
-				// hide add building button
-				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
+				// PhaserGame.buildEquipmentList.call(this);
+				var equipment = PhaserGame.playerData.equipment;
+
+				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
+				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
+
+				var offsetX = machineIcon.offsetX;
+				var offsetY = machineIcon.offsetY;
+				var iconW = machineIcon.iconW;
+				var iconH = machineIcon.iconH;
+				var columnW = PWG.Stage.gameW/MACHINE_LIST_COLUMNS;
+				
+				var column = 0;
+				var count = 0;
+				var itemY = 0;
+			
+				PWG.Utils.each(
+					equipment,
+					function(machine, idx) {
+						// trace('\tadding machine['+idx+']: ', machine);
+						var item = PWG.Utils.clone(machineIcon);
+						// trace('\titem = ', item);
+						item.name = 'machine' + idx;
+						item.views.name.text = machine.name;
+						item.views.cost.text = '$' + machine.cost;
+						item.views.points.text = machine.points;
+						item.views.invisButton.machineIdx = idx;
+						// increment y to next row:
+						if(count % MACHINE_LIST_COLUMNS === 0) {
+							itemY = (iconH * (count/MACHINE_LIST_COLUMNS)) + offsetY;
+						}
+						
+						var columnX = offsetX + ((PWG.Stage.gameW/2) * (count % MACHINE_LIST_COLUMNS));
+
+						PWG.Utils.each(
+							item.views,
+							function(view) {
+								view.x += columnX;
+								view.y += itemY;
+							},
+							this
+						);
+				
+						machineList.views[item.name] = item;
+						count++;
+					},
+					this
+				);
+				// trace('machineList = ', machineList);
+				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
+				PWG.ViewManager.addView(machineList, equipmentListView, true);
 			}
 		},
 		equipmentCreate: {

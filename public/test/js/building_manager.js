@@ -25,6 +25,7 @@ var BuildingManager = function() {
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
+			PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: this.config });
 		}
 		this.config.age++;
 		module.saveBuildingData.call(this, this.config);
@@ -152,6 +153,24 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.getBuilding = function(sector, cell, machineType) {
+		var config = {};
+		// trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
+		PWG.Utils.each(
+			module.buildings.factory,
+			function(factory) {
+				// trace('\tfactory = ', factory);
+				if(factory.config.sector === sector && factory.config.cell === cell) {
+					// trace('\t\tfound it!');
+					config = factory.config;
+				}
+			},
+			this
+		);
+		
+		return config;
+	};
+	
 	module.addMachineTypeToFactory = function(machineType, factoryIdx) {
 		module.buildings.factories[factoryIdx].machineTypes[machineType.id] = machineType;
 	};
@@ -191,7 +210,6 @@ var BuildingManager = function() {
 	
 	module.saveBuildingData = function(config) {
 		// trace('BuildingManager/saveBuildingData, config = ', config);
-		PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: config });
 		PhaserGame.playerData.buildings[config.sector][config.type][config.id] = config;
 		// trace('\tabout to save data to local storage');
 		PhaserGame.setSavedData();

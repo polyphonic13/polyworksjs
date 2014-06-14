@@ -336,7 +336,7 @@ var GameConfig = function() {
 					confirmButton: {
 						type: 'button',
 						name: 'confirmButton',
-						img: 'buttonCheck',
+						img: 'buttonEquipmentSave',
 						x: (gameW - (gameUnit * 2.5)),
 						y: (gameH - (gameUnit  * 2.5)),
 						attrs: {
@@ -500,6 +500,55 @@ var GameConfig = function() {
 							alpha: 0.33
 						},
 						input: gameLogic.global.input.buildingSelectionIcon
+					}
+				}
+			},
+			buildingEdit: {
+				title: {
+					type: 'text',
+					name: 'factoryTitle',
+					text: 'Factory Details',
+					x: 0,
+					y: gameUnit * 3,
+					style: {
+						font: (fontSizes.lg + 'px Arial'),
+						fill: palette.black
+					},
+					position: {
+						centerX: true
+					}
+				},
+				name: {
+					type: 'text',
+					name: 'factoryName',
+					text: 'Name: ',
+					x: gameUnit * 1.5,
+					y: gameUnit * 5,
+					style: {
+						font: (fontSizes.md + 'px Arial'),
+						fill: palette.black
+					}
+				},
+				age: {
+					type: 'text',
+					name: 'factoryAge',
+					text: 'Age: ',
+					x: gameUnit * 1.5,
+					y: gameUnit * 6.5,
+					style: {
+						font: (fontSizes.md + 'px Arial'),
+						fill: palette.black
+					}
+				},
+				status: {
+					type: 'text',
+					name: 'factorySatus',
+					text: 'Status: ',
+					x: gameUnit * 1.5,
+					y: gameUnit * 8,
+					style: {
+						font: (fontSizes.md + 'px Arial'),
+						fill: palette.black
 					}
 				}
 			},
@@ -849,6 +898,7 @@ var GameConfig = function() {
 				turnTime: TIME_PER_TURN,
 				activeSector: -1,
 				activeTile: null,
+				activeFactor: null,
 				activeMachineId: -1,
 				activePartType: '',
 				newMachine: false,
@@ -1102,6 +1152,29 @@ var GameConfig = function() {
 						}
 					}
 				},
+				// building edit 
+				buildingEditScreen: {
+					name: 'buildingEdit',
+					type: 'group',
+					attrs: {
+						visible: false
+					},
+					views: {
+						// bg
+						bg: {
+							type: 'sprite',
+							name: 'background',
+							img: 'equipmentListBg',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH,
+								fixedToCamera: true
+							}
+						}
+					}
+				},
 				// equipment list
 				equipmentListScreen: {
 					name: 'equipmentList',
@@ -1109,8 +1182,7 @@ var GameConfig = function() {
 					attrs: {
 						visible: false
 					},
-					views: 
-					{
+					views: {
 						// bg
 						bg: 
 						{
@@ -1477,21 +1549,6 @@ var GameConfig = function() {
 										visible: false
 									},
 									callback: gameLogic.global.buttonCallbacks.saveMachine,
-									context: this,
-									frames: [0, 0, 0, 0]
-								},
-								addEquipmentButton: {
-									type: 'button',
-									name: 'addEquipment',
-									img: 'buttonPlus',
-									x: (gameW/2 - gameUnit/2),
-									y: (gameH - gameUnit * 1.25),
-									attrs: {
-										width: (gameUnit),
-										height: (gameUnit),
-										visible: false
-									},
-									callback: gameLogic.global.buttonCallbacks.addEquipment,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
