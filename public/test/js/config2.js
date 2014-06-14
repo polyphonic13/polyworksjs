@@ -319,9 +319,6 @@ var GameConfig = function() {
 			buildingMenu: {
 				type: 'group',
 				name: 'buildingMenu',
-				attrs: {
-					visible: false
-				},
 				views: {
 					menuBg: {
 						type: 'sprite',
@@ -339,7 +336,7 @@ var GameConfig = function() {
 					confirmButton: {
 						type: 'button',
 						name: 'confirmButton',
-						img: 'buttonConfirm',
+						img: 'buttonCheck',
 						x: (gameW - (gameUnit * 1.5)),
 						y: (gameH - (gameUnit  * 1.5)),
 						attrs: {

@@ -4,7 +4,7 @@ PWG.SocialPanel = function() {
 
 	var module = {
 		init: function(params) {
-			// // trace('SocialPanel/init, params = ', params);
+			// trace('SocialPanel/init, params = ', params);
 			_model = PWG.Utils.extend(_model, params);
 			_initViews();
 			_addListeners();
