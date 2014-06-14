@@ -247,28 +247,23 @@ var gameLogic = {
 				}
 			},
 			addBuildingMenu: function() {
-				if(!this.buildingMenuOpen) 
-				{
-					
-					// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
-					var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
-					trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
-					PWG.ViewManager.addView(buildingMenuConfig);
-					this.buildingMenuOpen = true;
-				}
+				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
+				var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
+				trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
+				PWG.ViewManager.addView(buildingMenuConfig);
+				this.buildingMenuOpen = true;
 			},
 			addBuilding: function() {
+				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
 				tile.attrs.frame = 1;
 				PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
 				BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
 			},
 			cancelAddBuilding: function() {
-				if(this.buildingMenuOpen) {
-					trace('cancel add building');
-					PhaserGame.activeTile = null;
-					PWG.ViewManager.hideView('partsMenu');
-				}
+				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
+				trace('cancel add building');
+				PhaserGame.activeTile = null;
 			},
 			buildEquipmentList: function() {
 				var equipment = PhaserGame.playerData.equipment;
@@ -651,24 +646,28 @@ var gameLogic = {
 				event: PWG.Events.OPEN_BUILDINGS_MENU,
 				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
-					PhaserGame.addBuildingMenu();
+					if(!this.buildingMenuOpen) {
+						PhaserGame.addBuildingMenu();
+						this.buildingMenuOpen = true;
+					}
 				}
 			},
 			// add building
 			{
 				event: PWG.Events.ADD_BUILDING,
 				handler: function(event) {
-					tile.attrs.frame = 1;
-					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
-					BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
-					PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
+					PhaserGame.addBuilding();
+					// tile.attrs.frame = 1;
+					// PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
+					// BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
+					// PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
 				}
 			},
 			// close building menu
 			{
 				event: PWG.Events.CLOSE_BUILDINGS_MENU,
 				handler: function(event) {
-					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
+					trace('close overlay handler, overlay open = ' + this.buildingMenuOpen);
 					if(this.buildingMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						PWG.ViewManager.hideView('buildingMenu');
