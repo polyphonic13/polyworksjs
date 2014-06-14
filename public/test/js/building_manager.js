@@ -16,7 +16,7 @@ var BuildingManager = function() {
 		this.id = config.id;
 		this.config.type = config.type;
 		this.config.state = states.CONSTRUCTION;
-		this.config.age = 0;
+		this.config.age = config.age || 0;
 	};
 	
 	Building.prototype.capacity = 0;
@@ -25,9 +25,9 @@ var BuildingManager = function() {
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
-			module.saveBuildingData.call(this, this.config);
 		}
 		this.config.age++;
+		module.saveBuildingData.call(this, this.config);
 	};
 	Building.prototype.move = function(position) {
 		this.location = position;
@@ -101,6 +101,7 @@ var BuildingManager = function() {
 	module.buildings = { factory: {} };
 	
 	module.init = function() {
+		trace('initializing building data with: ', PhaserGame.playerData.buildings);
 		PWG.Utils.each(
 			PhaserGame.playerData.buildings,
 			function(sector) {
@@ -121,10 +122,11 @@ var BuildingManager = function() {
 			},
 			this
 		);
+		trace('BuildingManager.buildings now = ', module.buildings);
 	};
 	
 	module.create = function(type, config) {
-		// trace('BuildingManager/create, type = ' + type + ', cost = ' + buildingCosts[type] + ', bank = ' + PhaserGame.playerData.bank);
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + PhaserGame.playerData.bank);
 		config.type = type;
 		config.id = type + PhaserGame.playerData.buildingCount[type];
 		
@@ -184,7 +186,7 @@ var BuildingManager = function() {
 	};
 	
 	module.saveBuildingData = function(config) {
-		trace('BuildingManager/saveBuildingData, config = ', config);
+		// trace('BuildingManager/saveBuildingData, config = ', config);
 		PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: config });
 		PhaserGame.playerData.buildings[config.sector][config.type][config.id] = config;
 		// trace('\tabout to save data to local storage');

@@ -88,7 +88,7 @@ var gameLogic = {
 			event: PWG.Events.TURN_ENDED,
 			handler: function(event) {
 				PWG.PhaserTime.removeTimer('turnTime');
-				trace('turn ended');
+				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
 			}
 		},
@@ -135,7 +135,7 @@ var gameLogic = {
 				}
 				PhaserGame.playerData = savedData;
 				BuildingManager.init();
-				trace('============ post get saved data, playerData = ', PhaserGame.playerData);
+				// trace('============ post get saved data, playerData = ', PhaserGame.playerData);
 			},
 			setSavedData: function() {
 				var params = {};
@@ -146,7 +146,7 @@ var gameLogic = {
 
 			},
 			startTurn: function() {
-				trace('START TURN');
+				// trace('START TURN');
 				PhaserGame.turnActive = true;
 				PhaserGame.timePerTurn = TIME_PER_TURN;
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
@@ -175,7 +175,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			buildUSDetailGrid: function() {
-				trace('BUILD DETAIL GRID, this = ', this);
+				// trace('BUILD DETAIL GRID, this = ', this);
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
@@ -231,11 +231,11 @@ var gameLogic = {
 					break; 
 
 					case tileCellFrames.FACTORY_CONSTRUCTION:
-					trace('factory construction'); 
+					// trace('factory construction'); 
 					break;
 
 					case tileCellFrames.FACTORY_ACTIVE:
-					trace('factory active'); 
+					// trace('factory active'); 
 					// show factory detail
 					break;
 
@@ -264,7 +264,7 @@ var gameLogic = {
 			// 		gameData.buildings,
 			// 		function(building, key) {
 			// 			var item = PWG.Utils.clone(itemConfig);
-			// 			trace('\tkey = ' + key + ', building = ', building);
+			// 			// trace('\tkey = ' + key + ', building = ', building);
 			// 			item.name = key;
 			// 			item.views.icon.img = building.icon;
 			// 			item.views.description.text = building.description;
@@ -279,13 +279,13 @@ var gameLogic = {
 			// 				},
 			// 				this
 			// 			);
-			// 			trace('\tadding item', item, '\tto ', (buildingMenuConfig.views['items'].views[key]));
+			// 			// trace('\tadding item', item, '\tto ', (buildingMenuConfig.views['items'].views[key]));
 			// 			buildingMenuConfig.views['items'].views[key] = item;
 			// 			count++;
 			// 		},
 			// 		this
 			// 	);
-			// 	trace('buildingMenuConfig = ', buildingMenuConfig);
+			// 	// trace('buildingMenuConfig = ', buildingMenuConfig);
 			// 	PWG.ViewManager.addView(buildingMenuConfig);
 			// },
 			buildEquipmentList: function() {
@@ -343,7 +343,7 @@ var gameLogic = {
 			addPartItemsOverlay: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
-				trace('addPartItemsOverlay, type = ' + type + '\tparts data = ', partsData);
+				// trace('addPartItemsOverlay, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partSelectionIcon;
 				var offset = itemConfig.offset;
@@ -377,7 +377,7 @@ var gameLogic = {
 					},
 					this
 				);
-				trace('partsMenuConfig = ', partsMenuConfig);
+				// trace('partsMenuConfig = ', partsMenuConfig);
 				PWG.ViewManager.addView(partsMenuConfig);
 				// trace('\tcreated partsMenu from: ', partsMenuConfig, '\tcollection now = ', collection);
 			}
@@ -397,7 +397,7 @@ var gameLogic = {
 			},
 			newFactory: {
 				inputDown: function() {
-					trace('factoryIcon/inputDown, this = ', this);
+					// trace('factoryIcon/inputDown, this = ', this);
 					if(this.selected) {
 						PhaserGame.selectedIcon = '';
 						this.selected = false;
@@ -431,7 +431,7 @@ var gameLogic = {
 			},
 			newShowroom: {
 				inputDown: function() {
-					trace('showroomIcon/inputDown, this = ', this);
+					// trace('showroomIcon/inputDown, this = ', this);
 					if(this.selected) {
 						PhaserGame.selectedIcon = '';
 						this.selected = false;
@@ -465,7 +465,7 @@ var gameLogic = {
 			},
 			newTractor: {
 				inputDown: function() {
-					trace('new tractor callback');
+					// trace('new tractor callback');
 					PWG.EventCenter.trigger({ type: PWG.Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR });
 				}
 			},
@@ -566,7 +566,7 @@ var gameLogic = {
 			},
 			// us detail
 			usDetailStart: function(param) {
-				trace('usDetailStart callback, this = ', this, '\tparam = ', param);
+				// trace('usDetailStart callback, this = ', this, '\tparam = ', param);
 			}, 
 			northeastDetail: function() {
 				PhaserGame.activeSector = usSectors.NORTH_EAST;
@@ -603,7 +603,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_MENU });
 			},
 			addEquipment: function() {
-				trace('add equipment button clicked');
+				// trace('add equipment button clicked');
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
 			},
 			equipmentCreateClose: function() {
@@ -692,7 +692,7 @@ var gameLogic = {
 			],
 			create: function() {
 				// show add building button
-				trace('show add building button');
+				// trace('show add building button');
 				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
@@ -709,7 +709,7 @@ var gameLogic = {
 				event: PWG.Events.EDIT_MACHINE,
 				handler: function(event) {
 					var config = PhaserGame.playerData.equipment[event.value];
-					trace('edit machine: event = ', event, 'config = ', config);
+					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.currentMachineType = config.type;
 					PhaserGame.currentMachineSize = config.size;
 					PhaserGame.currentMachine = new Machine(config);
@@ -737,7 +737,7 @@ var gameLogic = {
 				event: PWG.Events.MACHINE_TYPE_SELECTION,
 				handler: function(event) {
 					// activate size category buttons
-					trace('machine type selection, event = ', event);
+					// trace('machine type selection, event = ', event);
 					PhaserGame.currentMachineType = event.value;
 					PWG.ViewManager.hideView('equipmentCreate:createIcons:machineType');
 					if(event.value === EquipmentTypes.TRACTOR) {
@@ -765,7 +765,7 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				trace('EQUIPMENT CREATE CREATE METHOD');
+				// trace('EQUIPMENT CREATE CREATE METHOD');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
@@ -830,7 +830,7 @@ var gameLogic = {
 			{
 				event: PWG.Events.SAVE_MACHINE, 
 				handler: function(event) {
-					trace('time to save currentMachine: ', PhaserGame.currentMachine);
+					// trace('time to save currentMachine: ', PhaserGame.currentMachine);
 					PhaserGame.currentMachine.save();
 					if(PhaserGame.newMachine) {
 						PhaserGame.playerData.equipment.push(PhaserGame.currentMachine.config);
@@ -853,7 +853,7 @@ var gameLogic = {
 				var currentMachineParts = PhaserGame.currentMachine.config.parts;
 				if(currentMachineParts) {
 					// TODO: show the views/frames of the machine as it currently exists
-					trace('--------- currentMachineParts = ', currentMachineParts);
+					// trace('--------- currentMachineParts = ', currentMachineParts);
 					PWG.Utils.each(
 						currentMachineParts,
 						function(value, key) {

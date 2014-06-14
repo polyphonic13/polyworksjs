@@ -3,18 +3,15 @@ var playerData = {
 	buildings: [
 		// ne
 		{
-			factory: {},
-			showroom: {}
+			factory: {}
 		},
 		// se
 		{
-			factory: {},
-			showroom: {}
+			factory: {}
 		},
 		// mw
 		{
-			factory: {},
-			showroom: {}
+			factory: {}
 		},
 		// nw
 		{

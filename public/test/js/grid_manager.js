@@ -31,7 +31,7 @@ var GridManager = function() {
 			},
 			this
 		);
-		trace('---- grid manager init complete, grids = ', module.grids);
+		// trace('---- grid manager init complete, grids = ', module.grids);
 	};
 	
 	module.initBuildings = function(buildings) {
@@ -53,7 +53,7 @@ var GridManager = function() {
 		var config = building.config;
 		var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
 		module.grids[config.sector][config.cell].frame = tileCellFrames[frameKey];
-		trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
+		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
 	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {

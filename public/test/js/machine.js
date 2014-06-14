@@ -13,7 +13,7 @@ var Machine = function() {
 	
 	function Machine(config) {
 		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
-		trace('Machine/constructor, config = ', config);
+		// trace('Machine/constructor, config = ', config);
 	}
 
 	Machine.prototype.set = function(prop, val) {

@@ -250,7 +250,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addView = function(view, parent, addToGroup) {
-		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'parent = ', parent);
+		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view, 'parent = ', parent);
 		var collection = (parent) ? parent.children : this.collection;
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
@@ -279,7 +279,7 @@ PWG.ViewManager = function() {
 	
 	module.showView = function(path) {
 		var controller = this.getControllerFromPath(path);
-		trace('show view, controller is: ', controller);
+		// trace('show view, controller is: ', controller);
 		controller.show()
 	};
 	
@@ -299,7 +299,7 @@ PWG.ViewManager = function() {
 
 	module.swapDepths = function(path, child1, child2) {
 		var parent = this.getControllerFromPath(path);
-		trace('parent = ' + parent);
+		// trace('parent = ' + parent);
 	};
 	
 	module.setChildFrames = function(path, frame) {
