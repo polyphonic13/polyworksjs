@@ -2,7 +2,9 @@ module.exports = function(grunt) {
 
 	var project = grunt.option('pjt');
 	var srcDir = 'public/src';
+	var libDir = 'public/lib';
 	var buildDir = 'public/build';
+	
 	var projectSrcDir;
 	
 	if(typeof(project) !== 'undefined') {
@@ -23,6 +25,7 @@ module.exports = function(grunt) {
 
 		project: project,
 		srcDir: srcDir,
+		libDir: libDir,
 		buildDir: buildDir,
 		projectSrcDir: projectSrcDir,
 
@@ -84,8 +87,19 @@ module.exports = function(grunt) {
 					dest: '<%= buildDir %>/css/'
 				}
 				]
-			}
+			},
+			
 
+			lib: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= libDir %>',
+					src: [ '**/*' ],
+					dest: '<%= buildDir %>'
+				}
+				]
+			}
 		},
 /////// CSS MINIFICATION
 		cssmin: {
