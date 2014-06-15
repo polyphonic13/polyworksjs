@@ -11,7 +11,7 @@ var BuildingManager = function() {
 
 	// BUILDING BASE CLASS
 	function Building(config) {
-		trace('Building/constructor, config = ', config);
+		// trace('Building/constructor, config = ', config);
 		this.config = config;
 		this.config.type = config.type;
 		this.config.state = config.state || states.CONSTRUCTION;
@@ -25,7 +25,7 @@ var BuildingManager = function() {
 		// trace('Building/update');
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
-			trace('building construction completed');
+			// trace('building construction completed');
 			PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: this.config });
 		}
 		this.config.age++;
@@ -56,10 +56,10 @@ var BuildingManager = function() {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
-							trace('machine = ', machine);
+							// trace('machine = ', machine);
 							if(PhaserGame.playerData.bank > 0) {
 								if(this.inventory.length < this.outputCapacity) {
-									trace('build machine: machine = ', machine);
+									// trace('build machine: machine = ', machine);
 									// PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-machine.get('cost')) });
 									this.inventory.push(machine.id);
 								} else {
@@ -105,15 +105,15 @@ var BuildingManager = function() {
 	module.buildings = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
-		trace('initializing building data with: ', PhaserGame.playerData.buildings);
+		// trace('initializing building data with: ', PhaserGame.playerData.buildings);
 		PWG.Utils.each(
 			PhaserGame.playerData.buildings,
 			function(sector, s) {
-				trace('\tsectors['+s+'] = ', sector)
+				// trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						trace('\t\tbuildings['+id+'] = ', building);
+						// trace('\t\tbuildings['+id+'] = ', building);
 						module.buildings[s][building.id] = new Factory(building);
 					},
 					this
@@ -121,11 +121,11 @@ var BuildingManager = function() {
 			},
 			this
 		);
-		trace('BuildingManager.buildings now = ', module.buildings);
+		// trace('BuildingManager.buildings now = ', module.buildings);
 	};
 	
 	module.create = function(type, config) {
-		trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + PhaserGame.playerData.bank);
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + PhaserGame.playerData.bank);
 		var count = PhaserGame.playerData.buildingCount[type];
 		config.type = type;
 		config.id = type + count;
@@ -133,29 +133,29 @@ var BuildingManager = function() {
 		
 		if(PhaserGame.playerData.bank >= gameData.buildings[type].cost) {
 			var building = new Factory(config);
-			trace('\tbuilding made');
+			// trace('\tbuilding made');
 			PhaserGame.playerData.buildingCount[type]++;
-			trace('\tremoving bank from bank');
+			// trace('\tremoving bank from bank');
 			PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
-			trace('\tabout to save building data, building  = ', building);
+			// trace('\tabout to save building data, building  = ', building);
 			module.buildings[config.sector][building.config.id] = building;
 			module.saveNewBuilding(building.config);
 			return true;
 		} else {
-			trace('no more money');
+			// trace('no more money');
 			return false;
 		}
 	};
 	
 	module.getBuilding = function(sector, cell) {
 		var config = {};
-		trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
+		// trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
 		
 		PWG.Utils.each(
 			module.buildings[sector],
 			function(building) {
 				if(building.config.cell === cell) {
-					trace('\tfound it: ', building);
+					// trace('\tfound it: ', building);
 					config = building.config;
 				}
 			},
@@ -202,7 +202,7 @@ var BuildingManager = function() {
 	};
 	
 	module.saveNewBuilding = function(config) {
-		trace('save new building, config = ', config);
+		// trace('save new building, config = ', config);
 		PhaserGame.playerData.buildings[config.sector][config.id] = config;
 		PhaserGame.setSavedData();
 	};

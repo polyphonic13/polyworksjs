@@ -90,7 +90,7 @@ var gameLogic = {
 			handler: function(event) {
 				PhaserGame.playerData.bank += event.value;
 				PhaserGame.setSavedData();
-				trace('bank updated to = ' + event.value);
+				// trace('bank updated to = ' + event.value);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [PhaserGame.playerData.bank], this);
 			}
 		},
@@ -133,7 +133,7 @@ var gameLogic = {
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
 				if(!savedData) {
-					trace('there was not saved data, using: ', playerData);
+					// trace('there was not saved data, using: ', playerData);
 					savedData = playerData;
 				}
 				PhaserGame.playerData = savedData;
@@ -211,50 +211,52 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
 			},
 			tileClicked: function(tile) {
-				var view = PWG.ViewManager.getControllerFromPath('usDetail:usDetailGrid:'+tile.name);
-				// trace('tile click: ' + tile.cell + ' in ' + tile.sector, tile, '\tview = ', view);
-				var frame = tile.attrs.frame;
-				PhaserGame.activeTile = tile;
-				switch(frame) {
-					case tileCellFrames.EMPTY:
-						trace('\topen buildings menu');
-						PWG.EventCenter.trigger({ type: PWG.Events.OPEN_BUILDINGS_MENU });
-					break;
+				if(PhaserGame.turnActive) {
+					var view = PWG.ViewManager.getControllerFromPath('usDetail:usDetailGrid:'+tile.name);
+					// trace('tile click: ' + tile.cell + ' in ' + tile.sector, tile, '\tview = ', view);
+					var frame = tile.attrs.frame;
+					PhaserGame.activeTile = tile;
+					switch(frame) {
+						case tileCellFrames.EMPTY:
+							// trace('\topen buildings menu');
+							PWG.EventCenter.trigger({ type: PWG.Events.OPEN_BUILDINGS_MENU });
+						break;
 
-					case tileCellFrames.ACTIVE:
-					tile.attrs.frame = 0;
-					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.EMPTY);
-					PhaserGame.activeTile = null;
-					break; 
+						case tileCellFrames.ACTIVE:
+						tile.attrs.frame = 0;
+						PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.EMPTY);
+						PhaserGame.activeTile = null;
+						break; 
 
-					case tileCellFrames.FACTORY_CONSTRUCTION:
-					// trace('factory construction'); 
-					break;
+						case tileCellFrames.FACTORY_CONSTRUCTION:
+						// trace('factory construction'); 
+						break;
 
-					case tileCellFrames.FACTORY_ACTIVE:
-					// trace('factory active'); 
-					// show factory detail
-					PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
-					trace('active factory = ', PhaserGame.activeFactory);
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'buildingEdit' });
-					break;
+						case tileCellFrames.FACTORY_ACTIVE:
+						// trace('factory active'); 
+						// show factory detail
+						PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
+						// trace('active factory = ', PhaserGame.activeFactory);
+						PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'buildingEdit' });
+						break;
 
-					// case tileCellFrames.SHOWROOM_CONSTRUCTION: 
-					// trace('showroom construction'); 
-					// break;
-					// 
-					// case tileCellFrames.SHOWROOM_ACTIVE: 
-					// trace('showroom active'); 
-					// break;
+						// case tileCellFrames.SHOWROOM_CONSTRUCTION: 
+						// trace('showroom construction'); 
+						// break;
+						// 
+						// case tileCellFrames.SHOWROOM_ACTIVE: 
+						// trace('showroom active'); 
+						// break;
 
-					default:
-					break;
+						default:
+						break;
+					}
 				}
 			},
 			addBuildingMenu: function() {
 				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
 				var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
-				trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
+				// trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
 				PWG.ViewManager.addView(buildingMenuConfig);
 				this.buildingMenuOpen = true;
 			},
@@ -269,7 +271,7 @@ var gameLogic = {
 			},
 			cancelAddBuilding: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_BUILDINGS_MENU });
-				trace('cancel add building');
+				// trace('cancel add building');
 				PhaserGame.activeTile = null;
 			},
 			addPartItemsMenu: function(type, collection) {
@@ -535,7 +537,7 @@ var gameLogic = {
 			},
 			// add equipment
 			addEquipment: function() {
-				trace('add equipment button clicked');
+				// trace('add equipment button clicked');
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
 			},
 			// equipment edit
@@ -640,7 +642,7 @@ var gameLogic = {
 			{
 				event: PWG.Events.CLOSE_BUILDINGS_MENU,
 				handler: function(event) {
-					trace('close overlay handler, overlay open = ' + this.buildingMenuOpen);
+					// trace('close overlay handler, overlay open = ' + this.buildingMenuOpen);
 					if(this.buildingMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						PWG.ViewManager.hideView('buildingMenu');
@@ -666,7 +668,7 @@ var gameLogic = {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeFactory;
 				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-				trace('buildingEditConfig = ', buildingEditConfig);
+				// trace('buildingEditConfig = ', buildingEditConfig);
 				// trace('screen view = ', screenView, '\tactive factory = ', building);
 				buildingEditConfig.views.name.text += building.name;
 				buildingEditConfig.views.age.text += building.age;
@@ -700,9 +702,8 @@ var gameLogic = {
 				// show add equipment button
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
-				// PhaserGame.buildEquipmentList.call(this);
 				var equipment = PhaserGame.activeFactory.equipment;
-
+				trace('build equipment list = ', equipment);
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
 
@@ -754,6 +755,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:turnGroup:addEquipment');
 			},
 			shutdown: function() {
+				PWG.ViewManager.removeView('machineList', 'equipmentList');
 				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			}
 		},
@@ -786,7 +788,7 @@ var gameLogic = {
 					var id = type + letter;
 					var name = type.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.value;
-					PhaserGame.activeMachine = new Machine({ type: PhaserGame.activeMachineType, size: event.value, name: name });
+					PhaserGame.activeMachine = new Machine({ type: PhaserGame.activeMachineType, size: event.value, name: name, factoryId: PhaserGame.activeFactory.id });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -858,10 +860,10 @@ var gameLogic = {
 			{
 				event: PWG.Events.SAVE_MACHINE, 
 				handler: function(event) {
-					trace('time to save activeMachine: ', PhaserGame.activeMachine);
+					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
-						trace('active factory = ', PhaserGame.activeFactory);
+						// trace('active factory = ', PhaserGame.activeFactory);
 						PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment.push(PhaserGame.activeMachine.config);
 						PhaserGame.playerData.machineCount[PhaserGame.activeMachineType]++;
 						PhaserGame.newMachine = false;

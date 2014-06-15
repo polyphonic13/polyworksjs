@@ -35,15 +35,15 @@ var GridManager = function() {
 	};
 	
 	module.initBuildings = function(buildings) {
-		trace('BuildingManager/initBuildings, buildings = ' + buildings);
+		// trace('BuildingManager/initBuildings, buildings = ' + buildings);
 		PWG.Utils.each(
 			buildings,
 			function(sectorBuildings, s) {
-				trace('\tsectorBuildings['+s+'] = ', sectorBuildings);
+				// trace('\tsectorBuildings['+s+'] = ', sectorBuildings);
 				PWG.Utils.each(
 					sectorBuildings,
 					function(building, b) {
-						trace('\t\tbuilding['+b+'] = ', building);
+						// trace('\t\tbuilding['+b+'] = ', building);
 						module.addBuilding(building, s);
 					},
 					this
@@ -54,15 +54,15 @@ var GridManager = function() {
 	};
 
 	module.addBuilding = function(building, sector) {
-		trace('GridManager/addBuilding, building = ', building);
+		// trace('GridManager/addBuilding, building = ', building);
 		var config = building.config;
 		var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
 		module.grids[sector][config.cell].frame = tileCellFrames[frameKey];
-		trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
+		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
 	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
-		trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
+		// trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
 		var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
 		module.grids[sector][cell].frame = tileCellFrames[frameKey];
 	};
