@@ -1,3 +1,5 @@
+var TIME_TO_BUILD = 5;
+
 var BuildingManager = function() {
 	var module = {};
 	
@@ -18,6 +20,7 @@ var BuildingManager = function() {
 	
 	Building.prototype.capacity = 0;
 	Building.prototype.equipment = [];
+	Building.prototype.inventory = [];
 	Building.prototype.update = function() {
 		// trace('Building/update');
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
@@ -53,10 +56,12 @@ var BuildingManager = function() {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
+							trace('machine = ', machine);
 							if(PhaserGame.playerData.bank > 0) {
-								if(this.equipment.length < this.outputCapacity) {
-									PhaserGame.playerData.bank -= machine.get('cost');
-									this.equipment.push(machine.id);
+								if(this.inventory.length < this.outputCapacity) {
+									trace('build machine: machine = ', machine);
+									// PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-machine.get('cost')) });
+									this.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached
 								}
@@ -97,19 +102,19 @@ var BuildingManager = function() {
 		}
 	};
 	
-	module.buildings = [ [], [], [], [], [] ];
+	module.buildings = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
 		trace('initializing building data with: ', PhaserGame.playerData.buildings);
 		PWG.Utils.each(
 			PhaserGame.playerData.buildings,
-			function(sector, idx) {
-				trace('\tsectors['+idx+'] = ', sector)
+			function(sector, s) {
+				trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						trace('\t\tbuildings['+idx+'] = ', building);
-						module.buildings[idx].push(new Factory(building));
+						trace('\t\tbuildings['+id+'] = ', building);
+						module.buildings[s][building.id] = new Factory(building);
 					},
 					this
 				);
@@ -125,7 +130,6 @@ var BuildingManager = function() {
 		config.type = type;
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);
-		config.idx = module.buildings[config.sector].length;
 		
 		if(PhaserGame.playerData.bank >= gameData.buildings[type].cost) {
 			var building = new Factory(config);
@@ -133,8 +137,8 @@ var BuildingManager = function() {
 			PhaserGame.playerData.buildingCount[type]++;
 			trace('\tremoving bank from bank');
 			PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
-			trace('\tabout to save building data');
-			module.buildings[config.sector].push(building);
+			trace('\tabout to save building data, building  = ', building);
+			module.buildings[config.sector][building.config.id] = building;
 			module.saveNewBuilding(building.config);
 			return true;
 		} else {
@@ -198,13 +202,14 @@ var BuildingManager = function() {
 	};
 	
 	module.saveNewBuilding = function(config) {
-		PhaserGame.playerData.buildings[config.sector].push(config);
+		trace('save new building, config = ', config);
+		PhaserGame.playerData.buildings[config.sector][config.id] = config;
 		PhaserGame.setSavedData();
 	};
 	
 	module.saveBuildingData = function(config) {
 		// trace('BuildingManager/saveBuildingData, config = ', config);
-		PhaserGame.playerData.buildings[config.sector][config.idx] = config;
+		PhaserGame.playerData.buildings[config.sector][config.id] = config;
 		PhaserGame.setSavedData();
 	};
 	

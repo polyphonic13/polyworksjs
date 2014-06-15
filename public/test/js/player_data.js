@@ -2,25 +2,15 @@ var playerData = {
 	bank: 1000000,
 	buildings: [
 		// ne
-		[
-		{
-			id: 'factory0',
-			type: 'factory',
-			name: 'FACTORY 1',
-			state: 'construction',
-			age: 1,
-			sector: 0,
-			cell: 44
-		}
-		],
+		{},
 		// se
-		[],
+		{},
 		// mw
-		[],
+		{},
 		// nw
-		[],
+		{},
 		// sw
-		[]
+		{}
 	],
 	buildingCount: {
 		factory: 0,

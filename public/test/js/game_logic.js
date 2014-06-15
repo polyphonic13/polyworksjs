@@ -686,7 +686,7 @@ var gameLogic = {
 			{
 				event: PWG.Events.EDIT_MACHINE,
 				handler: function(event) {
-					var config = PhaserGame.playerData.buildings[PhaserGame.activeFactory].equipment[event.value];
+					var config = PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.activeMachineType = config.type;
 					PhaserGame.activeMachineSize = config.size;
@@ -725,7 +725,7 @@ var gameLogic = {
 						item.name = 'machine' + idx;
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
-						item.views.points.text = machine.points;
+						item.views.sell.text = machine.sell;
 						item.views.invisButton.machineIdx = idx;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
@@ -858,11 +858,11 @@ var gameLogic = {
 			{
 				event: PWG.Events.SAVE_MACHINE, 
 				handler: function(event) {
-					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
+					trace('time to save activeMachine: ', PhaserGame.activeMachine);
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
 						trace('active factory = ', PhaserGame.activeFactory);
-						PhaserGame.activeFactory.equipment.push(PhaserGame.activeMachine.config);
+						PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment.push(PhaserGame.activeMachine.config);
 						PhaserGame.playerData.machineCount[PhaserGame.activeMachineType]++;
 						PhaserGame.newMachine = false;
 					}

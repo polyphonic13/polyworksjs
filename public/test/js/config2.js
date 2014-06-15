@@ -23,17 +23,17 @@ var gameData = {
 			basic: {
 				cost: 350,
 				build: 50,
-				sell: 100
+				sell: 1000
 			},
 			medium: {
 				cost: 700,
 				build: 100,
-				sell: 200
+				sell: 2000
 			},
 			heavy: {
 				cost: 1000,
 				build: 150,
-				sell: 300
+				sell: 3000
 			}
 		},
 		{
@@ -44,17 +44,17 @@ var gameData = {
 			basic: {
 				cost: 500,
 				build: 100,
-				sell: 200
+				sell: 2000
 			},
 			medium: {
 				cost: 1000,
 				build: 200,
-				sell: 400
+				sell: 4000
 			},
 			heavy: {
 				cost: 1500,
 				build: 250,
-				sell: 500
+				sell: 5000
 			}
 		},
 		{
@@ -65,17 +65,17 @@ var gameData = {
 			basic: {
 				cost: 1000,
 				build: 250,
-				sell: 500
+				sell: 5000
 			},
 			medium: {
 				cost: 2000,
 				build: 500,
-				sell: 1000
+				sell: 10000
 			},
 			heavy: {
 				cost: 4000,
 				build: 1000,
-				sell: 2000
+				sell: 20000
 			}
 		}
 		],
@@ -88,17 +88,17 @@ var gameData = {
 			basic: {
 				cost: 2000,
 				build: 500,
-				sell: 1000
+				sell: 10000
 			},
 			medium: {
 				cost: 4000,
 				build: 1000,
-				sell: 2000
+				sell: 20000
 			},
 			heavy: {
 				cost: 6000,
 				build: 1500,
-				sell: 3000
+				sell: 30000
 			}
 		},
 		{
@@ -109,17 +109,17 @@ var gameData = {
 			basic: {
 				cost: 3000,
 				build: 750,
-				sell: 1500
+				sell: 15000
 			},
 			medium: {
 				cost: 6000,
 				build: 1500,
-				sell: 3000
+				sell: 30000
 			},
 			heavy: {
 				cost: 9000,
 				build: 2000,
-				sell: 4000
+				sell: 40000
 			}
 		},
 		{
@@ -130,17 +130,17 @@ var gameData = {
 			basic: {
 				cost: 5000,
 				build: 500,
-				sell: 1000
+				sell: 10000
 			},
 			medium: {
 				cost: 10000,
 				build: 1000,
-				sell: 2000
+				sell: 20000
 			},
 			heavy: {
 				cost: 15000,
 				build: 1500,
-				sell: 3000
+				sell: 30000
 			}
 		}
 		],
@@ -153,17 +153,17 @@ var gameData = {
 			basic: {
 				cost: 300,
 				build: 50,
-				sell: 100
+				sell: 1000
 			},
 			medium: {
 				cost: 600,
 				build: 100,
-				sell: 200
+				sell: 2000
 			},
 			heavy: {
 				cost: 900,
 				build: 150,
-				sell: 300
+				sell: 3000
 			}
 		},
 		{
@@ -174,17 +174,17 @@ var gameData = {
 			basic: {
 				cost: 400,
 				build: 75,
-				sell: 150
+				sell: 1500
 			},
 			medium: {
 				cost: 800,
 				build: 150,
-				sell: 300
+				sell: 3000
 			},
 			heavy: {
 				cost: 1200,
 				build: 225,
-				sell: 450
+				sell: 4500
 			}
 		},
 		{
@@ -593,9 +593,9 @@ var GameConfig = function() {
 							angle: -45
 						}
 					},
-					points: {
+					sell: {
 						type: 'text',
-						name: 'machinePoints',
+						name: 'sell',
 						text: '',
 						x: gameUnit * 4,
 						y: gameUnit * 0.6,

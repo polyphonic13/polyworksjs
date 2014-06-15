@@ -6,7 +6,7 @@ var Machine = function() {
 		type: '',
 		size: '',
 		cost: 0,
-		points: 0,
+		sell: 0,
 		factoryId: -1,
 		parts: {}
 	};
@@ -42,7 +42,7 @@ var Machine = function() {
 			function(val, key) {
 				// trace('\tval = ' + val + ', key = ' + key);
 				this.config.cost += gameData.parts[key][val][this.config.size].cost;
-				this.config.points += gameData.parts[key][val][this.config.size].sell;
+				this.config.sell += gameData.parts[key][val][this.config.size].sell;
 			},
 			this
 		);
