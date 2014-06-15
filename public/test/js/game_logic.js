@@ -144,9 +144,6 @@ var gameLogic = {
 				params[GAME_NAME] = PhaserGame.playerData;
 				PWG.Storage.set(params);
 			},
-			update: function() {
-
-			},
 			startTurn: function() {
 				// trace('START TURN');
 				PhaserGame.turnActive = true;
@@ -536,6 +533,11 @@ var gameLogic = {
 			equipmentListClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'play' });
 			},
+			// add equipment
+			addEquipment: function() {
+				trace('add equipment button clicked');
+				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentCreate' });
+			},
 			// equipment edit
 			partsMenuClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CLOSE_PARTS_MENU });
@@ -684,7 +686,7 @@ var gameLogic = {
 			{
 				event: PWG.Events.EDIT_MACHINE,
 				handler: function(event) {
-					var config = PhaserGame.playerData.equipment[event.value];
+					var config = PhaserGame.playerData.buildings[PhaserGame.activeFactory].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.currentMachineType = config.type;
 					PhaserGame.currentMachineSize = config.size;
