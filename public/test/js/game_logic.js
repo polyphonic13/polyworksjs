@@ -649,7 +649,6 @@ var gameLogic = {
 			create: function() {
 				// show add building button
 				// trace('show add building button');
-				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				PhaserGame.buildUSDetailGrid.call(this);
@@ -671,9 +670,11 @@ var gameLogic = {
 				buildingEditConfig.views.status.text += building.state;
 				
 				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
+				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
+				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			}
 		},
 		equipmentList: {
@@ -697,7 +698,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				// PhaserGame.buildEquipmentList.call(this);
-				var equipment = PhaserGame.playerData.equipment;
+				var equipment = PhaserGame.activeFactory.equipment;
 
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;

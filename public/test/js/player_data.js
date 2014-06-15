@@ -26,7 +26,6 @@ var playerData = {
 		factory: 0,
 		showroom: 0
 	},
-	equipment: [],
 	machineCount: {
 		tractor: 0,
 		skidsteer: 0

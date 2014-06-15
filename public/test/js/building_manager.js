@@ -36,7 +36,7 @@ var BuildingManager = function() {
 	function Factory(config) {
 		
 		Building.call(this, config);
-		this.config.machineTypes = [];
+		this.config.equipment = [];
 	}
 	PWG.Utils.inherit(Factory, Building);
 	
@@ -46,12 +46,12 @@ var BuildingManager = function() {
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
-			if(this.config.machineTypes.length > 0) { 
+			if(this.config.equipment.length > 0) { 
 				this.buildTime++;
 				
 				if(this.buildTime === TIME_TO_BUILD) {
 					PWG.Utils.each(
-						this.config.machineTypes,
+						this.config.equipment,
 						function(machine) {
 							if(PhaserGame.playerData.bank > 0) {
 								if(this.equipment.length < this.outputCapacity) {
@@ -73,7 +73,7 @@ var BuildingManager = function() {
 			}
 			else
 			{
-				// notify machineTypes needed
+				// notify equipment needed
 			}
 		
 		}
@@ -161,7 +161,7 @@ var BuildingManager = function() {
 	};
 	
 	module.addMachineTypeToFactory = function(machineType, factoryIdx) {
-		module.buildings.factories[factoryIdx].machineTypes[machineType.id] = machineType;
+		module.buildings.factories[factoryIdx].equipment[machineType.id] = machineType;
 	};
 	
 	module.addInventoryToShowroom = function(factoryIdx, showroomIdx) {
