@@ -8,7 +8,6 @@ module.exports = function(grunt) {
 	var projectSrcDir;
 	
 	if(typeof(project) !== 'undefined') {
-		// srcDir += '/' + project;
 		projectSrcDir = srcDir + '/' + project;
 		buildDir += '/' + project;
 	}
@@ -29,7 +28,7 @@ module.exports = function(grunt) {
 		buildDir: buildDir,
 		projectSrcDir: projectSrcDir,
 
-/////// CONCAT 
+		// CONCAT 
 		concat: {
 			// task docs: https://github.com/gruntjs/grunt-contrib-concat
 
@@ -45,14 +44,35 @@ module.exports = function(grunt) {
 
 			polyworks: {
 				src: [
-					'<%= srcDir %>/namespace.js',
-					'<%= srcDir %>/js/**/*.js'
+					'<%= srcDir %>/js/namespace.js',
+					'<%= srcDir %>/js/utils/logger.js',
+					'<%= srcDir %>/js/utils/stage.js',
+					'<%= srcDir %>/js/utils/storage.js',
+					'<%= srcDir %>/js/utils/utils.js',
+					'<%= srcDir %>/js/utils/initializer.js',
+					'<%= srcDir %>/js/utils/grid_generator.js',
+					'<%= srcDir %>/js/enum/alphabet.js',
+					'<%= srcDir %>/js/enum/input_codes.js',
+					'<%= srcDir %>/js/events/events.js',
+					'<%= srcDir %>/js/events/event_center.js',
+					'<%= srcDir %>/js/phaser/phaser_scale.js',
+					'<%= srcDir %>/js/phaser/positioner.js',
+					'<%= srcDir %>/js/phaser/animation.js',
+					'<%= srcDir %>/js/phaser/physics.js',
+					'<%= srcDir %>/js/phaser/tile_map.js',
+					'<%= srcDir %>/js/phaser/group.js',
+					'<%= srcDir %>/js/phaser/view_manager.js',
+					'<%= srcDir %>/js/phaser/screen_manager.js',
+					'<%= srcDir %>/js/phaser/input.js',
+					'<%= srcDir %>/js/phaser/time.js',
+					'<%= srcDir %>/js/phaser/loader.js',
+					'<%= srcDir %>/js/social/social_manager.js'
 				],
 				dest: '<%= buildDir %>/js/polyworks.js'
 			}
 
 		},
-/////// MINIFICATION
+		// MINIFICATION
 		uglify: {
 			// task docs: https://github.com/gruntjs/grunt-contrib-uglify
 
@@ -71,7 +91,7 @@ module.exports = function(grunt) {
 				dest: '<%= buildDir %>/js/polyworks.min.js'
 			}
 		},
-/////// COPYING
+		// COPYING
 		copy: {
 			// task docs: https://github.com/gruntjs/grunt-contrib-copy
 
@@ -104,7 +124,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-/////// CSS MINIFICATION
+		// CSS MINIFICATION
 		cssmin: {
 			project: {
 				expand: true,
@@ -113,7 +133,7 @@ module.exports = function(grunt) {
 				dest: '<%= buildDir %>/css/'
 			}
 		},
-/////// LOCAL SERVER
+		// LOCAL SERVER
 		connect: {
 			// docs: https://github.com/iammerrick/grunt-connect
 			server: { 
