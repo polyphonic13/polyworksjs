@@ -1553,6 +1553,21 @@ var GameConfig = function() {
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
+								addEquipmentButton: {
+									type: 'button',
+									name: 'addEquipment',
+									img: 'buttonPlus',
+									x: (gameW/2 - gameUnit/2),
+									y: (gameH - gameUnit * 1.25),
+									attrs: {
+										width: (gameUnit),
+										height: (gameUnit),
+										visible: false
+									},
+									callback: gameLogic.global.buttonCallbacks.addEquipment,
+									context: this,
+									frames: [0, 0, 0, 0]
+								},
 								saveMachineButton: {
 									type: 'button',
 									name: 'saveMachineButton',

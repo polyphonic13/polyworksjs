@@ -171,6 +171,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			},
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -559,12 +560,12 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
 					break;
 					
-					case 'equipmentCreate':
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
+					case 'equipmentList':
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'buildingEdit' });
 					break;
 					
-					case 'equipmentList':
-					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'usDetail' });
+					case 'equipmentCreate':
+					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
 					break;
 					
 					case 'equipmentEdit':
@@ -675,6 +676,7 @@ var gameLogic = {
 			shutdown: function() {
 				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			}
 		},
 		equipmentList: {
@@ -694,7 +696,6 @@ var gameLogic = {
 			],
 			create: function() {
 				// show add equipment button
-				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				// PhaserGame.buildEquipmentList.call(this);
@@ -748,6 +749,10 @@ var gameLogic = {
 				// trace('machineList = ', machineList);
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
+				PWG.ViewManager.showView('global:turnGroup:addEquipment');
+			},
+			shutdown: function() {
+				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			}
 		},
 		equipmentCreate: {
