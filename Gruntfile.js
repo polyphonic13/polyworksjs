@@ -44,7 +44,10 @@ module.exports = function(grunt) {
 			},
 
 			polyworks: {
-				src: '<%= srcDir %>/js/**/*.js',
+				src: [
+					'<%= srcDir %>/namespace.js',
+					'<%= srcDir %>/js/**/*.js'
+				],
 				dest: '<%= buildDir %>/js/polyworks.js'
 			}
 
