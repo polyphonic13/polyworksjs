@@ -90,8 +90,9 @@ var gameLogic = {
 			handler: function(event) {
 				PhaserGame.playerData.bank += event.value;
 				PhaserGame.setSavedData();
+				var text = '$ ' + PhaserGame.playerData.bank;
 				// trace('bank updated to = ' + event.value);
-				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [PhaserGame.playerData.bank], this);
+				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
 		},
 		// turn ended
@@ -162,8 +163,8 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
-				
-				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [PhaserGame.playerData.bank], this);
+				var text = '$ ' + PhaserGame.playerData.bank;
+				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
@@ -593,6 +594,11 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global');
 			}
 		},
+		manual: {
+			create: function() {
+				
+			}
+		},
 		play: {
 			create: function() {
 				PWG.ViewManager.showView('global');
@@ -727,7 +733,7 @@ var gameLogic = {
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
 						item.views.sell.text = machine.sell;
-						item.views.invisButton.machineIdx = idx;
+						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
 							itemY = (iconH * (count/MACHINE_LIST_COLUMNS)) + offsetY;
@@ -788,7 +794,7 @@ var gameLogic = {
 					var id = type + letter;
 					var name = type.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.value;
-					PhaserGame.activeMachine = new Machine({ type: PhaserGame.activeMachineType, size: event.value, name: name, factoryId: PhaserGame.activeFactory.id });
+					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.value, name: name, factoryId: PhaserGame.activeFactory.id });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -822,7 +828,6 @@ var gameLogic = {
 				handler: function(event) {
 					// trace('showBuildGroup, size = ' + event.size);
 					PhaserGame.activeMachine.set('size', event.size);
-					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
 					this.views['state-group'].children[event.previousGroup].hide();
 					this.views['state-group'].children['editor-group'].show();
 				}
@@ -864,10 +869,11 @@ var gameLogic = {
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
 						// trace('active factory = ', PhaserGame.activeFactory);
-						PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment.push(PhaserGame.activeMachine.config);
+						PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[PhaserGame.activeMachine.config.id] = PhaserGame.activeMachine.config;
 						PhaserGame.playerData.machineCount[PhaserGame.activeMachineType]++;
 						PhaserGame.newMachine = false;
 					}
+					trace('about to save playerData: ', PhaserGame.playerData);
 					PhaserGame.setSavedData();
 					PhaserGame.activeMachine = null;
 					PhaserGame.machineDirty = false;

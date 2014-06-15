@@ -69,7 +69,7 @@ PWG.Utils = function() {
 		var length = 0;
 		for(var key in obj) {
 			// if(obj.hasOwnProperty(key)) { length++; }
-			if(Utils.has(obj, key)) { length++; }
+			if(PWG.Utils.has(obj, key)) { length++; }
 		}
 		return length;
 	};

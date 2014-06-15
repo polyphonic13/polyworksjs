@@ -19,7 +19,7 @@ var BuildingManager = function() {
 	};
 	
 	Building.prototype.capacity = 0;
-	Building.prototype.equipment = [];
+	Building.prototype.equipment = {};
 	Building.prototype.inventory = [];
 	Building.prototype.update = function() {
 		// trace('Building/update');
@@ -39,7 +39,8 @@ var BuildingManager = function() {
 	function Factory(config) {
 		
 		Building.call(this, config);
-		this.config.equipment = [];
+		this.config.equipment = config.equipment || {};
+		this.config.inventory = config.inventory || [];
 	}
 	PWG.Utils.inherit(Factory, Building);
 	
@@ -49,19 +50,19 @@ var BuildingManager = function() {
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
-			if(this.config.equipment.length > 0) { 
+			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
 				this.buildTime++;
 				
 				if(this.buildTime === TIME_TO_BUILD) {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
-							// trace('machine = ', machine);
-							if(PhaserGame.playerData.bank > 0) {
-								if(this.inventory.length < this.outputCapacity) {
+							trace('machine = ', machine);
+							if(PhaserGame.playerData.bank > machine.cost) {
+								if(this.config.inventory.length < this.outputCapacity) {
 									// trace('build machine: machine = ', machine);
-									// PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-machine.get('cost')) });
-									this.inventory.push(machine.id);
+									PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-machine.cost) });
+									this.config.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached
 								}
@@ -113,7 +114,7 @@ var BuildingManager = function() {
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						// trace('\t\tbuildings['+id+'] = ', building);
+						trace('\t\tbuildings['+id+'] = ', building);
 						module.buildings[s][building.id] = new Factory(building);
 					},
 					this

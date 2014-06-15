@@ -608,7 +608,7 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'machineIconInvisButton',
 						img: 'blockClear',
-						machineIdx: -1,
+						machineIdx: '',
 						x: 0,
 						y: 0,
 						attrs: {

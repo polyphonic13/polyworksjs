@@ -2,6 +2,7 @@ var Machine = function() {
 	
 	var module = {};
 	var defaults = {
+		id: '',
 		name: '',
 		type: '',
 		size: '',
@@ -13,7 +14,7 @@ var Machine = function() {
 	
 	function Machine(config) {
 		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
-		// trace('Machine/constructor, config = ', config, '\tthis.config = ', this.config);
+		trace('Machine/constructor, config = ', config, '\tthis.config = ', this.config);
 	}
 
 	Machine.prototype.set = function(prop, val) {
