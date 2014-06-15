@@ -66,7 +66,8 @@ module.exports = function(grunt) {
 					'<%= srcDir %>/js/phaser/input.js',
 					'<%= srcDir %>/js/phaser/time.js',
 					'<%= srcDir %>/js/phaser/loader.js',
-					'<%= srcDir %>/js/social/social_manager.js'
+					'<%= srcDir %>/js/social/social_manager.js',
+					'<%= srcDir %>/js/phaser/phaser_game.js'
 				],
 				dest: '<%= buildDir %>/js/polyworks.js'
 			}
