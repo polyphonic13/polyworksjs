@@ -35,28 +35,34 @@ var GridManager = function() {
 	};
 	
 	module.initBuildings = function(buildings) {
-		module.addBuildings(buildings.factory);
-		module.addBuildings(buildings.showroom);
-	};
-
-	module.addBuildings = function(buildings) {
+		trace('BuildingManager/initBuildings, buildings = ' + buildings);
 		PWG.Utils.each(
 			buildings,
-			function(building) {
-				module.addBuilding(building);
+			function(sectorBuildings, s) {
+				trace('\tsectorBuildings['+s+'] = ', sectorBuildings);
+				PWG.Utils.each(
+					sectorBuildings,
+					function(building, b) {
+						trace('\t\tbuilding['+b+'] = ', building);
+						module.addBuilding(building, s);
+					},
+					this
+				);
 			},
 			this
 		);
 	};
 
-	module.addBuilding = function(building) {
+	module.addBuilding = function(building, sector) {
+		trace('GridManager/addBuilding, building = ', building);
 		var config = building.config;
 		var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-		module.grids[config.sector][config.cell].frame = tileCellFrames[frameKey];
-		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
+		module.grids[sector][config.cell].frame = tileCellFrames[frameKey];
+		trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
 	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
+		trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
 		var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
 		module.grids[sector][cell].frame = tileCellFrames[frameKey];
 	};

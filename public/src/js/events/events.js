@@ -9,6 +9,7 @@ PWG.Events = {
 	RESUME_GAME: 'resumeGame',
 	GAME_TIME_UPDATED: 'gameTimeUpdated',
 	TURN_ENDED: 'turnEnded',
+	UPDATE_BANK: 'updateBank',
 	OPEN_NOTIFICATION: 'openNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
 	OPEN_BUILDINGS_MENU: 'openBuildingsMenu',

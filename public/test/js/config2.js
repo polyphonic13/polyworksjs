@@ -235,14 +235,15 @@ var GameConfig = function() {
 			xxs: (gameUnit * 0.25),
 			xs: (gameUnit * 0.30),
 			sm: (gameUnit * 0.45),
-			md: (gameUnit * 0.75),
+			md: (gameUnit * 0.66),
 			lg: (gameUnit * 1.0),
 			xl: (gameUnit * 1.5)
 		};
 		var palette = {
 			darkRed: '#ba1d3a',
 			lightRed: '#e21a49',
-			orange: '#fca600',
+			orange1: '#fca600',
+			orange2: '#e9a547',
 			green: '#009b1d',
 			black: '#000000',
 			white: '#ffffff'
@@ -1513,14 +1514,25 @@ var GameConfig = function() {
 									name: 'timerText',
 									text: TIME_PER_TURN,
 									style: {
-									    font: (fontSizes.md + 'px Arial'),
-								        fill: palette.white
+									    font: (fontSizes.lg + 'px Arial'),
+								        fill: palette.orange1
 									},
 									x: 0,
-									y: (gameUnit * 0.4),
+									y: (gameUnit * 0.33),
 									position: {
 										centerX: true
 									}
+								},
+								bankText: {
+									type: 'text',
+									name: 'bankText',
+									text: '',
+									style: {
+									    font: (fontSizes.md + 'px Arial'),
+								        fill: palette.orange1
+									},
+									x: (gameUnit * 0.5),
+									y: (gameUnit * 0.33)
 								},
 								equipmentButton: {
 									type: 'button',

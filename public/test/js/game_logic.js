@@ -84,6 +84,16 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [text], this);
 			}
 		},
+		// bank updated
+		{
+			event: PWG.Events.UPDATE_BANK,
+			handler: function(event) {
+				PhaserGame.playerData.bank += event.value;
+				PhaserGame.setSavedData();
+				trace('bank updated to = ' + event.value);
+				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [PhaserGame.playerData.bank], this);
+			}
+		},
 		// turn ended
 		{
 			event: PWG.Events.TURN_ENDED,
@@ -104,8 +114,10 @@ var gameLogic = {
 		}
 		],
 		methods: {
+			// INITIAIZATION
 			init: function() {
 				PhaserGame.getSavedData();
+				BuildingManager.init();
 			},
 			preload: function() {
 				PWG.PhaserLoader.load(PhaserGame.config.assets);
@@ -113,7 +125,6 @@ var gameLogic = {
 			},
 			create: function() {
 				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.unit);
-
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
 			render: function() {
@@ -122,10 +133,10 @@ var gameLogic = {
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
 				if(!savedData) {
+					trace('there was not saved data, using: ', playerData);
 					savedData = playerData;
 				}
 				PhaserGame.playerData = savedData;
-				BuildingManager.init();
 				// trace('============ post get saved data, playerData = ', PhaserGame.playerData);
 			},
 			setSavedData: function() {
@@ -154,6 +165,9 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
+				
+				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [PhaserGame.playerData.bank], this);
+
 				PWG.ViewManager.showView('global');
 				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
@@ -222,7 +236,7 @@ var gameLogic = {
 					case tileCellFrames.FACTORY_ACTIVE:
 					// trace('factory active'); 
 					// show factory detail
-					PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell, 'factory');
+					PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
 					trace('active factory = ', PhaserGame.activeFactory);
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'buildingEdit' });
 					break;
