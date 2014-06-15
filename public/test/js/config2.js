@@ -890,6 +890,7 @@ var GameConfig = function() {
 				activeSector: -1,
 				activeTile: null,
 				activeFactor: null,
+				activeMachine: null,
 				activeMachineId: -1,
 				activePartType: '',
 				newMachine: false,

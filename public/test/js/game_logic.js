@@ -280,7 +280,7 @@ var gameLogic = {
 				var itemConfig = PhaserGame.config.dynamicViews.partSelectionIcon;
 				var offset = itemConfig.offset;
 				var iconH = itemConfig.iconH;
-				var size = PhaserGame.currentMachineSize;
+				var size = PhaserGame.activeMachineSize;
 				var count = 0;
 				var itemY = 0;
 
@@ -688,9 +688,9 @@ var gameLogic = {
 				handler: function(event) {
 					var config = PhaserGame.playerData.buildings[PhaserGame.activeFactory].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
-					PhaserGame.currentMachineType = config.type;
-					PhaserGame.currentMachineSize = config.size;
-					PhaserGame.currentMachine = new Machine(config);
+					PhaserGame.activeMachineType = config.type;
+					PhaserGame.activeMachineSize = config.size;
+					PhaserGame.activeMachine = new Machine(config);
 					PhaserGame.newMachine = false;
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -765,7 +765,7 @@ var gameLogic = {
 				handler: function(event) {
 					// activate size category buttons
 					// trace('machine type selection, event = ', event);
-					PhaserGame.currentMachineType = event.value;
+					PhaserGame.activeMachineType = event.value;
 					PWG.ViewManager.hideView('equipmentCreate:createIcons:machineType');
 					if(event.value === EquipmentTypes.TRACTOR) {
 						PWG.ViewManager.showView('equipmentCreate:createIcons:tractorSize');
@@ -781,12 +781,12 @@ var gameLogic = {
 				event: PWG.Events.MACHINE_SIZE_SELECTION,
 				handler: function(event) {
 					// 
-					var type = PhaserGame.currentMachineType;
+					var type = PhaserGame.activeMachineType;
 					var letter = alphabet.UPPER[PhaserGame.playerData.machineCount[type]];
 					var id = type + letter;
 					var name = type.toUpperCase() + ' ' + letter;
-					PhaserGame.currentMachineSize = event.value;
-					PhaserGame.currentMachine = new Machine({ type: PhaserGame.currentMachineType, size: event.value, name: name });
+					PhaserGame.activeMachineSize = event.value;
+					PhaserGame.activeMachine = new Machine({ type: PhaserGame.activeMachineType, size: event.value, name: name });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -805,7 +805,7 @@ var gameLogic = {
 			{
 				event: PWG.Events.ADD_PART,
 				handler: function(event) {
-					PhaserGame.currentMachine.setPart(PhaserGame.activePartType, event.value);
+					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
 					// trace('show part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
 					var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
@@ -819,7 +819,7 @@ var gameLogic = {
 				event: PWG.Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
 					// trace('showBuildGroup, size = ' + event.size);
-					PhaserGame.currentMachine.set('size', event.size);
+					PhaserGame.activeMachine.set('size', event.size);
 					// playerData.equipment[PhaserGame.activeMachineId].set('size', event.size);
 					this.views['state-group'].children[event.previousGroup].hide();
 					this.views['state-group'].children['editor-group'].show();
@@ -858,15 +858,16 @@ var gameLogic = {
 			{
 				event: PWG.Events.SAVE_MACHINE, 
 				handler: function(event) {
-					// trace('time to save currentMachine: ', PhaserGame.currentMachine);
-					PhaserGame.currentMachine.save();
+					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
+					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
-						PhaserGame.playerData.equipment.push(PhaserGame.currentMachine.config);
-						PhaserGame.playerData.machineCount[PhaserGame.currentMachineType]++;
+						trace('active factory = ', PhaserGame.activeFactory);
+						PhaserGame.activeFactory.equipment.push(PhaserGame.activeMachine.config);
+						PhaserGame.playerData.machineCount[PhaserGame.activeMachineType]++;
 						PhaserGame.newMachine = false;
 					}
 					PhaserGame.setSavedData();
-					PhaserGame.currentMachine = null;
+					PhaserGame.activeMachine = null;
 					PhaserGame.machineDirty = false;
 					PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
 					PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'equipmentList' });
@@ -878,12 +879,12 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
-				var currentMachineParts = PhaserGame.currentMachine.config.parts;
-				if(currentMachineParts) {
+				var activeMachineParts = PhaserGame.activeMachine.config.parts;
+				if(activeMachineParts) {
 					// TODO: show the views/frames of the machine as it currently exists
-					// trace('--------- currentMachineParts = ', currentMachineParts);
+					// trace('--------- activeMachineParts = ', activeMachineParts);
 					PWG.Utils.each(
-						currentMachineParts,
+						activeMachineParts,
 						function(value, key) {
 							var partView = key + 'Part';
 							var frame = gameData.parts[key][value].frame;
