@@ -180,6 +180,7 @@ var gameLogic = {
 			},
 			buildUSDetailGrid: function() {
 				// trace('BUILD DETAIL GRID, this = ', this);
+				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
@@ -207,7 +208,6 @@ var gameLogic = {
 					this
 				);
 
-				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
 				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
 				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
@@ -661,10 +661,19 @@ var gameLogic = {
 		},
 		buildingEdit: {
 			create: function() {
-				var screenView = PWG.ViewManager.getControllerFromPath('buildingEdit');
+				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeFactory;
+				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
+				trace('buildingEditConfig = ', buildingEditConfig);
+				// trace('screen view = ', screenView, '\tactive factory = ', building);
+				buildingEditConfig.views.name.text += building.name;
+				buildingEditConfig.views.age.text += building.age;
+				buildingEditConfig.views.status.text += building.state;
 				
-				trace('screen view = ', screenView, '\tactive factory = ', building);
+				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
+			},
+			shutdown: function() {
+				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
 			}
 		},
 		equipmentList: {

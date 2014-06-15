@@ -250,7 +250,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addView = function(view, parent, addToGroup) {
-		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
+		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection = (parent) ? parent.children : this.collection;
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
@@ -260,7 +260,7 @@ PWG.ViewManager = function() {
 		}
 		collection[view.name] = child;
 
-		trace('POST ADD, collection = ', collection);
+		// trace('POST ADD, collection = ', collection);
 		if(addToGroup) {
 			PWG.ViewManager.initGroup(parent);
 			// parent.view.add(child.view);
@@ -269,9 +269,10 @@ PWG.ViewManager = function() {
 		}
 	};
 	
-	module.removeView = function(name, collection) {
+	module.removeView = function(name, path) {
+		var collection = PWG.ViewManager.getControllerFromPath(path);
 		// trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
-		if(collection.children.indexOf(name) > -1) {
+		if(collection.children.hasOwnProperty(name)) {
 			collection.children[name].view.destroy();
 			delete collection.children[name];
 		}

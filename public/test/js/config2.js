@@ -504,52 +504,42 @@ var GameConfig = function() {
 					}
 				}
 			},
-			buildingEdit: {
-				title: {
-					type: 'text',
-					name: 'factoryTitle',
-					text: 'Factory Details',
-					x: 0,
-					y: gameUnit * 3,
-					style: {
-						font: (fontSizes.lg + 'px Arial'),
-						fill: palette.black
+			buildingEditDetails: {
+				type: 'group',
+				name: 'editDetails',
+				views: {
+					name: {
+						type: 'text',
+						name: 'factoryName',
+						text: 'Name: ',
+						x: gameUnit * 1.5,
+						y: gameUnit * 5,
+						style: {
+							font: (fontSizes.md + 'px Arial'),
+							fill: palette.black
+						}
 					},
-					position: {
-						centerX: true
-					}
-				},
-				name: {
-					type: 'text',
-					name: 'factoryName',
-					text: 'Name: ',
-					x: gameUnit * 1.5,
-					y: gameUnit * 5,
-					style: {
-						font: (fontSizes.md + 'px Arial'),
-						fill: palette.black
-					}
-				},
-				age: {
-					type: 'text',
-					name: 'factoryAge',
-					text: 'Age: ',
-					x: gameUnit * 1.5,
-					y: gameUnit * 6.5,
-					style: {
-						font: (fontSizes.md + 'px Arial'),
-						fill: palette.black
-					}
-				},
-				status: {
-					type: 'text',
-					name: 'factorySatus',
-					text: 'Status: ',
-					x: gameUnit * 1.5,
-					y: gameUnit * 8,
-					style: {
-						font: (fontSizes.md + 'px Arial'),
-						fill: palette.black
+					age: {
+						type: 'text',
+						name: 'factoryAge',
+						text: 'Age: ',
+						x: gameUnit * 1.5,
+						y: gameUnit * 6.5,
+						style: {
+							font: (fontSizes.md + 'px Arial'),
+							fill: palette.black
+						}
+					},
+					status: {
+						type: 'text',
+						name: 'factorySatus',
+						text: 'Status: ',
+						x: gameUnit * 1.5,
+						y: gameUnit * 8,
+						style: {
+							font: (fontSizes.md + 'px Arial'),
+							fill: palette.black
+						}
 					}
 				}
 			},
@@ -1172,6 +1162,20 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH,
 								fixedToCamera: true
+							}
+						},
+						title: {
+							type: 'text',
+							name: 'editTitle',
+							text: 'Factory Details',
+							x: 0,
+							y: gameUnit * 3,
+							style: {
+								font: (fontSizes.lg + 'px Arial'),
+								fill: palette.black
+							},
+							position: {
+								centerX: true
 							}
 						}
 					}
