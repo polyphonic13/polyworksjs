@@ -45,12 +45,12 @@ PWG.ViewManager = function() {
 			this.inputController = new PWG.PhaserInput.InputController(config.input, this);
 		}
 
-		if(config.animation) {
-			this.animationController = new PWG.PhaserAnimation.AnimationController(config.animation, this);
+		if(config.physics && this.view.body) {
+			this.physicsController = new Polworks.PhaserPhysics.PhysicsController(config.physics, this);
 		}
 
-		if(config.physical && this.view.body) {
-			this.physicsController = new Polworks.PhaserPhysics.PhysicsController(config.physical, this);
+		if(config.animation) {
+			PWG.PhaserAnimation.addAnimations(config.animation, this);
 		}
 
 		this.view.name = this.name = config.name;
