@@ -7,11 +7,11 @@ PWG.PhaserAnimation = function() {
 		this.controller = controller;
 		this.name = controller.name;
 
-		var animations = config.animations;
+		this.animations = config.animations;
 		this.currentAnimation = config.defaultAnimation || '';
 
 		PWG.each(
-			animations,
+			this.animations,
 			function(animation, key) {
 				controller.view.animations.add(key, animation.keyFrames, animation.frameRate);
 			},
