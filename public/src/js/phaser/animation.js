@@ -56,7 +56,7 @@ PWG.PhaserAnimation = function() {
 
 	module.addAnimations = function(config, view) {
 		var controller = new AnimationController(config, view); 
-		module.controller[controller.id] = controller;
+		module.controller[controller.name] = controller;
 	};
 
 	module.play = function(view, animation, killOnComplete) {
