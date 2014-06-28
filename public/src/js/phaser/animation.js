@@ -56,24 +56,24 @@ PWG.PhaserAnimation = function() {
 
 	module.addAnimations = function(config, view) {
 		var controller = new AnimationController(config, view); 
-		module.controller[controller.name] = controller;
+		module.controllers[controller.name] = controller;
 	};
 
 	module.play = function(view, animation, killOnComplete) {
 		if(module.controllers.hasOwnProperty(view)) {
-			module.controller[view].play(animation, killOnComplete);
+			module.controllers[view].play(animation, killOnComplete);
 		}
 	};
 
 	module.gotoFrame = function(view, frame) {
 		if(module.controllers.hasOwnProperty(view)) {
-			module.controller[view].gotoFrame(frame);
+			module.controllers[view].gotoFrame(frame);
 		}
 	};
 
 	module.stop = function(view) {
 		if(module.controllers.hasOwnProperty(view)) {
-			module.controller[view].stop();
+			module.controllers[view].stop();
 		}
 	};
 
