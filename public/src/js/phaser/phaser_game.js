@@ -34,7 +34,23 @@ var PhaserGame = function() {
 	
 	function _onStageInitialized() {
 		// trace('PhaserGame/onStageInitialized');
+		if(GameConfig.loadingAnimation) {
+			_addLoadingAnimation();
+		}
 		GameConfig.init(_onConfigInitialized, module);
+	}
+	
+	function _addLoadingAnimation() {
+		var loadingAnimation = document.createElement('div');
+		loadingAnimation.setAttribute('id', 'loading_animation');
+		loadingAnimation.style.width = PWG.Stage.winW + 'px';
+		loadingAnimation.style.height = PWG.Stage.winH + 'px';
+		document.getElementsByTagName('body')[0].appendChild(loadingAnimation);
+	}
+	
+	function _removeLoadingAnimation() {
+		var loadingAnimation = document.getElementById('loading_animation');
+		loadingAnimation.parentNode.removeChild(loadingAnimation);
 	}
 	
 	function _onConfigInitialized(config) {
@@ -83,7 +99,10 @@ var PhaserGame = function() {
 	}
 	
 	function _create() {
-		// trace('PhaserGame/_create');
+		trace('PhaserGame/_create');
+		if(GameConfig.loadingAnimation) {
+			_removeLoadingAnimation();
+		}
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
