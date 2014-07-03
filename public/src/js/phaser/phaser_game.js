@@ -43,6 +43,7 @@ var PhaserGame = function() {
 	function _addLoadingAnimation() {
 		var loadingAnimation = document.createElement('div');
 		loadingAnimation.setAttribute('id', 'loading_animation');
+		loadingAnimation.className = 'loading_animation';
 		loadingAnimation.style.width = PWG.Stage.winW + 'px';
 		loadingAnimation.style.height = PWG.Stage.winH + 'px';
 		document.getElementsByTagName('body')[0].appendChild(loadingAnimation);
