@@ -267,6 +267,8 @@ PWG.ViewManager = function() {
 			// the parent was passed and is a group type view controller
 			// PWG.ViewManager.addToGroup(view, parent.view);
 		}
+		
+		return child;
 	};
 	
 	module.removeView = function(name, path) {
