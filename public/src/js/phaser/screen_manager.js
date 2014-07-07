@@ -7,7 +7,7 @@ PWG.ScreenManager = function() {
 	};
 	
 	ScreenController.prototype.create = function() {
-		trace('ScreenController['+this.id+']/create');
+		// trace('ScreenController['+this.id+']/create');
 		if(this.config.listeners) {
 			PWG.EventCenter.batchBind(this.config.listeners, this);
 		}
@@ -29,7 +29,7 @@ PWG.ScreenManager = function() {
 	};
 	
 	ScreenController.prototype.shutdown = function() {
-		trace('ScreenController['+this.id+']/shutdown');
+		// trace('ScreenController['+this.id+']/shutdown');
 		if(this.config.shutdown) {
 			this.config.shutdown.apply(this, arguments);
 		}
@@ -44,11 +44,11 @@ PWG.ScreenManager = function() {
 	module.screens = {};
 	
 	module.init = function(screens) {
-		trace('ScreenManager/init');
+		// trace('ScreenManager/init');
 		PWG.Utils.each(
 			screens,
 			function(value, key) {
-				trace('\tcreating screen['+key+']');
+				// trace('\tcreating screen['+key+']');
 				this.screens[key] = new ScreenController(key, value);
 			},
 			this

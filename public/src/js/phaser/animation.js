@@ -3,7 +3,7 @@ PWG.PhaserAnimation = function() {
 	var module = {};
 
 	function AnimationController(config, controller, id) {
-		trace('AnimationController, id = ' + id + '\n\tconfig = ', config, '\tcontroller = ', controller)
+		// trace('AnimationController, id = ' + id + '\n\tconfig = ', config, '\tcontroller = ', controller)
 		this.config = config;
 		this.controller = controller;
 		this.name = controller.name;
@@ -13,13 +13,13 @@ PWG.PhaserAnimation = function() {
 		PWG.Utils.each(
 			this.animations,
 			function(animation, key) {
-				trace('\tnow adding animation: ' + key, animation);
+				// trace('\tnow adding animation: ' + key, animation);
 				controller.view.animations.add(key, animation.keyFrames, animation.frameRate);
 			},
 			this
 		);
 
-		trace('\tanimations now = ', controller.view.animations);
+		// trace('\tanimations now = ', controller.view.animations);
 
 		if(config.defaultAnimation) {
 			var animation = this.animations[config.defaultAnimation];
@@ -31,11 +31,11 @@ PWG.PhaserAnimation = function() {
 	}
 
 	AnimationController.prototype.play = function(name, killOnComplete) {
-		trace('AnimationController/play, name = ' + name);
+		// trace('AnimationController/play, name = ' + name);
 		if(name !== this.currentAnimation) {
 			var kill = killOnComplete || false;
 			var animation = this.animations[name];
-			trace('\tgoing to call play on it');
+			// trace('\tgoing to call play on it');
 			this.controller.view.animations.play(name, animation.frameRate, animation.looped, kill);
 			this.currentAnimation = name;
 		}
