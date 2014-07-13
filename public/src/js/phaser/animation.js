@@ -2,8 +2,8 @@ PWG.PhaserAnimation = function() {
 	
 	var module = {};
 
-	function AnimationController(config, controller, id) {
-		// trace('AnimationController, id = ' + id + '\n\tconfig = ', config, '\tcontroller = ', controller)
+	function AnimationController(config, controller) {
+		// trace('AnimationController\n\tconfig = ', config, '\tcontroller = ', controller)
 		this.config = config;
 		this.controller = controller;
 		this.name = controller.name;
@@ -54,8 +54,8 @@ PWG.PhaserAnimation = function() {
 
 	module.controllers = {};
 
-	module.addAnimations = function(config, view) {
-		var controller = new AnimationController(config, view); 
+	module.addAnimations = function(config, viewController) {
+		var controller = new AnimationController(config, viewController); 
 		module.controllers[controller.name] = controller;
 	};
 

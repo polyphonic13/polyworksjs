@@ -1,5 +1,6 @@
 PWG.Stage = function() {
 	var _aspectRatio = [16, 9];
+	var _maxHeight = 800;
 	var _windowListeners = false;
 	var _center;
 	var _callback;
@@ -14,9 +15,12 @@ PWG.Stage = function() {
 		gameY: 0,
 		unit: 0,
 
-		init: function(aspectRatio, resizable, callback, context) {
+		init: function(aspectRatio, maxHeight, resizable, callback, context) {
 			if(typeof(aspectRatio) !== 'undefined') {
 				_aspectRatio = aspectRatio;
+			}
+			if(typeof(maxHeight) !== 'undefined') {
+				_maxHeight = _maxHeight;
 			}
 			_callback = callback;
 			_context = context || window;
@@ -55,7 +59,7 @@ PWG.Stage = function() {
 		module.winW = document.documentElement.clientWidth;
 		module.winH = document.documentElement.clientHeight;
 
-		module.gameH = (module.winH > 800) ? 800 : module.winH;
+		module.gameH = (module.winH > _maxHeight) ? _maxHeight : module.winH;
 		module.gameW = ((module.winH/_aspectRatio[1]) * _aspectRatio[0]);
 		
 		if(module.gameW > module.winW) {

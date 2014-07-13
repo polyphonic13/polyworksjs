@@ -5,7 +5,7 @@ var PhaserGame = function() {
 
 	module.camera = null;
 	
-	module.init = function(aspectRatio) {
+	module.init = function(aspectRatio, maxHeight) {
 		module.loaded = 
 		{
 			images: {},
@@ -13,7 +13,7 @@ var PhaserGame = function() {
 		};
 
 		module.stage = PWG.Stage;
-		module.stage.init(aspectRatio, false, _onStageInitialized, module);
+		module.stage.init(aspectRatio, maxHeight, false, _onStageInitialized, module);
 	};
 	
 	module.destroy = function() {
