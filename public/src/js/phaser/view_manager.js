@@ -167,7 +167,7 @@ PWG.ViewManager = function() {
 					child.children = PWG.ViewManager.build(view.views);
 					PWG.ViewManager.initGroup(child);
 				}
-				collection[view.name] = child
+				collection[view.name] = child;
 			},
 			this
 		);
@@ -249,9 +249,14 @@ PWG.ViewManager = function() {
 		module.removeFromGroup(controller.children, controller);
 	};
 	
-	module.addView = function(view, parent, addToGroup) {
+	module.addView = function(view, path, addToGroup) {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
-		var collection = (parent) ? parent.children : this.collection;
+		var collection;
+		if(path) {
+			collection = PWG.ViewManager.getControllerFromPath(path);
+		} else {
+			colleciton = this.collection;
+		}
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
 		if(view.type === viewTypes.GROUP) {
@@ -262,10 +267,7 @@ PWG.ViewManager = function() {
 
 		// trace('POST ADD, collection = ', collection);
 		if(addToGroup) {
-			PWG.ViewManager.initGroup(parent);
-			// parent.view.add(child.view);
-			// the parent was passed and is a group type view controller
-			// PWG.ViewManager.addToGroup(view, parent.view);
+			PWG.ViewManager.initGroup(collection);
 		}
 		
 		return child;
@@ -283,14 +285,14 @@ PWG.ViewManager = function() {
 	module.showView = function(path) {
 		var controller = this.getControllerFromPath(path);
 		// trace('show view, controller is: ', controller);
-		controller.show()
+		controller.show();
 	};
 	
 	module.hideView = function(path) {
 		// trace('hideView: ' + path);
 		var controller = this.getControllerFromPath(path);
 		// trace('\thiding: ', controller);
-		controller.hide()
+		controller.hide();
 	};
 	
 	module.callMethod = function(path, method, args) {
