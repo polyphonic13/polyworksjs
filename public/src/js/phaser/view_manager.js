@@ -249,7 +249,7 @@ PWG.ViewManager = function() {
 		module.removeFromGroup(controller.children, controller);
 	};
 	
-	module.addView = function(view, path, addToGroup) {
+	module.addView = function(view, parent, addToGroup) {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection = (parent) ? parent.children : this.collection;
 
