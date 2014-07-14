@@ -250,12 +250,12 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addView = function(view, path, addToGroup) {
-		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
+		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection;
 		if(path) {
 			collection = PWG.ViewManager.getControllerFromPath(path).children;
 		} else {
-			colleciton = this.collection;
+			collection = this.collection;
 		}
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
