@@ -250,6 +250,27 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addView = function(view, path, addToGroup) {
+		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
+		var collection = (parent) ? parent.children : this.collection;
+
+		var child = new PWG.ViewManager.ViewController(view, view.name);
+		if(view.type === viewTypes.GROUP) {
+			child.children = PWG.ViewManager.build(view.views);
+			PWG.ViewManager.initGroup(child);
+		}
+		collection[view.name] = child;
+
+		// trace('POST ADD, collection = ', collection);
+		if(addToGroup) {
+			PWG.ViewManager.initGroup(parent);
+			// parent.view.add(child.view);
+			// the parent was passed and is a group type view controller
+			// PWG.ViewManager.addToGroup(view, parent.view);
+		}
+
+		return child;
+		
+/*
 		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection;
 		if(path) {
@@ -271,6 +292,7 @@ PWG.ViewManager = function() {
 		}
 		
 		return child;
+*/
 	};
 	
 	module.removeView = function(name, path) {
