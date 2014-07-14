@@ -253,7 +253,7 @@ PWG.ViewManager = function() {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection;
 		if(path) {
-			collection = PWG.ViewManager.getControllerFromPath(path);
+			collection = PWG.ViewManager.getControllerFromPath(path).children;
 		} else {
 			colleciton = this.collection;
 		}
