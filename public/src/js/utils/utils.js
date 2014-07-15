@@ -75,7 +75,7 @@ PWG.Utils = function() {
 	};
 
 	module.randomProperty = function(obj) {
-	    var keys = Object.keys(obj)
+	    var keys = Object.keys(obj);
 	    return obj[keys[ keys.length * Math.random() << 0]];
 	};
 	
@@ -155,6 +155,11 @@ PWG.Utils = function() {
         }
         scriptTag.setAttribute('src', url);
         document.getElementsByTagName('head')[0].appendChild(scriptTag);
+	};
+
+	module.diceRoll = function(sides) {
+		var s = sides || 6;
+		return Math.floor(Math.random() * s) + 1;
 	};
 
 	module.formatMoney = function(n, c, d, t){
