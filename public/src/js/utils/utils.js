@@ -81,7 +81,7 @@ PWG.Utils = function() {
 	
 	module.randomKey = function(obj) {
 		var keys = Object.keys(obj);
-		retrn [keys[keys.length * Math.random() << 0]];
+		return [keys[keys.length * Math.random() << 0]];
 	};
 	
 	module.mixin = function(c, p) {
