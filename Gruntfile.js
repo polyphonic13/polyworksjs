@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: '<%= buildDir %>',
 					src: [ '**/*.js' ],
-					dest: '<%= buildDir %>.js',
+					dest: '<%= buildDir %>',
 					ext: '.min.js'
 				}]
 			}
