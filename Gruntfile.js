@@ -73,26 +73,6 @@ module.exports = function(grunt) {
 			}
 
 		},
-		// MINIFICATION
-		uglify: {
-			// task docs: https://github.com/gruntjs/grunt-contrib-uglify
-
-			options: {
-
-				// banner inserted at top of the output file
-				banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-				preserveComments: false,
-				sourceMap: true,
-				compress: true,
-				// report: 'gzip'
-				report: 'min'
-			},
-
-			polyworks: {
-				src: [ '<%= buildDir %>/js/polyworks.js' ],
-				dest: '<%= buildDir %>/js/polyworks.min.js'
-			}
-		},
 		// COPYING
 		copy: {
 			// task docs: https://github.com/gruntjs/grunt-contrib-copy
@@ -113,7 +93,6 @@ module.exports = function(grunt) {
 				}
 				]
 			},
-			
 
 			lib: {
 				files: [
@@ -125,6 +104,40 @@ module.exports = function(grunt) {
 				}
 				]
 			}
+		},
+		// MINIFICATION
+		uglify: {
+			// task docs: https://github.com/gruntjs/grunt-contrib-uglify
+
+			options: {
+
+				// banner inserted at top of the output file
+				banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+				preserveComments: false,
+				sourceMap: true,
+				compress: true,
+				// report: 'gzip'
+				report: 'min'
+			},
+
+			all: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>',
+					src: [ '**/*.js' ],
+					dest: '<%= buildDir %>'
+				}]
+			}
+			// polyworks: {
+			// 	src: [ '<%= buildDir %>/js/polyworks.js' ],
+			// 	dest: '<%= buildDir %>/js/polyworks.min.js'
+			// },
+			// 
+			// lib: {
+			// 	src: [ '<%= buildDir %>/js/phaser.js' ],
+			// 	dest: '<%= buildDir %>/js/phaser.min.js'
+			// }
 		},
 		// CSS MINIFICATION
 		cssmin: {
@@ -153,5 +166,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-connect');
 	grunt.loadTasks('grunt/tasks');
 	
-	grunt.registerTask('default', ['concat', 'uglify', 'copy', 'cssmin']);
+	grunt.registerTask('default', ['concat', 'copy', 'uglify', 'cssmin']);
 };
