@@ -126,7 +126,8 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: '<%= buildDir %>',
 					src: [ '**/*.js' ],
-					dest: '<%= buildDir %>'
+					dest: '<%= buildDir %>.js',
+					ext: '.min.js'
 				}]
 			}
 			// polyworks: {
