@@ -28,6 +28,12 @@ module.exports = function(grunt) {
 		buildDir: buildDir,
 		projectSrcDir: projectSrcDir,
 
+		/////// CLEAN
+		// docs: https://github.com/gruntjs/grunt-contrib-clean
+		clean: {
+			removeDeployDir: [ '<%= buildDir %>']
+		},
+		
 		// CONCAT 
 		concat: {
 			// task docs: https://github.com/gruntjs/grunt-contrib-concat
@@ -160,6 +166,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -167,5 +174,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-connect');
 	grunt.loadTasks('grunt/tasks');
 	
-	grunt.registerTask('default', ['concat', 'copy', 'uglify', 'cssmin']);
+	grunt.registerTask('default', ['clean', 'concat', 'copy', 'uglify', 'cssmin']);
 };
