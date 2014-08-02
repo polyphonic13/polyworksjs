@@ -4,6 +4,14 @@ PWG.ScreenManager = function() {
 	function ScreenController(id, config) {
 		this.id = id;
 		this.config = config;
+		this.preloaded = false;
+	};
+	
+	ScreenController.prototype.preload = function() {
+		if(this.config.preload && !this.preloaded) {
+			PWG.PhaserLoader.load(this.config.preload);
+			this.preloaded = true;
+		}
 	};
 	
 	ScreenController.prototype.create = function() {

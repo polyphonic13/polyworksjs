@@ -61,21 +61,20 @@ PWG.PhaserLoader = function() {
 		}
 
 		// TILEMAPS
-		// if(assets.tilemaps) {
-		// 	// var tilemaps = _config.tilemaps;
-		// 	var tilemaps = assets.tilemaps;
-		// 	
-		// 	PWG.Utils.each(
-		// 		assets.tilemaps,
-		// 		function(tilemap) {
-		// 			if(!this.loaded.tilemaps[tilemap]) {
-		// 				// trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
-		// 				_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, Phaser.Tilemap.TILED_JSON ); // Phaser.Tilemap.TILED_JSON = 1
-		// 			}
-		// 		},
-		// 		this
-		// 	);
-		// }
+		if(assets.tilemaps) {
+			var tilemaps = assets.tilemaps;
+			
+			PWG.Utils.each(
+				assets.tilemaps,
+				function(tilemap) {
+					if(!this.loaded.tilemaps[tilemap]) {
+						// trace('\tloading: tilemap = ' + tilemap + ', url = ' + tilemaps[tilemap]);
+						_phaser.load.tilemap(tilemap, tilemaps[tilemap], null, tilemap.type); // Phaser.Tilemap.TILED_JSON = 1
+					}
+				},
+				this
+			);
+		}
 	}
 	
 	function _initAssets(assets, type) {

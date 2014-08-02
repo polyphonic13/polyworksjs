@@ -6,12 +6,6 @@ var PhaserGame = function() {
 	module.camera = null;
 	
 	module.init = function(aspectRatio, maxHeight, offsetX, offsetY) {
-		module.loaded = 
-		{
-			images: {},
-			sprites: {}
-		};
-
 		module.stage = PWG.Stage;
 		module.stage.init(aspectRatio, maxHeight, offsetX, offsetY, false, _onStageInitialized, module);
 	};
@@ -70,7 +64,7 @@ var PhaserGame = function() {
 		PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
 		
 		// init screen manager
-		PWG.ScreenManager.init(gameLogic.screens);
+		// PWG.ScreenManager.init(gameLogic.screens);
 		
 		if(module.init) {
 			module.init.call(this);
@@ -107,8 +101,9 @@ var PhaserGame = function() {
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
-		PWG.ViewManager.init(module.config.views);
-
+		PWG.ViewManager.init(module.config.global.views);
+		PWG.StateManager.init(module.config.states);
+		
 		if(module.config.input) 
 		{
 			if(module.config.input.keys) 

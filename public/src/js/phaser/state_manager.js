@@ -2,11 +2,12 @@ PWG.StateManager = function() {
 
 	var module = {};
 	
-	function Controller(config) {
+	function StateController(config) {
 		// trace('StateController/constructor, config = ', config);
 		this.config = config;
 		this.name = config.name;
-
+		this.preloaded = false;
+		
 		PWG.Utils.each(
 			config.attrs,
 			function(attr, key) {
@@ -18,11 +19,12 @@ PWG.StateManager = function() {
 		PhaserGame.phaser.state.add(this.name, this, false);
 	};
 	
-	Controller.prototype.start = function() {
-		// trace('StateController['+this.name+']/start');
+	StateController.prototype.start = function() {
+		trace('StateController['+this.name+']/start');
+		
 	};
 
-	Controller.prototype.preload = function() {
+	StateController.prototype.preload = function() {
 		// trace('StateController['+this.name+']/preload, preloaded = ' + this.preloaded);
 		if(!this.preloaded) {
 			PWG.PhaserLoader.load(this.config.assets);
@@ -30,7 +32,7 @@ PWG.StateManager = function() {
 		}
 	};
 	
-	Controller.prototype.create = function() {
+	StateController.prototype.create = function() {
 		// trace('StateController['+this.name+']/create, this.config = ', this.config);
 		var world = this.config.world;
 		// trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
@@ -72,11 +74,10 @@ PWG.StateManager = function() {
 		if(this.config.create) {
 			this.config.create.call(this);
 		}
-		PWG.StateManager.stateCreated(this.views['state-group'].view);
 
 	};
 	
-	Controller.prototype.update = function() {
+	StateController.prototype.update = function() {
 		if(this.config.update) {
 			this.config.update.call(this);
 		}
@@ -100,7 +101,7 @@ PWG.StateManager = function() {
 		PWG.PhaserInput.updateKeyboard();
 	};
 	
-	Controller.prototype.getView = function(id) {
+	StateController.prototype.getView = function(id) {
 		// trace('StateController['+this.name+']/getView, id = ' + id);
 		if(!this.views.hasOwnProperty(id)) {
 			return;
@@ -108,7 +109,7 @@ PWG.StateManager = function() {
 		return this.views[id];
 	};
 	
-	Controller.prototype.shutdown = function() {
+	StateController.prototype.shutdown = function() {
 		// trace('StateController['+this.name+']/shutdown');
 		if(this.config.shutdown) {
 			this.config.shutdown.call(this);
@@ -128,7 +129,7 @@ PWG.StateManager = function() {
 		}
 	};
 
-	module.Controller = Controller;
+	module.StateController = StateController;
 	
 	module.init = function(config) {
 		// trace('StateManager/init, config = ', config);
@@ -140,8 +141,8 @@ PWG.StateManager = function() {
 			config,
 			function(state) {
 				// trace('\tadding state[' + state.name + ']');
-				// this.states[state.name] = new this.Controller(state);
-				this.states[state.name] = new this.Controller(state);
+				// this.states[state.name] = new this.StateController(state);
+				this.states[state.name] = new this.StateController(state);
 			},
 			this
 		);
@@ -160,12 +161,6 @@ PWG.StateManager = function() {
 		}
 	};
 
-	module.stateCreated = function(stateGroup) {
-		// trace('STATE CREATED, statesGroup = ', PhaserGame.statesGroup, '\tstateGroup = ', stateGroup);
-		// PhaserGame.statesGroup.add(stateGroup);
-		PhaserGame.stateCreated(this.currentId);
-	};
-	
 	module.getCurrentStateGroup = function() {
 		// trace('StateManager/getCurrentStateGroup, currentId = ' + this.currentId + ', views = ', this.states[this.currentId].views);
 		return this.states[this.currentId].views['state-group'].view;

@@ -1,10 +1,4 @@
 PWG.ViewManager = function() {
-	var viewTypes = {
-		SPRITE: 'sprite',
-		TEXT: 'text',
-		BUTTON: 'button',
-		GROUP: 'group'
-	};
 	
 	var module = {};
 	
@@ -14,19 +8,19 @@ PWG.ViewManager = function() {
 		this.config = config;
 
 		switch(config.type) {
-			case viewTypes.SPRITE:
+			case ViewTypes.SPRITE:
 			this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
 			break;
 
-			case viewTypes.TEXT:
+			case ViewTypes.TEXT:
 			this.view = PhaserGame.phaser.add.text(config.x, config.y, config.text, config.style);
 			break;
 
-			case viewTypes.BUTTON:
+			case ViewTypes.BUTTON:
 			this.view = PhaserGame.phaser.add.button(config.x, config.y, config.img, config.callback, config.context, config.frames[0], config.frames[0], config.frames[1], config.frames[0]);
 			break;
 
-			case viewTypes.GROUP: 
+			case ViewTypes.GROUP: 
 			this.view = PhaserGame.phaser.add.group();
 			break; 
 
@@ -115,7 +109,7 @@ PWG.ViewManager = function() {
 	
 	// groups only
 	ViewController.prototype.removeChild = function(id) {
-		if(this.config.type === viewTypes.GROUP) {
+		if(this.config.type === ViewTypes.GROUP) {
 			if(this.children[id]) {
 				// remove phaser view from group
 				this.view.remove(this.children[id].view);
@@ -127,7 +121,7 @@ PWG.ViewManager = function() {
 
 	// groups only
 	ViewController.prototype.removeAll = function() {
-		if(this.type === viewTypes.GROUP) {
+		if(this.type === ViewTypes.GROUP) {
 			PWG.Utils.each(
 				this.children,
 				function(child) {
@@ -163,7 +157,7 @@ PWG.ViewManager = function() {
 			function(view, key) {
 				// trace('\tview.type = ' + view.type);
 				var child = new PWG.ViewManager.ViewController(view, key);
-				if(view.type === viewTypes.GROUP) {
+				if(view.type === ViewTypes.GROUP) {
 					child.children = PWG.ViewManager.build(view.views);
 					PWG.ViewManager.initGroup(child);
 				}
@@ -249,12 +243,23 @@ PWG.ViewManager = function() {
 		module.removeFromGroup(controller.children, controller);
 	};
 	
+	module.addViews = function(views, parent, addToGroup) {
+		trace('ViewManager/addViews, views = ', views);
+		PWG.Utils.each(
+			views,
+			function(view) {
+				module.addView(view, parent, addToGroup);
+			},
+			this
+		);
+	};
+	
 	module.addView = function(view, parent, addToGroup) {
 		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection = (parent) ? parent.children : this.collection;
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
-		if(view.type === viewTypes.GROUP) {
+		if(view.type === ViewTypes.GROUP) {
 			child.children = PWG.ViewManager.build(view.views);
 			PWG.ViewManager.initGroup(child);
 		}
@@ -280,7 +285,7 @@ PWG.ViewManager = function() {
 		}
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
-		if(view.type === viewTypes.GROUP) {
+		if(view.type === ViewTypes.GROUP) {
 			child.children = PWG.ViewManager.build(view.views);
 			PWG.ViewManager.initGroup(child);
 		}
