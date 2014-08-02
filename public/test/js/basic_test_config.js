@@ -14,6 +14,12 @@ var BasicTestConfig = function() {
 		var gameH = PWG.Stage.gameH;
 		var unit = PWG.Stage.unit;
 
+		var baseWorld = {
+			x: 0,
+			y: 0,
+			width: winW,
+			height: winH
+		};
 		var sharedViews = {
 			forestPic: {
 				name: 'forestPic',
@@ -75,12 +81,7 @@ var BasicTestConfig = function() {
 				home: {
 					clearWorld: true,
 					clearCache: false,
-					world: {
-						x: 0,
-						y: 0,
-						width: winW,
-						height: winH
-					},
+					world: baseWorld,
 					assets: {
 						images: [
 							'blockWhite'
@@ -107,7 +108,7 @@ var BasicTestConfig = function() {
 							type: 'button',
 							name: 'gameStartButton',
 							img: 'buttonGameStart',
-							x: gameW/2 - (unit * 5)/2,
+							x: gameX + (gameW/2 - (unit * 5)/2),
 							y: gameY + (gameH/2 - ((unit * 5) * 0.2)/2),
 							attrs: {
 								width: (unit * 5),
@@ -122,12 +123,7 @@ var BasicTestConfig = function() {
 				play: {
 					clearWorld: true,
 					clearCache: false,
-					world: {
-						x: 0,
-						y: 0,
-						width: winW,
-						height: winH
-					},
+					world: baseWorld,
 					assets: {
 						images: [
 							'blockBlue'
@@ -154,7 +150,7 @@ var BasicTestConfig = function() {
 							type: 'button',
 							name: 'quitButton',
 							img: 'buttonClose',
-							x: gameW - (unit * 1.5),
+							x: gameX + (gameW - (unit * 1.5)),
 							y: gameY + (unit * 0.5),
 							attrs: {
 								width: (unit * 1),

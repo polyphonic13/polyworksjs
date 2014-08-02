@@ -30,6 +30,10 @@ PWG.StateManager = function() {
 		trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PWG.Game.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
+		if(this.config.tileMaps) {
+			this.tileMaps = PWG.TileMapManager.build(this.config.tileMaps);
+		}
+		
 		if(this.config.views) {
 			this.views = PWG.ViewManager.build(this.config.views);
 			trace('------------------ ', this.views);

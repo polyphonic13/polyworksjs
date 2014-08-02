@@ -4,3 +4,9 @@ var ViewTypes = {
 	BUTTON: 'button',
 	GROUP: 'group'
 };
+
+var TileMapTypes = {
+	BLANK: 'blank',
+	JSON: 'json',
+	DATA: 'data'
+}
