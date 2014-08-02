@@ -43,6 +43,7 @@ PWG.PhaserTileMapManager = function() {
 	module.TileMapController = TileMapController; 
 	
 	module.build = function(map) {
+		trace('TileMapManager/build, map = ', map);
 		return new TileMapController(map);
 
 		// var map; 
