@@ -70,7 +70,7 @@ PWG.PhaserLoader = function() {
 				assets.tilemaps,
 				function(key) {
 					if(!this.loaded.tilemaps[key]) {
-						trace('\tloading: tilemap = ' + key + ', url = ' + tilemaps[tilemap].url);
+						trace('\tloading: tilemap = ' + key + ', url = ' + tilemaps[key].url);
 						var tilemap = tilemaps[key];
 						_phaser.load.tilemap(key, tilemap.url, null, tilemap.type); // Phaser.Tilemap.TILED_JSON = 1
 					}

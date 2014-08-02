@@ -7,6 +7,26 @@ var basicTestLogic = {
 			},
 			create: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'home' });
+			    this.cursors = PWG.Game.phaser.input.keyboard.createCursorKeys();
+			},
+			update: function() {
+			    if (this.cursors.left.isDown)
+			    {
+			        PWG.Game.phaser.camera.x -= 4;
+			    }
+			    else if (this.cursors.right.isDown)
+			    {
+			        PWG.Game.phaser.camera.x += 4;
+			    }
+
+			    if (this.cursors.up.isDown)
+			    {
+			        PWG.Game.phaser.camera.y -= 4;
+			    }
+			    else if (this.cursors.down.isDown)
+			    {
+			        PWG.Game.phaser.camera.y += 4;
+			    }
 			}
 		},
 		listeners: [

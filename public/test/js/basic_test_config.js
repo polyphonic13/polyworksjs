@@ -48,7 +48,8 @@ var BasicTestConfig = function() {
 					blockWhite: 'assets/images/block_white.png',
 					blockBlue: 'assets/images/block_blue.gif',
 					blockRed: 'assets/images/block_red.gif',
-					blockGreen: 'assets/images/block_green.gif'
+					blockGreen: 'assets/images/block_green.gif',
+					greyTiles2: 'assets/images/grey_tiles2.gif'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -65,7 +66,10 @@ var BasicTestConfig = function() {
 					}
 				},
 				tilemaps: {
-
+					testGreyTiles: {
+						url: 'data/test_grey_tiles.json',
+						type: Phaser.Tilemap.TILED_JSON
+					}
 				}
 			},
 			global: {
@@ -130,7 +134,24 @@ var BasicTestConfig = function() {
 						],
 						sprites: [
 							'buttonClose'
+						],
+						tilemaps: [
+							'testGreyTiles'
 						]
+					},
+					tilemaps: {
+						grey: {
+							layers: {
+								background: {
+									scrollFactorX: 0.33,
+									scrollFactorY: 0.33
+								},
+								foreground: {
+									scrollFactorX: 0.66,
+									scrollFactorY: 0.66
+								}
+							}					
+						}
 					},
 					views: {
 						forestPic: sharedViews.forestPic,

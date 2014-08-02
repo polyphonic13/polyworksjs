@@ -13,7 +13,9 @@ PWG.PhaserTileMapManager = function() {
 			PWG.Utils.each(
 				config.layers,
 				function(lyr, key) {
-					var layer = map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
+					// var layer = map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
+					// var layer = map.create(key, lyr.width, lyr.height, lyr.group);
+					var layer = map.create(key);
 					layer.scrollFactorX = lyr.scrollFactorX;
 					layer.scrollFactorY = lyr.scrollFactorY;
 
@@ -41,19 +43,19 @@ PWG.PhaserTileMapManager = function() {
 	module.TileMapController = TileMapController; 
 	
 	module.build = function(map) {
-		switch (map.type) {
-		case TileMapTypes.DATA:
-			module.buildDataTileMap(map);
-			break;
+		return new TileMapController(map);
 
-		default:
-			trace('ERROR unknown tile map type: ' + map.type);
-			break;
-		}
-	};
-
-	module.buildDataTileMap = function(map) {
-
+		// var map; 
+		// 
+		// switch (map.type) {
+		// case TileMapTypes.DATA:
+		// 	map = module.buildDataTileMap(map);
+		// 	break;
+		// 
+		// default:
+		// 	trace('ERROR unknown tile map type: ' + map.type);
+		// 	break;
+		// }
 	};
 
 	return module;
