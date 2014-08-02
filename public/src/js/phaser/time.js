@@ -3,17 +3,17 @@ PWG.PhaserTime = function() {
 	module = {};
 	
 	module.add = function(timer, delay, callback, context) {
-		var t = timer || PhaserGame.phaser.time.events;
+		var t = timer || PWG.Game.phaser.time.events;
 		t.add(delay, callback, context);
 	};
 
 	module.repeat = function(timer, time, iterations, callback, context) {
-		var t = timer || PhaserGame.phaser.time.events;
+		var t = timer || PWG.Game.phaser.time.events;
 		t.repeat(time, iterations, callback, context);
 	};
 	
 	module.loop = function(timer, interval, callback, context) {
-		var t = timer || PhaserGame.phaser.time.events;
+		var t = timer || PWG.Game.phaser.time.events;
 		t.loop(interval, callback, context);
 	};
 	
@@ -24,13 +24,13 @@ PWG.PhaserTime = function() {
 	module.removeTimer = function(id) {
 		if(_timers.hasOwnProperty(id)) {
 			_timers[id].destroy();
-			PhaserGame.phaser.time.events.remove(_timers[id]);
+			PWG.Game.phaser.time.events.remove(_timers[id]);
 			delete _timers[id];
 		}
 	};
 	
 	function Controller(id) {
-		this.timer = PhaserGame.phaser.time.create(false);
+		this.timer = PWG.Game.phaser.time.create(false);
 		_timers[id] = this.timer;
 	}
 	

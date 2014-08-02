@@ -6,7 +6,7 @@ PWG.PhaserText = function() {
 		this.name = config.name;
 		this.config = config;
 		
-		var phaser = PhaserGame.phaser;
+		var phaser = PWG.Game.phaser;
 		
 		this.view = phaser.add.text(config.x, config.y, config.text, config.style);
 

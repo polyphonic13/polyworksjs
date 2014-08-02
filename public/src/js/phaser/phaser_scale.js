@@ -3,7 +3,7 @@ PWG.PhaserScale = function() {
 	
 	module.init = function(config) {
 		// trace('PhaserScale/init, config = ', config);
-		var scaleManager = PhaserGame.phaser.scale;
+		var scaleManager = PWG.Game.phaser.scale;
 
 		if(config.fullScreen) {
 			scaleManager.startFullScreen();

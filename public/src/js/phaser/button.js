@@ -6,7 +6,7 @@ PWG.PhaserButton = function() {
 		// trace('ButtonController['+config.name+']/constructor, config = ', config);
 		this.name = config.name;
 		this.config = config;
-		this.view = PhaserGame.phaser.add.button(config.x, config.y, config.img, config.callback, config.context, config.frames[0], config.frames[0], config.frames[1], config.frames[0]);
+		this.view = PWG.Game.phaser.add.button(config.x, config.y, config.img, config.callback, config.context, config.frames[0], config.frames[0], config.frames[1], config.frames[0]);
 		this.view.width = config.width;
 		this.view.height = config.height;
 

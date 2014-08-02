@@ -6,7 +6,7 @@ PWG.PhaserSprite = function() {
 		// trace('SpriteController['+config.name+']/constructor, config = ', config);
 		this.name = config.name;
 		this.config = config;
-		this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
+		this.view = PWG.Game.phaser.add.sprite(config.x, config.y, config.img);
 
 		PWG.Initializer.setViewAttributes(config.attrs, this.view);
 

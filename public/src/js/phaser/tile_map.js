@@ -12,7 +12,7 @@ PWG.PhaserTileMap = function() {
 		this.config = config;
 
 
-		this.phaser = PhaserGame.phaser;
+		this.phaser = PWG.Game.phaser;
 		_map = this.phaser.add.tilemap('greyTilesMap');
 
 		// _map.addTilesetImage('test1', 'greyTiles');
@@ -140,7 +140,7 @@ PWG.PhaserTileMap = function() {
 	// };
 	// 
 	// TileMapController.prototype.pickTile = function(sprite, pointer) {
-	//     currentTile = PhaserGame.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
+	//     currentTile = PWG.Game.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
 	// 	// trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
 	// };
 	PWG.Initializer.addStandardMethods(TileMapController);

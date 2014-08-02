@@ -1,23 +1,43 @@
-var PhaserGame = function() {
+PWG.Game = function() {
 	var _inPlay = false;
 	var _isQuit = false;
+	var _gameConfig;
+	var _gameLogic;
+	
 	var module = {};
 
 	module.camera = null;
 	
-	module.init = function(aspectRatio, maxHeight, offsetX, offsetY) {
+	module.init = function(gameConfig, gameLogic) {
+		trace('PWG.Game/init, gameConfig = ', gameConfig, '\tgameLogic = ', gameLogic);
+		_gameConfig = gameConfig;
+		_gameLogic = gameLogic;
 		module.stage = PWG.Stage;
-		module.stage.init(aspectRatio, maxHeight, offsetX, offsetY, false, _onStageInitialized, module);
+		module.stage.init(gameConfig.aspectRatio, gameConfig.maxHeight, gameConfig.offsetX, gameConfig.offsetY, gameConfig.resizable, _onStageInitialized, module);
 	};
 	
 	module.destroy = function() {
-		// trace('PhaserGame/destroy, _inPlay = ' + _inPlay);
+		// trace('PWG.Game/destroy, _inPlay = ' + _inPlay);
 		if(_inPlay) {
 			PWG.StateManager.destroy();
 			module.phaser.destroy();
 			_inPlay = false;
 		}
 	};
+	
+	module.addLoadingAnimation = function() {
+		var loadingAnimation = document.createElement('div');
+		loadingAnimation.setAttribute('id', 'loading_animation');
+		loadingAnimation.className = 'loading_animation';
+		loadingAnimation.style.width = PWG.Stage.winW + 'px';
+		loadingAnimation.style.height = PWG.Stage.winH + 'px';
+		document.getElementsByTagName('body')[0].appendChild(loadingAnimation);
+	}
+	
+	module.removeLoadingAnimation = function() {
+		var loadingAnimation = document.getElementById('loading_animation');
+		loadingAnimation.parentNode.removeChild(loadingAnimation);
+	}
 	
 	module.quit = function() {
 		if(!_isQuit) 
@@ -27,55 +47,30 @@ var PhaserGame = function() {
 	};
 	
 	function _onStageInitialized() {
-		// trace('PhaserGame/onStageInitialized');
-		if(GameConfig.loadingAnimation) {
-			_addLoadingAnimation();
+		trace('PWG.Game/onStageInitialized');
+		if(_gameConfig.loadingAnimation) {
+			module.addLoadingAnimation();
 		}
-		GameConfig.init(_onConfigInitialized, module);
+		_gameConfig.init(_onConfigInitialized, module);
 	}
 	
-	function _addLoadingAnimation() {
-		var loadingAnimation = document.createElement('div');
-		loadingAnimation.setAttribute('id', 'loading_animation');
-		loadingAnimation.className = 'loading_animation';
-		loadingAnimation.style.width = PWG.Stage.winW + 'px';
-		loadingAnimation.style.height = PWG.Stage.winH + 'px';
-		document.getElementsByTagName('body')[0].appendChild(loadingAnimation);
-	}
-	
-	function _removeLoadingAnimation() {
-		var loadingAnimation = document.getElementById('loading_animation');
-		loadingAnimation.parentNode.removeChild(loadingAnimation);
-	}
-	
-	function _onConfigInitialized(config) {
-		module.config = config;
-		// trace('PhaserGame/onConfigInitalized, config = ', config);
+	function _onConfigInitialized(cfg) {
+		module.config = cfg;
+		trace('PWG.Game/onConfigInitalized, config = ', cfg, '\tmodule = ', module);
 		_inPlay = true;
 
-		if(gameLogic.init) {
-			gameLogic.init.call(this);
-		}
-		
 		// add global methods
-		PWG.Utils.extend(module, gameLogic.global.methods);
+		PWG.Utils.extend(module, _gameLogic.global.methods);
 
 		// add global listeners
-		PWG.EventCenter.batchBind(gameLogic.global.listeners, module);
+		PWG.EventCenter.batchBind(_gameLogic.global.listeners, module);
 		
-		// init screen manager
-		// PWG.ScreenManager.init(gameLogic.screens);
-		
-		if(module.init) {
-			module.init.call(this);
-		}
-
 		// create phaser game
 		module.phaser = new Phaser.Game(
-			module.stage.gameW, 
-			module.stage.gameH, 
+			module.config.canvasW,
+			module.config.canvasH,
 			Phaser.AUTO, 
-			config.gameEl,
+			module.config.gameEl,
 			{ 
 				preload: _preload, 
 				create: _create, 
@@ -86,7 +81,7 @@ var PhaserGame = function() {
 	}
 	
 	function _preload() {
-		// trace('PhaserGame/_preload');
+		trace('PWG.Game/_preload, module = ', module);
 		PWG.PhaserLoader.init(module.config.assets, module.phaser);
 		if(module.preload) {
 			module.preload.call(this);
@@ -94,15 +89,16 @@ var PhaserGame = function() {
 	}
 	
 	function _create() {
-		trace('PhaserGame/_create');
-		if(GameConfig.loadingAnimation) {
-			_removeLoadingAnimation();
+		trace('PWG.Game/_create');
+		if(_gameConfig.loadingAnimation) {
+			module.removeLoadingAnimation();
 		}
 		PWG.PhaserScale.init(module.config.stage);
 		PWG.PhaserPhysics.init();
 
 		PWG.ViewManager.init(module.config.global.views);
-		PWG.StateManager.init(module.config.states);
+
+		PWG.StateManager.init(_gameLogic.states);
 		
 		if(module.config.input) 
 		{
@@ -118,7 +114,7 @@ var PhaserGame = function() {
 	}
 	
 	function _update() {
-		// trace('PhaserGame/_update');
+		// trace('PWG.Game/_update');
 		if(module.keyboard) 
 		{
 			PWG.PhaserInput.updateKeyboard(module.keyboard);
@@ -129,16 +125,16 @@ var PhaserGame = function() {
 	}
 	
 	function _render() {
-		// trace('PhaserGame/_render');
+		// trace('PWG.Game/_render');
 		if(module.render) {
 			module.render.call(this);
 		}
 	}
 	
 	function _quit() {
-		// trace('PhaserGame/_quit');
+		// trace('PWG.Game/_quit');
 		_isQuit = true;
-		PWG.EventCenter.batchUnbind(gameLogic.global.listeners);
+		PWG.EventCenter.batchUnbind(_gameLogic.global.listeners);
 		PWG.ScreenManager.destroy();
 		module.phaser.destroy();
 	}

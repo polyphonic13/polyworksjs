@@ -5,7 +5,7 @@ PWG.PhaserGroup = function() {
 		// trace('GroupController['+config.name+']/constructor, views = ', config.views);
 		this.name = config.name;
 		this.config = config;
-		this.view = PhaserGame.phaser.add.group();
+		this.view = PWG.Game.phaser.add.group();
 
 		PWG.Initializer.setViewAttributes(config.attrs, this.view);
 

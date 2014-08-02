@@ -20,7 +20,7 @@ PWG.PhaserPhysics = function() {
 
 		// if(!physics.deferredGravity && !physics.immovable) {
 		// 	if(!physics.gravity) {
-		// 		controller.view.body.gravity = PhaserGame.get('gravity');
+		// 		controller.view.body.gravity = PWG.Game.get('gravity');
 		// 	}
 		// }
 		module.controllers.push(this);
@@ -53,7 +53,7 @@ PWG.PhaserPhysics = function() {
 	PhysicsController.prototype.activateGravity = function() {
 		var view = this.controller.view;
 		if(this.config.deferredGravity) {
-			var gravity = (this.config.physics.gravity) ? this.config.physics.gravity : PhaserGame.get('gravity');
+			var gravity = (this.config.physics.gravity) ? this.config.physics.gravity : PWG.Game.get('gravity');
 			view.body.gravity = gravity;
 		}
 		view.allowGravity = true;
@@ -63,7 +63,7 @@ PWG.PhaserPhysics = function() {
 	module.PhysicsController = PhysicsController; 
 	
 	module.init = function() {
-		module.physics = PhaserGame.phaser.physics; 
+		module.physics = PWG.Game.phaser.physics; 
 	};
 	
 	module.checkAllCollisions = function(targets) {

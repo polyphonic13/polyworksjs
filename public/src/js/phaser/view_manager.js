@@ -3,29 +3,29 @@ PWG.ViewManager = function() {
 	var module = {};
 	
 	function ViewController(config, name) {
-		// trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
+		trace('ViewController['+config.name+']/constructor, type = ' + config.type + ', name = ' + name);
 		this.name = name;
 		this.config = config;
 
 		switch(config.type) {
 			case ViewTypes.SPRITE:
-			this.view = PhaserGame.phaser.add.sprite(config.x, config.y, config.img);
+			this.view = PWG.Game.phaser.add.sprite(config.x, config.y, config.img);
 			break;
 
 			case ViewTypes.TEXT:
-			this.view = PhaserGame.phaser.add.text(config.x, config.y, config.text, config.style);
+			this.view = PWG.Game.phaser.add.text(config.x, config.y, config.text, config.style);
 			break;
 
 			case ViewTypes.BUTTON:
-			this.view = PhaserGame.phaser.add.button(config.x, config.y, config.img, config.callback, config.context, config.frames[0], config.frames[0], config.frames[1], config.frames[0]);
+			this.view = PWG.Game.phaser.add.button(config.x, config.y, config.img, config.callback, config.context, config.frames[0], config.frames[0], config.frames[1], config.frames[0]);
 			break;
 
 			case ViewTypes.GROUP: 
-			this.view = PhaserGame.phaser.add.group();
+			this.view = PWG.Game.phaser.add.group();
 			break; 
 
 			default: 
-			// trace('warning, unknown view type: ' + config.type);
+			trace('warning, unknown view type: ' + config.type);
 			break;
 		}
 
@@ -57,11 +57,11 @@ PWG.ViewManager = function() {
 	};
 	
 	ViewController.prototype.set = function(params) {
-		// trace('ViewController/set, view = ', this.view);
+		trace('ViewController/set, view = ', this.view);
 		PWG.Utils.each(
 			params,
 			function(param, key) {
-				// trace('\tparam['+key+'] = ' + param);
+				trace('\tparam['+key+'] = ' + param);
 				this.view[key] = param;
 			},
 			this
@@ -69,9 +69,9 @@ PWG.ViewManager = function() {
 	};
 	
 	ViewController.prototype.callMethod = function(method, args) {
-		// trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
+		trace('ViewController['+this.name+']/callMethod, method = ' + method + '\n\targs = ' + args);
 		if(this.view[method]) {
-			// trace('\tview has method, ', this.view);
+			trace('\tview has method, ', this.view);
 			this.view[method](args);
 		}
 		if(method === 'setText' && this.config.position) {
@@ -80,12 +80,12 @@ PWG.ViewManager = function() {
 	};
 	
 	ViewController.prototype.hide = function() {
-		// trace('ViewController, hide, this = ', this);
+		trace('ViewController, hide, this = ', this);
 		if(this.children) {
 			PWG.Utils.each(
 				this.children,
 				function(child) {
-					// trace('\thiding child: ', child);
+					trace('\thiding child: ', child);
 					child.hide();
 				},
 			this
@@ -99,7 +99,7 @@ PWG.ViewManager = function() {
 			PWG.Utils.each(
 				this.children,
 				function(child) {
-					// trace('\tshowing child: ', child);
+					trace('\tshowing child: ', child);
 					child.show();
 				},
 			this
@@ -146,16 +146,16 @@ PWG.ViewManager = function() {
 	
 	module.init = function(views) {
 		this.collection = this.build(views);
-		// trace('ViewManager/init, collection = ', this.collection);
+		trace('ViewManager/init, collection = ', this.collection);
 	};
 	
 	module.build = function(views, collection) {
-		// trace('ViewManager/factory, views = ', views);
+		trace('ViewManager/factory, views = ', views);
 		var collection = collection || {};
 
 		PWG.Utils.each(views,
 			function(view, key) {
-				// trace('\tview.type = ' + view.type);
+				trace('\tview.type = ' + view.type);
 				var child = new PWG.ViewManager.ViewController(view, key);
 				if(view.type === ViewTypes.GROUP) {
 					child.children = PWG.ViewManager.build(view.views);
@@ -165,16 +165,16 @@ PWG.ViewManager = function() {
 			},
 			this
 		);
-		// trace('ViewManager, end build, collection = ', collection);
+		trace('ViewManager, end build, collection = ', collection);
 		return collection;
 	};
 	
 	module.initGroup = function(controller) {
-		// trace('ViewManager/initGroup, controller = ', controller);
+		trace('ViewManager/initGroup, controller = ', controller);
 		PWG.Utils.each(
 			controller.children,
 			function(child) {
-				// trace('\tchild = ', child);
+				trace('\tchild = ', child);
 				controller.view.add(child.view);
 				child.group = controller;
 			},
@@ -184,7 +184,7 @@ PWG.ViewManager = function() {
 	};
 
 	module.showGroup = function(name) {
-		// trace('ViewManager/showGroup, name = ' + name + ', collection = ', this.collection);
+		trace('ViewManager/showGroup, name = ' + name + ', collection = ', this.collection);
 		this.collection[name].show();
 		this.currentGroup = name;
 	};
@@ -215,7 +215,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addToGroup = function(children, group) {
-		// trace('ViewManager/addToGroup, group = ', group, '\tchildren = ', children);
+		trace('ViewManager/addToGroup, group = ', group, '\tchildren = ', children);
 		PWG.Utils.each(
 			children,
 			function(child, key) {
@@ -239,7 +239,7 @@ PWG.ViewManager = function() {
 	
 	module.removeGroupChildren = function(path) {
 		var controller = module.getControllerFromPath(path);
-		// trace('view manager removeGroupChild, group = ', controller);
+		trace('view manager removeGroupChild, group = ', controller);
 		module.removeFromGroup(controller.children, controller);
 	};
 	
@@ -255,7 +255,7 @@ PWG.ViewManager = function() {
 	};
 	
 	module.addView = function(view, parent, addToGroup) {
-		// trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
+		trace('ViewManager/addView, view.type = ' + view.type + ', view = ', view);
 		var collection = (parent) ? parent.children : this.collection;
 
 		var child = new PWG.ViewManager.ViewController(view, view.name);
@@ -265,7 +265,7 @@ PWG.ViewManager = function() {
 		}
 		collection[view.name] = child;
 
-		// trace('POST ADD, collection = ', collection);
+		trace('POST ADD, collection = ', collection);
 		if(addToGroup) {
 			PWG.ViewManager.initGroup(parent);
 			// parent.view.add(child.view);
@@ -291,7 +291,7 @@ PWG.ViewManager = function() {
 		}
 		collection[view.name] = child;
 
-		// trace('POST ADD, collection = ', collection);
+		trace('POST ADD, collection = ', collection);
 		if(addToGroup) {
 			PWG.ViewManager.initGroup(collection);
 		}
@@ -302,7 +302,7 @@ PWG.ViewManager = function() {
 	
 	module.removeView = function(name, path) {
 		var collection = PWG.ViewManager.getControllerFromPath(path);
-		// trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
+		trace('PhaserVeiw/removeView, name = ' + name + ', collection = ', collection);
 		if(collection.children.hasOwnProperty(name)) {
 			collection.children[name].view.destroy();
 			delete collection.children[name];
@@ -311,27 +311,27 @@ PWG.ViewManager = function() {
 	
 	module.showView = function(path) {
 		var controller = this.getControllerFromPath(path);
-		// trace('show view, controller is: ', controller);
+		trace('show view, controller is: ', controller);
 		controller.show();
 	};
 	
 	module.hideView = function(path) {
-		// trace('hideView: ' + path);
+		trace('hideView: ' + path);
 		var controller = this.getControllerFromPath(path);
-		// trace('\thiding: ', controller);
+		trace('\thiding: ', controller);
 		controller.hide();
 	};
 	
 	module.callMethod = function(path, method, args) {
-		// trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
+		trace('ViewManager/callViewMethod\n\tpath: ' + path + '\n\tmethod: ' + method + '\n\targs: ' + args);
 		var controller = this.getControllerFromPath(path);
-		// trace('calling method ' + method + 'with args: ', args, ' on ', controller);
+		trace('calling method ' + method + 'with args: ', args, ' on ', controller);
 		controller.callMethod(method, args);
 	};
 
 	module.swapDepths = function(path, child1, child2) {
 		var parent = this.getControllerFromPath(path);
-		// trace('parent = ' + parent);
+		trace('parent = ' + parent);
 	};
 	
 	module.setChildFrames = function(path, frame) {
@@ -346,19 +346,19 @@ PWG.ViewManager = function() {
 	};
 	
 	module.setFrame = function(path, frame) {
-		// trace('ViewManager/setFrame, path = ' + path + ', frame = ' + frame);
+		trace('ViewManager/setFrame, path = ' + path + ', frame = ' + frame);
 		var controller = this.getControllerFromPath(path);
 		controller.view.frame = frame;
 	};
 	
 	module.getControllerFromPath = function(path) {
-		// trace('ViewManager/getControllerFromPath, path = ' + path + ', collection = ', this.collection);
+		trace('ViewManager/getControllerFromPath, path = ' + path + ', collection = ', this.collection);
 		var chain = path.split(':');
 		var length = chain.length;
 		var controller = this.collection[chain[0]];
-		// trace('\tcontroller = ', controller);
+		trace('\tcontroller = ', controller);
 		for(var i = 1; i < length; i++) {
-			// trace('\tchain['+i+'] = ' + chain[i] + ', controller now = ', controller);
+			trace('\tchain['+i+'] = ' + chain[i] + ', controller now = ', controller);
 			controller = controller.children[chain[i]];
 		}
 		return controller;

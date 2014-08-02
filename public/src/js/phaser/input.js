@@ -69,8 +69,8 @@ PWG.PhaserInput = function() {
 	};
 	
 	CameraDragger.prototype.update = function() {
-	    this.dragCamera(PhaserGame.phaser.input.mousePointer);
-	    this.dragCamera(PhaserGame.phaser.input.pointer1);
+	    this.dragCamera(PWG.Game.phaser.input.mousePointer);
+	    this.dragCamera(PWG.Game.phaser.input.pointer1);
 	};
 	
 	CameraDragger.prototype.dragCamera = function(pointer) {
@@ -79,8 +79,8 @@ PWG.PhaserInput = function() {
 
 	        if (this.camera) {
 				// trace('pointer is down and there is a camera, going to move it');
-	            PhaserGame.phaser.camera.x += this.camera.x - pointer.position.x;
-	            PhaserGame.phaser.camera.y += this.camera.y - pointer.position.y;
+	            PWG.Game.phaser.camera.x += this.camera.x - pointer.position.x;
+	            PWG.Game.phaser.camera.y += this.camera.y - pointer.position.y;
 	        }
 	        this.camera = pointer.position.clone();
 	    }
@@ -100,7 +100,7 @@ PWG.PhaserInput = function() {
 				var key;
 				var input = {};
 				// trace('\tadding control: ', control);
-				key = PhaserGame.phaser.input.keyboard.addKey(control.code);
+				key = PWG.Game.phaser.input.keyboard.addKey(control.code);
 				if(control.inputDown) {
 					// trace('\t\tadding input down: ', control.inputDown);
 					// key.onDown.add(control.inputDown);
