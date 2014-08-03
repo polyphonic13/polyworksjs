@@ -148,6 +148,7 @@ var BasicTestConfig = function() {
 					},
 					tilemaps: {
 						grey: {
+							type: TilemapTypes.JSON,
 							json: 'testGreyTiles',
 							image: {
 								jsonName: 'grey_tiles',

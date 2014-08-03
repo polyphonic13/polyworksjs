@@ -2,47 +2,87 @@ PWG.TilemapManager = function() {
 	var module = {};
 
 	function TilemapController(config) {
-		trace('TilemapController, creating map with: ' + config.json);
-		this.map = PWG.Game.phaser.add.tilemap(config.json);
+		this.config = config;
+		this.layers = {};
+		this.map = null;
+		
+		switch (config.type) {
+			case TilemapTypes.DATA:
+			this.addDataTilemap();
+			break;
 
-		//  Add a Tileset image to the map
-		trace('\tadding image: ' + config.image.jsonName + '/' + config.image.reference);
-		this.map.addTilesetImage(config.image.jsonName, config.image.reference);
-
-		if(config.layers) {
-			this.layers = {};
+			case TilemapTypes.JSON: 
+			this.addJsonTilemap();
+			break;
 			
-			PWG.Utils.each(
-				config.layers,
-				function(lyr, key) {
-					// var layer = this.map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
-					// var layer = this.map.createLayer(key, lyr.width, lyr.height, lyr.group);
-					trace('\tadding layer['+key+']: ', lyr);
-					this.layers[key] = this.map.createLayer(key);
-					this.layers[key].scrollFactorX = lyr.scrollFactorX;
-					this.layers[key].scrollFactorY = lyr.scrollFactorY;
-
-					// if(lyr.tiles) {
-					// 	PWG.Utils.each(
-					// 		lyr.tiles,
-					// 		function(tile) {
-					// 			this.map.putTile(tile.index, tile.x, this.y, lyr);
-					// 		},
-					// 		this
-					// 	);
-					// }
-					// 
-					// if(lyr.resizeWorld) {
-					// 	layer.resizeWorld();
-					// }
-					// 
-					// this.layers[key] = layer;
-				},
-				this
-			);
+			default:
+			trace('ERROR unknown tile map type: ' + map.type);
+			break;
+		}
+		
+		if(this.map !== null) {
+			if(this.config.image) {
+				this.addImage(this.config.image);
+			}
+			if(this.config.layers) {
+				this.addLayers(this.config.layers);
+			}
 		}
 	}
+	
+	TilemapController.prototype.addDataTilemap = function() {
+		this.map = PWG.Game.phaser.add.tilemap();
+	};
+	
+	TilemapController.prototype.addJsonTilemap = function() {
+		trace('TilemapController, creating map with: ' + this.config.json);
+		this.map = PWG.Game.phaser.add.tilemap(this.config.json);
+	};
+	
+	TilemapController.prototype.addImage = function(image) {
+		trace('\tadding image: ' + image.jsonName + '/' + image.reference);
+		this.map.addTilesetImage(image.jsonName, image.reference);
+	};
+	
+	TilemapController.prototype.addLayers = function(layers) {	
 
+		PWG.Utils.each(
+			layers,
+			function(lyr, key) {
+				trace('\tadding layer['+key+']: ', lyr);
+				if(this.config.type === TilemapTypes.DATA) {
+					this.layer = this.map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
+
+					if(lyr.tiles) {
+						this.addTiles(lyr.tiles, layer);
+					}
+					
+					if(lyr.resizeWorld) {
+						layer.resizeWorld();
+					}
+					
+
+				} else if(this.config.type === TilemapTypes.JSON) {
+					this.layers[key] = this.map.createLayer(key);
+				}
+				this.layers[key].scrollFactorX = lyr.scrollFactorX;
+				this.layers[key].scrollFactorY = lyr.scrollFactorY;
+
+			},
+			this
+		);
+	};
+
+	TilemapController.prototype.addTiles = function(tiles, layer) {
+		PWG.Utils.each(
+			tiles,
+			function(tile) {
+				this.map.putTile(tile.imgIndex, tile.xCell, this.yCell, layer);
+			},
+			this
+		);
+	};
+	
 	module.TilemapController = TilemapController; 
 	
 	module.build = function(maps) {
@@ -58,17 +98,6 @@ PWG.TilemapManager = function() {
 		);
 		return tilemaps;
 
-		// var map; 
-		// 
-		// switch (map.type) {
-		// case TilemapTypes.DATA:
-		// 	map = module.buildDataTilemap(map);
-		// 	break;
-		// 
-		// default:
-		// 	trace('ERROR unknown tile map type: ' + map.type);
-		// 	break;
-		// }
 	};
 
 	return module;
