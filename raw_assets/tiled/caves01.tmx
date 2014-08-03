@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="128" height="9" tilewidth="60" tileheight="60">
+ <tileset firstgid="1" name="foreground" tilewidth="60" tileheight="60">
+  <image source="../../../crystalcaves/public/src/assets/img/cave_foreground01.png" width="960" height="540"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="128" height="9">
+  <data encoding="base64" compression="zlib">
+   eJztzrtOAkEUgOHBu6CikIDhkpAtqCThOWhQC01sEApMoOAqKigiiFxU5JH5SZawWbGBhjHnJF9xJvvvjEMptYFNbGEbO9jFHvbhhAsHOMQR3DiGQ3qt+xN44IVh8sGPU3MPIIgQwubZdCLSL91H1uT9xgLRP87PEFPziS/ZGyv2/+H++Bq/X4iZ6STU70niXHrt+wtc2porXFv2G8u/ZpPCrfTa92lkbH0Wd5Y9h7ztmwKK0mvfl1BGBVXco4YHPOIJdTTwjBc08YqW9Nr3b2ijg3d08YEe+hhgiE984Rsj/GAsvfb9BCur/0k=
+  </data>
+ </layer>
+</map>

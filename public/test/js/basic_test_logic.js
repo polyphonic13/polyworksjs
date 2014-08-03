@@ -35,10 +35,10 @@ var basicTestLogic = {
 					}
 				},
 				create: function() {
-					this.map = PWG.Game.phaser.add.tilemap('testGreyTiles');
-					this.map.addTilesetImage('grey_tiles', 'greyTiles2');
-					this.background = this.map.createLayer('background');
-					this.background.scrollFactorX = 0.33;
+					this.map = PWG.Game.phaser.add.tilemap('testCave');
+					this.map.addTilesetImage('caveForeground01', 'caveForeground01');
+					// this.background = this.map.createLayer('background');
+					// this.background.scrollFactorX = 0.33;
 					this.foreground = this.map.createLayer('foreground');
 					this.foreground.scrollFactorX = 0.66;
 				    this.cursors = PWG.Game.phaser.input.keyboard.createCursorKeys();

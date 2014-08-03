@@ -15,13 +15,13 @@ var BasicTestConfig = function() {
 		// var gameH = PWG.Stage.gameH;
 		// var unit = PWG.Stage.unit;
 
-		var winW = 1920;
-		var winH = 1080;
+		var winW = 960;
+		var winH = 540;
 		var gameX = 0;
 		var gameY = 0;
-		var gameW = 1920;
-		var gameH = 1080;
-		var unit = 120;
+		var gameW = 960;
+		var gameH = 540;
+		var unit = 60;
 
 		var baseWorld = {
 			x: 0,
@@ -59,7 +59,8 @@ var BasicTestConfig = function() {
 					blockBlue: 'assets/images/block_blue.gif',
 					blockRed: 'assets/images/block_red.gif',
 					blockGreen: 'assets/images/block_green.gif',
-					greyTiles2: 'assets/images/grey_tiles2.gif'
+					greyTiles2: 'assets/images/grey_tiles2.gif',
+					caveForeground01: 'assets/images/cave_foreground01.png'
 				},
 				sprites: {
 					buttonGameStart: {
@@ -76,8 +77,12 @@ var BasicTestConfig = function() {
 					}
 				},
 				tilemaps: {
-					testGreyTiles: {
-						url: 'data/test_grey_tiles.json',
+					// testGreyTiles: {
+					// 	url: 'data/test_grey_tiles.json',
+					// 	type: Phaser.Tilemap.TILED_JSON
+					// },
+					testCave: {
+						url: 'data/caves01.json',
 						type: Phaser.Tilemap.TILED_JSON
 					}
 				}
@@ -146,80 +151,47 @@ var BasicTestConfig = function() {
 					assets: {
 						images: [
 							'blockBlue',
-							'greyTiles2'
+							// 'greyTiles2'
+							'caveForeground01'
 						],
 						sprites: [
 							'buttonClose'
 						],
 						tilemaps: [
-							'testGreyTiles'
+							// 'testGreyTiles'
+							'testCave'
 						]
 					},
-					tilemaps: {
-						// testData: {
-						// 	type: TilemapTypes.DATA,
-						// 	image: 'greyTiles2',
-						// 	layers: {
-						// 		background: {
-						// 			data: DataTilemap,
-						// 			width: 100,
-						// 			height: 100,
-						// 			scrollFactorX: 0.33,
-						// 			scrollFactorY: 0.33
-						// 		},
-						// 		foreground: {
-						// 			data: DataTilemap,
-						// 			width: 100,
-						// 			height: 100,
-						// 			scrollFactorX: 0.66,
-						// 			scrollFactorY: 0.66
-						// 		}
-						// 	}
-						// }
-						testJson: {
-							type: TilemapTypes.JSON,
-							json: 'testGreyTiles',
-							attrs: {
-								scale: {
-									x: 5,
-									y: 5
-								}
-							},
-							image: {
-								jsonName: 'grey_tiles',
-								reference: 'greyTiles2'
-							},
-							layers: {
-								background: {
-									attrs: {
-										scale: {
-											x: 5,
-											y: 5
-										},
-										scrollFactorX: 0.33,
-										scrollFactorY: 0.33,
-										debug: true
-									},
-									resizeWorld: true
-								},
-								foreground: {
-									attrs: {
-										scale: {
-											x: 5,
-											y: 5
-										},
-										scrollFactorX: 0.66,
-										scrollFactorY: 0.66,
-										debug: true
-									},
-									resizeWorld: true
-								}
-							}					
-						}
-					},
+					// tilemaps: {
+					// 	testJson: {
+					// 		type: TilemapTypes.JSON,
+					// 		// json: 'testGreyTiles',
+					// 		json: 'testCave',
+					// 		image: {
+					// 			jsonName: 'caveForeground01',
+					// 			reference: 'caveForeground01'
+					// 		},
+					// 		layers: {
+					// 			// background: {
+					// 			// 	attrs: {
+					// 			// 		scrollFactorX: 0.33,
+					// 			// 		scrollFactorY: 0.33,
+					// 			// 		debug: true
+					// 			// 	},
+					// 			// 	resizeWorld: true
+					// 			// },
+					// 			foreground: {
+					// 				attrs: {
+					// 					scrollFactorX: 0.66,
+					// 					scrollFactorY: 0.66
+					// 				},
+					// 				resizeWorld: true
+					// 			}
+					// 		}					
+					// 	}
+					// },
 					views: {
-						forestPic: sharedViews.forestPic,
-						redBlock: {
+						blueBlock: {
 							name: 'blueBg',
 							type: 'sprite',
 							img: 'blockBlue',
