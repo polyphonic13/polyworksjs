@@ -30,8 +30,8 @@ PWG.StateManager = function() {
 		trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PWG.Game.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
-		if(this.config.tileMaps) {
-			this.tileMaps = PWG.TileMapManager.build(this.config.tileMaps);
+		if(this.config.tilemaps) {
+			this.tilemaps = PWG.TilemapManager.build(this.config.tilemaps);
 		}
 		
 		if(this.config.views) {
@@ -67,7 +67,7 @@ PWG.StateManager = function() {
 		}
 
 		if(this.tilesMaps) {
-			PWG.PhaserTileMap.update(this.tileMaps);
+			PWG.PhaserTilemap.update(this.tilemaps);
 		}
 		PWG.PhaserInput.updateKeyboard();
 	};

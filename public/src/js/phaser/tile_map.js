@@ -1,4 +1,4 @@
-PWG.PhaserTileMap = function() {
+PWG.PhaserTilemap = function() {
 	var module = {};
 
 	var _map;
@@ -7,8 +7,8 @@ PWG.PhaserTileMap = function() {
 	var _marker;
 	var _currentTile;
 
-	function TileMapController(config) {
-		// trace('TileMapTileMapController['+config.name+']/constructor, config = ', config);
+	function TilemapController(config) {
+		// trace('TilemapTilemapController['+config.name+']/constructor, config = ', config);
 		this.config = config;
 
 
@@ -68,19 +68,19 @@ PWG.PhaserTileMap = function() {
 */
 	};
 
-	TileMapController.prototype.onInputDown = function(event) {
-		// trace('TileMapController/onInputDown, event = ' + event);
+	TilemapController.prototype.onInputDown = function(event) {
+		// trace('TilemapController/onInputDown, event = ' + event);
 	};
 
-	TileMapController.prototype.onZoomIn = function(event) {
+	TilemapController.prototype.onZoomIn = function(event) {
 		this.zoomLayers(false, event.allLayers);
 	};
 
-	TileMapController.prototype.onZoomOut = function(event) {
+	TilemapController.prototype.onZoomOut = function(event) {
 		this.zoomLayers(true, event.allLayers);
 	};
 
-	TileMapController.prototype.zoomLayers = function(out, allLayers) {
+	TilemapController.prototype.zoomLayers = function(out, allLayers) {
 		if (allLayers) {
 			PWG.Utils.each(
 			_layers, function(layer) {
@@ -91,7 +91,7 @@ PWG.PhaserTileMap = function() {
 		}
 	};
 
-	TileMapController.prototype.zoomLayer = function(layer, out) {
+	TilemapController.prototype.zoomLayer = function(layer, out) {
 		var zoomCeil = this.view.zoomCeil;
 		var zoomFloor = this.view.zoomFloor;
 		var zoomFactor = this.view.zoomFactor;
@@ -111,8 +111,8 @@ PWG.PhaserTileMap = function() {
 		}
 	};
 
-	TileMapController.prototype.update = function() {
-		// trace('TileMapTileMapController/update, this = ', this);
+	TilemapController.prototype.update = function() {
+		// trace('TilemapTilemapController/update, this = ', this);
 		// _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 32;
 		// _marker.y = _layer.getTileY(this.phaser.input.activePointer.worldY) * 32;
 		// _marker.x = _layer.getTileX(this.phaser.input.activePointer.worldX) * 31;
@@ -134,23 +134,23 @@ PWG.PhaserTileMap = function() {
 			}
 		}
 	};
-	// TileMapController.prototype.onInputDown = function(sprite, pointer) {
-	// 	// trace('TileMapTileMapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
+	// TilemapController.prototype.onInputDown = function(sprite, pointer) {
+	// 	// trace('TilemapTilemapController/onInputDown, sprite = ', sprite, '\tpointer = ', pointer);
 	// 	this.pickTitle(sprite, pointer);
 	// };
 	// 
-	// TileMapController.prototype.pickTile = function(sprite, pointer) {
+	// TilemapController.prototype.pickTile = function(sprite, pointer) {
 	//     currentTile = PWG.Game.this.phaser.math.snapToFloor(pointer.x, this.config.cellSize) / this.config.cellSize;
-	// 	// trace('TileMapTileMapController/pickTile, currentTile = ', currentTile);
+	// 	// trace('TilemapTilemapController/pickTile, currentTile = ', currentTile);
 	// };
-	PWG.Initializer.addStandardMethods(TileMapController);
+	PWG.Initializer.addStandardMethods(TilemapController);
 
 	module.build = function(tilemaps) {
-		// trace('PhaserTileMap/build');
+		// trace('PhaserTilemap/build');
 		var collection = {};
 		PWG.Utils.each(
 		tilemaps, function(tilemap) {
-			collection[tilemap.name] = new PWG.PhaserTileMap.TileMapController(tilemap);
+			collection[tilemap.name] = new PWG.PhaserTilemap.TilemapController(tilemap);
 		}, this);
 		return collection;
 	};
@@ -162,7 +162,7 @@ PWG.PhaserTileMap = function() {
 		}, this);
 	};
 
-	module.TileMapController = TileMapController;
+	module.TilemapController = TilemapController;
 
 	return module;
 }();

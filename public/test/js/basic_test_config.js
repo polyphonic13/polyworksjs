@@ -29,7 +29,8 @@ var BasicTestConfig = function() {
 				y: 0,
 				attrs: {
 					width: winW,
-					height: winH
+					height: winH,
+					fixedToCamera: true
 				}
 			},
 		};
@@ -127,10 +128,16 @@ var BasicTestConfig = function() {
 				play: {
 					clearWorld: true,
 					clearCache: false,
-					world: baseWorld,
+					world: {
+						x: 0,
+						y: 0,
+						width: gameW * 5,
+						height: gameH
+					},
 					assets: {
 						images: [
-							'blockBlue'
+							'blockBlue',
+							'greyTiles2'
 						],
 						sprites: [
 							'buttonClose'
@@ -141,6 +148,11 @@ var BasicTestConfig = function() {
 					},
 					tilemaps: {
 						grey: {
+							json: 'testGreyTiles',
+							image: {
+								jsonName: 'grey_tiles',
+								reference: 'greyTiles2'
+							},
 							layers: {
 								background: {
 									scrollFactorX: 0.33,
@@ -164,6 +176,7 @@ var BasicTestConfig = function() {
 							attrs: {
 								width: gameW,
 								height: gameH,
+								fixedToCamera: true,
 								alpha: 0.33
 							}
 						},
@@ -175,7 +188,8 @@ var BasicTestConfig = function() {
 							y: gameY + (unit * 0.5),
 							attrs: {
 								width: (unit * 1),
-								height: (unit * 1)
+								height: (unit * 1),
+								fixedToCamera: true
 							},
 							callback: basicTestLogic.buttonCallbacks.quit,
 							context: this,

@@ -7,26 +7,6 @@ var basicTestLogic = {
 			},
 			create: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'home' });
-			    this.cursors = PWG.Game.phaser.input.keyboard.createCursorKeys();
-			},
-			update: function() {
-			    if (this.cursors.left.isDown)
-			    {
-			        PWG.Game.phaser.camera.x -= 4;
-			    }
-			    else if (this.cursors.right.isDown)
-			    {
-			        PWG.Game.phaser.camera.x += 4;
-			    }
-
-			    if (this.cursors.up.isDown)
-			    {
-			        PWG.Game.phaser.camera.y -= 4;
-			    }
-			    else if (this.cursors.down.isDown)
-			    {
-			        PWG.Game.phaser.camera.y += 4;
-			    }
 			}
 		},
 		listeners: [
@@ -46,7 +26,26 @@ var basicTestLogic = {
 		play: {
 			methods: {
 				create: function() {
+					this.map = PWG.Game.phaser.add.tilemap('testGreyTiles');
+					this.map.addTilesetImage('grey_tiles', 'greyTiles2');
+					this.background = this.map.createLayer('background');
+					this.background.scrollFactorX = 0.33;
+					this.foreground = this.map.createLayer('foreground');
+					this.foreground.scrollFactorX = 0.66;
+				    this.cursors = PWG.Game.phaser.input.keyboard.createCursorKeys();
+				},
+				update: function() {
+				    if(this.cursors.left.isDown) {
+				        PWG.Game.phaser.camera.x -= 4;
+				    } else if(this.cursors.right.isDown) {
+				        PWG.Game.phaser.camera.x += 4;
+				    }
 
+				    if(this.cursors.up.isDown) {
+				        PWG.Game.phaser.camera.y -= 4;
+				    } else if(this.cursors.down.isDown) {
+				        PWG.Game.phaser.camera.y += 4;
+				    }
 				},
 				shutdown: function() {
 

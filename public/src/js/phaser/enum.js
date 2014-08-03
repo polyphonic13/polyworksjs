@@ -5,7 +5,7 @@ var ViewTypes = {
 	GROUP: 'group'
 };
 
-var TileMapTypes = {
+var TilemapTypes = {
 	BLANK: 'blank',
 	JSON: 'json',
 	DATA: 'data'
