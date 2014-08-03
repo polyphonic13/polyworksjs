@@ -6,6 +6,9 @@ var basicTestLogic = {
 				PWG.PhaserLoader.load(PWG.Game.config.global.assets);
 			},
 			create: function() {
+				// var winW = document.documentElement.clientWidth;
+				// PWG.Stage.zoomByWidth(winW, PWG.Game.phaser.canvas);
+				setGameSize();
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'home' });
 			}
 		},
@@ -25,6 +28,12 @@ var basicTestLogic = {
 		},
 		play: {
 			methods: {
+				start: function() {
+					if(!this.tileDataInitialized) {
+						DataTilemap.init();
+						this.tileDataInitialized = true;
+					}
+				},
 				create: function() {
 					this.map = PWG.Game.phaser.add.tilemap('testGreyTiles');
 					this.map.addTilesetImage('grey_tiles', 'greyTiles2');
@@ -64,6 +73,17 @@ var basicTestLogic = {
 			PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_STATE, value: 'home' });
 		}
 	}
+}
+
+window.addEventListener('resize', function() {
+	// if(PWG.Stage && PWG.Stage.initialized) {
+		setGameSize();
+	// }
+})
+
+function setGameSize() {
+	var winW = document.documentElement.clientWidth;
+	PWG.Stage.sizeGame(winW);
 }
 
 PWG.Game.init(BasicTestConfig, basicTestLogic);

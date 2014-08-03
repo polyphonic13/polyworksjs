@@ -10,6 +10,7 @@ PWG.Stage = function() {
 	var _context; 
 	
 	var module = {
+		initialized: false,
 		winW: 0,
 		winH: 0,
 		gameW: 0,
@@ -54,8 +55,29 @@ PWG.Stage = function() {
 			if(_callback) {
 				_callback.call(_context);
 			}
+			
+			this.initialized = true;
 		},
 
+		sizeGame: function(width) {
+			PWG.Game.phaser.scale.maxWidth = width;
+			PWG.Game.phaser.scale.maxHeight = (width/_aspectRatio[0]) * _aspectRatio[1];
+			trace('Stage/sizeGame, max w/h = ' + PWG.Game.phaser.scale.maxWidth + '/' + PWG.Game.phaser.scale.maxHeight);
+			PWG.Game.phaser.scale.setSize();
+		},
+		
+		zoomByWidth: function(baseWidth, el) {
+			var zoom = baseWidth/el.offsetWidth;
+			
+			el.style.zoom = zoom;
+		},
+		
+		zoomByHeight: function(baseHeight, el) {
+			var zoom = baseHeight/el.offsetHeight;
+			
+			el.style.zoom = zoom;
+		},
+		
 		destroy: function() {
 			if(_windowListeners) {
 				window.removeEventListener('resize', function(event) {

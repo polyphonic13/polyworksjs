@@ -13,7 +13,9 @@ PWG.StateManager = function() {
 	
 	StateController.prototype.start = function() {
 		trace('StateController['+this.name+']/start');
-		
+		if(this.methods.start) {
+			this.methods.start.call(this);
+		}
 	};
 
 	StateController.prototype.preload = function() {

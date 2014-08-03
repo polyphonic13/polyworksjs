@@ -1,3 +1,4 @@
+
 var BasicTestConfig = function() {
 	var module = {};
 	
@@ -6,13 +7,21 @@ var BasicTestConfig = function() {
 
 	module.init = function(callback, context) {
 		trace('BasicTestConfig/init');
-		var winW = PWG.Stage.winW;
-		var winH = PWG.Stage.winH;
-		var gameX = PWG.Stage.gameX;
-		var gameY = PWG.Stage.gameY;
-		var gameW = PWG.Stage.gameW;
-		var gameH = PWG.Stage.gameH;
-		var unit = PWG.Stage.unit;
+		// var winW = PWG.Stage.winW;
+		// var winH = PWG.Stage.winH;
+		// var gameX = PWG.Stage.gameX;
+		// var gameY = PWG.Stage.gameY;
+		// var gameW = PWG.Stage.gameW;
+		// var gameH = PWG.Stage.gameH;
+		// var unit = PWG.Stage.unit;
+
+		var winW = 1920;
+		var winH = 1080;
+		var gameX = 0;
+		var gameY = 0;
+		var gameW = 1920;
+		var gameH = 1080;
+		var unit = 120;
 
 		var baseWorld = {
 			x: 0,
@@ -147,21 +156,63 @@ var BasicTestConfig = function() {
 						]
 					},
 					tilemaps: {
-						grey: {
+						// testData: {
+						// 	type: TilemapTypes.DATA,
+						// 	image: 'greyTiles2',
+						// 	layers: {
+						// 		background: {
+						// 			data: DataTilemap,
+						// 			width: 100,
+						// 			height: 100,
+						// 			scrollFactorX: 0.33,
+						// 			scrollFactorY: 0.33
+						// 		},
+						// 		foreground: {
+						// 			data: DataTilemap,
+						// 			width: 100,
+						// 			height: 100,
+						// 			scrollFactorX: 0.66,
+						// 			scrollFactorY: 0.66
+						// 		}
+						// 	}
+						// }
+						testJson: {
 							type: TilemapTypes.JSON,
 							json: 'testGreyTiles',
+							attrs: {
+								scale: {
+									x: 5,
+									y: 5
+								}
+							},
 							image: {
 								jsonName: 'grey_tiles',
 								reference: 'greyTiles2'
 							},
 							layers: {
 								background: {
-									scrollFactorX: 0.33,
-									scrollFactorY: 0.33
+									attrs: {
+										scale: {
+											x: 5,
+											y: 5
+										},
+										scrollFactorX: 0.33,
+										scrollFactorY: 0.33,
+										debug: true
+									},
+									resizeWorld: true
 								},
 								foreground: {
-									scrollFactorX: 0.66,
-									scrollFactorY: 0.66
+									attrs: {
+										scale: {
+											x: 5,
+											y: 5
+										},
+										scrollFactorX: 0.66,
+										scrollFactorY: 0.66,
+										debug: true
+									},
+									resizeWorld: true
 								}
 							}					
 						}

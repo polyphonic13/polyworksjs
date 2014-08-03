@@ -20,6 +20,10 @@ PWG.TilemapManager = function() {
 			break;
 		}
 		
+		if(config.attrs) {
+			PWG.Utils.extend(this.map, config.attrs);
+		}
+		
 		if(this.map !== null) {
 			if(this.config.image) {
 				this.addImage(this.config.image);
@@ -27,6 +31,10 @@ PWG.TilemapManager = function() {
 			if(this.config.layers) {
 				this.addLayers(this.config.layers);
 			}
+		}
+		
+		if(config.type === TilemapTypes.DATA && config.data) {
+			this.addTiles(config.data.getTiles());
 		}
 	}
 	
@@ -40,8 +48,13 @@ PWG.TilemapManager = function() {
 	};
 	
 	TilemapController.prototype.addImage = function(image) {
-		trace('\tadding image: ' + image.jsonName + '/' + image.reference);
-		this.map.addTilesetImage(image.jsonName, image.reference);
+		if(this.config.type === TilemapTypes.DATA) {
+			trace('\tadding image: ' + image);
+			this.map.addTilesetImage(image);
+		} else if(this.config.type === TilemapTypes.JSON) {
+			trace('\tadding image: ' + image.jsonName + '/' + image.reference);
+			this.map.addTilesetImage(image.jsonName, image.reference);
+		}
 	};
 	
 	TilemapController.prototype.addLayers = function(layers) {	
@@ -51,22 +64,27 @@ PWG.TilemapManager = function() {
 			function(lyr, key) {
 				trace('\tadding layer['+key+']: ', lyr);
 				if(this.config.type === TilemapTypes.DATA) {
-					this.layer = this.map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
+					this.layers[key] = this.map.createBlankLayer(key, lyr.width, lyr.height, lyr.tileW, lyr.tileH, lyr.group);
 
 					if(lyr.tiles) {
-						this.addTiles(lyr.tiles, layer);
+						this.addTiles(lyr.data.getTileConfig(key), layer);
 					}
 					
-					if(lyr.resizeWorld) {
-						layer.resizeWorld();
-					}
-					
-
 				} else if(this.config.type === TilemapTypes.JSON) {
 					this.layers[key] = this.map.createLayer(key);
 				}
-				this.layers[key].scrollFactorX = lyr.scrollFactorX;
-				this.layers[key].scrollFactorY = lyr.scrollFactorY;
+
+				if(lyr.attrs) {
+					trace('ADDING ATTRIBUTES TO LAYER: ' + key + ': ', lyr.attrs);
+					PWG.Utils.extend(this.layers[key], lyr.attrs);
+				}
+
+				if(lyr.resizeWorld) {
+					this.layers[key].resizeWorld();
+				}
+
+				// this.layers[key].scrollFactorX = lyr.scrollFactorX;
+				// this.layers[key].scrollFactorY = lyr.scrollFactorY;
 
 			},
 			this
