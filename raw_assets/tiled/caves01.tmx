@@ -3,9 +3,17 @@
  <tileset firstgid="1" name="foreground" tilewidth="60" tileheight="60">
   <image source="../../../crystalcaves/public/src/assets/img/cave_foreground01.png" width="960" height="540"/>
  </tileset>
- <layer name="Tile Layer 1" width="128" height="9">
+ <tileset firstgid="145" name="caveBackground01" tilewidth="60" tileheight="60">
+  <image source="../../../crystalcaves/public/src/assets/img/cave_background01.png" width="960" height="540"/>
+ </tileset>
+ <layer name="foreground" width="128" height="9">
   <data encoding="base64" compression="zlib">
    eJztzrtOAkEUgOHBu6CikIDhkpAtqCThOWhQC01sEApMoOAqKigiiFxU5JH5SZawWbGBhjHnJF9xJvvvjEMptYFNbGEbO9jFHvbhhAsHOMQR3DiGQ3qt+xN44IVh8sGPU3MPIIgQwubZdCLSL91H1uT9xgLRP87PEFPziS/ZGyv2/+H++Bq/X4iZ6STU70niXHrt+wtc2porXFv2G8u/ZpPCrfTa92lkbH0Wd5Y9h7ztmwKK0mvfl1BGBVXco4YHPOIJdTTwjBc08YqW9Nr3b2ijg3d08YEe+hhgiE984Rsj/GAsvfb9BCur/0k=
+  </data>
+ </layer>
+ <layer name="background" width="128" height="9">
+  <data encoding="base64" compression="zlib">
+   eJzt0FlbTmEAhtFvUyJRSMbUX87UJCQkShnL0ChkSIoQioxRKVOm0Oo3vAffPnjv61qHz8lTkclkdrOHvexjP5VUUU0NtRygjoMc4jAVWd7HwqrnCA0c5RjHaeQETZzkFM20cJpW2lKwj4V1hrOc4zwXuEg7HVziMle4SidddNOTgn0srF76uEY/17nBTQa4xW3ucJdB7jHE/RTsY2ENM8IDHjLKIx7zhDGe8oznjDPBC16mYB8La5JXvOYNb3nHe6b4wEemmWGWT8wxn4J9LKzPfOEr3/jOAj/4yS9+84dF/vKP/8vjJPv7WFiJD1ewkhxyWUUeq1lDPmspYB3rKaQoyf4+FtYGH25kE8VspoQtbGUb29nBTkrZRRnlSfb3sbCWADaOCss=
   </data>
  </layer>
 </map>
