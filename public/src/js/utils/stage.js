@@ -62,7 +62,7 @@ PWG.Stage = function() {
 		sizeGame: function(width) {
 			PWG.Game.phaser.scale.maxWidth = width;
 			PWG.Game.phaser.scale.maxHeight = (width/_aspectRatio[0]) * _aspectRatio[1];
-			trace('Stage/sizeGame, max w/h = ' + PWG.Game.phaser.scale.maxWidth + '/' + PWG.Game.phaser.scale.maxHeight);
+			// trace('Stage/sizeGame, max w/h = ' + PWG.Game.phaser.scale.maxWidth + '/' + PWG.Game.phaser.scale.maxHeight);
 			PWG.Game.phaser.scale.setSize();
 		},
 		

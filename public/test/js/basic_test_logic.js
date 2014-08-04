@@ -35,26 +35,20 @@ var basicTestLogic = {
 					}
 				},
 				create: function() {
-					this.map = PWG.Game.phaser.add.tilemap('testCave');
-					this.map.addTilesetImage('caveForeground01', 'caveForeground01');
-					// this.background = this.map.createLayer('background');
-					// this.background.scrollFactorX = 0.33;
-					this.foreground = this.map.createLayer('foreground');
-					this.foreground.scrollFactorX = 0.66;
 				    this.cursors = PWG.Game.phaser.input.keyboard.createCursorKeys();
 				},
 				update: function() {
-				    if(this.cursors.left.isDown) {
+				    if(this.cursors.left.isDown || PWG.Game.leftDown) {
 				        PWG.Game.phaser.camera.x -= 4;
-				    } else if(this.cursors.right.isDown) {
+				    } else if(this.cursors.right.isDown || PWG.Game.rightDown) {
 				        PWG.Game.phaser.camera.x += 4;
 				    }
 
-				    if(this.cursors.up.isDown) {
-				        PWG.Game.phaser.camera.y -= 4;
-				    } else if(this.cursors.down.isDown) {
-				        PWG.Game.phaser.camera.y += 4;
-				    }
+				    // if(this.cursors.up.isDown) {
+				    //     PWG.Game.phaser.camera.y -= 2;
+				    // } else if(this.cursors.down.isDown) {
+				    //     PWG.Game.phaser.camera.y += 2;
+				    // }
 				},
 				shutdown: function() {
 
@@ -63,7 +57,24 @@ var basicTestLogic = {
 		}
 	},
 	input: {
-		
+		leftArrow: {
+			inputDown: function() {
+				PWG.Game.leftDown = true;
+				PWG.Game.rightDown = false;
+			},
+			inputUp: function() {
+				PWG.Game.leftDown = false;
+			}
+		},
+		rightArrow: {
+			inputDown: function() {
+				PWG.Game.rightDown = true;
+				PWG.Game.leftDown = false;
+			},
+			inputUp: function() {
+				PWG.Game.rightDown = false;
+			}
+		}
 	},
 	buttonCallbacks: {
 		gameStart: function() {

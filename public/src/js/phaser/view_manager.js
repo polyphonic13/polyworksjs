@@ -376,3 +376,4 @@ PWG.ViewManager = function() {
 
 	return module;
 }();
+

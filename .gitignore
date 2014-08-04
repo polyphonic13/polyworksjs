@@ -2,3 +2,4 @@ public/build/*
 **/*.DS_Store
 *.DS_Store
 public/test/images/.DS_Store
+tmp/

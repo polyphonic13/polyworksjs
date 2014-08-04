@@ -32,13 +32,16 @@ PWG.StateManager = function() {
 		trace('setting world bounds to: x/y = ' + world.x + '/' + world.y + ', w/h = ' + world.width + '/' + world.height);
 		PWG.Game.phaser.world.setBounds(world.x, world.y, world.width, world.height);
 
+		if(this.config.views.background) {
+			this.views = PWG.ViewManager.build(this.config.views.background);
+		}
+		
 		if(this.config.tilemaps) {
 			this.tilemaps = PWG.TilemapManager.build(this.config.tilemaps);
 		}
 		
-		if(this.config.views) {
-			this.views = PWG.ViewManager.build(this.config.views);
-			trace('------------------ ', this.views);
+		if(this.config.views.foreground) {
+			this.views = PWG.ViewManager.build(this.config.views.foreground);
 		}
 
 		trace('post method add, this = ', this);
@@ -154,3 +157,4 @@ PWG.StateManager = function() {
 	
 	return module;
 }();
+

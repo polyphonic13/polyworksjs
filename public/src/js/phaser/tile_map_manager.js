@@ -2,50 +2,58 @@ PWG.TilemapManager = function() {
 	var module = {};
 
 	function TilemapController(config) {
+		trace('TilemapController/constructor, config = ', config);
 		this.config = config;
 		this.layers = {};
 		this.map = null;
 		
-		switch (config.type) {
-			case TilemapTypes.DATA:
-			this.addDataTilemap();
-			break;
+		this.map = PWG.Game.phaser.add.tilemap(config.json);
+		
+		PWG.Utils.each(
+			config.tilesets,
+			function(tileset) {
+				trace('\tadding tileset image: ' + tileset);
+				this.map.addTilesetImage(tileset);
+			},
+			this
+		);
+		
+		// this.map.addTilesetImage('caveForeground01', 'caveForeground01');
+		// this.map.addTilesetImage('caveBackground02', 'caveBackground02');
 
-			case TilemapTypes.JSON: 
-			this.addJsonTilemap();
-			break;
-			
-			default:
-			trace('ERROR unknown tile map type: ' + map.type);
-			break;
-		}
-		
-		if(config.attrs) {
-			PWG.Utils.extend(this.map, config.attrs);
-		}
-		
-		if(this.map !== null) {
-			if(this.config.image) {
-				this.addImage(this.config.image);
-			}
-			if(this.config.layers) {
-				this.addLayers(this.config.layers);
-			}
-		}
-		
-		if(config.type === TilemapTypes.DATA && config.data) {
-			this.addTiles(config.data.getTiles());
-		}
+		PWG.Utils.each(
+			config.layers,
+			function(layer, key) {
+				trace('\tadding layer['+key+']: ', layer);
+				this.layers[key] = this.map.createLayer(key);
+				if(layer.attrs) {
+					PWG.Utils.extend(this.layers[key], layer.attrs);
+				}
+			},
+			this
+		);
+		// this.background = this.map.createLayer('background');
+		// this.background.scrollFactorX = 0.33;
+		// this.foreground = this.map.createLayer('foreground');
+		// this.foreground.scrollFactorX = 0.66;
+
+		// if(config.attrs) {
+		// 	PWG.Utils.extend(this.map, config.attrs);
+		// }
+		// 
+		// if(this.map !== null) {
+		// 	if(this.config.image) {
+		// 		this.addImage(this.config.image);
+		// 	}
+		// 	if(this.config.layers) {
+		// 		this.addLayers(this.config.layers);
+		// 	}
+		// }
+		// 
+		// if(config.type === TilemapTypes.DATA && config.data) {
+		// 	this.addTiles(config.data.getTiles());
+		// }
 	}
-	
-	TilemapController.prototype.addDataTilemap = function() {
-		this.map = PWG.Game.phaser.add.tilemap();
-	};
-	
-	TilemapController.prototype.addJsonTilemap = function() {
-		trace('TilemapController, creating map with: ' + this.config.json);
-		this.map = PWG.Game.phaser.add.tilemap(this.config.json);
-	};
 	
 	TilemapController.prototype.addImage = function(image) {
 		if(this.config.type === TilemapTypes.DATA) {
@@ -105,18 +113,20 @@ PWG.TilemapManager = function() {
 	
 	module.build = function(maps) {
 		trace('TilemapManager/build, map = ', maps);
-		var tilemaps = {};
+		var tilemaps = [];
 		
 		PWG.Utils.each(
 			maps,
-			function(map, key) {
-				tilemaps[key] = new TilemapController(map);
+			function(map) {
+				tilemaps.push(new TilemapController(map));
 			},
 			this
 		);
+
 		return tilemaps;
 
 	};
 
 	return module;
 }();
+
