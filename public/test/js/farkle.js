@@ -1,18 +1,18 @@
-var NUM_DICE = 6;
-var MIN_TURN_SCORE = 300;
-var STRAIGHT_SCORE = 1500;
-var FULL_HOUSE_SCORE = 750;
-var ONE_TRIPLE_MULTIPLIER = 1000;
-var TRIPLE_MULTIPLIER = 100;
-var FIVE_SCORE = 50;
-var ONE_SCORE = 100;
-var TRIPLE_FARKLE = 500;
-var WINNING_SCORE = 10000;
-
 
 var Farkle = function() {
 	var module = {};
 	
+	var NUM_DICE = 6;
+	var MIN_TURN_SCORE = 300;
+	var STRAIGHT_SCORE = 1500;
+	var FULL_HOUSE_SCORE = 750;
+	var ONE_TRIPLE_MULTIPLIER = 1000;
+	var TRIPLE_MULTIPLIER = 100;
+	var FIVE_SCORE = 50;
+	var ONE_SCORE = 100;
+	var TRIPLE_FARKLE = 500;
+	var WINNING_SCORE = 1000;
+
 	// graphics
 	var images = {
 		dice: [
@@ -48,7 +48,7 @@ var Farkle = function() {
 		this.availableDice = startingDice;
 		this.activeRoll = [];
 		this.throwScores = [];
-		this.turnScore = 0;
+		this.totalScore = 0;
 	}
 	
 	TurnDice.prototype.setActiveRoll = function(roll) {
@@ -150,28 +150,66 @@ var Farkle = function() {
 				}
 			}
 		}
-		this.turnScore += score;
+		this.totalScore += score;
 		this.throwScores.push(score);
-		trace('\tthrowScores now: ' + this.throwScores + '\n\tturn score: ' + this.turnScore);
+		trace('\tthrowScores now: ' + this.throwScores + '\n\tturn score: ' + this.totalScore);
 	};
 
+	function Player(config) {
+		// trace('Player/constructor, config = ', config);
+		PWG.Utils.extend(this, config);
+		this.score = 0;
+		this.currentFarkles = 0;
+	};
+	
+	Player.prototype.printDetails = function() {
+		PWG.Utils.each(
+			this,
+			function(value, key) {
+				if(this.hasOwnProperty(key)) {
+					trace('\t' + key + ' = ' + value);
+				}
+			},
+			this
+		);
+	};
+	
+	module.Player = Player;
 	module.TurnDice = TurnDice;
 	
 	module.straight = [1, 2, 3, 4, 5, 6];
-	
-	module.startGame = function() {
-		trace('Farkle/init');
-		this.playerScore = 0;
-		this.computerScore = 0;
-		this.playerFarkles = 0;
-		this.computerFarkles = 0;
-		this.playerRolls = [];
-		this.computerRolls = [];
+	module.players = [];
+	module.currentPlayer = -1;
+	module.totalRounds = 0;
 
+	module.startGame = function(players) {
+		trace('Farkle/startGame');
+		var first = true;
+		PWG.Utils.each(
+			players,
+			function(player) {
+				this.players.push(new Farkle.Player(player));
+			},
+			this
+		);
+		// trace('\tplayers now = ', this.players);
+		this.currentPlayer = 0;
+		this.totalRounds = 1;
+		this.startTurn();
 	};
 
+	module.switchPlayer = function() {
+		if(this.currentPlayer < (this.players.length - 1)) {
+			this.currentPlayer++;
+		} else {
+			this.currentPlayer = 0;
+			this.totalRounds++;
+		}
+		this.startTurn();
+	};
+	
 	module.startTurn = function() {
-		this.turnScore = 0;
+		trace('\n-------------------------------\nFarkle/startTurn, currentPlayer = ' + this.players[this.currentPlayer].name);
 		this.turnDice = new Farkle.TurnDice(NUM_DICE);
 		this.startRoll();
 	};
@@ -182,14 +220,14 @@ var Farkle = function() {
 		// this.displayRoll(currentRoll);
 		this.turnDice.setActiveRoll(currentRoll);
 
-		if(this.turnDice.farkle) {
+		if(this.turnDice.farkled) {
 			trace('FARKLED! womp womp');
 			this.endTurn(true);
 		} else {
 			if(this.turnDice.score > MIN_TURN_SCORE) {
 				this.canEndTurn = true;
 			}
-			this.promptDiceToSave();
+			this.promptDiceSave();
 		}
 	};
 	
@@ -204,22 +242,35 @@ var Farkle = function() {
 		);
 	};
 
-	module.promptDiceToSave = function() {
+	module.promptDiceSave = function() {
 		// have user select dice to score on
-		
-		// this.startRoll();
+		// this.turnDice.bankScoringDice([ user selection ]);
+		// if(this.turnDice.totalScore >= MIN_TURN_SCORE) {
+		// 	//	prompt end turn
+		// } else if(this.turnDice.available > 0) {
+		// 		this.startRoll();
+		// } else {
+		// 	this.endTurn(true);
+		// }
 	};
 	
 	module.endTurn = function(farkled) {
 		if(farkled) {
-			this.activeFarkles++;
+			this.players[this.currentPlayer].currentFarkles++;
 			if(this.activeFarkles >= 3) {
-				this.playerScore -= TRIPLE_FARKLE;
-				this.activeFarkles = 0;
+				trace('TRIPLE FARKLE! setting score back: ' + TRIPLE_FARKLE);
+				this.players[this.currentPlayer].score -= TRIPLE_FARKLE;
+				this.players[this.currentPlayer].currentFarkles = 0;
 			}
 		} else {
-			this.activeFarkles = 0;
-			this.playerScore += this.turnScore;
+			this.players[this.currentPlayer].currentFarkles = 0;
+			this.players[this.currentPlayer].score += this.turnDice.totalScore;
+		}
+
+		if(this.players[this.currentPlayer].score >= WINNING_SCORE) {
+			this.gameOver();
+		} else {
+			this.switchPlayer();
 		}
 	};
 	
@@ -235,7 +286,42 @@ var Farkle = function() {
 		return JSON.stringify(arr) === JSON.stringify(module.straight);
 	};
 	
+	module.gameOver = function() {
+		var topScorer = -1;
+		var prevScore = 0;
+
+		trace('Game Over. Scores: ');
+		PWG.Utils.each(
+			this.players,
+			function(player, idx) {
+				trace('\tplayer['+player.name+'] score = ' + player.score);
+				if(player.score > prevScore) {
+					// trace('\t\tsetting topScorer to + ' + idx);
+					topScorer = idx;
+					prevScore = player.score;
+				}
+			},
+			this
+		);
+
+		trace('After ' + this.totalRounds + ' rounds the winner is: ');
+		trace(this.players[topScorer].printDetails());
+	};
+
 	return module;
 }();
 
-Farkle.startGame();
+var players = [
+	{
+		name: 'paul',
+		age: 39,
+		gender: 'male'
+	},
+	{
+		name: 'seema',
+		age: 30,
+		gender: 'female'
+	}
+];
+
+Farkle.startGame(players);
