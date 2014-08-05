@@ -2,9 +2,21 @@ var Farkle = function() {
 	var module = {};
 	
 	var NUM_DICE = 6;
-	module.STRAIGHT = [1, 2, 3, 4, 5, 6];
+	var MIN_TURN_SCORE = 300;
+	var FIVE_SCORE = 50;
+	var ONE_SCORE = 100;
+	var TRIPLE_MULTIPLIER = 100;
+	var STRAIGHT_SCORE = 1500;
+	var FULL_HOUSE_SCORE = 750;
+	var TRIPLE_FARKLE = 500;
+	var WINNING_SCORE = 10000;
+
+	module.straight = [1, 2, 3, 4, 5, 6];
 	
-	module.init = function() {
+	module.startGame = function() {
+		trace('Farkle/init');
+		this.playerScore = 0;
+		this.computerScore = 0;
 		this.playerFarkles = 0;
 		this.computerFarkles = 0;
 		this.playerRolls = [];
@@ -12,35 +24,51 @@ var Farkle = function() {
 
 	};
 
-	module.startRound = function() {
-		this.currentScore = 0;
+	module.startTurn = function() {
+		this.turnScore = 0;
 		this.hotDice = false;
 		this.available = NUM_DICE;
-		this.currentRoll = this.roll(this.available);
-		
-		if(this.straightTest(this.currentRoll)) {
-			this.hotDice = true;
-			trace('HOT DICE: straight!');
+		this.startRoll();
+	};
+	
+	module.startRoll = function() {
+		var currentRoll = this.roll(this.available);
+		trace('current roll = ' + currentRoll);
+		if(this.farkleTest(currentRoll)) { 
+			trace('FARKLED! womp womp');
+			this.endTurn(true);
 		} else {
-			var counts = PWG.Utils.elementCount(this.currentRoll);
-			trace('current roll = ' + this.currentRoll + '\n\tcounts = ', counts);
-			if(this.threeOfAKindTest(counts)) {
-				this.hotDice = true;
-				trace('HOT DICE: 3 of a kind!');
-			} else if(this.triplesTest(counts)) {
-				// possible 2 triples on first roll
-				if(this.hotDice) {
-					this.hotDice = true;
-					trace('HOT DICE: 2 triples');
+			trace('----- turn score = ' + this.turnScore);
+			if(this.hotDice) {
+				this.hotDice = false;
+				var rollAgain = confirm('roll again?');
+				if(rollAgain) {
+					this.available = NUM_DICE;
+					this.startRoll();
+				} else {
+					this.endTurn(false);
 				}
-			} else if(this.onesAndFivesTest(counts)) {
-				
 			} else {
-				this.farkle = true;
-				trace('FARKLE!');
+				// remove scoring dice
+				
+				if(this.turnScore > MIN_TURN_SCORE) {
+					
+				}
 			}
 		}
-		// if()
+	};
+	
+	module.endTurn = function(farkled) {
+		if(farkled) {
+			this.activeFarkles++;
+			if(this.activeFarkles >= 3) {
+				this.playerScore -= TRIPLE_FARKLE;
+				this.activeFarkles = 0;
+			}
+		} else {
+			this.activeFarkles = 0;
+			this.playerScore += this.turnScore;
+		}
 	};
 	
 	module.roll = function(num) {
@@ -51,43 +79,68 @@ var Farkle = function() {
 		return results.sort();
 	};
 	
-	module.straightTest = function(arr) {
-		return JSON.stringify(arr) === JSON.stringify(module.STRAIGHT)
-	};
-	
-	module.threeOfAKindTest = function(counts) {
-		var pass = true;
-		// there can be only 3 counts
-		if(PWG.Utils.objLength(counts) !== 3) {
-			pass = false;
+	module.farkleTest = function(rollResults) {
+		var farkled = true;
+		var onesAndFives = false; 
+		var triples = [];
+		var doubles = [];
+		var scoringDice = 0;
+
+		if(this.straightTest(rollResults)) {
+			this.hotDice = true;
+			farkled = false;
+			this.turnScore += STRAIGHT_SCORE;
+			trace('HOT DICE: straight!');
 		} else {
+			var counts = PWG.Utils.elementCount(rollResults);
+			trace('\tcounts = ', counts);
 			for(var key in counts) {
-				// each count must equal 2
-				if(counts[key] !== 2) {
-					pass = false;
-					break;
+				if(counts[key] >= 3) {
+					triples.push(key);
+					var multipler = (key === 1) ? TRIPLE_MULTIPLIER * 100 : TRIPLE_MULTIPLIER;
+
+					this.turnScore += (key * multipler) * (counts[key]/3);
+					farkled = false;
+				} else if(counts[key] === 2) {
+					doubles.push(key);
+				}
+			}
+			if(doubles.length === 3) {
+				this.hotDice = true;
+				farkled = false;
+				trace('HOT DICE: full house!');
+				this.turnScore += FULL_HOUSE_SCORE;
+			} else if(triples.length > 0){
+				farkled = false;
+				if(triples.length === 2) {
+					this.hotDice = true;
+					trace('HOT DICE: 2 triples');
+				} else {
+					trace('triples present');
+				}
+			}
+			if(!this.hotDice) {
+				if(counts.hasOwnProperty(1) || counts.hasOwnProperty(5)) {
+					if(counts[1] && !triples.hasOwnProperty(1)) {
+						this.turnScore += (counts[1] * ONE_SCORE);
+					}
+					if(counts[5] && !triples.hasOwnProperty(5)) {
+						this.turnScore += (counts[5] * FIVE_SCORE);
+					}
+					onesAndFives = true;
+					farkled = false;
+					trace('1s and/or 5s present');
 				}
 			}
 		}
-		return pass;
+		return farkled;
 	};
 	
-	module.triplesTest = function(counts) {
-		var triples = false;
-		for(var key in counts) {
-			
-		}
-	};
-	
-	module.onesAndFivesTest = function(counts) {
-		if(counts.hasOwnProperty(1) || counts.hasOwnProperty(5)) {
-			return true;
-		} else {
-			return false;
-		}
+	module.straightTest = function(arr) {
+		return JSON.stringify(arr) === JSON.stringify(module.straight);
 	};
 	
 	return module;
 }();
 
-Farkle.init();
+Farkle.startGame();
