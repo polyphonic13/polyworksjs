@@ -65,6 +65,36 @@ PWG.Utils = function() {
 		return Object.prototype.hasOwnProperty.call(obj, prop);
 	};
 	
+	module.arraysEqual = function(a, b) {
+		if (a === b) return true;
+		if (a == null || b == null) return false;
+		if (a.length != b.length) return false;
+
+		// If you don't care about the order of the elements inside
+		// the array, you should sort both arrays here.
+		for (var i = 0; i < a.length; ++i) {
+			if (a[i] !== b[i]) return false;
+		}
+		return true;
+	};
+	
+	module.elementCount = function(list) {
+		counts = {};
+
+		if(Array.isArray(list)) {
+			var length = list.length;
+			for (i = 0; i < length; i++) {
+				if(!counts[list[i]]) {
+					counts[list[i]] = 0;
+				}
+				counts[list[i]]++;
+			}
+		} else {
+			return null;
+		}
+		return counts;
+	};
+	
 	module.objLength = function(obj) {
 		var length = 0;
 		for(var key in obj) {
