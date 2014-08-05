@@ -1,16 +1,18 @@
+var NUM_DICE = 6;
+var MIN_TURN_SCORE = 300;
+var STRAIGHT_SCORE = 1500;
+var FULL_HOUSE_SCORE = 750;
+var ONE_TRIPLE_MULTIPLIER = 1000;
+var TRIPLE_MULTIPLIER = 100;
+var FIVE_SCORE = 50;
+var ONE_SCORE = 100;
+var TRIPLE_FARKLE = 500;
+var WINNING_SCORE = 10000;
+
+
 var Farkle = function() {
 	var module = {};
 	
-	var NUM_DICE = 6;
-	var MIN_TURN_SCORE = 300;
-	var STRAIGHT_SCORE = 1500;
-	var FULL_HOUSE_SCORE = 750;
-	var TRIPLE_MULTIPLIER = 100;
-	var FIVE_SCORE = 50;
-	var ONE_SCORE = 100;
-	var TRIPLE_FARKLE = 500;
-	var WINNING_SCORE = 10000;
-
 	// graphics
 	var images = {
 		dice: [
@@ -46,14 +48,11 @@ var Farkle = function() {
 		this.availableDice = startingDice;
 		this.activeRoll = [];
 		this.throwScores = [];
+		this.turnScore = 0;
 	}
 	
 	TurnDice.prototype.setActiveRoll = function(roll) {
 		this.activeRoll = roll;
-		this.sortActive();
-	};
-	
-	TurnDice.prototype.sortActive = function() {
 		this.triples = {};
 		this.hotDice = false;
 		this.farkled = true;
@@ -85,19 +84,17 @@ var Farkle = function() {
 						this.hotDice = true;
 					}
 				}
-				// DON'T BOTHER WITH 1s AND 5s IF HOTDICE
-				if(!this.hotDice) {
-					if(counts[1] || counts[5]) {
-						this.farkled = false;
-					}
+				if(counts[1] || counts[5]) {
+					this.farkled = false;
 				}
 			}
 		}
-		trace('post sort active, farkled = ' + this.farkled);
+		trace('post sort active, farkled = ' + this.farkled + ', hotdice = ' + this.hotDice);
 	};
 	
 	TurnDice.prototype.bankScoringDice = function(selection) {
 		var scoringDice = [];
+		var score = 0;
 
 		PWG.Utils.each(
 			selection, 
@@ -113,7 +110,6 @@ var Farkle = function() {
 		);
 		trace('TurnDice/bankScoringDice\n\tscoringDice now = ', scoringDice, '\tactive now = ', this.activeRoll, '\tavailable = ' + this.availableDice);
 
-		var score = 0;
 		if(Farkle.straightTest(scoringDice.sort())) {
 			score = STRAIGHT_SCORE;
 		} else {
@@ -137,10 +133,11 @@ var Farkle = function() {
 					// trace('there are triples');
 					PWG.Utils.each(
 						triples,
-						function(triple, key) {
-							// trace('\tadding triples for '+key+': ' + triple);
-							var multipler = (key === 1) ? TRIPLE_MULTIPLIER * ONE_SCORE : TRIPLE_MULTIPLIER;
-							score += (key * multipler) * (triple/3);
+						function(count, dieFace) {
+							trace('\tadding triples for '+dieFace+': ' + count);
+							var multiplier = (parseInt(dieFace) === 1) ? ONE_TRIPLE_MULTIPLIER : TRIPLE_MULTIPLIER;
+							trace('\tmultiplier = ' + multiplier);
+							score += (dieFace * multiplier) * (count - 2);
 						},
 						this
 					);
@@ -153,8 +150,9 @@ var Farkle = function() {
 				}
 			}
 		}
+		this.turnScore += score;
 		this.throwScores.push(score);
-		trace('\tthrowScores now: ' + this.throwScores);
+		trace('\tthrowScores now: ' + this.throwScores + '\n\tturn score: ' + this.turnScore);
 	};
 
 	module.TurnDice = TurnDice;
