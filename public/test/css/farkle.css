@@ -163,6 +163,9 @@ body {
 	
 	position: absolute;
 	
+	overflow-x: auto;
+	overflow-y: hidden;
+	
 	z-index: 3;
 }
 
