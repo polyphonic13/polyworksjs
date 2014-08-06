@@ -5,24 +5,12 @@ var FarkleGUI = function() {
 	
 	var module = {};
 	
-	function GUIDice() {
-		this.dice = [];
-	};
-
-	GUIDice.prototype.add = function(die) {
-		this.dice.push(die);
-	};
-
-	GUIDice.prototype.display = function() {
-
-	};
-
 	function GUIDie(idx, value, id, parentEl, isActive) {
 		this.idx = idx;
 		this.id = id;
 		this.value = value;
 		this.selected = false;
-		trace('GUIDie/constructor, idx = ' + idx + ', value = ' + value + ', id = ' + id);
+		// trace('GUIDie/constructor, idx = ' + idx + ', value = ' + value + ', id = ' + id);
 		this.el = document.createElement('div');
 		this.el.className = "die die_" + value;
 		this.el.setAttribute('id',  id);
@@ -37,7 +25,6 @@ var FarkleGUI = function() {
 	};
 
 	module.GUIDie = GUIDie;
-	module.GUIDice = GUIDice;
 
 	module.rolledDice = {};
 	module.playerEls = {};
@@ -105,10 +92,10 @@ var FarkleGUI = function() {
 			this.playerEls,
 			function(el, key) {
 				if(key === name) {
-					this.subTitle.innerHTML = name + '\'s turn';
+					// this.subTitle.innerHTML = name + '\'s turn';
 					el.style.opacity = 1;
 				} else {
-					this.subTitle.innerHTML = name;
+						// this.subTitle.innerHTML = name;
 					el.style.opacity = 0.5;
 				}
 			},
@@ -223,9 +210,11 @@ var FarkleGUI = function() {
 				},
 				FarkleGUI
 			);
-			trace('\tvalues now = ', values);
-			if(FarkleGUI.selectedCb) {
-				FarkleGUI.selectedCb.call(this, values);
+			trace('\tvalues now = ' + values + ', length = ' + values.length);
+			if(values.length > 0) {
+				if(FarkleGUI.selectedCb) {
+					FarkleGUI.selectedCb.call(this, values);
+				}
 			}
 		}
 	};

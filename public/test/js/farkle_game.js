@@ -47,6 +47,18 @@ var Game = function() {
 		// Farkle.startTurn();
 	};
 
+	module.startTurn = function() {
+		trace('Game/startTurn');
+		FarkleGUI.startTurn(module.players[module.currentPlayer]);
+		Farkle.startTurn();
+		Game.startRoll();
+	};
+	
+	module.startRoll = function() {
+		trace('Game/startRoll');
+		FarkleGUI.startRoll(Game.onRollClicked);
+	};
+	
 	module.onRollClicked = function() {
 		trace('Game/onRollClicked');
 		Farkle.startRoll();
@@ -62,18 +74,6 @@ var Game = function() {
 			// module.endTurn(true);
 			module.showFarkled();
 		}
-	};
-	
-	module.startTurn = function() {
-		trace('Game/startTurn');
-		FarkleGUI.startTurn(module.players[module.currentPlayer]);
-		Farkle.startTurn();
-		Game.startRoll();
-	};
-	
-	module.startRoll = function() {
-		trace('Game/startRoll');
-		FarkleGUI.startRoll(Game.onRollClicked);
 	};
 	
 	module.onDiceSelected = function(dice) {
@@ -105,6 +105,7 @@ var Game = function() {
 	};
 	
 	module.showFarkled = function() {
+		Game.farkled = true;
 		FarkleGUI.farkled(Game.endTurn);
 	};
 
