@@ -19,7 +19,7 @@ var FarkleGUI = function() {
 		this.id = id;
 		this.value = value;
 		this.selected = false;
-		
+		trace('GUIDie/constructor, idx = ' + idx + ', value = ' + value + ', id = ' + id);
 		this.el = document.createElement('div');
 		this.el.className = "die die_" + value;
 		this.el.setAttribute('id',  id);
@@ -40,6 +40,7 @@ var FarkleGUI = function() {
 
 	module.currentDice = {};
 	module.rolledDice = {};
+	module.selectedDice = {};
 	module.toSelect = {};
 	module.button1Callback = null;
 	
@@ -71,13 +72,15 @@ var FarkleGUI = function() {
 	
 	module.startTurn = function(config) {
 		this.setSubTitle(config.subTitleText);
+		this.removeDice(this.selectedDice);
+		this.selectedCount = 0;
 		this.updateTurnScore(0);
 		this.updateTotalScore(config.totalScore);
 	};
 	
 	module.startRoll = function(cb) {
 		trace('FarkleGUI/startRoll, cb = ', cb);
-		this.removeRolledDice();
+		this.removeDice(this.rolledDice);
 		this.setButton(this.button1, 'roll');
 		FarkleGUI.button1Callback = cb;
 	};
@@ -138,24 +141,6 @@ var FarkleGUI = function() {
 */
 	};
 
-	module.removeRolledDice = function() {
-		// trace('FarkleGUI/removeRolledDice, dice = ', this.rolledDice);
-		PWG.Utils.each(
-			this.rolledDice,
-			function(die) {
-				// trace('\tdie = ', die);
-				this.removeRolledDie(die);
-			},
-			this
-		);
-	};
-	
-	module.removeRolledDie = function(die) {
-		// trace('FarkleGUI/removeRolledDie, die = ', die);
-		die.el.parentNode.removeChild(die.el);
-		delete this.rolledDice[die.id];
-	};
-	
 	module.selectDie = function(idx) {
 		trace('FarkleGUI/selectDie, idx = ' + idx);
 		var die = module.currentDice[idx];
@@ -191,10 +176,11 @@ var FarkleGUI = function() {
 			PWG.Utils.each(
 				FarkleGUI.toSelect,
 				function(die, key) {
-					var guiDie = new GUIDie(key, die, 'selectedDie' + die.key, this.bank);
+					var guiDie = new GUIDie(module.selectedCount, die.value, 'selectedDie' + die.id, this.bank);
 					trace('\tdie = ', die);
+					module.selectedDice[die.id] = guiDie;
 					values.push(die.value);
-					// this.removeRolledDie(die);
+					module.selectedCount++;
 				},
 				FarkleGUI
 			);
@@ -203,6 +189,25 @@ var FarkleGUI = function() {
 				FarkleGUI.selectedCb.call(this, values);
 			}
 		}
+	};
+	
+	
+	module.removeDice = function(list) {
+		// trace('FarkleGUI/removeDice, list = ', list);
+		PWG.Utils.each(
+			list,
+			function(die) {
+				// trace('\tdie = ', die);
+				this.removeDie(die, list);
+			},
+			this
+		);
+	};
+	
+	module.removeDie = function(die, list) {
+		// trace('FarkleGUI/removeDie, die = ', die, '\tlist = ', list);
+		die.el.parentNode.removeChild(die.el);
+		delete list[die.id];
 	};
 	
 	module.updateTurnScore = function(score) {

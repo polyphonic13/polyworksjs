@@ -49,7 +49,7 @@ var Game = function() {
 
 	module.onRollClicked = function() {
 		trace('Game/onRollClicked');
-		Farkle.startTurn();
+		Farkle.startRoll();
 	};
 	
 	module.onRolled = function() {
@@ -61,7 +61,7 @@ var Game = function() {
 			trace('FARKLED! womp womp');
 			module.endTurn(true);
 		} else {
-			if(Farkle.turnDice.score > Farkle.MIN_TURN_SCORE) {
+			if(Farkle.turnDice.score >= Farkle.MIN_TURN_SCORE) {
 				module.canEndTurn = true;
 			}
 		}
@@ -70,6 +70,7 @@ var Game = function() {
 	module.startTurn = function() {
 		trace('Game/startTurn');
 		var startText = module.players[module.currentPlayer].name + '\'s turn';
+		Farkle.startTurn();
 		FarkleGUI.startTurn({ 
 			subTitleText: startText,
 			totalScore: module.players[module.currentPlayer].score
@@ -103,7 +104,7 @@ var Game = function() {
 		}
 		trace('---- score now = ' + score);
 		FarkleGUI.updateTurnScore(score);
-		if(score > Farkle.MIN_TURN_SCORE) {
+		if(score >= Farkle.MIN_TURN_SCORE) {
 			FarkleGUI.showEndTurnButton(Game.endTurn);
 		}
 		Game.startRoll();
