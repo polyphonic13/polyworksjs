@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="css/farkle.css" />
 <!--	local -->
 		<script src="../build/phaser/phaser.js"></script>
 		<script src="../build/js/polyworks.js"></script>
 <!--	server
 		<script src="http://www.polyworksgames.com/games/js/lib/phaser-2.0.4.js"></script>
 		<script src="http://www.polyworksgames.com/games/js/lib/polyworks.js"></script> -->
-		<style>
-		body {
-			background: white;
-			margin: 0;
-			padding: 0;
-		}
-		</style>
 	</head>
 	<body>
-		<div id="game_box"></div>
+		<div id="game_box">
+			<div id="title">Farkle</div>
+			<div id="sub_title"></div>
+			<div id="play_area">
+				<div id="roll_button"></div>
+				<div id="bank"></div>
+			</div>
+			
+		</div>
 		<script src="js/farkle_logic.js"></script>
 		<script src="js/farkle_gui.js"></script>
 		<script src="js/farkle_game.js"></script>

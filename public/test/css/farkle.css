@@ -1,0 +1,111 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Trebuchet MS";
+}
+
+#title {
+	text-align: center;
+	font-size: 3em;
+
+	padding: 1vw;
+}
+
+#sub_title {
+	font-size: 1.5em;
+	padding: 1vw;
+}
+
+.med_text {
+	font-size: .75em;
+}
+
+.sm_text {
+	font-size: .5em;
+}
+
+#game_box {
+
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+}
+
+#play_area {
+	background: #333;
+	
+	top: 15vw;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	
+	z-index: 1;
+}
+
+#roll_button {
+	background: #ddd;
+		
+	width: 15vw;
+	height: 5vh;
+	left: 85vw;
+	position: absolute;
+	
+	text-align: center;
+	
+	cursor: pointer;
+	
+	z-index: 2;
+}
+
+#bank {
+	background: #111;
+	
+	width: 100%;
+	height: 20%;
+	
+	top: 80%;
+	
+	position: absolute;
+}
+
+.die {
+	width: 5vw;
+	height: 5vw;
+	
+	background-size: contain;
+	background-repeat: no-repeat;
+
+	position: absolute;
+	
+	cursor: pointer;
+	
+	z-index 3;
+}
+
+.die_1 {
+	background-image: url(../assets/images/farkle/die_one.png);
+}
+
+.die_2 {
+	background-image: url(../assets/images/farkle/die_two.png);
+}
+
+.die_3 {
+	background-image: url(../assets/images/farkle/die_three.png);
+}
+
+.die_4 {
+	background-image: url(../assets/images/farkle/die_four.png);
+}
+
+.die_5 {
+	background-image: url(../assets/images/farkle/die_five.png);
+}
+
+.die_6 {
+	background-image: url(../assets/images/farkle/die_six.png);
+}
+

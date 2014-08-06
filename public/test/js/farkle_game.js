@@ -41,11 +41,30 @@ var Game = function() {
 		// trace('\tplayers now = ', this.players);
 		this.currentPlayer = 0;
 		this.totalRounds = 1;
-		trace('----- start of ' + this.players[this.currentPlayer].name + '\'s turn');
-		Farkle.startTurn();
+
+		var startText = this.players[this.currentPlayer].name + '\'s turn';
+		FarkleGUI.init({ 
+			subTitleText: startText,
+			buttonConfig: {
+				callback: function() {
+					Game.onRollClicked();
+				},
+				text: 'roll!'
+			}
+		});
+		trace('----- ' + this.players[this.currentPlayer].name + '\'s turn');
+		// Farkle.startTurn();
 	};
 
+	module.onRollClicked = function() {
+		trace('button click');
+		Farkle.startTurn();
+	};
+	
 	module.onRolled = function() {
+		trace('GAME/onRolled');
+		FarkleGUI.displayRoll(Farkle.turnDice.activeRoll);
+		
 		if(Farkle.turnDice.farkled) {
 			trace('FARKLED! womp womp');
 			this.endTurn(true);
