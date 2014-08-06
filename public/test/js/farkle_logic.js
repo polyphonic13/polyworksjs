@@ -127,6 +127,7 @@ var Farkle = function() {
 		if(this.availableDice === 0) {
 			this.availableDice = Farkle.NUM_DICE;
 		}
+		return this.throwScores;
 	};
 
 	module.TurnDice = TurnDice;
@@ -144,7 +145,7 @@ var Farkle = function() {
 	};
 	
 	module.bankScoringDice = function(selection) {
-		this.turnDice.bankScoringDice(selection);
+		return this.turnDice.bankScoringDice(selection);
 	};
 	
 	module.startRoll = function() {

@@ -30,6 +30,7 @@ var Game = function() {
 		trace('Game/startGame');
 
 		Farkle.init(this.onRolled, this);
+		FarkleGUI.init();
 
 		PWG.Utils.each(
 			players,
@@ -41,23 +42,13 @@ var Game = function() {
 		// trace('\tplayers now = ', this.players);
 		this.currentPlayer = 0;
 		this.totalRounds = 1;
-
-		var startText = this.players[this.currentPlayer].name + '\'s turn';
-		FarkleGUI.init({ 
-			subTitleText: startText,
-			buttonConfig: {
-				callback: function() {
-					Game.onRollClicked();
-				},
-				text: 'roll!'
-			}
-		});
-		trace('----- ' + this.players[this.currentPlayer].name + '\'s turn');
+		this.startTurn();
+		// trace('----- ' + this.players[this.currentPlayer].name + '\'s turn');
 		// Farkle.startTurn();
 	};
 
 	module.onRollClicked = function() {
-		trace('button click');
+		trace('Game/onRollClicked');
 		Farkle.startTurn();
 	};
 	
@@ -73,12 +64,38 @@ var Game = function() {
 			if(Farkle.turnDice.score > Farkle.MIN_TURN_SCORE) {
 				this.canEndTurn = true;
 			}
-			this.promptDiceSave();
 		}
 	};
 	
+	module.startTurn = function() {
+		trace('Game/startTurn');
+		var startText = this.players[this.currentPlayer].name + '\'s turn';
+		FarkleGUI.startTurn({ 
+			subTitleText: startText,
+			totalScore: this.players[this.currentPlayer].score
+		});
+		Game.startRoll();
+	};
+	
+	module.startRoll = function() {
+		trace('Game/startRoll, onRollClicked = ', Game.onRollClicked);
+		FarkleGUI.startRoll(Game.onRollClicked);
+	};
+	
 	module.onDiceSelected = function(dice) {
-		
+		trace('Game/onDiceSelected, dice = ', dice);
+		var scores = Farkle.bankScoringDice(dice);
+		trace('\t...scores = ' + scores);
+		var score = 0;
+		PWG.Utils.each(
+			scores,
+			function(score) {
+				score += score
+			},
+			this
+		);
+		FarkleGUI.updateTurnScore(score);
+		Game.startRoll();
 	};
 	
 	module.switchPlayer = function() {
@@ -89,19 +106,7 @@ var Game = function() {
 			this.totalRounds++;
 		}
 		trace('----- start of ' + this.players[this.currentPlayer].name + '\'s turn');
-		Farkle.startTurn();
-	};
-	
-	module.promptDiceSave = function() {
-		// have user select dice to score on
-		// Farkle.bankScoringDice([ user selection ]);
-		// if(Farkle.turnDice.totalScore >= MIN_TURN_SCORE) {
-		// 	//	prompt end turn
-		// } else if(Farkle.turnDice.available > 0) {
-		// 		this.startRoll();
-		// } else {
-		// 	this.endTurn(true);
-		// }
+		this.startTurn();
 	};
 	
 	module.endTurn = function(farkled) {

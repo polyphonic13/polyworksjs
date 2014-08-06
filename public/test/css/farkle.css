@@ -16,12 +16,14 @@ body {
 	padding: 1vw;
 }
 
-.med_text {
-	font-size: .75em;
+.text_md {
+	padding-left: 1vw;
+
+	font-size: 1em;
 }
 
-.sm_text {
-	font-size: .5em;
+.text_sm {
+	font-size: .75em;
 }
 
 #game_box {
@@ -45,13 +47,15 @@ body {
 	z-index: 1;
 }
 
-#roll_button {
+.button {
 	background: #000000;
 	color: white;
 	
 	width: 15vw;
 	height: 5vh;
+
 	left: 85vw;
+
 	position: absolute;
 	
 	text-align: center;
@@ -61,6 +65,16 @@ body {
 	padding-top: 1vw;
 
 	z-index: 2;
+
+	visibility: hidden;
+}
+
+button1 {
+	top: 0;
+}
+
+button2 {
+	top: 6vh;
 }
 
 #bank {
@@ -72,6 +86,8 @@ body {
 	top: 80%;
 	
 	position: absolute;
+	
+	z-index: 3;
 }
 
 .die {
@@ -85,7 +101,7 @@ body {
 	
 	cursor: pointer;
 	
-	z-index 3;
+	z-index 10;
 }
 
 .die_1 {
