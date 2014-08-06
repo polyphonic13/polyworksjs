@@ -64,6 +64,7 @@ var Game = function() {
 	module.onRolled = function() {
 		trace('GAME/onRolled');
 		FarkleGUI.displayRoll(Farkle.turnDice.activeRoll);
+		FarkleGUI.setSelectedCallback(this.onDiceSelected);
 		
 		if(Farkle.turnDice.farkled) {
 			trace('FARKLED! womp womp');
@@ -74,6 +75,10 @@ var Game = function() {
 			}
 			this.promptDiceSave();
 		}
+	};
+	
+	module.onDiceSelected = function(dice) {
+		
 	};
 	
 	module.switchPlayer = function() {
