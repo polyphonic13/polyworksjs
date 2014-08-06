@@ -1,7 +1,7 @@
 var FarkleGUI = function() {
 	var DIE_WIDTH_HEIGHT = 10;
 	
-	var playerElements = '<div id="sub_title_~{name}~" class="sub_title">~{name}~</div><div  id="turn_score_~{name}~" class="turn_score text_md">turn: 0</div><div  id="total_score_~{name}~" class="total_score text_md">total: 0</div>';
+	var playerElements = '<div id="sub_title_~{name}~" class="sub_title">~{name}~</div><div  id="turn_score_~{name}~" class="turn_score text_md">turn: 0</div><div  id="total_score_~{name}~" class="total_score text_md">total: 0</div><div id="farkles_~{name}~" class="current_farkles text_md text_red">F: 0</div>';
 	
 	var module = {};
 	
@@ -87,7 +87,8 @@ var FarkleGUI = function() {
 		this.subTitle = document.getElementById('sub_title_' + name);
 		this.totalScore = document.getElementById('total_score_'+name);
 		this.turnScore = document.getElementById('turn_score_'+name);
-
+		this.farklesText = document.getElementById('farkles_'+name);
+		
 		PWG.Utils.each(
 			this.playerEls,
 			function(el, key) {
@@ -110,6 +111,11 @@ var FarkleGUI = function() {
 		this.rolledDice = {};
 		this.setButton(this.button1, 'roll');
 		FarkleGUI.button1Callback = cb;
+	};
+	
+	module.endTurn = function(player) {
+		FarkleGUI.updateText('totalScore', player.score);
+		this.updateText('farklesText', player.currentFarkles)
 	};
 	
 	module.setButton = function(button, text) {
@@ -219,8 +225,9 @@ var FarkleGUI = function() {
 		}
 	};
 	
-	module.farkled = function(cb) {
+	module.farkled = function(cb, player) {
 		this.updateText('turnScore', 'FARKLE!');
+		this.updateText('farklesText', player.currentFarkles)
 		this.hideButton(this.button2);
 		this.button1Callback = cb;
 		this.setButton(this.button1, 'end turn');
@@ -251,18 +258,22 @@ var FarkleGUI = function() {
 			prefixText = 'turn: ';
 		} else if(el === 'totalScore') {
 			prefixText = 'total: ';
+		} else if(el === 'farklesText') {
+			prefixText = 'F: ';
 		}
 		this[el].innerHTML = prefixText + text;
-		if(text === 'FARKLE!') {
-			var redIdx = this[el].className.indexOf(' text_red');
-			if(redIdx === -1) {
-				this[el].className += ' text_red';
-			}
-		} else {
-			var redIdx = this[el].className.indexOf(' text_red');
-			if(redIdx > -1) {
-				var sansRed = this[el].className.substr(0, redIdx);
-				this[el].className = sansRed;
+		if(el !== 'farklesText') {
+			if(text === 'FARKLE!') {
+				var redIdx = this[el].className.indexOf(' text_red');
+				if(redIdx === -1) {
+					this[el].className += ' text_red';
+				}
+			} else {
+				var redIdx = this[el].className.indexOf(' text_red');
+				if(redIdx > -1) {
+					var sansRed = this[el].className.substr(0, redIdx);
+					this[el].className = sansRed;
+				}
 			}
 		}
 	};
@@ -270,6 +281,14 @@ var FarkleGUI = function() {
 	module.showEndTurnButton = function(cb) {
 		this.setButton(this.button2, 'end turn');
 		FarkleGUI.button2Callback = cb;
+	};
+	
+	module.gameOver = function(cb) {
+		this.removeDice(this.selectedDice);
+		this.selectedDice = {};
+		this.hideButton(module.button2);
+		this.button1Callback = cb;
+		this.setButton(module.button1, 'play again');
 	};
 	
 	return module;

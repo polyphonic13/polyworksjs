@@ -106,13 +106,13 @@ var Game = function() {
 	
 	module.showFarkled = function() {
 		Game.farkled = true;
-		FarkleGUI.farkled(Game.endTurn);
+		module.players[module.currentPlayer].currentFarkles++;
+		FarkleGUI.farkled(Game.endTurn, module.players[module.currentPlayer]);
 	};
 
 	module.endTurn = function() {
 		if(Game.farkled) {
-			module.players[module.currentPlayer].currentFarkles++;
-			if(module.activeFarkles >= 3) {
+			if(module.players[module.currentPlayer].currentFarkles >= 3) {
 				trace('TRIPLE FARKLE! setting score back: ' + Farkle.TRIPLE_FARKLE);
 				module.players[module.currentPlayer].score -= Farkle.TRIPLE_FARKLE;
 				module.players[module.currentPlayer].currentFarkles = 0;
@@ -122,7 +122,7 @@ var Game = function() {
 			module.players[module.currentPlayer].score += Farkle.turnDice.totalScore;
 		}
 
-		FarkleGUI.updateText('totalScore', module.players[module.currentPlayer].score);
+		FarkleGUI.endTurn(module.players[module.currentPlayer]);
 
 		trace('----- end of ' + module.players[module.currentPlayer].name + '\'s turn with a score of: ' + module.players[module.currentPlayer].score);
 
@@ -147,7 +147,9 @@ var Game = function() {
 	module.gameOver = function() {
 		var topScorer = -1;
 		var prevScore = 0;
-
+		
+		FarkleGUI.gameOver(Game.startGame);
+		
 		trace('Game Over. Scores: ');
 		PWG.Utils.each(
 			module.players,

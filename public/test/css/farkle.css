@@ -15,6 +15,10 @@ body {
 	float: left;
 }
 
+.text_red {
+	color: #800000;
+}
+
 .player {
 	height: 10vh;
 }
@@ -31,6 +35,11 @@ body {
 }
 
 .total_score {
+	padding-top: 1.25vw;
+	float: left;
+}
+
+.current_farkles {
 	padding-top: 1.25vw;
 	float: left;
 }
@@ -121,10 +130,6 @@ body {
 		font-size: .75em;
 	}
 	
-}
-
-.text_red {
-	color: #800000;
 }
 
 #game_box {
