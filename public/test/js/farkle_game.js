@@ -29,21 +29,21 @@ var Game = function() {
 	module.startGame = function(players) {
 		trace('Game/startGame');
 
-		Farkle.init(this.onRolled, this);
+		Farkle.init(module.onRolled, this);
 		FarkleGUI.init();
 
 		PWG.Utils.each(
 			players,
 			function(player) {
-				this.players.push(new Player(player));
+				module.players.push(new Player(player));
 			},
 			this
 		);
-		// trace('\tplayers now = ', this.players);
-		this.currentPlayer = 0;
-		this.totalRounds = 1;
-		this.startTurn();
-		// trace('----- ' + this.players[this.currentPlayer].name + '\'s turn');
+		// trace('\tplayers now = ', module.players);
+		module.currentPlayer = 0;
+		module.totalRounds = 1;
+		module.startTurn();
+		// trace('----- ' + module.players[module.currentPlayer].name + '\'s turn');
 		// Farkle.startTurn();
 	};
 
@@ -55,79 +55,90 @@ var Game = function() {
 	module.onRolled = function() {
 		trace('GAME/onRolled');
 		FarkleGUI.displayRoll(Farkle.turnDice.activeRoll);
-		FarkleGUI.setSelectedCallback(this.onDiceSelected);
+		FarkleGUI.setSelectedCallback(module.onDiceSelected);
 		
 		if(Farkle.turnDice.farkled) {
 			trace('FARKLED! womp womp');
-			this.endTurn(true);
+			module.endTurn(true);
 		} else {
 			if(Farkle.turnDice.score > Farkle.MIN_TURN_SCORE) {
-				this.canEndTurn = true;
+				module.canEndTurn = true;
 			}
 		}
 	};
 	
 	module.startTurn = function() {
 		trace('Game/startTurn');
-		var startText = this.players[this.currentPlayer].name + '\'s turn';
+		var startText = module.players[module.currentPlayer].name + '\'s turn';
 		FarkleGUI.startTurn({ 
 			subTitleText: startText,
-			totalScore: this.players[this.currentPlayer].score
+			totalScore: module.players[module.currentPlayer].score
 		});
 		Game.startRoll();
 	};
 	
 	module.startRoll = function() {
-		trace('Game/startRoll, onRollClicked = ', Game.onRollClicked);
+		trace('Game/startRoll');
 		FarkleGUI.startRoll(Game.onRollClicked);
 	};
 	
 	module.onDiceSelected = function(dice) {
 		trace('Game/onDiceSelected, dice = ', dice);
-		var scores = Farkle.bankScoringDice(dice);
-		trace('\t...scores = ' + scores);
+		var scores = [];
+		scores = Farkle.bankScoringDice(dice);
+		trace('\t...scores = ' + scores + ', is array = ' + (scores instanceof Array));
 		var score = 0;
-		PWG.Utils.each(
-			scores,
-			function(score) {
-				score += score
-			},
-			this
-		);
+		if(scores instanceof Array) {
+			trace('\tlength = ' + scores.length);
+			PWG.Utils.each(
+				scores,
+				function(value, idx) {
+					trace('\tvalue['+idx+'] = ' + value);
+					score += value;
+				},
+				this
+			);
+		} else {
+			score = scores;
+		}
+		trace('---- score now = ' + score);
 		FarkleGUI.updateTurnScore(score);
+		if(score > Farkle.MIN_TURN_SCORE) {
+			FarkleGUI.showEndTurnButton(Game.endTurn);
+		}
 		Game.startRoll();
 	};
 	
 	module.switchPlayer = function() {
-		if(this.currentPlayer < (this.players.length - 1)) {
-			this.currentPlayer++;
+		if(module.currentPlayer < (module.players.length - 1)) {
+			module.currentPlayer++;
 		} else {
-			this.currentPlayer = 0;
-			this.totalRounds++;
+			module.currentPlayer = 0;
+			module.totalRounds++;
 		}
-		trace('----- start of ' + this.players[this.currentPlayer].name + '\'s turn');
-		this.startTurn();
+		trace('----- start of ' + module.players[module.currentPlayer].name + '\'s turn');
+		module.startTurn();
 	};
 	
 	module.endTurn = function(farkled) {
 		if(farkled) {
-			this.players[this.currentPlayer].currentFarkles++;
-			if(this.activeFarkles >= 3) {
+			module.players[module.currentPlayer].currentFarkles++;
+			if(module.activeFarkles >= 3) {
 				trace('TRIPLE FARKLE! setting score back: ' + Farkle.TRIPLE_FARKLE);
-				this.players[this.currentPlayer].score -= Farkle.TRIPLE_FARKLE;
-				this.players[this.currentPlayer].currentFarkles = 0;
+				module.players[module.currentPlayer].score -= Farkle.TRIPLE_FARKLE;
+				module.players[module.currentPlayer].currentFarkles = 0;
 			}
 		} else {
-			this.players[this.currentPlayer].currentFarkles = 0;
-			this.players[this.currentPlayer].score += Farkle.turnDice.totalScore;
+			module.players[module.currentPlayer].currentFarkles = 0;
+			module.players[module.currentPlayer].score += Farkle.turnDice.totalScore;
 		}
 
-		trace('----- end of ' + this.players[this.currentPlayer].name + '\'s turn with a score of: ' + this.players[this.currentPlayer].score);
+		trace('----- end of ' + module.players[module.currentPlayer].name + '\'s turn with a score of: ' + module.players[module.currentPlayer].score);
 
-		if(this.players[this.currentPlayer].score >= Farkle.WINNING_SCORE) {
-			this.gameOver();
+		if(module.players[module.currentPlayer].score >= Farkle.WINNING_SCORE) {
+			module.gameOver();
 		} else {
-			this.switchPlayer();
+			module.switchPlayer();
 		}
 	};
 	
@@ -137,7 +148,7 @@ var Game = function() {
 
 		trace('Game Over. Scores: ');
 		PWG.Utils.each(
-			this.players,
+			module.players,
 			function(player, idx) {
 				trace('\tplayer['+player.name+'] score = ' + player.score);
 				if(player.score > prevScore) {
@@ -149,8 +160,8 @@ var Game = function() {
 			this
 		);
 
-		trace('After ' + this.totalRounds + ' rounds the winner is: ');
-		trace(this.players[topScorer].printDetails());
+		trace('after ' + module.totalRounds + ' rounds the winner is: ');
+		trace(module.players[topScorer].printDetails());
 	};
 
 	return module;

@@ -95,6 +95,7 @@ var FarkleGUI = function() {
 	
 	module.onButton2Click = function(event) {
 		// trace('onButton2Click, callback = ', FarkleGUI.button1Callback);
+		module.hideButton(module.button2);
 		FarkleGUI.button2Callback.call(this);
 	};
 	
@@ -210,6 +211,11 @@ var FarkleGUI = function() {
 	
 	module.updateTotalScore = function(score) {
 		this.totalScore.innerHTML = 'total: ' + score;
+	};
+	
+	module.showEndTurnButton = function(cb) {
+		this.setButton(this.button2, 'end turn');
+		FarkleGUI.button2Callback = cb;
 	};
 	
 	return module;

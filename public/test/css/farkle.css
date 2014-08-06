@@ -38,7 +38,7 @@ body {
 #play_area {
 	background: #666;
 	
-	top: 15vw;
+	top: 30%;
 	left: 0;
 	bottom: 0;
 	right: 0;
@@ -69,12 +69,12 @@ body {
 	visibility: hidden;
 }
 
-button1 {
+#button1 {
 	top: 0;
 }
 
-button2 {
-	top: 6vh;
+#button2 {
+	top: 10vh;
 }
 
 #bank {
