@@ -30,7 +30,7 @@ var Game = function() {
 		trace('Game/startGame');
 
 		Farkle.init(module.onRolled, this);
-		FarkleGUI.init();
+		FarkleGUI.init(players);
 
 		PWG.Utils.each(
 			players,
@@ -66,12 +66,8 @@ var Game = function() {
 	
 	module.startTurn = function() {
 		trace('Game/startTurn');
-		var startText = module.players[module.currentPlayer].name + '\'s turn';
+		FarkleGUI.startTurn(module.players[module.currentPlayer]);
 		Farkle.startTurn();
-		FarkleGUI.startTurn({ 
-			subTitleText: startText,
-			totalScore: module.players[module.currentPlayer].score
-		});
 		Game.startRoll();
 	};
 	
@@ -109,7 +105,7 @@ var Game = function() {
 	};
 	
 	module.showFarkled = function() {
-		FarkleGUI.farkled();
+		FarkleGUI.farkled(Game.endTurn);
 	};
 
 	module.endTurn = function() {
@@ -124,6 +120,8 @@ var Game = function() {
 			module.players[module.currentPlayer].currentFarkles = 0;
 			module.players[module.currentPlayer].score += Farkle.turnDice.totalScore;
 		}
+
+		FarkleGUI.updateText('totalScore', module.players[module.currentPlayer].score);
 
 		trace('----- end of ' + module.players[module.currentPlayer].name + '\'s turn with a score of: ' + module.players[module.currentPlayer].score);
 

@@ -1,5 +1,8 @@
 var FarkleGUI = function() {
-
+	var DIE_WIDTH_HEIGHT = 10;
+	
+	var playerElements = '<div id="sub_title_~{name}~" class="sub_title">~{name}~</div><div  id="turn_score_~{name}~" class="turn_score text_md">turn: 0</div><div  id="total_score_~{name}~" class="total_score text_md">total: 0</div>';
+	
 	var module = {};
 	
 	function GUIDice() {
@@ -23,7 +26,7 @@ var FarkleGUI = function() {
 		this.el = document.createElement('div');
 		this.el.className = "die die_" + value;
 		this.el.setAttribute('id',  id);
-		this.el.style.left = (((idx + 1) * (FarkleGUI.unit * 5)) + (FarkleGUI.unit * idx)) + 'px';
+		this.el.style.left = (((idx) * (FarkleGUI.unit * DIE_WIDTH_HEIGHT)) + (FarkleGUI.unit * idx)) + 'px';
 		parentEl.appendChild(this.el); 
 
 		if(isActive) {
@@ -37,15 +40,15 @@ var FarkleGUI = function() {
 	module.GUIDice = GUIDice;
 
 	module.rolledDice = {};
-
+	module.playerEls = {};
+	
 	module.button1Callback = null;
 	
-	module.init = function(config) {
+	module.init = function(players) {
 
 		this.playArea = document.getElementById('play_area');
 		this.unit = this.playArea.offsetWidth/100;
-		
-		this.subTitle = document.getElementById('sub_title');
+		this.addPlayerEls(players);
 
 		this.button1 = document.getElementById('button1');
 		this.button1.addEventListener('click', function(event) {
@@ -59,19 +62,58 @@ var FarkleGUI = function() {
 			FarkleGUI.onButton2Click(event);
 		});
 
-		this.totalScore = document.getElementById('total_score');
-		this.turnScore = document.getElementById('turn_score');
-
 		this.bank = document.getElementById('bank');
 		
 	};
 	
-	module.startTurn = function(config) {
-		this.setSubTitle(config.subTitleText);
+	module.addPlayerEls = function(players) {
+		trace('FarkleGUI/addPlayerEls, players = ', players);
+		var playersEl = document.getElementById('players');
+		PWG.Utils.each(
+			players,
+			function(player) {
+				trace('\tadding player: ' + player.name);
+				var el = document.createElement('div');
+				el.setAttribute('id', player.name);
+				var html = PWG.Utils.parseMarkup(playerElements, player);
+				el.innerHTML = html;
+				el.className = 'player';
+				el.style.opacity = 0.5;
+				this.playerEls[player.name] = el;
+				playersEl.appendChild(el);
+			},
+			this
+		);
+	};
+	
+	module.startTurn = function(player) {
+		trace('FarkleGUI/startTurn');
+		this.switchPlayerEl(player.name);
+
 		this.removeDice(this.selectedDice);
 		this.selectedDice = {};
 		this.updateText('turnScore', 0);
-		this.updateText('totalScore', config.totalScore);
+		this.updateText('totalScore',  player.score);
+	};
+	
+	module.switchPlayerEl = function(name) {
+		this.subTitle = document.getElementById('sub_title_' + name);
+		this.totalScore = document.getElementById('total_score_'+name);
+		this.turnScore = document.getElementById('turn_score_'+name);
+
+		PWG.Utils.each(
+			this.playerEls,
+			function(el, key) {
+				if(key === name) {
+					this.subTitle.innerHTML = name + '\'s turn';
+					el.style.opacity = 1;
+				} else {
+					this.subTitle.innerHTML = name;
+					el.style.opacity = 0.5;
+				}
+			},
+			this
+		)
 	};
 	
 	module.startRoll = function(cb) {
@@ -188,10 +230,11 @@ var FarkleGUI = function() {
 		}
 	};
 	
-	module.farkled = function() {
+	module.farkled = function(cb) {
 		this.updateText('turnScore', 'FARKLE!');
-		this.hideButton(this.button1);
-		this.showEndTurnButton(Game.endTurn);
+		this.hideButton(this.button2);
+		this.button1Callback = cb;
+		this.setButton(this.button1, 'end turn');
 	};
 	
 	module.removeDice = function(list) {
