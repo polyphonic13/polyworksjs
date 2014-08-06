@@ -4,11 +4,21 @@ body {
 	font-family: "Trebuchet MS";
 }
 
+#title_and_info {
+	float: right;
+}
+
 #title {
 	text-align: right;
 	font-size: 3em;
 	padding: 1vw;
-	float: right;
+}
+
+#info {
+	text-align: right;
+	font-size: 1.5em;
+	padding: 1vw;
+
 }
 
 #titles {
@@ -25,7 +35,7 @@ body {
 
 .sub_title {
 	font-size: 1.5em;
-	padding: 1vw;
+/*	padding: 1vw;*/
 	float: left;
 }
 
@@ -86,13 +96,16 @@ body {
 
 @media screen and (max-width: 480px) {
 	#title {
-		text-align: center;
+		text-align: right;
 		font-size: 1em;
 		padding: .1vw;
 	}
+	#info {
+		text-align: right;
+		font-size: .5em;
+	}
 	#sub_title {
 		font-size: .5em;
-		padding: .1vw;
 	}
 	.text_md {
 		padding-left: 1vw;
@@ -110,13 +123,17 @@ body {
 }
 @media screen and (max-width: 780px){
 	#title {
-		text-align: center;
+		text-align: right;
 		font-size: 2em;
 		padding: .5vw;
 	}
+	#info {
+		text-align: right;
+		font-size: 1em;
+		padding: .1vw;
+	}
 	#sub_title {
 		font-size: 1em;
-		padding: .5vw;
 	}
 	.text_md {
 		padding-left: 1vw;

@@ -34,12 +34,13 @@ var FarkleGUI = function() {
 	module.init = function(players) {
 
 		this.playArea = document.getElementById('play_area');
+		this.infoArea = document.getElementById('info');
+		
 		this.unit = this.playArea.offsetWidth/100;
 		this.addPlayerEls(players);
 
 		this.button1 = document.getElementById('button1');
 		this.button1.addEventListener('click', function(event) {
-			trace('button1 click handler');
 			FarkleGUI.onButton1Click(event);
 		});
 		
@@ -73,12 +74,25 @@ var FarkleGUI = function() {
 		);
 	};
 	
+	module.removePlayerEls = function() {
+		var playersEl = document.getElementById('players');
+		PWG.Utils.each(
+			this.playerEls,
+			function(el, key) {
+				playersEl.removeChild(el);
+				delete this.playerEls[key];
+			},
+			this
+		);
+	};
+	
 	module.startTurn = function(player) {
 		trace('FarkleGUI/startTurn');
 		this.switchPlayerEl(player.name);
 
 		this.removeDice(this.selectedDice);
 		this.selectedDice = {};
+		this.updateText('infoArea', '');
 		this.updateText('turnScore', 0);
 		this.updateText('totalScore',  player.score);
 	};
@@ -125,7 +139,7 @@ var FarkleGUI = function() {
 	};
 	
 	module.onButton1Click = function(event) {
-		// trace('onButton1Click, callback = ', FarkleGUI.button1Callback);
+		trace('onButton1Click, callback = ', FarkleGUI.button1Callback);
 		FarkleGUI.button1Callback.call(this);
 	};
 	
@@ -225,8 +239,13 @@ var FarkleGUI = function() {
 		}
 	};
 	
+	module.showHotDice = function() {
+		this.updateText('infoArea', 'HOT DICE!');
+	};
+	
 	module.farkled = function(cb, player) {
-		this.updateText('turnScore', 'FARKLE!');
+		this.updateText('turnScore', '');
+		this.updateText('infoArea', 'FARKLE!');
 		this.updateText('farklesText', player.currentFarkles)
 		this.hideButton(this.button2);
 		this.button1Callback = cb;
@@ -253,7 +272,7 @@ var FarkleGUI = function() {
 	};
 	
 	module.updateText = function(el, text, style) {
-		var prefixText;
+		var prefixText = '';
 		if(el === 'turnScore') {
 			prefixText = 'turn: ';
 		} else if(el === 'totalScore') {
@@ -283,8 +302,10 @@ var FarkleGUI = function() {
 		FarkleGUI.button2Callback = cb;
 	};
 	
-	module.gameOver = function(cb) {
+	module.gameOver = function(cb, player) {
+		this.updateText('infoArea', 'WINNER: ' + player.name + ' with ' + player.score);
 		this.removeDice(this.selectedDice);
+		this.removePlayerEls();
 		this.selectedDice = {};
 		this.hideButton(module.button2);
 		this.button1Callback = cb;

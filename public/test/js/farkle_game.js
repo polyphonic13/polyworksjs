@@ -26,11 +26,11 @@ var Game = function() {
 	module.currentPlayer = -1;
 	module.totalRounds = 0;
 
-	module.startGame = function(players) {
+	module.startGame = function() {
 		trace('Game/startGame');
+		module.players = [];
 
 		Farkle.init(module.onRolled, this);
-		FarkleGUI.init(players);
 
 		PWG.Utils.each(
 			players,
@@ -39,6 +39,8 @@ var Game = function() {
 			},
 			this
 		);
+
+		FarkleGUI.init(module.players);
 		// trace('\tplayers now = ', module.players);
 		module.currentPlayer = 0;
 		module.totalRounds = 1;
@@ -73,6 +75,8 @@ var Game = function() {
 			trace('FARKLED! womp womp');
 			// module.endTurn(true);
 			module.showFarkled();
+		} else if(Farkle.turnDice.hotDice) {
+			FarkleGUI.showHotDice();
 		}
 	};
 	
@@ -148,24 +152,8 @@ var Game = function() {
 		var topScorer = -1;
 		var prevScore = 0;
 		
-		FarkleGUI.gameOver(Game.startGame);
-		
-		trace('Game Over. Scores: ');
-		PWG.Utils.each(
-			module.players,
-			function(player, idx) {
-				trace('\tplayer['+player.name+'] score = ' + player.score);
-				if(player.score > prevScore) {
-					// trace('\t\tsetting topScorer to + ' + idx);
-					topScorer = idx;
-					prevScore = player.score;
-				}
-			},
-			this
-		);
+		FarkleGUI.gameOver(Game.startGame, module.players[module.currentPlayer]);
 
-		trace('after ' + module.totalRounds + ' rounds the winner is: ');
-		trace(module.players[topScorer].printDetails());
 	};
 
 	return module;
@@ -184,4 +172,4 @@ var players = [
 	}
 ];
 
-Game.startGame(players);
+Game.startGame();

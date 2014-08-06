@@ -140,7 +140,6 @@ var Farkle = function() {
 
 	module.startTurn = function() {
 		this.turnDice = new Farkle.TurnDice(Farkle.NUM_DICE);
-		this.startRoll();
 	};
 	
 	module.bankScoringDice = function(selection) {
@@ -164,6 +163,7 @@ var Farkle = function() {
 		for(var i = 0; i < num; i++) {
 			results.push(PWG.Utils.diceRoll());
 		}
+		// return [1,2,3,4,5,6];
 		return results.sort();
 	};
 
