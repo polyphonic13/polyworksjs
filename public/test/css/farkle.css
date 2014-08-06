@@ -26,6 +26,10 @@ body {
 	font-size: .75em;
 }
 
+.text_red {
+	color: #800000;
+}
+
 #game_box {
 
 	top: 0;

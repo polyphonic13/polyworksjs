@@ -25,23 +25,19 @@ var FarkleGUI = function() {
 		this.el.setAttribute('id',  id);
 		this.el.style.left = (((idx + 1) * (FarkleGUI.unit * 5)) + (FarkleGUI.unit * idx)) + 'px';
 		parentEl.appendChild(this.el); 
-		
+
 		if(isActive) {
 			this.el.addEventListener('click', function(event) {
-				FarkleGUI.selectDie(idx);
+				FarkleGUI.selectDie(id);
 			});
 		}
-		
-		FarkleGUI.currentDice[idx] = this;
 	};
 
 	module.GUIDie = GUIDie;
 	module.GUIDice = GUIDice;
 
-	module.currentDice = {};
 	module.rolledDice = {};
-	module.selectedDice = {};
-	module.toSelect = {};
+
 	module.button1Callback = null;
 	
 	module.init = function(config) {
@@ -73,14 +69,16 @@ var FarkleGUI = function() {
 	module.startTurn = function(config) {
 		this.setSubTitle(config.subTitleText);
 		this.removeDice(this.selectedDice);
-		this.selectedCount = 0;
-		this.updateTurnScore(0);
-		this.updateTotalScore(config.totalScore);
+		this.selectedDice = {};
+		this.updateText('turnScore', 0);
+		this.updateText('totalScore', config.totalScore);
 	};
 	
 	module.startRoll = function(cb) {
 		trace('FarkleGUI/startRoll, cb = ', cb);
 		this.removeDice(this.rolledDice);
+		this.toSelect = {};
+		this.rolledDice = {};
 		this.setButton(this.button1, 'roll');
 		FarkleGUI.button1Callback = cb;
 	};
@@ -123,7 +121,7 @@ var FarkleGUI = function() {
 		PWG.Utils.each(
 			dice,
 			function(die, idx) {
-				var id = 'rolledDie' + idx + String(new Date().getTime());
+				var id = 'rolledDie' + idx + '-' + String(new Date().getTime()) + '-' + String(Math.random() * 999);
 				var guiDie = new GUIDie(idx, die, id, this.playArea, true);
 				this.rolledDice[id] = guiDie;
 			},
@@ -143,7 +141,7 @@ var FarkleGUI = function() {
 
 	module.selectDie = function(idx) {
 		trace('FarkleGUI/selectDie, idx = ' + idx);
-		var die = module.currentDice[idx];
+		var die = module.rolledDice[idx];
 		trace('\tdie = ', die);
 		if(!die.selected) {
 			die.el.style.opacity = 0.75;
@@ -176,11 +174,10 @@ var FarkleGUI = function() {
 			PWG.Utils.each(
 				FarkleGUI.toSelect,
 				function(die, key) {
-					var guiDie = new GUIDie(module.selectedCount, die.value, 'selectedDie' + die.id, this.bank);
+					var guiDie = new GUIDie(PWG.Utils.objLength(module.selectedDice), die.value, 'selectedDie' + die.id, this.bank);
 					trace('\tdie = ', die);
 					module.selectedDice[die.id] = guiDie;
 					values.push(die.value);
-					module.selectedCount++;
 				},
 				FarkleGUI
 			);
@@ -191,6 +188,11 @@ var FarkleGUI = function() {
 		}
 	};
 	
+	module.farkled = function() {
+		this.updateText('turnScore', 'FARKLE!');
+		this.hideButton(this.button1);
+		this.showEndTurnButton(Game.endTurn);
+	};
 	
 	module.removeDice = function(list) {
 		// trace('FarkleGUI/removeDice, list = ', list);
@@ -202,6 +204,7 @@ var FarkleGUI = function() {
 			},
 			this
 		);
+		trace('----- FarkleGUI/removeDice, list now = ', list);
 	};
 	
 	module.removeDie = function(die, list) {
@@ -210,12 +213,26 @@ var FarkleGUI = function() {
 		delete list[die.id];
 	};
 	
-	module.updateTurnScore = function(score) {
-		this.turnScore.innerHTML = 'turn: ' + score;
-	};
-	
-	module.updateTotalScore = function(score) {
-		this.totalScore.innerHTML = 'total: ' + score;
+	module.updateText = function(el, text, style) {
+		var prefixText;
+		if(el === 'turnScore') {
+			prefixText = 'turn: ';
+		} else if(el === 'totalScore') {
+			prefixText = 'total: ';
+		}
+		this[el].innerHTML = prefixText + text;
+		if(text === 'FARKLE!') {
+			var redIdx = this[el].className.indexOf(' text_red');
+			if(redIdx === -1) {
+				this[el].className += ' text_red';
+			}
+		} else {
+			var redIdx = this[el].className.indexOf(' text_red');
+			if(redIdx > -1) {
+				var sansRed = this[el].className.substr(0, redIdx);
+				this[el].className = sansRed;
+			}
+		}
 	};
 	
 	module.showEndTurnButton = function(cb) {

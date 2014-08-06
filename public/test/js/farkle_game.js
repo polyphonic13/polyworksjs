@@ -59,11 +59,8 @@ var Game = function() {
 		
 		if(Farkle.turnDice.farkled) {
 			trace('FARKLED! womp womp');
-			module.endTurn(true);
-		} else {
-			if(Farkle.turnDice.score >= Farkle.MIN_TURN_SCORE) {
-				module.canEndTurn = true;
-			}
+			// module.endTurn(true);
+			module.showFarkled();
 		}
 	};
 	
@@ -103,26 +100,20 @@ var Game = function() {
 			score = scores;
 		}
 		trace('---- score now = ' + score);
-		FarkleGUI.updateTurnScore(score);
+		FarkleGUI.updateText('turnScore', score);
 		if(score >= Farkle.MIN_TURN_SCORE) {
+			Game.farkled = false;
 			FarkleGUI.showEndTurnButton(Game.endTurn);
 		}
 		Game.startRoll();
 	};
 	
-	module.switchPlayer = function() {
-		if(module.currentPlayer < (module.players.length - 1)) {
-			module.currentPlayer++;
-		} else {
-			module.currentPlayer = 0;
-			module.totalRounds++;
-		}
-		trace('----- start of ' + module.players[module.currentPlayer].name + '\'s turn');
-		module.startTurn();
+	module.showFarkled = function() {
+		FarkleGUI.farkled();
 	};
-	
-	module.endTurn = function(farkled) {
-		if(farkled) {
+
+	module.endTurn = function() {
+		if(Game.farkled) {
 			module.players[module.currentPlayer].currentFarkles++;
 			if(module.activeFarkles >= 3) {
 				trace('TRIPLE FARKLE! setting score back: ' + Farkle.TRIPLE_FARKLE);
@@ -141,6 +132,17 @@ var Game = function() {
 		} else {
 			module.switchPlayer();
 		}
+	};
+	
+	module.switchPlayer = function() {
+		if(module.currentPlayer < (module.players.length - 1)) {
+			module.currentPlayer++;
+		} else {
+			module.currentPlayer = 0;
+			module.totalRounds++;
+		}
+		trace('----- start of ' + module.players[module.currentPlayer].name + '\'s turn');
+		module.startTurn();
 	};
 	
 	module.gameOver = function() {
