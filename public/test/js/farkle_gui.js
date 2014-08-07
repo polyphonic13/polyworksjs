@@ -306,7 +306,7 @@ var FarkleGUI = function() {
 	};
 	
 	module.gameOver = function(cb, player) {
-		FarkleGUI.updateText('infoArea', player.name + ' wins with: ' + player.score);
+		FarkleGUI.updateText('infoArea', player.name + '<br />wins: ' + player.score);
 		FarkleGUI.hideButton(module.button2);
 		FarkleGUI.button1Callback = cb;
 		FarkleGUI.setButton(module.button1, 'play again');
