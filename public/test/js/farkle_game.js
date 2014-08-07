@@ -185,12 +185,12 @@ var Game = function() {
 
 var players = [
 	{
-		name: 'player 1',
+		name: 'player1',
 		age: 39,
 		gender: 'male'
 	},
 	{
-		name: 'player 2',
+		name: 'player2',
 		age: 30,
 		gender: 'female'
 	}//,
