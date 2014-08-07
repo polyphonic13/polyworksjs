@@ -174,8 +174,8 @@ body {
 }
 
 .animation_left_to_right {
-	-webkit-animation: rightToLeft 1s; /* Chrome, Safari, Opera */
-    animation: rightToLeft 1s;
+	-webkit-animation: rightToLeft 0.5s; /* Chrome, Safari, Opera */
+    animation: rightToLeft 0.5s;
 }
 
 /* Chrome, Safari, Opera */

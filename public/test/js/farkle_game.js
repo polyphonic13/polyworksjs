@@ -26,11 +26,10 @@ var Game = function() {
 	module.currentPlayer = -1;
 	module.totalRounds = 0;
 
-	module.startGame = function() {
-		// trace('Game/startGame');
+	module.init = function() {
 		module.players = [];
-
 		Farkle.init(module.onRolled, this);
+		FarkleGUI.init(module.startGame);
 
 		PWG.Utils.each(
 			players,
@@ -40,7 +39,12 @@ var Game = function() {
 			this
 		);
 
-		FarkleGUI.init(module.players);
+	};
+	
+	module.startGame = function() {
+		// trace('Game/startGame');
+
+		FarkleGUI.startGame(module.players);
 		// trace('\tplayers now = ', module.players);
 		module.currentPlayer = 0;
 		module.totalRounds = 1;
@@ -169,15 +173,20 @@ var Game = function() {
 
 var players = [
 	{
-		name: 'paul',
+		name: 'player 1',
 		age: 39,
 		gender: 'male'
 	},
 	{
-		name: 'seema',
+		name: 'player 2',
 		age: 30,
 		gender: 'female'
-	}
+	}//,
+	// {
+	// 	name: 'player 3',
+	// 	age: 30,
+	// 	gender: 'female'
+	// }
 ];
 
-Game.startGame();
+Game.init();

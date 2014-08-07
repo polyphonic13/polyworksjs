@@ -31,7 +31,7 @@ var FarkleGUI = function() {
 	
 	module.button1Callback = null;
 
-	module.init = function(players) {
+	module.init = function(cb) {
 
 		FarkleGUI.playArea = document.getElementById('play_area');
 		// animate player in
@@ -40,16 +40,20 @@ var FarkleGUI = function() {
 		FarkleGUI.infoArea = document.getElementById('info');
 		
 		FarkleGUI.unit = FarkleGUI.playArea.offsetWidth/100;
-		FarkleGUI.addPlayerEls(players);
-
 		FarkleGUI.button1 = document.getElementById('button1');
-		FarkleGUI.button1.addEventListener('click', module.onButton1Click);
-		
 		FarkleGUI.button2 = document.getElementById('button2');
+		FarkleGUI.bank = document.getElementById('bank');
+
+		FarkleGUI.button1.addEventListener('click', module.onButton1Click);
 		FarkleGUI.button2.addEventListener('click', module.onButton2Click);
 
-		FarkleGUI.bank = document.getElementById('bank');
-		
+		module.button1Callback = cb;
+		FarkleGUI.setButton(FarkleGUI.button1, 'start');
+	};
+	
+	module.startGame = function(players) {
+
+		FarkleGUI.addPlayerEls(players);
 	};
 	
 	module.addPlayerEls = function(players) {
@@ -122,8 +126,8 @@ var FarkleGUI = function() {
 		FarkleGUI.toSelect = {};
 		FarkleGUI.rolledDice = {};
 		FarkleGUI.selecting = false;
-		FarkleGUI.setButton(FarkleGUI.button1, 'roll');
 		module.button1Callback = cb;
+		FarkleGUI.setButton(FarkleGUI.button1, 'roll');
 	};
 	
 	module.endTurn = function(player) {
@@ -315,8 +319,8 @@ var FarkleGUI = function() {
 		FarkleGUI.removePlayerEls();
 		FarkleGUI.selectedDice = {};
 
-		FarkleGUI.button1.removeEventListener('click', module.onButton1Click);
-		FarkleGUI.button2.removeEventListener('click', module.onButton2Click);
+		// FarkleGUI.button1.removeEventListener('click', module.onButton1Click);
+		// FarkleGUI.button2.removeEventListener('click', module.onButton2Click);
 
 	};
 	
