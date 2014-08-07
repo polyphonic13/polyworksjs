@@ -70,8 +70,8 @@ body {
 	width: 15vw;
 	height: 10%;
 	
-	left: 0;
-
+/*	left: 0;*/
+	top: 70%;
 	position: absolute;
 	
 	text-align: center;
@@ -86,12 +86,13 @@ body {
 }
 
 #button1 {
-	top: 70%;
-	
+/*	top: 70%;*/
+	left: 0;
 }
 
 #button2 {
-	top: 57%;
+/*	top: 57%;*/
+	left: 17vw;
 }
 
 @media screen and (max-width: 480px) {

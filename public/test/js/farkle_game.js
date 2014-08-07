@@ -152,10 +152,15 @@ var Game = function() {
 		var topScorer = -1;
 		var prevScore = 0;
 		
-		FarkleGUI.gameOver(Game.startGame, module.players[module.currentPlayer]);
+		FarkleGUI.gameOver(Game.restart, module.players[module.currentPlayer]);
 
 	};
 
+	module.restart = function() {
+		FarkleGUI.cleanUp();
+		module.startGame();
+	};
+	
 	return module;
 }();
 

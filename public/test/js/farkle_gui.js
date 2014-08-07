@@ -14,12 +14,12 @@ var FarkleGUI = function() {
 		this.el = document.createElement('div');
 		this.el.className = "die die_" + value;
 		this.el.setAttribute('id',  id);
-		this.el.style.left = (((idx) * (FarkleGUI.unit * DIE_WIDTH_HEIGHT)) + (FarkleGUI.unit * idx)) + 'px';
+		this.el.style.left = (((idx) * (module.unit * DIE_WIDTH_HEIGHT)) + (module.unit * idx)) + 'px';
 		parentEl.appendChild(this.el); 
 
 		if(isActive) {
 			this.el.addEventListener('click', function(event) {
-				FarkleGUI.selectDie(id);
+				module.selectDie(id);
 			});
 		}
 	};
@@ -33,24 +33,19 @@ var FarkleGUI = function() {
 	
 	module.init = function(players) {
 
-		this.playArea = document.getElementById('play_area');
-		this.infoArea = document.getElementById('info');
+		FarkleGUI.playArea = document.getElementById('play_area');
+		FarkleGUI.infoArea = document.getElementById('info');
 		
-		this.unit = this.playArea.offsetWidth/100;
-		this.addPlayerEls(players);
+		FarkleGUI.unit = FarkleGUI.playArea.offsetWidth/100;
+		FarkleGUI.addPlayerEls(players);
 
-		this.button1 = document.getElementById('button1');
-		this.button1.addEventListener('click', function(event) {
-			FarkleGUI.onButton1Click(event);
-		});
+		FarkleGUI.button1 = document.getElementById('button1');
+		FarkleGUI.button1.addEventListener('click', module.onButton1Click);
 		
-		this.button2 = document.getElementById('button2');
-		this.button2.addEventListener('click', function(event) {
-			trace('button2 click handler');
-			FarkleGUI.onButton2Click(event);
-		});
+		FarkleGUI.button2 = document.getElementById('button2');
+		FarkleGUI.button2.addEventListener('click', module.onButton2Click);
 
-		this.bank = document.getElementById('bank');
+		FarkleGUI.bank = document.getElementById('bank');
 		
 	};
 	
@@ -67,7 +62,7 @@ var FarkleGUI = function() {
 				el.innerHTML = html;
 				el.className = 'player';
 				el.style.opacity = 0.5;
-				this.playerEls[player.name] = el;
+				FarkleGUI.playerEls[player.name] = el;
 				playersEl.appendChild(el);
 			},
 			this
@@ -77,10 +72,10 @@ var FarkleGUI = function() {
 	module.removePlayerEls = function() {
 		var playersEl = document.getElementById('players');
 		PWG.Utils.each(
-			this.playerEls,
+			FarkleGUI.playerEls,
 			function(el, key) {
 				playersEl.removeChild(el);
-				delete this.playerEls[key];
+				delete FarkleGUI.playerEls[key];
 			},
 			this
 		);
@@ -88,29 +83,29 @@ var FarkleGUI = function() {
 	
 	module.startTurn = function(player) {
 		trace('FarkleGUI/startTurn');
-		this.switchPlayerEl(player.name);
+		FarkleGUI.switchPlayerEl(player.name);
 
-		this.removeDice(this.selectedDice);
-		this.selectedDice = {};
-		this.updateText('infoArea', '');
-		this.updateText('turnScore', 0);
-		this.updateText('totalScore',  player.score);
+		FarkleGUI.removeDice(FarkleGUI.selectedDice);
+		FarkleGUI.selectedDice = {};
+		FarkleGUI.updateText('infoArea', '');
+		FarkleGUI.updateText('turnScore', 0);
+		FarkleGUI.updateText('totalScore',  player.score);
 	};
 	
 	module.switchPlayerEl = function(name) {
-		this.subTitle = document.getElementById('sub_title_' + name);
-		this.totalScore = document.getElementById('total_score_'+name);
-		this.turnScore = document.getElementById('turn_score_'+name);
-		this.farklesText = document.getElementById('farkles_'+name);
+		FarkleGUI.subTitle = document.getElementById('sub_title_' + name);
+		FarkleGUI.totalScore = document.getElementById('total_score_'+name);
+		FarkleGUI.turnScore = document.getElementById('turn_score_'+name);
+		FarkleGUI.farklesText = document.getElementById('farkles_'+name);
 		
 		PWG.Utils.each(
-			this.playerEls,
+			FarkleGUI.playerEls,
 			function(el, key) {
 				if(key === name) {
-					// this.subTitle.innerHTML = name + '\'s turn';
+					// FarkleGUI.subTitle.innerHTML = name + '\'s turn';
 					el.style.opacity = 1;
 				} else {
-						// this.subTitle.innerHTML = name;
+						// FarkleGUI.subTitle.innerHTML = name;
 					el.style.opacity = 0.5;
 				}
 			},
@@ -120,33 +115,34 @@ var FarkleGUI = function() {
 	
 	module.startRoll = function(cb) {
 		trace('FarkleGUI/startRoll, cb = ', cb);
-		this.removeDice(this.rolledDice);
-		this.toSelect = {};
-		this.rolledDice = {};
-		this.setButton(this.button1, 'roll');
-		FarkleGUI.button1Callback = cb;
+		FarkleGUI.removeDice(FarkleGUI.rolledDice);
+		FarkleGUI.toSelect = {};
+		FarkleGUI.rolledDice = {};
+		FarkleGUI.selecting = false;
+		FarkleGUI.setButton(FarkleGUI.button1, 'roll');
+		module.button1Callback = cb;
 	};
 	
 	module.endTurn = function(player) {
-		FarkleGUI.updateText('totalScore', player.score);
-		this.updateText('farklesText', player.currentFarkles)
+		module.updateText('totalScore', player.score);
+		FarkleGUI.updateText('farklesText', player.currentFarkles)
 	};
 	
 	module.setButton = function(button, text) {
 		trace('FarkleGUI/setButton, text = ', text, '\n\tbutton = ', button);
 		button.innerHTML = text;
-		this.showButton(button);
+		FarkleGUI.showButton(button);
 	};
 	
 	module.onButton1Click = function(event) {
-		trace('onButton1Click, callback = ', FarkleGUI.button1Callback);
-		FarkleGUI.button1Callback.call(this);
+		trace('onButton1Click, callback = ', module.button1Callback);
+		module.button1Callback.call(this);
 	};
 	
 	module.onButton2Click = function(event) {
-		// trace('onButton2Click, callback = ', FarkleGUI.button1Callback);
+		// trace('onButton2Click, callback = ', module.button1Callback);
 		module.hideButton(module.button2);
-		FarkleGUI.button2Callback.call(this);
+		module.button2Callback.call(this);
 	};
 	
 	module.hideButton = function(button) {
@@ -158,12 +154,12 @@ var FarkleGUI = function() {
 	};
 	
 	module.setSubTitle = function(text) {
-		this.subTitle.innerHTML = text;
+		FarkleGUI.subTitle.innerHTML = text;
 	};
 	
 	module.displayRoll = function(dice) {
 		trace('FarkleGUI/displayRoll, dice = ', dice);
-		this.setButton(this.button1, 'select dice');
+		FarkleGUI.setButton(FarkleGUI.button1, 'select dice');
 		FarkleGUI.button1Callback = FarkleGUI.onSelected;
 		FarkleGUI.selecting = false;
 
@@ -171,17 +167,17 @@ var FarkleGUI = function() {
 			dice,
 			function(die, idx) {
 				var id = 'rolledDie' + idx + '-' + String(new Date().getTime()) + '-' + String(Math.random() * 999);
-				var guiDie = new GUIDie(idx, die, id, this.playArea, true);
-				this.rolledDice[id] = guiDie;
+				var guiDie = new GUIDie(idx, die, id, FarkleGUI.playArea, true);
+				FarkleGUI.rolledDice[id] = guiDie;
 			},
 			this
 		);
 /*
-		this.guiDice = new Farkle.GUIDice(); 
+		FarkleGUI.guiDice = new Farkle.GUIDice(); 
 		PWG.Utils.each(
 			roll,
 			function(die, idx) {
-				this.guiDice.add(new Farkle.GUIDie(idx, die));
+				FarkleGUI.guiDice.add(new Farkle.GUIDie(idx, die));
 			},
 			this
 		);
@@ -195,35 +191,35 @@ var FarkleGUI = function() {
 		if(!die.selected) {
 			die.el.style.opacity = 0.75;
 			die.selected = true;
-			this.addSelectedDie(die);
+			FarkleGUI.addSelectedDie(die);
 		} else {
 			die.el.style.opacity = 1;
 			die.selected = false;
-			this.removeSelectedDie(die);
+			FarkleGUI.removeSelectedDie(die);
 		}
 	};
 
 	module.addSelectedDie = function(die) {
-		this.toSelect[die.idx] = die;
+		FarkleGUI.toSelect[die.idx] = die;
 	};
 	
 	module.removeSelectedDie = function(die) {
-		delete this.toSelect[die.idx];
+		delete FarkleGUI.toSelect[die.idx];
 	};
 	
 	module.setSelectedCallback = function(cb) {
-		this.selectedCb = cb;
+		FarkleGUI.selectedCb = cb;
 	};
 	
 	module.onSelected = function() {
-		if(!FarkleGUI.selecting) {
+		// if(!FarkleGUI.selecting) {
 			FarkleGUI.selecting = true;
 			var values = [];
-			trace('FarkleGUI/onSelected, toSelect = ', FarkleGUI.toSelect);
+			trace('FarkleGUI/onSelected, toSelect = ', module.toSelect);
 			PWG.Utils.each(
-				FarkleGUI.toSelect,
+				module.toSelect,
 				function(die, key) {
-					var guiDie = new GUIDie(PWG.Utils.objLength(module.selectedDice), die.value, 'selectedDie' + die.id, this.bank);
+					var guiDie = new GUIDie(PWG.Utils.objLength(module.selectedDice), die.value, 'selectedDie' + die.id, FarkleGUI.bank);
 					trace('\tdie = ', die);
 					module.selectedDice[die.id] = guiDie;
 					values.push(die.value);
@@ -232,24 +228,24 @@ var FarkleGUI = function() {
 			);
 			trace('\tvalues now = ' + values + ', length = ' + values.length);
 			if(values.length > 0) {
-				if(FarkleGUI.selectedCb) {
-					FarkleGUI.selectedCb.call(this, values);
+				if(module.selectedCb) {
+					module.selectedCb.call(this, values);
 				}
 			}
-		}
+		// }
 	};
 	
 	module.showHotDice = function() {
-		this.updateText('infoArea', 'HOT DICE!');
+		FarkleGUI.updateText('infoArea', 'HOT DICE!');
 	};
 	
 	module.farkled = function(cb, player) {
-		this.updateText('turnScore', '');
-		this.updateText('infoArea', 'FARKLE!');
-		this.updateText('farklesText', player.currentFarkles)
-		this.hideButton(this.button2);
-		this.button1Callback = cb;
-		this.setButton(this.button1, 'end turn');
+		FarkleGUI.updateText('turnScore', '');
+		FarkleGUI.updateText('infoArea', 'FARKLE!');
+		FarkleGUI.updateText('farklesText', player.currentFarkles)
+		FarkleGUI.hideButton(FarkleGUI.button2);
+		FarkleGUI.button1Callback = cb;
+		FarkleGUI.setButton(FarkleGUI.button1, 'end turn');
 	};
 	
 	module.removeDice = function(list) {
@@ -258,7 +254,7 @@ var FarkleGUI = function() {
 			list,
 			function(die) {
 				// trace('\tdie = ', die);
-				this.removeDie(die, list);
+				FarkleGUI.removeDie(die, list);
 			},
 			this
 		);
@@ -298,18 +294,27 @@ var FarkleGUI = function() {
 	};
 	
 	module.showEndTurnButton = function(cb) {
-		this.setButton(this.button2, 'end turn');
-		FarkleGUI.button2Callback = cb;
+		FarkleGUI.setButton(FarkleGUI.button2, 'end turn');
+		module.button2Callback = cb;
 	};
 	
 	module.gameOver = function(cb, player) {
-		this.updateText('infoArea', 'WINNER: ' + player.name + ' with ' + player.score);
-		this.removeDice(this.selectedDice);
-		this.removePlayerEls();
-		this.selectedDice = {};
-		this.hideButton(module.button2);
-		this.button1Callback = cb;
-		this.setButton(module.button1, 'play again');
+		FarkleGUI.updateText('infoArea', player.name + ' wins with: ' + player.score);
+		FarkleGUI.hideButton(module.button2);
+		FarkleGUI.button1Callback = cb;
+		FarkleGUI.setButton(module.button1, 'play again');
+	};
+	
+	module.cleanUp = function() {
+		FarkleGUI.selecting = false;
+		FarkleGUI.button1Callback = null;
+		FarkleGUI.removeDice(FarkleGUI.selectedDice);
+		FarkleGUI.removePlayerEls();
+		FarkleGUI.selectedDice = {};
+
+		FarkleGUI.button1.removeEventListener('click', module.onButton1Click);
+		FarkleGUI.button2.removeEventListener('click', module.onButton2Click);
+
 	};
 	
 	return module;
