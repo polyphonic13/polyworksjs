@@ -8,6 +8,11 @@ var Game = function() {
 		this.currentFarkles = 0;
 	};
 	
+	Player.prototype.reset = function() {
+		this.score = 0;
+		this.currentFarkles = 0;
+	};
+	
 	Player.prototype.printDetails = function() {
 		PWG.Utils.each(
 			this,
@@ -164,6 +169,13 @@ var Game = function() {
 	};
 
 	module.restart = function() {
+		PWG.Utils.each(
+			module.players,
+			function(player) {
+				player.reset();
+			},
+			this
+		);
 		FarkleGUI.cleanUp();
 		module.startGame();
 	};
