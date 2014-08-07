@@ -25,7 +25,8 @@ var Farkle = function() {
 		this.triples = {};
 		this.hotDice = false;
 		this.farkled = true;
-
+		this.scoringDice = 0;
+		
 		if(Farkle.straightTest(this.activeRoll)) {
 			// STRAIGHT
 			this.hotDice = true;
@@ -47,18 +48,35 @@ var Farkle = function() {
 				this.hotDice = true;
 				this.farkled = false;
 			} else {
-				if(PWG.Utils.objLength(this.triples.length) > 0) {
+				if(PWG.Utils.objLength(this.triples) > 0) {
 					this.farkled = false;
-					if(PWG.Utils.objLength(this.triples.length) === 2) {
+					if(PWG.Utils.objLength(this.triples) === 2) {
 						this.hotDice = true;
 					}
+					PWG.Utils.each(
+						this.triples,
+						function(triple) {
+							trace('triple = ' + triple);
+							this.scoringDice += triple;
+						},
+						this
+					);
 				}
 				if(counts[1] || counts[5]) {
 					this.farkled = false;
+					if(counts[1] && !this.triples.hasOwnProperty(1)) {
+						this.scoringDice += counts[1];
+					}
+					if(counts[5] && !this.triples.hasOwnProperty(5)) {
+						this.scoringDice += counts[5];
+					}
 				}
 			}
 		}
-		trace('\tfarkled = ' + this.farkled + ', hotdice = ' + this.hotDice);
+		if(this.scoringDice === 6) {
+			this.hotDice = true;
+		}
+		trace('\tfarkled = ' + this.farkled + ', hotdice = ' + this.hotDice + ', scoringDice = ' + this.scoringDice);
 	};
 	
 	TurnDice.prototype.bankScoringDice = function(selection) {
@@ -125,6 +143,7 @@ var Farkle = function() {
 		trace('\tthrowScores now: ' + this.throwScores + '\n\tturn score: ' + this.totalScore);
 
 		if(this.availableDice === 0) {
+			this.hotDice = true;
 			this.availableDice = Farkle.NUM_DICE;
 		}
 	};
@@ -164,6 +183,9 @@ var Farkle = function() {
 			results.push(PWG.Utils.diceRoll());
 		}
 		// return [1,2,3,4,5,6];
+		// return [3,3,3,5,5,1];
+		// return [1,1,1,1,1,1];
+		// return [1, 1, 5, 5, 5, 5];
 		return results.sort();
 	};
 
