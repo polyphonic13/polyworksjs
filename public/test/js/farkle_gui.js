@@ -30,10 +30,13 @@ var FarkleGUI = function() {
 	module.playerEls = {};
 	
 	module.button1Callback = null;
-	
+
 	module.init = function(players) {
 
 		FarkleGUI.playArea = document.getElementById('play_area');
+		// animate player in
+		FarkleGUI.playArea.className = 'animation_left_to_right';
+		
 		FarkleGUI.infoArea = document.getElementById('info');
 		
 		FarkleGUI.unit = FarkleGUI.playArea.offsetWidth/100;
