@@ -66,6 +66,28 @@ PWG.Utils = function() {
 		return Object.prototype.hasOwnProperty.call(obj, prop);
 	};
 	
+	module.find = function(list, condition, context) {
+		var ctx = context || window;
+		var value = null;
+		if(Array.isArray(list)) {
+			var length = list.length;
+			for(var i = 0; i < length; i++) {
+				if(condition.call(ctx, list[i], i, list)) {
+					value = list[i];
+					break;
+				}
+			}
+		} else {
+			for(var key in list) {
+				if(condition.call(ctx, list[key], key, list)) {
+					value = list[key];
+					break;
+				}
+			}
+		}
+		return value;
+	};
+	
 	module.arraysEqual = function(a, b) {
 		if (a === b) return true;
 		if (a == null || b == null) return false;
