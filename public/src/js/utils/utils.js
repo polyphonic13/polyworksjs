@@ -1,3 +1,4 @@
+var PWG = PWG || {};
 PWG.Utils = function() {
 	var module = {};
 
