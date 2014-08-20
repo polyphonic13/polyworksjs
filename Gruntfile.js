@@ -55,6 +55,26 @@ module.exports = function(grunt) {
 					'<%= srcDir %>/js/utils/stage.js',
 					'<%= srcDir %>/js/utils/storage.js',
 					'<%= srcDir %>/js/utils/utils.js',
+					'<%= srcDir %>/js/utils/device_utils.js',
+					'<%= srcDir %>/js/utils/initializer.js',
+					'<%= srcDir %>/js/utils/grid_generator.js',
+					'<%= srcDir %>/js/enum/alphabet.js',
+					'<%= srcDir %>/js/enum/input_codes.js',
+					'<%= srcDir %>/js/events/events.js',
+					'<%= srcDir %>/js/events/event_center.js',
+					'<%= srcDir %>/js/social/social_manager.js',
+				],
+				dest: '<%= buildDir %>/js/polyworks.js'
+			},
+			
+			phaser: {
+				src: [
+					'<%= srcDir %>/js/namespace.js',
+					'<%= srcDir %>/js/utils/logger.js',
+					'<%= srcDir %>/js/utils/stage.js',
+					'<%= srcDir %>/js/utils/storage.js',
+					'<%= srcDir %>/js/utils/utils.js',
+					'<%= srcDir %>/js/utils/device_utils.js',
 					'<%= srcDir %>/js/utils/initializer.js',
 					'<%= srcDir %>/js/utils/grid_generator.js',
 					'<%= srcDir %>/js/enum/alphabet.js',
@@ -75,7 +95,7 @@ module.exports = function(grunt) {
 					'<%= srcDir %>/js/social/social_manager.js',
 					'<%= srcDir %>/js/phaser/phaser_game.js'
 				],
-				dest: '<%= buildDir %>/js/polyworks.js'
+				dest: '<%= buildDir %>/js/polyworks-phaser.js'
 			}
 
 		},
