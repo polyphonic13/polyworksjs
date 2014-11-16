@@ -13,8 +13,9 @@ PWG.Timer = function() {
 	Controller.prototype.start = function(delay, method, args, ctx) {
 		var params = args || {};
 		var context = ctx || window;
+		var _this = this;
 		this.timeout = setTimeout(function() {
-			method.call(context, params);
+			method.call(context, _this, params);
 		},
 		delay);
 	};
@@ -22,8 +23,9 @@ PWG.Timer = function() {
 	Controller.prototype.loop = function(delay, method, args, ctx) {
 		var params = args || {};
 		var context = ctx || window;
+		var _this = this;
 		this.interval = setInterval(function() {
-			method.call(context, params);
+			method.call(context, _this, params);
 		},
 		delay);
 	};
