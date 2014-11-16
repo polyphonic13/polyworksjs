@@ -4,23 +4,24 @@ PWG.Timer = function() {
 	var module = {};
 	var _instances = [];
 	
-	function Controller(config) {
-		this.id = _instance.length;
-		this.config = config;
+	function Controller() {
+		this.id = _instances.length;
+		this.timeout = null;
+		this.interval = null;
 	}
 	
-	Controller.prototype.start = function(delay, method, ctx, args) {
-		var context = ctx || window;
+	Controller.prototype.start = function(delay, method, args, ctx) {
 		var params = args || {};
+		var context = ctx || window;
 		this.timeout = setTimeout(function() {
 			method.call(context, params);
 		},
 		delay);
 	};
 	
-	Controller.prototype.loop = function(delay, method, ctx, args) {
-		var context = ctx || window;
+	Controller.prototype.loop = function(delay, method, args, ctx) {
 		var params = args || {};
+		var context = ctx || window;
 		this.interval = setInterval(function() {
 			method.call(context, params);
 		},
@@ -28,6 +29,7 @@ PWG.Timer = function() {
 	};
 	
 	Controller.prototype.stop = function() {
+		// trace('Timer.Controller['+this.id+']/stop, this.timeout = ' + this.timeout + ', this.interval = ' + this.interval);
 		if(this.timeout) {
 			clearTimeout(this.timeout);
 			this.timeout = null;
@@ -37,8 +39,10 @@ PWG.Timer = function() {
 		}
 	};
 	
-	module.add = function(config) {
-		var instance = new Controller(config);
+	module.Controller = Controller; 
+	
+	module.add = function() {
+		var instance = new Controller();
 		_instances.push(instance);
 		return instance;
 	};
