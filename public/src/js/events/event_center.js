@@ -14,7 +14,7 @@ PWG.EventCenter = function() {
 	var _listeners = {}; 
 	
 	module.bind = function(type, callback, context) {
-		var ctx = context || this;
+		var ctx = context || window;
 		// trace('EventCenter/bind, type = ' + type);
 		// trace(callback);
 		if(!_listeners[type]) {
@@ -46,7 +46,7 @@ PWG.EventCenter = function() {
 						listener.callback.call(listener.context, params);
 					}
 				},
-				this
+				module
 			);
 		}
 	};
@@ -60,7 +60,7 @@ PWG.EventCenter = function() {
 						listeners.splice(idx, 1);
 					}
 				},
-				this
+				module
 			);
 		}
 	};
@@ -84,7 +84,7 @@ PWG.EventCenter = function() {
 				listener = [];
 				delete _listeners[key];
 			},
-			this
+			module
 		);
 		// set entire _listeners array to []
 		_listeners = [];
