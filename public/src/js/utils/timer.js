@@ -2,10 +2,11 @@ var PWG = PWG || {};
 PWG.Timer = function() {
 	
 	var module = {};
-	var _instances = [];
+	var _instances = {};
+	var _currentId = 0;
 	
-	function Controller() {
-		this.id = _instances.length;
+	function Controller(id) {
+		this.id = id;
 		this.timeout = null;
 		this.interval = null;
 	}
@@ -43,29 +44,35 @@ PWG.Timer = function() {
 	
 	module.Controller = Controller; 
 	
-	module.add = function() {
-		var instance = new Controller();
-		_instances.push(instance);
+	module.add = function(id) {
+		var key = id || _currentId;
+		var instance = new Controller(key);
+		_instances[key](instance);
+		_currentId++;
 		return instance;
 	};
 	
-	module.stopAll = function() {
-		if(_instances.length > 0) {
-			PWG.Utils.each(
-				_instances,
-				function(instance) {
-					instance.stop();
-				},
-				module
-			);
-		}
-	};
-
 	module.get = function(id) {
-		if(_instances.length < id) {
+		if(!_instances.hasOwnProperty(id)) {
 			return;
 		}
 		return _instances[id];
+	};
+	
+	module.stopAll = function() {
+		PWG.Utils.each(
+			_instances,
+			function(instance) {
+				instance.stop();
+			},
+			module
+		);
+	};
+
+	module.remove = function(id) {
+		if(_instances.hasOwnProperty(id)) {
+			delete _instance[id];
+		}
 	};
 	
 	return module;
