@@ -71,6 +71,7 @@ PWG.Timer = function() {
 
 	module.remove = function(id) {
 		if(_instances.hasOwnProperty(id)) {
+			_instances[id].stop();
 			delete _instance[id];
 		}
 	};
