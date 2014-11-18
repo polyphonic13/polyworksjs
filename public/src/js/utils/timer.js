@@ -47,7 +47,7 @@ PWG.Timer = function() {
 	module.add = function(id) {
 		var key = id || _currentId;
 		var instance = new Controller(key);
-		_instances[key](instance);
+		_instances[key] = instance;
 		_currentId++;
 		return instance;
 	};
