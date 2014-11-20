@@ -237,6 +237,10 @@ PWG.Utils = function() {
 		return Math.floor(Math.random() * s) + 1;
 	};
 
+	module.coinToss = function() {
+		return Math.random() < 0.5 ? true : false;
+	};
+	
 	module.formatMoney = function(n, c, d, t){
 		var c = isNaN(c = Math.abs(c)) ? 2 : c, 
 		d = d == undefined ? "." : d, 

@@ -5,19 +5,16 @@ PWG.Animator = function() {
 	var _instances = {};
 	var _currentId = 0;
 	
-	// function Controller(id, el, prop, unit, begin, end, time, callback, context, params) {
 	function Controller(id, el, props, time, callback, context, params) {
 		this.id = id;
 		this.el = el;
-		// this.prop = prop;
-		// this.unit = unit;
-		// this.begin = begin;
-		// this.end = end;
 		this.props = props;
 		PWG.Utils.each(
 			props,
 			function(prop, idx) {
-				prop.increment = (prop.end - prop.begin) / (time/10);
+				prop.increment = (prop.end > prop.begin) ? (prop.end - prop.begin) : -(prop.begin - prop.end);
+				prop.increment /= (time/10);
+				// trace('prop['+prop.key+'].increment = ' + prop.increment);
 				prop.currentVal = prop.begin;
 			},
 			this
@@ -26,8 +23,6 @@ PWG.Animator = function() {
 		this.callback = callback; 
 		this.context = context || window;
 		this.params = params || {};
-		// this.increment = (end - begin) / (time/10); // divide by 10 to accomodate for slowness of 1ms setTimeout
-		// this.currentVal = begin;
 	};
 	
 	Controller.prototype.start = function() {
@@ -37,7 +32,6 @@ PWG.Animator = function() {
 		var endCount = this.time / 10;
 		var _this = this;
 		this.timer.loop(
-			// this.time,
 			ANIMATION_DELAY,
 			function(t, params) {
 				var styleString = '';
@@ -53,7 +47,6 @@ PWG.Animator = function() {
 						} else {
 							styleString += prop.key + ':' + prop.currentVal + prop.unit + '; ';
 						}
-						// _this.el.style[prop.key] = prop.currentVal + prop.unit;
 					},
 					this
 				);
@@ -64,17 +57,9 @@ PWG.Animator = function() {
 				// trace('counter = ' + counter + ' endCount = ' + endCount);
 				counter++;
 				if(counter >= endCount) {
-				// if(counter = 10) {
 					PWG.Timer.remove(t.id);
 					_this.complete();
 				}
-				// _this.currentVal += _this.increment;
-				// _this.el.style[_this.prop] = _this.currentVal + _this.unit;
-				// if(_this.currentVal >= _this.end) {
-				// 	t.stop();
-				// 	PWG.Timer.remove(t.id);
-				// 	_this.complete();
-				// }
 			},
 			this.params,
 			this
@@ -89,16 +74,14 @@ PWG.Animator = function() {
 	
 	Controller.prototype.complete = function() {
 		if(this.callback) {
-			this.callback.call(this.context, this.id, this.el);
+			this.callback.call(this.context, this.id, this.el, this.params);
 		}
 	};
 	
 	module.Controller = Controller;
 	
-	// module.create = function(el, prop, unit, start, end, time, autoStart, callback, context, params, id) {
 	module.create = function(el, props, time, autoStart, callback, context, params, id) {
 		var key = 'animation_' + (id || _currentId);
-		// var controller = new Controller(id, el, prop, unit, start, end, time, callback, context, params);
 		var controller = new Controller(id, el, props, time, callback, context, params);
 		if(autoStart) {
 			controller.start();
@@ -113,6 +96,16 @@ PWG.Animator = function() {
 			return;
 		}
 		return _instances[id];
+	};
+	
+	module.stopAll = function() {
+		PWG.Utils.each(
+			_instances,
+			function(controller) {
+				controller.stop();
+			},
+			module
+		);
 	};
 	
 	return module;
