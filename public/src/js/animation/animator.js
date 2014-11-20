@@ -45,7 +45,7 @@ PWG.Animator = function() {
 					_this.props,
 					function(prop, idx) {
 						prop.currentVal += prop.increment;
-						trace('prop['+idx+'].currentVal = ' + prop.currentVal + ', end = ' + prop.end);
+						// trace('prop['+idx+'].currentVal = ' + prop.currentVal + ', end = ' + prop.end);
 						if(prop.key === 'rotate') {
 							styleString += '-webkit-transform:rotate(' + prop.currentVal + 'deg); ';
 							styleString += '-ms-transform:rotate(' + prop.currentVal + 'deg); ';
@@ -57,8 +57,11 @@ PWG.Animator = function() {
 					},
 					this
 				);
+				if(params.styleString) {
+					styleString += params.styleString;
+				}
 				_this.el.setAttribute('style', styleString);
-				trace('counter = ' + counter + ' endCount = ' + endCount);
+				// trace('counter = ' + counter + ' endCount = ' + endCount);
 				counter++;
 				if(counter >= endCount) {
 				// if(counter = 10) {
@@ -76,6 +79,12 @@ PWG.Animator = function() {
 			this.params,
 			this
 		);
+	};
+	
+	Controller.prototype.stop = function() {
+		if(this.timer) {
+			this.timer.stop();
+		}
 	};
 	
 	Controller.prototype.complete = function() {
