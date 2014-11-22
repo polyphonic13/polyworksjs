@@ -1,7 +1,17 @@
 PWG.DeviceUtils = function() {
 	var ua = navigator.userAgent.toLowerCase();
+	var _fullScreenExitCallbacks = [];
 	
+	if (document.addEventListener)
+	{
+	    document.addEventListener('webkitfullscreenchange', exitHandler, false);
+	    document.addEventListener('mozfullscreenchange', exitHandler, false);
+	    document.addEventListener('fullscreenchange', exitHandler, false);
+	    document.addEventListener('MSFullscreenChange', exitHandler, false);
+	}
+
 	var module = {
+		isFullScreen: false,
 		browsers: {
 			IPHONE: 'Iphone',
 			ANDROID: 'Android',
@@ -65,13 +75,41 @@ PWG.DeviceUtils = function() {
 			if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
 				trace('requesting fullscreen');
 				requestFullScreen.call(docEl);
+				module.isFullScreen = true;
 			}
 			else {
 				cancelFullScreen.call(doc);
+				module.isFullScreen = false;
 			}
+		},
+		addFullScreenExitCallback: function(callback, context, params) {
+			var ctx = context || window;
+			var p = params || {};
+			_fullScreenExitCallbacks.push({
+				callback: callback,
+				context: ctx,
+				params: p
+			})
 		}
 	};
 	
+	function exitHandler()
+	{
+	    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null)
+	    {
+			module.isFullScreen = false;
+			if(_fullScreenExitCallbacks.length > 0) {
+				PWG.Utils.each(
+					_fullScreenExitCallbacks,
+					function(exitCb) {
+						exitCb.callback.call(exitCb.context, exitCb.params);
+					},
+					module
+				);
+			}
+	    }
+	}
+
 	return module;
 }();
 /*
