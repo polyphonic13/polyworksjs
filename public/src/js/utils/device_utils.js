@@ -1,9 +1,15 @@
 PWG.DeviceUtils = function() {
 	var ua = navigator.userAgent.toLowerCase();
+	var doc = window.document;
+	var docEl = doc.documentElement;
+
+	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+	var _isFullScreen = false;
 	var _fullScreenExitCallbacks = [];
 	
-	if (document.addEventListener)
-	{
+	if (document.addEventListener) {
 	    document.addEventListener('webkitfullscreenchange', exitHandler, false);
 	    document.addEventListener('mozfullscreenchange', exitHandler, false);
 	    document.addEventListener('fullscreenchange', exitHandler, false);
@@ -11,7 +17,6 @@ PWG.DeviceUtils = function() {
 	}
 
 	var module = {
-		isFullScreen: false,
 		browsers: {
 			IPHONE: 'Iphone',
 			ANDROID: 'Android',
@@ -66,21 +71,29 @@ PWG.DeviceUtils = function() {
 			return browser;
 		},
 		toggleFullScreen: function() {
-			var doc = window.document;
-			var docEl = doc.documentElement;
-
-			var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-			var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
 			if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-				trace('requesting fullscreen');
-				requestFullScreen.call(docEl);
-				module.isFullScreen = true;
+				module.enterFullScreen();
 			}
 			else {
-				cancelFullScreen.call(doc);
-				module.isFullScreen = false;
+				module.exitFullScreen();
 			}
+		},
+		enterFullScreen: function() {
+			// trace('requesting fullscreen');
+			if(!module._isFullScreen) {
+				module._isFullScreen = true;
+				requestFullScreen.call(docEl);
+				// trace('device utils _isFullScreen = ' + module._isFullScreen);
+			}
+		},
+		exitFullScreen: function() {
+			if(module._isFullScreen) {
+				module._isFullScreen = false;
+				cancelFullScreen.call(doc);
+			}
+		},
+		getIsFullScreen: function() {
+			return _isFullScreen;
 		},
 		addFullScreenExitCallback: function(callback, context, params) {
 			var ctx = context || window;
@@ -93,11 +106,10 @@ PWG.DeviceUtils = function() {
 		}
 	};
 	
-	function exitHandler()
-	{
-	    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null)
-	    {
-			module.isFullScreen = false;
+	function exitHandler() {
+	    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null) {
+			// trace('exit fullscreen handler');
+			module._isFullScreen = false;
 			if(_fullScreenExitCallbacks.length > 0) {
 				PWG.Utils.each(
 					_fullScreenExitCallbacks,
