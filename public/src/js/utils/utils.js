@@ -66,6 +66,20 @@ PWG.Utils = function() {
 		return Object.prototype.hasOwnProperty.call(obj, prop);
 	};
 	
+	module.contains = function(list, value) {
+		var contains = null;
+		module.each(
+			list,
+			function(item) {
+				if(item === value) {
+					contains = value;
+				}
+			},
+			module
+		);
+		return contains;
+	};
+	
 	module.find = function(list, condition, context) {
 		var ctx = context || window;
 		var value = null;
