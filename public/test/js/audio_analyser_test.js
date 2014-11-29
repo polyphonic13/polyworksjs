@@ -123,12 +123,34 @@ var AudioAnalyserTest = function() {
 	        // set the fill style
 	        canvasCtx.fillStyle = gradient;
 	        drawSpectrum(array);
-	        
+
+			if(!outputOnce) {
+				console.log('array length = ' + array.length);
+				outputOnce = true;
+			}
+			var toggle = false; 
+			
 			function drawSpectrum(array) {
 				PWG.Utils.each(
 					array,
 					function(value, idx) {
-						canvasCtx.fillRect(idx * 5, 325-value, 3, HEIGHT);
+						// canvasCtx.fillRect(idx * 5, 325-value, 3, HEIGHT);
+						if(idx < divBoxes.length) {
+							var p = 100/radius;
+
+							// var offset = PWG.Utils.diceRoll(100);
+							var offset = value;
+							// if(offset < 10) rand = 10;
+							// var r2 = (offset * p * 10) + min;
+							var r2 = (offset * p * 7) + min;
+							// trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
+							var x = x0 + r2 * Math.cos(2 * Math.PI * idx / items);
+							var y = y0 + r2 * Math.sin(2 * Math.PI * idx / items);
+
+							divBoxes[idx].style.left = x + 'px';
+							divBoxes[idx].style.top = y + 'px';
+						}
+						
 					},
 					module
 				);

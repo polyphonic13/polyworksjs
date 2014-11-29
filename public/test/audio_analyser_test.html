@@ -39,48 +39,55 @@
 			ctx: this
 		};
 		
+		var divBoxes = [];
+		var body = document.getElementsByTagName('body')[0];
+		var winW = document.documentElement.clientWidth;
+		var winH = document.documentElement.clientHeight;
+		var larger = (winW > winH) ? winW : winH; 
+		var diameter = larger * 0.75;
+		var radius = diameter/2;
+		var x0 = larger/2;
+		var y0 = winH/2;
+		var items = 512;
+		var min = 20;
+		var boxesPercent = 100/items;
+        var outputOnce = false;
+
 		PWG.Utils.onDomReady(function() {
 			// PWG.AudioManager.createEl(audioConfig);
-			// AudioAnalyserTest.init();
+			AudioAnalyserTest.init();
 
-			var body = document.getElementsByTagName('body')[0];
-			var winW = document.documentElement.clientWidth;
-			var winH = document.documentElement.clientHeight;
-			var larger = (winW > winH) ? winW : winH; 
-			var diameter = larger * 0.75;
-			var radius = diameter/2;
-			var x0 = larger/2;
-			var y0 = winH/2;
-			var items = 90;
-			var percent = 100/items;
-			var half = false; 
 			
 			for (var i = 0; i < items; i++) {
 				var b = document.createElement('div');
 				b.className = 'lil_div';
-				var p = 100/radius;
-				// var r2 = (half) ? radius/2 : radius;
-				var rand = PWG.Utils.diceRoll(100);
-				if(rand < 10) rand = 10;
-				var r2 = rand * p * 10;
-				trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
-				var x = x0 + r2 * Math.cos(2 * Math.PI * i / items);
-				var y = y0 + r2 * Math.sin(2 * Math.PI * i / items);
-				
-				var p = i * percent;
+				divBoxes.push(b);
+
+				var p = i * boxesPercent;
 
 				var bg = PWG.Color.percentToHex(p/100);
 
 				b.style.background = bg;
 				b.style.width = larger / items + 'px';
 				b.style.height = larger / items + 'px';
-				b.style.left = x + 'px';
-				b.style.top = y + 'px';
-
-				body.appendChild(b);
 				
-				half = !half;
+				body.appendChild(b);
 			}
+			
+			// for (var i = 0; i < items; i++) {
+			// 	var p = 100/radius;
+			// 
+			// 	var rand = PWG.Utils.diceRoll(100);
+			// 	// if(rand < 10) rand = 10;
+			// 	var r2 = (rand * p * 10) + min;
+			// 	// trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
+			// 	var x = x0 + r2 * Math.cos(2 * Math.PI * i / items);
+			// 	var y = y0 + r2 * Math.sin(2 * Math.PI * i / items);
+			// 	
+			// 	divBoxes[i].style.left = x + 'px';
+			// 	divBoxes[i].style.top = y + 'px';
+			// 	
+			// }
 		});
 		</script>
 		
