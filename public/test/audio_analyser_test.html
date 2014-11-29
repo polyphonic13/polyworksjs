@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<script type="text/javascript" src="../src/js/utils/logger.js"></script>
+	<script type="text/javascript" src="../src/js/utils/utils.js"></script>
+	<script type="text/javascript" src="../src/js/audio/audio_manager.js"></script>
+	<script type="text/javascript" src="../src/js/colors/color.js"></script>
+	<script type="text/javascript" src="js/audio_analyser_test.js"></script>
+	</head>
+	<style>
+		body {
+			background: black;
+		}
+		.lil_div {
+/*			background: #123456;*/
+			position:absolute;
+			z-index: 100;
+		}
+	</style>
+	<body>
+
+
+		<canvas id="analyser_output" width="800" height="512" />
+		<script type="text/javascript">
+		function audioCreated() {
+			trace('audioCreated');
+			// PWG.AudioManager.play(audioConfig.id);
+		}
+		
+		var audioConfig = {
+			id: 'marchToTheSea',
+			sources: [{
+				src: 'assets/audio/march_to_the_sea.mp3'
+			},
+			{
+				src: 'assets/audio/march_to_the_sea.ogg'
+			}],
+			cb: audioCreated,
+			ctx: this
+		};
+		
+		PWG.Utils.onDomReady(function() {
+			// PWG.AudioManager.createEl(audioConfig);
+			// AudioAnalyserTest.init();
+
+			var body = document.getElementsByTagName('body')[0];
+			var winW = document.documentElement.clientWidth;
+			var winH = document.documentElement.clientHeight;
+			var larger = (winW > winH) ? winW : winH; 
+			var diameter = larger * 0.75;
+			var radius = diameter/2;
+			var x0 = larger/2;
+			var y0 = winH/2;
+			var items = 90;
+			var percent = 100/items;
+			var half = false; 
+			
+			for (var i = 0; i < items; i++) {
+				var b = document.createElement('div');
+				b.className = 'lil_div';
+				var p = 100/radius;
+				// var r2 = (half) ? radius/2 : radius;
+				var rand = PWG.Utils.diceRoll(100);
+				if(rand < 10) rand = 10;
+				var r2 = rand * p * 10;
+				trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
+				var x = x0 + r2 * Math.cos(2 * Math.PI * i / items);
+				var y = y0 + r2 * Math.sin(2 * Math.PI * i / items);
+				
+				var p = i * percent;
+
+				var bg = PWG.Color.percentToHex(p/100);
+
+				b.style.background = bg;
+				b.style.width = larger / items + 'px';
+				b.style.height = larger / items + 'px';
+				b.style.left = x + 'px';
+				b.style.top = y + 'px';
+
+				body.appendChild(b);
+				
+				half = !half;
+			}
+		});
+		</script>
+		
+	</body>
+</html>
