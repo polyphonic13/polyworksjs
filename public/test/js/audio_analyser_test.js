@@ -14,8 +14,9 @@ var jsNode;
 
 var AudioAnalyserTest = function() {	
 	var module = {};
-	var AUDIO_FILE_URL = 'assets/audio/march_to_the_sea.mp3';
+	// var AUDIO_FILE_URL = 'assets/audio/march_to_the_sea.mp3';
 	// var AUDIO_FILE_URL = 'assets/audio/fall_into_autumn.mp3';
+	var AUDIO_FILE_URL = 'assets/audio/1777.mp3';
 	
 	var WIDTH = 800;
 	var HEIGHT = 512;
@@ -122,38 +123,57 @@ var AudioAnalyserTest = function() {
 
 	        // set the fill style
 	        canvasCtx.fillStyle = gradient;
-	        drawSpectrum(array);
 
-			if(!outputOnce) {
-				console.log('array length = ' + array.length);
-				outputOnce = true;
-			}
 			var toggle = false; 
-			
-			function drawSpectrum(array) {
+			var quarter = Math.floor(array.length/4);
+			var freq = array;
+			// var freq = array.splice(quarter, (array.length - quarter));
+
+	        drawSpectrum(freq);
+
+			function drawSpectrum(freq) {
+				var e;
+				
 				PWG.Utils.each(
 					array,
 					function(value, idx) {
+						// EQ BARS: 
 						// canvasCtx.fillRect(idx * 5, 325-value, 3, HEIGHT);
-						if(idx < divBoxes.length) {
-							var p = 100/radius;
-
-							// var offset = PWG.Utils.diceRoll(100);
-							var offset = value;
-							// if(offset < 10) rand = 10;
-							// var r2 = (offset * p * 10) + min;
-							var r2 = (offset * p * 7) + min;
-							// trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
-							var x = x0 + r2 * Math.cos(2 * Math.PI * idx / items);
-							var y = y0 + r2 * Math.sin(2 * Math.PI * idx / items);
-
-							divBoxes[idx].style.left = x + 'px';
-							divBoxes[idx].style.top = y + 'px';
+						
+						// RADIAL RAINBOW
+						if(!outputOnce) {
+							if(idx > (quarter) && idx < (array.length - quarter)) {
+								// console.log('array length = ' + array.length + ', idx = ' + idx + ', e = '+ (idx - quarter));
+							}
 						}
+						// if(idx < divBoxes.length) {
+							// if(idx > array.length/2) {
+							if(idx > (quarter) && idx < (array.length - quarter)) {
+									var p = 100/radius;
+								// e = (idx - (array.length/2));
+								// e = idx;
+								e = (idx - quarter);
+								
+								var offset = value;
+
+								var r2 = (offset * p * 7) + min;
+
+								// if(toggle) r2 *= 1.2;
+
+								var x = x0 + r2 * Math.cos(2 * Math.PI * e / items);
+								var y = y0 + r2 * Math.sin(2 * Math.PI * e / items);
+
+								divBoxes[e].style.left = x + 'px';
+								divBoxes[e].style.top = y + 'px';
+
+								toggle = !toggle;
+							}
+						// }
 						
 					},
 					module
 				);
+				outputOnce = true;
 			}
 
 			// SPECTOGRAM
@@ -227,6 +247,7 @@ var AudioAnalyserTest = function() {
 			analyser = audioCtx.createAnalyser();
 			analyser.smoothingTimeConstant = 0.3;
 			analyser.fftSize = 1024;
+			// analyser.fftSize = 512;
 			// analyser.fftSize = 256;
 			
 	        sourceNode = audioCtx.createBufferSource();
@@ -282,54 +303,6 @@ var AudioAnalyserTest = function() {
 	
 		trace('audioCtx = ', audioCtx.currentTime);
 		
-
-		/*
-
-		var bufferLength = analyser.frequencyBinCount;
-		var dataArray = new Uint8Array(bufferLength);
-		analyser.getByteTimeDomainData(dataArray);
-
-		// draw an oscilloscope of the current audio source
-
-		function draw() {
-
-			drawVisual = requestAnimationFrame(draw);
-
-			analyser.getByteTimeDomainData(dataArray);
-			// trace('analyser getByteTimeDomainData = ', dataArray);
-			// trace('audioCtx = ', audioCtx.currentTime);
-			
-			canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-			canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-			canvasCtx.lineWidth = 2;
-			canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
-			canvasCtx.beginPath();
-
-			var sliceWidth = WIDTH * 1.0 / bufferLength;
-			var x = 0;
-
-			for (var i = 0; i < bufferLength; i++) {
-
-				var v = dataArray[i] / 128.0;
-				var y = v * HEIGHT / 2;
-
-				if (i === 0) {
-					canvasCtx.moveTo(x, y);
-				} else {
-					canvasCtx.lineTo(x, y);
-				}
-
-				x += sliceWidth;
-			}
-
-			canvasCtx.lineTo(canvas.width, canvas.height / 2);
-			canvasCtx.stroke();
-		};
-
-	    draw();
-		*/
 	};
 	
 	return module;

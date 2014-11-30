@@ -3,6 +3,8 @@
 	<head>
 	<script type="text/javascript" src="../src/js/utils/logger.js"></script>
 	<script type="text/javascript" src="../src/js/utils/utils.js"></script>
+	<script type="text/javascript" src="../src/js/utils/timer.js"></script>
+	<script type="text/javascript" src="../src/js/animation/animator.js"></script>
 	<script type="text/javascript" src="../src/js/audio/audio_manager.js"></script>
 	<script type="text/javascript" src="../src/js/colors/color.js"></script>
 	<script type="text/javascript" src="js/audio_analyser_test.js"></script>
@@ -10,6 +12,11 @@
 	<style>
 		body {
 			background: black;
+		}
+		#block_container {
+			width:100%;
+			height: 100%;
+			position: absolute;
 		}
 		.lil_div {
 /*			background: #123456;*/
@@ -19,7 +26,7 @@
 	</style>
 	<body>
 
-
+		<div id="block_container"></div>
 		<canvas id="analyser_output" width="800" height="512" />
 		<script type="text/javascript">
 		function audioCreated() {
@@ -40,19 +47,48 @@
 		};
 		
 		var divBoxes = [];
-		var body = document.getElementsByTagName('body')[0];
+		// var parentEl = document.getElementsByTagName('body')[0];
+		var parentEl = document.getElementById('block_container');
 		var winW = document.documentElement.clientWidth;
 		var winH = document.documentElement.clientHeight;
 		var larger = (winW > winH) ? winW : winH; 
-		var diameter = larger * 0.75;
+		var diameter = larger;
 		var radius = diameter/2;
 		var x0 = larger/2;
 		var y0 = winH/2;
-		var items = 512;
+		var items = 256;
 		var min = 20;
 		var boxesPercent = 100/items;
         var outputOnce = false;
 
+		
+		function rotateHolder() {
+			var time = 20000;
+			var endRot = Math.random() * 360;
+			var neg = PWG.Utils.coinToss();
+			var beginRot = (neg) ? (endRot - 180) : (endRot + 180);
+
+			var animations = [{ key: 'rotate', begin: beginRot, end: endRot, unit: '' }];
+
+			PWG.Animator.create(
+				parentEl, 
+				animations, 
+				time, 
+				true, 
+				function(animationId, el, params) {
+					rotationComplete();
+				}, 
+				this,
+				{}
+			);
+			
+		}
+		
+		function rotationComplete() {
+			trace('rotationComplete');
+			rotateHolder();
+		}
+		
 		PWG.Utils.onDomReady(function() {
 			// PWG.AudioManager.createEl(audioConfig);
 			AudioAnalyserTest.init();
@@ -68,26 +104,14 @@
 				var bg = PWG.Color.percentToHex(p/100);
 
 				b.style.background = bg;
-				b.style.width = larger / items + 'px';
-				b.style.height = larger / items + 'px';
+				b.style.width = larger / (items) + 'px';
+				b.style.height = larger / (items) + 'px';
 				
-				body.appendChild(b);
+				parentEl.appendChild(b);
 			}
 			
-			// for (var i = 0; i < items; i++) {
-			// 	var p = 100/radius;
-			// 
-			// 	var rand = PWG.Utils.diceRoll(100);
-			// 	// if(rand < 10) rand = 10;
-			// 	var r2 = (rand * p * 10) + min;
-			// 	// trace('radius = ' + radius + ', p = ' + p + ', rand = ' + rand + ', r2 = ' + r2);
-			// 	var x = x0 + r2 * Math.cos(2 * Math.PI * i / items);
-			// 	var y = y0 + r2 * Math.sin(2 * Math.PI * i / items);
-			// 	
-			// 	divBoxes[i].style.left = x + 'px';
-			// 	divBoxes[i].style.top = y + 'px';
-			// 	
-			// }
+			rotateHolder();
+
 		});
 		</script>
 		
