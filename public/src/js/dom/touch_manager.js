@@ -11,19 +11,43 @@ PWG.TouchManager = function() {
 	}
 
 	TouchController.prototype.addListeners = function() {
-		this.el.addEventListener("touchstart", this.onTouchStart, false);
-		this.el.addEventListener("touchmove", this.onTouchMove, false);
-		this.el.addEventListener("touchend", this.onTouchEnd, false);
-		this.el.addEventListener("touchleave", this.onTouchEnd, false);
-		this.el.addEventListener("touchcancel", this.onTouchCancel, false);
+		this.startListener = function(listener) {
+			return function(event) {
+				listener.onTouchStart.call(listener, event);
+			}
+		}(this);
+
+		this.moveListener = function(listener) {
+			return function(event) {
+				listener.onTouchMove.call(listener, event);
+			}
+		}(this);
+		
+		this.endListener = function(listener) {
+			return function(event) {
+				listener.onTouchEnd.call(listener, event);
+			}
+		}(this);
+		
+		this.cancelListener = function(listener) {
+			return function(event) {
+				listener.onTouchCancel.call(listener, event);
+			}
+		}(this);
+		
+		this.el.addEventListener("touchstart", this.startListener, false);
+		this.el.addEventListener("touchmove", this.moveListener, false);
+		this.el.addEventListener("touchend", this.endListener, false);
+		this.el.addEventListener("touchleave", this.endListener, false);
+		this.el.addEventListener("touchcancel", this.cancelListener, false);
 	};
 
 	TouchController.prototype.removeListeners = function() {
-		this.el.removeEventListener("touchstart", this.onTouchStart, false);
-		this.el.removeEventListener("touchmove", this.onTouchMove, false);
-		this.el.removeEventListener("touchend", this.onTouchEnd, false);
-		this.el.removeEventListener("touchleave", this.onTouchEnd, false);
-		this.el.removeEventListener("touchcancel", this.onTouchCancel, false);
+		this.el.removeEventListener("touchstart", this.startListener, false);
+		this.el.removeEventListener("touchmove", this.moveListener, false);
+		this.el.removeEventListener("touchend", this.endListener, false);
+		this.el.removeEventListener("touchleave", this.endListener, false);
+		this.el.removeEventListener("touchcancel", this.cancelListener, false);
 	};
 	
 	TouchController.prototype.onTouchStart = function(evt) {
@@ -34,9 +58,10 @@ PWG.TouchManager = function() {
 		PWG.Utils.each(
 			touches,
 			function(touch, t) {
+				// trace('touch start['+t+'], this = ', this);
 				this.currentTouches.push(_copyTouch(touch));
 				if(this.listeners.hasOwnProperty('start')) {
-					this.listeners['start'].call(this, touch);
+					this.listeners['start'].call(this, touch, this.el, this);
 				}
 			},
 			this
@@ -54,7 +79,7 @@ PWG.TouchManager = function() {
 				var idx = _getTouchById(touch.id, this);
 				if(idx > -1) {
 					if(this.listeners.hasOwnProperty('move')) {
-						this.listeners['move'].call(this, touch);
+						this.listeners['move'].call(this, touch, this.el, this);
 					}
 					this.currentTouches.splice(idx, 1, _copyTouch(touch));
 				}
@@ -73,8 +98,8 @@ PWG.TouchManager = function() {
 			function(touch, t) {
 				var idx = _getTouchById(touch.id, this);
 				if(idx > -1) {
-					if(this.listeners.hasOwnProperty('move')) {
-						this.listeners['move'].call(this, touch);
+					if(this.listeners.hasOwnProperty('end')) {
+						this.listeners['end'].call(this, touch, this.el, this);
 					}
 					this.currentTouches.splice(idx, 1);
 				}
@@ -93,8 +118,8 @@ PWG.TouchManager = function() {
 			function(touch, t) {
 				var idx = _getTouchById(touch.id, this);
 				if(idx > -1) {
-					if(this.listeners.hasOwnProperty('end')) {
-						this.listeners['end'].call(this);
+					if(this.listeners.hasOwnProperty('cancel')) {
+						this.listeners['cancel'].call(this);
 					}
 					this.currentTouches.splice(t, 1);
 				}
@@ -125,7 +150,7 @@ PWG.TouchManager = function() {
 		var key = id || el.id;
 		var touchController = new TouchController(el, listeners);
 		module.touchControllers[key] = touchController;
-		return touchContoller;
+		return touchController;
 	};
 	
 	module.remove = function(id) {
