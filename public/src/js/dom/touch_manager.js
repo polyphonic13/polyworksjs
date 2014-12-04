@@ -116,7 +116,6 @@ PWG.TouchManager = function() {
 	TouchController.prototype.destroy = function() {
 		this.removeListeners();
 		this.removeCurrentTouches();
-		this = null;
 	};
 	
 	module.TouchController = TouchController;
