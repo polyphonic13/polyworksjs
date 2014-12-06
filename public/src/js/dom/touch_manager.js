@@ -22,43 +22,74 @@ PWG.TouchManager = function() {
 	}
 
 	TouchController.prototype.addListeners = function() {
-		this.startListener = function(listener) {
-			return function(event) {
-				listener.onTouchStart.call(listener, event);
-			};
-		}(this);
+		if(PWG.DeviceUtils.isMobile()) {
+			this.touchStartListener = function(listener) {
+				return function(event) {
+					listener.onTouchStart.call(listener, event);
+				};
+			}(this);
 
-		this.moveListener = function(listener) {
-			return function(event) {
-				listener.onTouchMove.call(listener, event);
-			};
-		}(this);
-		
-		this.endListener = function(listener) {
-			return function(event) {
-				listener.onTouchEnd.call(listener, event);
-			};
-		}(this);
-		
-		this.cancelListener = function(listener) {
-			return function(event) {
-				listener.onTouchCancel.call(listener, event);
-			};
-		}(this);
-		
-		this.el.addEventListener("touchstart", this.startListener, false);
-		this.el.addEventListener("touchmove", this.moveListener, false);
-		this.el.addEventListener("touchend", this.endListener, false);
-		this.el.addEventListener("touchleave", this.endListener, false);
-		this.el.addEventListener("touchcancel", this.cancelListener, false);
+			this.touchMoveListener = function(listener) {
+				return function(event) {
+					listener.onTouchMove.call(listener, event);
+				};
+			}(this);
+
+			this.touchEndListener = function(listener) {
+				return function(event) {
+					listener.onTouchEnd.call(listener, event);
+				};
+			}(this);
+
+			this.touchCancelListener = function(listener) {
+				return function(event) {
+					listener.onTouchCancel.call(listener, event);
+				};
+			}(this);
+
+			this.el.addEventListener("touchstart", this.touchStartListener, false);
+			this.el.addEventListener("touchmove", this.touchMoveListener, false);
+			this.el.addEventListener("touchend", this.touchEndListener, false);
+			this.el.addEventListener("touchleave", this.touchEndListener, false);
+			this.el.addEventListener("touchcancel", this.touchCancelListener, false);
+
+		} else {
+			this.mouseDownListener = function(listener) {
+				return function(event) {
+					listener.onMouseDown.call(listener, event);
+				};
+			}(this);
+
+			this.mouseMoveListener = function(listener) {
+				return function(event) {
+					listener.onMouseMove.call(listener, event);
+				};
+			}(this);
+
+			this.mouseUpListener = function(listener) {
+				return function(event) {
+					listener.onMouseUp.call(listener, event);
+				};
+			}(this);
+
+			this.el.addEventListener("mousedown", this.mouseDownListener, false);
+			this.el.addEventListener("mousemove", this.mouseMoveListener, false);
+			this.el.addEventListener("mouseup", this.mouseUpListener, false);
+		}
 	};
 
 	TouchController.prototype.removeListeners = function() {
-		this.el.removeEventListener("touchstart", this.startListener, false);
-		this.el.removeEventListener("touchmove", this.moveListener, false);
-		this.el.removeEventListener("touchend", this.endListener, false);
-		this.el.removeEventListener("touchleave", this.endListener, false);
-		this.el.removeEventListener("touchcancel", this.cancelListener, false);
+		if(PWG.DeviceUtils.isMobile()) {
+			this.el.removeEventListener("touchstart", this.touchStartListener, false);
+			this.el.removeEventListener("touchmove", this.touchMoveListener, false);
+			this.el.removeEventListener("touchend", this.touchEndListener, false);
+			this.el.removeEventListener("touchleave", this.touchEndListener, false);
+			this.el.removeEventListener("touchcancel", this.touchCancelListener, false);
+		} else {
+			this.el.removeEventListener("mousedown", this.mouseDownListener, false);
+			this.el.removeEventListener("mousemove", this.mouseMoveListener, false);
+			this.el.removeEventListener("mouseup", this.mouseUpListener, false);
+		}
 	};
 	
 	TouchController.prototype.onTouchStart = function(evt) {
@@ -70,10 +101,7 @@ PWG.TouchManager = function() {
 		for(i = 0; i < l; i++) {
 			this.currentTouches.push(_copyTouch(touches[i]));
 			// trace('this.currentTouches = ', this.currentTouches);
-			if(this.listeners.hasOwnProperty('start')) {
-				var start = this.listeners['start'];
-				start.fn.call(start.ctx, touch, this.el, this, start.params);
-			}
+			this.onStart(touches[i]);
 		}
 	};
 	
@@ -92,11 +120,7 @@ PWG.TouchManager = function() {
 			// trace('\tidx = ' + idx);
 			if(idx > -1) {
 				// trace('has move = ' + (this.listeners.hasOwnProperty('move')));
-				if(this.listeners.hasOwnProperty('move')) {
-					var move = this.listeners['move'];
-					// trace('\tthere is a move');
-					move.fn.call(move.ctx, touches[i], this.el, this, move.params);
-				}
+				this.onMove(touches[i]);
 				this.currentTouches.splice(idx, 1, _copyTouch(touches[i]));
 			}
 		}
@@ -112,11 +136,7 @@ PWG.TouchManager = function() {
 		for(i = 0; i < l; i++) {
 			var idx = _getTouchById(touches[i].identifier, this);
 			if(idx > -1) {
-				if(this.listeners.hasOwnProperty('end')) {
-					var end = this.listeners['end'];
-					// trace('there is an end: ', end);
-					end.fn.call(end.ctx, touches[i], this.el, this, end.params);
-				}
+				this.onEnd(touches[i]);
 				this.currentTouches.splice(idx, 1);
 			}
 		}
@@ -131,12 +151,61 @@ PWG.TouchManager = function() {
 		for(i = 0; i < l; i++) {
 			var idx = _getTouchById(touches[i].identifier, this);
 			if(idx > -1) {
-				if(this.listeners.hasOwnProperty('cancel')) {
-					var cancel = this.listeners['cancel'];
-					cancel.fn.call(cancel.ctx, touches[i], this.el, this, cancel.params);
-				}
+				this.onCancel(touches[i]);
 				this.currentTouches.splice(i, 1);
 			}
+		}
+	};
+	
+	TouchController.prototype.onMouseDown = function(evt) {
+		evt.preventDefault();
+		// trace('TouchController/onMouseDown, evt = ', evt);
+		this.mouseDown = true;
+		this.onStart(evt);
+	};
+	
+	TouchController.prototype.onMouseMove = function(evt) {
+		evt.preventDefault();
+		// trace('TouchController/onMouseMove, evt = ', evt);
+		if(this.mouseDown) {
+			this.onMove(evt);
+		}
+	};
+	
+	TouchController.prototype.onMouseUp = function(evt) {
+		evt.preventDefault();
+		// trace('TouchController/onMouseUp, evt = ', evt);
+		this.mouseDown = false;
+		this.onEnd(evt);
+	};
+	
+	TouchController.prototype.onStart = function(evt) {
+		if(this.listeners.hasOwnProperty('start')) {
+			var start = this.listeners['start'];
+			start.fn.call(start.ctx, evt, this.el, this, start.params);
+		}
+	};
+	
+	TouchController.prototype.onMove = function(evt) {
+		if(this.listeners.hasOwnProperty('move')) {
+			var move = this.listeners['move'];
+			// trace('\tthere is a move');
+			move.fn.call(move.ctx, evt, this.el, this, move.params);
+		}
+	};
+	
+	TouchController.prototype.onEnd = function(evt) {
+		if(this.listeners.hasOwnProperty('end')) {
+			var end = this.listeners['end'];
+			// trace('there is an end: ', end);
+			end.fn.call(end.ctx, evt, this.el, this, end.params);
+		}
+	};
+	
+	TouchController.prototype.onCancel = function(evt) {
+		if(this.listeners.hasOwnProperty('cancel')) {
+			var cancel = this.listeners['cancel'];
+			cancel.fn.call(cancel.ctx, evt, this.el, this, cancel.params);
 		}
 	};
 	
