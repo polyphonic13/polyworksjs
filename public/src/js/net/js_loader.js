@@ -50,7 +50,7 @@ PWG.JsLoader = function() {
 	};
 
 	Controller.prototype.load = function(url, key, success, context, timeout, max) {
-		// trace('JsLoader/load, key = ' + key + ', url = ' + url + ', context = ' + context);
+		trace('JsLoader/load, key = ' + key + ', url = ' + url + ', context = ' + context);
 		this.maxLoadTime = max || LOAD_TIMEOUT; 
 
 		var ctx = context || window;
@@ -142,26 +142,24 @@ PWG.JsLoader = function() {
 		this.loadQueue = [];
 	};
 	
-	module.Controller = Controller; 
-	
-	module.controllers = {};
+	_controllers = {};
 	
 	module.create = function(id) {
 		var controller = new Controller(id);
-		module.controllers[id] = controller; 
+		_controllers[id] = controller; 
 		return controller;
 	};
 	
 	module.load = function(id, url, key, success, context, timeout, max) {
-		if(module.controllers.hasOwnProperty(id)) {
-			module.controllers[id].load(url, key, success, context, timeout, max);
+		if(_controllers.hasOwnProperty(id)) {
+			_controllers[id].load(url, key, success, context, timeout, max);
 		}
 	};
 	
 	module.remove = function(id) {
-		if(module.controllers.hasOwnProperty(id)) {
-			module.controllers[id].destroy();
-			delete module.controllers[id];
+		if(_controllers.hasOwnProperty(id)) {
+			_controllers[id].destroy();
+			delete _controllers[id];
 		}
 	};
 	
