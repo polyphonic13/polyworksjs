@@ -4,8 +4,7 @@ PWG.Utils = function() {
 
 	module.each = function(list, callback, context) {
 		if(Array.isArray(list)) {
-			var length = list.length;
-			for(var i = 0; i < length; i++) {
+			for(var i = 0, var length = list.length; i < length; i++) {
 				callback.call(context, list[i], i, list);
 			}
 		} else {
@@ -84,8 +83,8 @@ PWG.Utils = function() {
 		var ctx = context || window;
 		var value = null;
 		if(Array.isArray(list)) {
-			var length = list.length;
-			for(var i = 0; i < length; i++) {
+
+			for(var i = 0, var length = list.length; i < length; i++) {
 				if(condition.call(ctx, list[i], i, list)) {
 					value = list[i];
 					break;
@@ -119,8 +118,8 @@ PWG.Utils = function() {
 		counts = {};
 
 		if(Array.isArray(list)) {
-			var length = list.length;
-			for (i = 0; i < length; i++) {
+
+			for (i = 0, var length = list.length; i < length; i++) {
 				if(!counts[list[i]]) {
 					counts[list[i]] = 0;
 				}
@@ -182,7 +181,7 @@ PWG.Utils = function() {
 			var pattern = /~\{[A-Z]*\}~/gi;
 			var patternMatch = str.match(pattern);
 			if(patternMatch) {
-				for (var matchNum in patternMatch) {
+				for(var matchNum in patternMatch) {
 					var match = String(patternMatch[matchNum]);
 
 					var matchLength = match.length;
