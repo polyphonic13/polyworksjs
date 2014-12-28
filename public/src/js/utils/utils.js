@@ -4,7 +4,7 @@ PWG.Utils = function() {
 
 	module.each = function(list, callback, context) {
 		if(Array.isArray(list)) {
-			for(var i = 0, var length = list.length; i < length; i++) {
+			for(var i = 0, length = list.length; i < length; i++) {
 				callback.call(context, list[i], i, list);
 			}
 		} else {
@@ -84,7 +84,7 @@ PWG.Utils = function() {
 		var value = null;
 		if(Array.isArray(list)) {
 
-			for(var i = 0, var length = list.length; i < length; i++) {
+			for(var i = 0, length = list.length; i < length; i++) {
 				if(condition.call(ctx, list[i], i, list)) {
 					value = list[i];
 					break;
@@ -119,7 +119,7 @@ PWG.Utils = function() {
 
 		if(Array.isArray(list)) {
 
-			for (i = 0, var length = list.length; i < length; i++) {
+			for (i = 0, length = list.length; i < length; i++) {
 				if(!counts[list[i]]) {
 					counts[list[i]] = 0;
 				}
