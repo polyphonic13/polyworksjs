@@ -66,16 +66,18 @@ PWG.Utils = function() {
 	};
 	
 	module.contains = function(list, value) {
-		var contains = null;
-		module.each(
-			list,
-			function(item) {
-				if(item === value) {
-					contains = value;
+		var contains = false;
+		if(Array.isArray(list)) {
+			if(list.indexOf(value) > -1) {
+				contains = true;
+			}
+		} else {
+			for(var key in list) {
+				if(list.hasOwnProperty(key) && list[key] === value) {
+					contains = true;
 				}
-			},
-			module
-		);
+			}
+		}
 		return contains;
 	};
 	
