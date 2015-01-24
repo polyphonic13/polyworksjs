@@ -5,84 +5,128 @@ PWG.Animator = function() {
 	var _instances = {};
 	var _currentId = 0;
 	
-	function Controller(id, el, props, time, callback, context, params) {
+	function Controller(id, el, props, duration, callback, context, params) {
+		// trace('Animation['+id+'] duration = ' + duration);
 		this.id = id;
 		this.el = el;
 		this.props = props;
 		PWG.Utils.each(
 			props,
 			function(prop, idx) {
-				prop.increment = (prop.end > prop.begin) ? (prop.end - prop.begin) : -(prop.begin - prop.end);
-				prop.increment /= (time/10);
-				// trace('prop['+prop.key+'].increment = ' + prop.increment);
+				prop.difference = (prop.end > prop.begin) ? (prop.end - prop.begin) : -(prop.begin - prop.end);
+				// prop.difference /= (duration/10);
+				// prop.difference /= (duration);
+				// trace('prop['+prop.key+'].difference = ' + prop.difference);
 				prop.currentVal = prop.begin;
 			},
 			this
 		);
-		this.time = time;
+		this.duration = duration;
 		this.callback = callback; 
 		this.context = context || window;
 		this.params = params || {};
+		this.completed = false;
 	};
 	
 	Controller.prototype.start = function() {
 		this.el.style[this.prop] = this.begin;
-		this.timer = PWG.Timer.create(this.id);
-		var counter = 0;
-		var endCount = this.time / 10;
-		var _this = this;
-		this.timer.loop(
-			ANIMATION_DELAY,
-			function(t, params) {
-				var styleString = '';
-				PWG.Utils.each(
-					_this.props,
-					function(prop, idx) {
-						prop.currentVal += prop.increment;
-						// trace('prop['+idx+'].currentVal = ' + prop.currentVal + ', end = ' + prop.end);
-						if(prop.key === 'rotate') {
-							styleString += '-webkit-transform:rotate(' + prop.currentVal + 'deg); ';
-							styleString += '-ms-transform:rotate(' + prop.currentVal + 'deg); ';
-							styleString += 'transform:rotate(' + prop.currentVal + 'deg); ';
-						} else {
-							styleString += prop.key + ':' + prop.currentVal + prop.unit + '; ';
-						}
-					},
-					this
-				);
-				if(params.styleString) {
-					styleString += params.styleString;
-				}
-				_this.el.setAttribute('style', styleString);
-				// trace('counter = ' + counter + ' endCount = ' + endCount);
-				counter++;
-				if(counter >= endCount) {
-					PWG.Timer.remove(t.id);
-					_this.complete();
+		this.startTime = Date.now();
+		requestAnimationFrame(this.update.bind(this));
+		// this.timer = PWG.Timer.create(this.id);
+		// var counter = 0;
+		// var endCount = this.time / 10;
+		// var _this = this;
+		// this.timer.loop(
+		// 	ANIMATION_DELAY,
+		// 	function(t, params) {
+		// 		var styleString = '';
+		// 		PWG.Utils.each(
+		// 			_this.props,
+		// 			function(prop, idx) {
+		// 				prop.currentVal += prop.difference;
+		// 				// trace('prop['+idx+'].currentVal = ' + prop.currentVal + ', end = ' + prop.end);
+		// 				if(prop.key === 'rotate') {
+		// 					styleString += '-webkit-transform:rotate(' + prop.currentVal + 'deg); ';
+		// 					styleString += '-ms-transform:rotate(' + prop.currentVal + 'deg); ';
+		// 					styleString += 'transform:rotate(' + prop.currentVal + 'deg); ';
+		// 				} else {
+		// 					styleString += prop.key + ':' + prop.currentVal + prop.unit + '; ';
+		// 				}
+		// 			},
+		// 			this
+		// 		);
+		// 		if(params.styleString) {
+		// 			styleString += params.styleString;
+		// 		}
+		// 		_this.el.setAttribute('style', styleString);
+		// 		// trace('counter = ' + counter + ' endCount = ' + endCount);
+		// 		counter++;
+		// 		if(counter >= endCount) {
+		// 			PWG.Timer.remove(t.id);
+		// 			_this.complete();
+		// 		}
+		// 	},
+		// 	this.params,
+		// 	this
+		// );
+	};
+
+	Controller.prototype.update = function() {
+		var currentTime = Date.now();
+		var animatedTime = currentTime - this.startTime;
+		var animatedPercentage = animatedTime / this.duration;
+		// trace('Animator/update, animatedTime = ' + animatedTime + ', duration = ' + this.duration + ', % = ' + animatedPercentage);
+
+		var styleString = '';
+		PWG.Utils.each(
+			this.props,
+			function(prop, idx) {
+				var newValue = prop.begin + (animatedPercentage * prop.difference);
+				// prop.currentVal += prop.difference;
+				// trace('prop['+prop.key+'].begin = ' + prop.begin + ', end = ' + prop.end + ', newValue = ' + newValue);
+				if(prop.key === 'rotate') {
+					styleString += '-webkit-transform:rotate(' + newValue + 'deg); ';
+					styleString += '-ms-transform:rotate(' + newValue + 'deg); ';
+					styleString += 'transform:rotate(' + newValue + 'deg); ';
+				} else {
+					styleString += prop.key + ':' + newValue + prop.unit + '; ';
 				}
 			},
-			this.params,
 			this
 		);
+		if(this.params && this.params.styleString) {
+			styleString += this.params.styleString;
+		}
+		// trace('styleString = ' + styleString);
+		this.el.setAttribute('style', styleString);
+		
+		if(animatedTime >= this.duration) {
+			this.completed = true;
+		}
+		
+		if(!this.completed) {
+			requestAnimationFrame(this.update.bind(this));
+		} else {
+			this.onCompleted();
+		}
 	};
 	
 	Controller.prototype.stop = function() {
-		if(this.timer) {
-			this.timer.stop();
-		}
+		this.completed = true;
 	};
 	
-	Controller.prototype.complete = function() {
+	Controller.prototype.onCompleted = function() {
 		if(this.callback) {
 			this.callback.call(this.context, this.id, this.el, this.params);
 		}
+		PWG.Animator.kill(this.id);
 	};
 	
 	module.Controller = Controller;
 	
 	module.create = function(el, props, time, autoStart, callback, context, params, id) {
 		var key = 'animation_' + (id || _currentId);
-		var controller = new Controller(id, el, props, time, callback, context, params);
+		var controller = new Controller(key, el, props, time, callback, context, params);
 		if(autoStart) {
 			controller.start();
 		}
@@ -106,6 +150,18 @@ PWG.Animator = function() {
 			},
 			module
 		);
+	};
+	
+	module.kill = function(id) {
+		if(!_instances.hasOwnProperty(id)) {
+			return;
+		}
+		if(!_instances[id].completed) {
+			_instances[id].stop();
+		}
+		_instances[id] = null;
+		delete _instances[id];
+		// trace('Animator.kill, id = ' + id + ', _instances now = ', _instances);
 	};
 	
 	return module;
