@@ -16,8 +16,8 @@ PWG.Animator = function() {
 				prop.difference = (prop.end > prop.begin) ? (prop.end - prop.begin) : -(prop.begin - prop.end);
 				// prop.difference /= (duration/10);
 				// prop.difference /= (duration);
-				// trace('prop['+prop.key+'].difference = ' + prop.difference);
-				prop.currentVal = prop.begin;
+				// trace(this.id + ': prop['+prop.key+'] begin = ' + prop.begin + ', end = ' + prop.end + ', difference = ' + prop.difference + ', duration = ' + duration);
+				prop.newValue = prop.begin;
 			},
 			this
 		);
@@ -29,7 +29,7 @@ PWG.Animator = function() {
 	};
 	
 	Controller.prototype.start = function() {
-		this.el.style[this.prop] = this.begin;
+		// this.el.style[this.prop] = this.begin;
 		this.startTime = Date.now();
 		requestAnimationFrame(this.update.bind(this));
 		// this.timer = PWG.Timer.create(this.id);
@@ -74,6 +74,9 @@ PWG.Animator = function() {
 	Controller.prototype.update = function() {
 		var currentTime = Date.now();
 		var animatedTime = currentTime - this.startTime;
+		if(animatedTime > this.duration) {
+			animatedTime = this.duration;
+		}
 		var animatedPercentage = animatedTime / this.duration;
 		// trace('Animator/update, animatedTime = ' + animatedTime + ', duration = ' + this.duration + ', % = ' + animatedPercentage);
 
@@ -81,15 +84,16 @@ PWG.Animator = function() {
 		PWG.Utils.each(
 			this.props,
 			function(prop, idx) {
-				var newValue = prop.begin + (animatedPercentage * prop.difference);
+				prop.newValue = prop.begin + (animatedPercentage * prop.difference);
 				// prop.currentVal += prop.difference;
-				// trace('prop['+prop.key+'].begin = ' + prop.begin + ', end = ' + prop.end + ', newValue = ' + newValue);
+				// trace(this.id + ':' + prop.key + ' begin = ' + prop.begin + ', end = ' + prop.end + ', prop.newValue = ' + prop.newValue);
 				if(prop.key === 'rotate') {
-					styleString += '-webkit-transform:rotate(' + newValue + 'deg); ';
-					styleString += '-ms-transform:rotate(' + newValue + 'deg); ';
-					styleString += 'transform:rotate(' + newValue + 'deg); ';
+					styleString += '-webkit-transform:rotate(' + prop.newValue + 'deg); ';
+					styleString += '-ms-transform:rotate(' + prop.newValue + 'deg); ';
+					styleString += 'transform:rotate(' + prop.newValue + 'deg); ';
 				} else {
-					styleString += prop.key + ':' + newValue + prop.unit + '; ';
+					styleString += prop.key + ':' + prop.newValue + prop.unit + '; ';
+					
 				}
 			},
 			this
@@ -99,7 +103,7 @@ PWG.Animator = function() {
 		}
 		// trace('styleString = ' + styleString);
 		this.el.setAttribute('style', styleString);
-		
+		// trace(this.id + ': animatedTime = ' + animatedTime + ' duration = ' + this.duration);
 		if(animatedTime >= this.duration) {
 			this.completed = true;
 		}
@@ -116,6 +120,13 @@ PWG.Animator = function() {
 	};
 	
 	Controller.prototype.onCompleted = function() {
+		PWG.Utils.each(
+			this.props,
+			function(prop) {
+				// trace(this.id + ': ' + prop.key + ' newvalue = ' + prop.newValue);
+			},
+			this
+		);
 		if(this.callback) {
 			this.callback.call(this.context, this.id, this.el, this.params);
 		}
