@@ -32,43 +32,6 @@ PWG.Animator = function() {
 		// this.el.style[this.prop] = this.begin;
 		this.startTime = Date.now();
 		requestAnimationFrame(this.update.bind(this));
-		// this.timer = PWG.Timer.create(this.id);
-		// var counter = 0;
-		// var endCount = this.time / 10;
-		// var _this = this;
-		// this.timer.loop(
-		// 	ANIMATION_DELAY,
-		// 	function(t, params) {
-		// 		var styleString = '';
-		// 		PWG.Utils.each(
-		// 			_this.props,
-		// 			function(prop, idx) {
-		// 				prop.currentVal += prop.difference;
-		// 				// trace('prop['+idx+'].currentVal = ' + prop.currentVal + ', end = ' + prop.end);
-		// 				if(prop.key === 'rotate') {
-		// 					styleString += '-webkit-transform:rotate(' + prop.currentVal + 'deg); ';
-		// 					styleString += '-ms-transform:rotate(' + prop.currentVal + 'deg); ';
-		// 					styleString += 'transform:rotate(' + prop.currentVal + 'deg); ';
-		// 				} else {
-		// 					styleString += prop.key + ':' + prop.currentVal + prop.unit + '; ';
-		// 				}
-		// 			},
-		// 			this
-		// 		);
-		// 		if(params.styleString) {
-		// 			styleString += params.styleString;
-		// 		}
-		// 		_this.el.setAttribute('style', styleString);
-		// 		// trace('counter = ' + counter + ' endCount = ' + endCount);
-		// 		counter++;
-		// 		if(counter >= endCount) {
-		// 			PWG.Timer.remove(t.id);
-		// 			_this.complete();
-		// 		}
-		// 	},
-		// 	this.params,
-		// 	this
-		// );
 	};
 
 	Controller.prototype.update = function() {
@@ -84,9 +47,9 @@ PWG.Animator = function() {
 		PWG.Utils.each(
 			this.props,
 			function(prop, idx) {
-				prop.newValue = prop.begin + (animatedPercentage * prop.difference);
+				prop.newValue = parseInt(prop.begin) + (animatedPercentage * prop.difference);
 				// prop.currentVal += prop.difference;
-				// trace(this.id + ':' + prop.key + ' begin = ' + prop.begin + ', end = ' + prop.end + ', prop.newValue = ' + prop.newValue);
+				// trace(this.id + ':' + prop.key + ' begin/end ' + prop.begin + '/' + prop.end + ', prop.newValue = ' + prop.newValue + ', diff = ' + prop.difference);
 				if(prop.key === 'rotate') {
 					styleString += '-webkit-transform:rotate(' + prop.newValue + 'deg); ';
 					styleString += '-ms-transform:rotate(' + prop.newValue + 'deg); ';
