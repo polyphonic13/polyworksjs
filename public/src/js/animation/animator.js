@@ -49,7 +49,7 @@ PWG.Animator = function() {
 		PWG.Utils.each(
 			this.props,
 			function(prop, idx) {
-				prop.newValue = parseInt(prop.begin) + (animatedPercentage * prop.difference);
+				prop.newValue = prop.begin + (animatedPercentage * prop.difference);
 				// prop.currentVal += prop.difference;
 				// trace(this.id + ':' + prop.key + ' begin/end ' + prop.begin + '/' + prop.end + ', prop.newValue = ' + prop.newValue + ', diff = ' + prop.difference);
 				if(prop.key === 'rotate') {
