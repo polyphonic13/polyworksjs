@@ -13,6 +13,8 @@ PWG.Animator = function() {
 		PWG.Utils.each(
 			props,
 			function(prop, idx) {
+				prop.begin = parseInt(prop.begin);
+				prop.end = parseInt(prop.end);
 				prop.difference = (prop.end > prop.begin) ? (prop.end - prop.begin) : -(prop.begin - prop.end);
 				// prop.difference /= (duration/10);
 				// prop.difference /= (duration);
