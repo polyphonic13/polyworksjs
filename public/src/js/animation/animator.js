@@ -1,6 +1,5 @@
 var PWG = PWG || {};
 PWG.Animator = function() {
-	var ANIMATION_DELAY = 1;
 	var module = {};
 	var _instances = {};
 	var _currentId = 0;
