@@ -80,28 +80,47 @@ PWG.Utils = function() {
 		}
 		return contains;
 	};
-	
-	module.find = function(list, condition, context) {
-		var ctx = context || window;
-		var value = null;
-		if(Array.isArray(list)) {
 
+	module.find = function(list, match) {
+		var element = null;
+		if(Array.isArray(list)) {
 			for(var i = 0, length = list.length; i < length; i++) {
-				if(condition.call(ctx, list[i], i, list)) {
-					value = list[i];
+				if(list[i] === match) {
+					element = list[i];
 					break;
 				}
 			}
 		} else {
 			for(var key in list) {
-				if(condition.call(ctx, list[key], key, list)) {
-					value = list[key];
+				if(list[key] === match) {
+					element = list[key];
 					break;
 				}
 			}
 		}
-		return value;
-	};
+		return element;
+	},
+	// module.find = function(list, condition, context) {
+	// 	var ctx = context || window;
+	// 	var value = null;
+	// 	if(Array.isArray(list)) {
+	// 
+	// 		for(var i = 0, length = list.length; i < length; i++) {
+	// 			if(condition.call(ctx, list[i], i, list)) {
+	// 				value = list[i];
+	// 				break;
+	// 			}
+	// 		}
+	// 	} else {
+	// 		for(var key in list) {
+	// 			if(condition.call(ctx, list[key], key, list)) {
+	// 				value = list[key];
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	return value;
+	// };
 	
 	module.arraysEqual = function(a, b) {
 		if (a === b) return true;
