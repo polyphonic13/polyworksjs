@@ -27,7 +27,7 @@ PWG.Utils = function() {
 
 	    // Handle Array
 	    if (original instanceof Array) {
-			var copy = list.slice(0);
+			var copy = original.slice(0);
 	        // var copy = [];
 	        // for (var i = 0, len = original.length; i < len; i++) {
 	        //     copy[i] = PWG.Utils.clone(original[i]);
