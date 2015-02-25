@@ -14,36 +14,37 @@ PWG.Utils = function() {
 		}
 	};
 	
-	module.clone = function(obj) {
+	module.clone = function(original) {
 	    // Handle the 3 simple types, and null or undefined
-	    if (null == obj || "object" != typeof obj) return obj;
+	    if (null == original || "object" != typeof original) return original;
 
 	    // Handle Date
-	    if (obj instanceof Date) {
+	    if (original instanceof Date) {
 	        var copy = new Date();
-	        copy.setTime(obj.getTime());
+	        copy.setTime(original.getTime());
 	        return copy;
 	    }
 
 	    // Handle Array
-	    if (obj instanceof Array) {
-	        var copy = [];
-	        for (var i = 0, len = obj.length; i < len; i++) {
-	            copy[i] = PWG.Utils.clone(obj[i]);
-	        }
+	    if (original instanceof Array) {
+			var copy = list.slice(0);
+	        // var copy = [];
+	        // for (var i = 0, len = original.length; i < len; i++) {
+	        //     copy[i] = PWG.Utils.clone(original[i]);
+	        // }
 	        return copy;
 	    }
 
 	    // Handle Object
-	    if (obj instanceof Object) {
+	    if (original instanceof Object) {
 	        var copy = {};
-	        for (var attr in obj) {
-	            if (obj.hasOwnProperty(attr)) copy[attr] = PWG.Utils.clone(obj[attr]);
+	        for (var attr in original) {
+	            if (original.hasOwnProperty(attr)) copy[attr] = PWG.Utils.clone(original[attr]);
 	        }
 	        return copy;
 	    }
 
-	    throw new Error("Unable to copy obj! Its type isn't supported.");	
+	    throw new Error("Unable to copy original! Its type isn't supported.");	
 	};
 
 	module.extend = function(a, b) {
