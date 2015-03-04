@@ -1,5 +1,7 @@
 var PWG = PWG || {};
 PWG.TGSAdapter = (function() {
+	'use strict';
+	
 	var module = {};
 	
 	var LEVEL_PLAYS_PER_AD = 1;
@@ -77,7 +79,7 @@ PWG.TGSAdapter = (function() {
 			_initEvents();
 		}
 		
-		_displayConfig.endScreenDiv = document.getElementById('endScreenContainer');
+		_initDisplayDivs();
 		
 		if(config.levelCount) {
 			for(var i = 0; i < config.levelCount; i++) {
@@ -120,7 +122,6 @@ PWG.TGSAdapter = (function() {
 	};
 	
 	module.displayInterstitial = function() {
-		
 		// trace('TGSAdapter/displayInterstitial');
 		PolyworksGame.adPlaying = true;
 		_trigger(module.events.ad.AD_STARTED);
@@ -130,16 +131,16 @@ PWG.TGSAdapter = (function() {
 	
 	module.addWidget = function() {
 		// trace('TGSAdapter/addWidget');
-		var winW = PWG.Stage.winW; 
-		var winH = PWG.Stage.winH;
-		
-		var unit = PWG.Stage.unit; 
-		var widgetX = (unit * 3);
-		var widgetY = (unit * 0.5);
-		var widgetScale = (unit * PWG_WIDGET_UNITS) / TRE_SENSA_WIDGET_WIDTH;
-		// trace('\twidget x/y = ' + widgetX + '/' + widgetY + ', scale = ' + widgetScale + ', widget w should be = ' + (unit * PWG_WIDGET_UNITS));
-
 		if(_tgsExists) {
+			var winW = PWG.Stage.winW; 
+			var winH = PWG.Stage.winH;
+		
+			var unit = PWG.Stage.unit; 
+			var widgetX = (unit * 3);
+			var widgetY = (unit * 0.5);
+			var widgetScale = (unit * PWG_WIDGET_UNITS) / TRE_SENSA_WIDGET_WIDTH;
+			// trace('\twidget x/y = ' + widgetX + '/' + widgetY + ', scale = ' + widgetScale + ', widget w should be = ' + (unit * PWG_WIDGET_UNITS));
+
 			module.widget = PolyworksGame.Tresensa.createWidget({
 				x: widgetX,
 				y: widgetY,
@@ -207,5 +208,6 @@ PWG.TGSAdapter = (function() {
 			}
 		}
 	}
+
 	return module;
 }());
