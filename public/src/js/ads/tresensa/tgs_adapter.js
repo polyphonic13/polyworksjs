@@ -15,7 +15,7 @@ PWG.TGSAdapter = (function() {
 	var _needAd = false;
 	
 	var _tgsConfig = {
-		GAME_ID: 'kekeandthegreyexpanse',
+		GAME_ID: 'farklesafari',
 		ADS: {
 			INTERSTITIAL_INTERVAL: 300
 		}
@@ -31,14 +31,14 @@ PWG.TGSAdapter = (function() {
 		parentDiv: null,
 		blurDiv: null,
 		endScreenDiv: null,
-		closeCallback = function() {
+		closeCallback: function() {
 			_finishAdSession();
 		}
 	};
 	
 	var _config = {};
 	
-	module.isOpen: false;
+	module.isOpen = false;
 	
 	module.events = {
 		ad: {
@@ -75,18 +75,23 @@ PWG.TGSAdapter = (function() {
 	module.init = function(config) {
 		_config = config;
 
+		_initDisplayEls();
+		
+		if(config.gameId) {
+			_tgsConfig.GAME_ID = config.gameId;
+		}
 		if(config.events) {
 			_initEvents();
 		}
-		
-		_initDisplayDivs();
-		
 		if(config.levelCount) {
 			for(var i = 0; i < config.levelCount; i++) {
 				_levels[i] = LEVEL_PLAYS_PER_AD;
 			}
 		}
-
+		if(config.callback) {
+			_initCallback();
+		}
+		
 		if(typeof(TGS) !== 'undefined') {
 			_tgsExists = true;
 		}
@@ -171,6 +176,17 @@ PWG.TGSAdapter = (function() {
 		_displayConfig.endScreenDiv.style.display = 'none';
 	};
 
+	function _initDisplayEls() {
+		PWG.Utils.each(
+			_divIds,
+			function(id, key) {
+				var elId = (_config.divIds[key] ? _config.divIds[key] : id);
+				_displayConfig[key] = document.getElementById(elId);
+			},
+			module
+		);
+	}
+	
 	function _initEvents() {
 		PWG.Utils.each(
 			config.events,
@@ -181,15 +197,17 @@ PWG.TGSAdapter = (function() {
 		);
 	}
 	
-	function _initDisplayDivs() {
-		PWG.Utils.each(
-			_divIds,
-			function(id, key) {
-				var i = (_config.divIds[key] ? _config.divIds[key] : id);
-				_displayConfig[key] = document.getElementById(i);
-			},
-			module
-		);
+	function _initCallback() {
+		if(_config.callback instanceof Function) {
+			var fn = _config.callback;
+			var ctx = module;
+			_config.callback = {
+				fn: fn,
+				ctx: ctx
+			};
+		} else {
+			_config.callback.ctx = _config.callback.ctx || module;
+		}
 	}
 	
 	function _finishAdSession() {
@@ -200,7 +218,6 @@ PWG.TGSAdapter = (function() {
 	
 	function _trigger(event) {
 		if(_config.callback) {
-			var context = _config.callback.fn.ctx || module;
 			_config.callback.fn.call(context, event);
 		} else {
 			if(PWG.EventCenter) {
