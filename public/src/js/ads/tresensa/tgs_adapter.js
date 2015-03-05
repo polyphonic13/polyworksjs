@@ -38,7 +38,6 @@ PWG.TGSAdapter = (function() {
 	
 	var _config = {};
 	
-	module.isOpen = false;
 	
 	module.events = {
 		ad: {
@@ -115,8 +114,12 @@ PWG.TGSAdapter = (function() {
 		}
 	};
 	
-	module.adCheck = function(idx) {
-		// trace('TGSAdapter/adCheck, _levels[' + idx + '] = ' + _levels[idx] + ', LEVELS_PLAYS_PER_AD = ' + LEVEL_PLAYS_PER_AD);
+	module.turnStarted = function() {
+		module.adCheck();
+	};
+	
+	module.adCheck = function() {
+		// trace('TGSAdapter/adCheck');
 		if(_needAd) {
 			module.displayInterstitial();
 			_needAd = false;

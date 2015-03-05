@@ -1,6 +1,6 @@
 var PWG = PWG || {};
 PWG.User = function() {
-	"use strict";
+	'use strict';
 
 	var module = {};
 	
