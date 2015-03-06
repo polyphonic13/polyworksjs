@@ -7,5 +7,7 @@ PWG.GameEvents = {
 	TURN_STARTED: 'turnStarted',
 	TURN_COMPLETED: 'turnCompleted',
 	GAME_OVER: 'gameOver',
-	GAME_COMPLETED: 'gameCompleted'
+	GAME_COMPLETED: 'gameCompleted',
+	AD_STARTED: 'adStarted',
+	AD_COMPLETED: 'adCompleted'
 };

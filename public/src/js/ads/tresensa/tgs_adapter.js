@@ -40,10 +40,6 @@ PWG.TGSAdapter = (function() {
 	
 	
 	module.events = {
-		ad: {
-			AD_STARTED: 'adStarted',
-			AD_COMPLETED: 'adCompleted'
-		},
 		game: {
 			LOAD: 'load',
 			BEGIN: 'begin',
@@ -130,11 +126,14 @@ PWG.TGSAdapter = (function() {
 	};
 	
 	module.displayInterstitial = function() {
-		// trace('TGSAdapter/displayInterstitial');
-		PolyworksGame.adPlaying = true;
-		_trigger(module.events.ad.AD_STARTED);
+		trace('TGSAdapter/displayInterstitial');
+		_trigger({ type: PWG.GameEvents.AD_STARTED });
 
-		TGS.Advertisement.DisplayInterstitialAd(_displayConfig);		
+		// _displayConfig['parentDiv'].style.display = 'block';
+
+		if(typeof(TGS) !== 'undefined') {
+			TGS.Advertisement.DisplayInterstitialAd(_displayConfig);		
+		}
 	};
 	
 	module.addWidget = function() {
@@ -149,16 +148,16 @@ PWG.TGSAdapter = (function() {
 			var widgetScale = (unit * PWG_WIDGET_UNITS) / TRE_SENSA_WIDGET_WIDTH;
 			// trace('\twidget x/y = ' + widgetX + '/' + widgetY + ', scale = ' + widgetScale + ', widget w should be = ' + (unit * PWG_WIDGET_UNITS));
 
-			module.widget = PolyworksGame.Tresensa.createWidget({
-				x: widgetX,
-				y: widgetY,
-				scale: widgetScale,
-				shareUrl: 'https://keke.tresensa.com/',
-				shareImage: 'http://www.polyworksgames.com/games/keke2/assets/images/keke_grey_expanse_title.png',
-				shareTitle: 'keke and the grey expanse',
-				shareMessage: 'i love playing keke and the grey expanse!',
-				leaderboardID: LEADERBOARD_ID
-			});
+			// module.widget = PolyworksGame.Tresensa.createWidget({
+			// 	x: widgetX,
+			// 	y: widgetY,
+			// 	scale: widgetScale,
+			// 	shareUrl: 'https://keke.tresensa.com/',
+			// 	shareImage: 'http://www.polyworksgames.com/games/keke2/assets/images/keke_grey_expanse_title.png',
+			// 	shareTitle: 'keke and the grey expanse',
+			// 	shareMessage: 'i love playing keke and the grey expanse!',
+			// 	leaderboardID: LEADERBOARD_ID
+			// });
 			module.isOpen = true;
 		}
 	};
@@ -181,7 +180,7 @@ PWG.TGSAdapter = (function() {
 
 	function _initDisplayEls() {
 		PWG.Utils.each(
-			_divIds,
+			_config.divIds,
 			function(id, key) {
 				var elId = (_config.divIds[key] ? _config.divIds[key] : id);
 				_displayConfig[key] = document.getElementById(elId);
@@ -215,17 +214,15 @@ PWG.TGSAdapter = (function() {
 	
 	function _finishAdSession() {
 		// trace('TGSAdapter/_finishAdSession');
-		PolyworksGame.adPlaying = false;
-		_trigger(module.events.ad.AD_COMPLETED);
+		_trigger({ type: PWG.GameEvents.AD_COMPLETED });
 	}
 	
 	function _trigger(event) {
 		if(_config.callback) {
-			_config.callback.fn.call(context, event);
-		} else {
-			if(PWG.EventCenter) {
-				PWG.EventCenter.trigger({ type: event });
-			}
+			var cb = _config.callback;
+			cb.fn.call(cb.ctx, event);
+		} else if(PWG.EventCenter) {
+			PWG.EventCenter.trigger({ type: event });
 		}
 	}
 

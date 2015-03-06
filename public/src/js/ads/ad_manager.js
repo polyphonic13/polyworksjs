@@ -7,9 +7,21 @@ PWG.AdManager = function(module) {
 	var _systemKeys = Object.keys(Systems);
 	
 	function Controller(idx, type, config) {
+		if(!Systems.hasOwnProperty(type)) {
+			return;
+		}
+		// trace('AdsController/constructor, type = ' + type + ', config = ', config);
 		this.idx = idx;
 		this.type = type;
-		this.config = config;
+		// this.config = config;
+		this.system = PWG[Systems[type]];
+
+		config.callback = {
+			fn: this.callback,
+			ctx: this
+		};
+
+		this.system.init(config);
 	}
 	
 	Controller.prototype.callback = function(event) {
@@ -20,7 +32,11 @@ PWG.AdManager = function(module) {
 	};
 	
 	Controller.prototype.turnStarted = function(params) {
-		
+		trace('AdsController/turnStarted, params = ', params);
+		if(params.userTurn) {
+			// user is up, time to make a request
+			this.system.turnStarted(params);
+		}
 	};
 	
 	Controller.prototype.turnCompleted = function(params) {
@@ -49,7 +65,9 @@ PWG.AdManager = function(module) {
 		}
 		var controller;
 		controller = new Controller(_controllers.length, type, config);
-		_controllers.push(controller);
+		if(controller) {
+			_controllers.push(controller);
+		}
 		return controller;
 	};
 	
