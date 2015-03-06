@@ -25,7 +25,7 @@ PWG.AdManager = function(module) {
 	}
 	
 	Controller.prototype.callback = function(event) {
-		trace('AdsController['+this.idx+']/callback, type = ' + event.type + ', event = ', event);
+		// trace('AdsController['+this.idx+']/callback, type = ' + event.type + ', event = ', event);
 		if(this[event.type] instanceof Function) {
 			this[event.type].call(this, event);
 		}

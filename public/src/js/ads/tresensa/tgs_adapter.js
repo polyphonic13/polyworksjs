@@ -126,7 +126,7 @@ PWG.TGSAdapter = (function() {
 	};
 	
 	module.displayInterstitial = function() {
-		trace('TGSAdapter/displayInterstitial');
+		// trace('TGSAdapter/displayInterstitial');
 		_trigger({ type: PWG.GameEvents.AD_STARTED });
 
 		// _displayConfig['parentDiv'].style.display = 'block';
