@@ -32,7 +32,7 @@ PWG.AdManager = function(module) {
 	};
 	
 	Controller.prototype.turnStarted = function(params) {
-		trace('AdsController/turnStarted, params = ', params);
+		// trace('AdsController/turnStarted, params = ', params);
 		if(params.userTurn) {
 			// user is up, time to make a request
 			this.system.turnStarted(params);
