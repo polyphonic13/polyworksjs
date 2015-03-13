@@ -10,14 +10,18 @@ PWG.StyleElManager = function() {
 		PWG.Utils.each(
 			styleStrings,
 			function(style, key) {
-				var styleEl = document.createElement('style');
-				styleEl.setAttribute('id', key);
-				styleEl.appendChild(document.createTextNode(style));
-				
-				_styleEls[key] = styleEl;
+				module.add(style, key);
 			},
 			module
 		);
+	};
+	
+	module.add = function(styleString, key) {
+		var styleEl = document.createElement('style');
+		styleEl.setAttribute('id', key);
+		styleEl.appendChild(document.createTextNode(style));
+		
+		_styleEls[key] = styleEl;
 	};
 	
 	module.update = function() {
@@ -30,6 +34,14 @@ PWG.StyleElManager = function() {
 			_head.appendChild(_styleEls[orientation]);
 			_previousOrientation = orientation;
 		}
+	};
+	
+	module.replace = function(styleString, key) {
+		if(_styleEls.hasOwnProperty(key)) {
+			_styleEls[key].parentNode.removeChild(_styleEls[key]);
+			delete _styleEls[key];
+		}
+		module.add(styleString, key);
 	};
 	
 	return module;
