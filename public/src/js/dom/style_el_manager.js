@@ -19,7 +19,7 @@ PWG.StyleElManager = function() {
 	module.add = function(styleString, key) {
 		var styleEl = document.createElement('style');
 		styleEl.setAttribute('id', key);
-		styleEl.appendChild(document.createTextNode(style));
+		styleEl.appendChild(document.createTextNode(styleString));
 		
 		_styleEls[key] = styleEl;
 	};
