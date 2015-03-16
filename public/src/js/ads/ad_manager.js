@@ -4,18 +4,14 @@ PWG.AdManager = function(module) {
 	var Systems = {
 		TRE_SENSA: 'TGSAdapter'
 	};
-	var _systemKeys = Object.keys(Systems);
 	
-	function Controller(idx, type, config) {
-		if(!Systems.hasOwnProperty(type)) {
-			return;
-		}
-		// trace('AdsController/constructor, type = ' + type + ', config = ', config);
+	function Controller(idx, type, config, appCallback) {
 		this.idx = idx;
 		this.type = type;
 		// this.config = config;
 		this.system = PWG[Systems[type]];
-
+		this.appCallback = appCallback || function() {}; 
+		
 		config.callback = {
 			fn: this.callback,
 			ctx: this
@@ -28,6 +24,7 @@ PWG.AdManager = function(module) {
 		// trace('AdsController['+this.idx+']/callback, type = ' + event.type + ', event = ', event);
 		if(this[event.type] instanceof Function) {
 			this[event.type].call(this, event);
+			this.appCallback({ type: PWG.GameEvents.AD_STARTED });
 		}
 	};
 	
@@ -59,12 +56,13 @@ PWG.AdManager = function(module) {
 		
 	};
 	
-	module.create = function(type, config) {
-		if(_systemKeys.indexOf(type) === -1) {
+	module.create = function(type, config, appCallback) {
+		if(!Systems.hasOwnProperty(type)) {
 			return;
 		}
+		// trace('AdsController/constructor, type = ' + type + ', config = ', config);
 		var controller;
-		controller = new Controller(_controllers.length, type, config);
+		controller = new Controller(_controllers.length, type, config, appCallback);
 		if(controller) {
 			_controllers.push(controller);
 		}
