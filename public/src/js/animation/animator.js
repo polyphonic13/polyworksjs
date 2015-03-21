@@ -37,27 +37,26 @@ PWG.Animator = function() {
 
 	Controller.prototype.update = function() {
 		var currentTime = Date.now();
+		var styleString = '';
+		var animatedPercentage;
 		var animatedTime = currentTime - this.startTime;
+
 		if(animatedTime > this.duration) {
 			animatedTime = this.duration;
 		}
-		var animatedPercentage = animatedTime / this.duration;
-		// trace('Animator/update, animatedTime = ' + animatedTime + ', duration = ' + this.duration + ', % = ' + animatedPercentage);
+		animatedPercentage = animatedTime / this.duration;
 
-		var styleString = '';
 		PWG.Utils.each(
 			this.props,
 			function(prop, idx) {
 				prop.newValue = prop.begin + (animatedPercentage * prop.difference);
-				// prop.currentVal += prop.difference;
-				// trace(this.id + ':' + prop.key + ' begin/end ' + prop.begin + '/' + prop.end + ', prop.newValue = ' + prop.newValue + ', diff = ' + prop.difference);
+
 				if(prop.key === 'rotate') {
 					styleString += '-webkit-transform:rotate(' + prop.newValue + 'deg); ';
 					styleString += '-ms-transform:rotate(' + prop.newValue + 'deg); ';
 					styleString += 'transform:rotate(' + prop.newValue + 'deg); ';
 				} else {
 					styleString += prop.key + ':' + prop.newValue + prop.unit + '; ';
-					
 				}
 			},
 			this
@@ -65,9 +64,9 @@ PWG.Animator = function() {
 		if(this.params && this.params.styleString) {
 			styleString += this.params.styleString;
 		}
-		// trace('styleString = ' + styleString);
+
 		this.el.setAttribute('style', styleString);
-		// trace(this.id + ': animatedTime = ' + animatedTime + ' duration = ' + this.duration);
+
 		if(animatedTime >= this.duration) {
 			this.completed = true;
 		}

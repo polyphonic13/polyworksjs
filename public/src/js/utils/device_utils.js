@@ -82,6 +82,15 @@ PWG.DeviceUtils = function() {
 		return browser;
 	};
 
+	module.getHasTransform = function() {
+		var features;
+		(function(s, features) {
+		    features.transitions = 'transition' in s || 'webkitTransition' in s || 'MozTransition' in s || 'msTransition' in s || 'OTransition' in s;
+		})(document.createElement('div').style, features || (features = {}));
+
+		return features.transitions;
+	};
+	
 	module.toggleFullScreen = function() {
 		if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
 			module.enterFullScreen();
